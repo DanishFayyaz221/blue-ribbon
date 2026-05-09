@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf /c/Users/Axis/.git)",
+      "Bash(git -C /c/Users/Axis/my-app init)",
+      "Bash(git -C /c/Users/Axis/my-app status)",
+      "mcp__claude_ai_Figma__get_design_context",
+      "mcp__claude_ai_Figma__get_metadata",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /tmp/page.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Read(//tmp/**)",
+      "Bash(find /c/Users/Axis/AppData/Local/Temp -type f \\\\\\( -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" -o -iname \"*.webp\" \\\\\\) -mmin -10 2>/dev/null | head -20)",
+      "Read(//c/Users/Axis/AppData/Local/Temp/**)",
+      "Bash(npm install *)",
+      "mcp__claude_ai_Figma__whoami"
+    ]
+  }
+}

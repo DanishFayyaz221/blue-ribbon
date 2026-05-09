@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand-navy: #0c1942;
+  --color-brand-navy-deep: #081230;
+  --color-brand-lavender: #e7eafc;
+  --color-brand-blue: #1d4ed8;
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-playfair);
+  --font-display: var(--font-poppins);
+}
+
+html,
+body {
+  background: #ffffff;
+  color: #0c1942;
+}
+
+body {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
