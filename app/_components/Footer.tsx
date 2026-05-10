@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const aboutLinks = [
   { label: "Our Story", href: "#" },
   { label: "Leadership", href: "#" },
@@ -28,7 +30,7 @@ export function Footer() {
           </div>
 
           <div className="ml-[418px] flex gap-[32px]">
-            <LinkColumn title="About Us" links={aboutLinks} />
+            <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} />
             <LinkColumn title="Insights" links={insightsLinks} />
             <LinkColumn title="Our Office" links={officeLinks} />
           </div>
@@ -97,16 +99,24 @@ function FooterButton({ children }: { children: React.ReactNode }) {
 
 function LinkColumn({
   title,
+  titleHref,
   links,
 }: {
   title: string;
+  titleHref?: string;
   links: { label: string; href: string }[];
 }) {
+  const headingClass =
+    "mb-[14px] whitespace-nowrap font-display text-[20px] font-bold leading-[26.667px] tracking-[0.4267px] text-[#11181c]";
   return (
     <div className="w-[180px]">
-      <h3 className="mb-[14px] whitespace-nowrap font-display text-[20px] font-bold leading-[26.667px] tracking-[0.4267px] text-[#11181c]">
-        {title}
-      </h3>
+      {titleHref ? (
+        <Link href={titleHref} className={`${headingClass} block hover:underline`}>
+          {title}
+        </Link>
+      ) : (
+        <h3 className={headingClass}>{title}</h3>
+      )}
       <ul className="flex flex-col gap-[10px]">
         {links.map((link) => (
           <li key={link.label}>
