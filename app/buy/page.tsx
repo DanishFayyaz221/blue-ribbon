@@ -28,10 +28,10 @@ export default function BuyPage() {
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy" }]} />
         </div>
 
-        <div className="container-page">
-          <div className="relative aspect-[1770/520] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
+        <section className="relative w-full overflow-hidden">
+          <div className="relative aspect-[1920/990] min-h-[460px] w-full">
             <Image
-              src="/images/dynamic.png"
+              src="/contact/contact-us.png"
               alt="Featured property"
               fill
               priority
@@ -39,7 +39,7 @@ export default function BuyPage() {
               className="object-cover"
             />
           </div>
-        </div>
+        </section>
 
         <div className="container-page mt-[clamp(40px,4vw,80px)]">
           <PropertySearchBar />
