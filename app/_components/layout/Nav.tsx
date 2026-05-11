@@ -45,8 +45,8 @@ export function Nav() {
 
   return (
     <>
-      <nav className="relative z-30 w-full bg-white">
-        <div className="container-page flex items-center justify-between py-[10px] sm:py-[12px]">
+      <nav className="relative z-30 w-full bg-white overflow-visible">
+        <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
           <Link href="/" className="block shrink-0">
             <Image
               src="/logo/LOGO.png"
@@ -54,7 +54,7 @@ export function Nav() {
               width={260}
               height={64}
               priority
-              className="h-[40px] sm:h-[48px] lg:h-[64px] w-auto"
+              className="h-[64px] sm:h-[80px] lg:h-[100px] w-auto"
             />
           </Link>
           <button
@@ -83,14 +83,14 @@ export function Nav() {
 
       {open && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-white">
-          <div className="container-page flex items-center justify-between py-[10px] sm:py-[12px]">
+          <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
             <Link href="/" onClick={() => setOpen(false)} className="block shrink-0">
               <Image
                 src="/logo/LOGO.png"
                 alt="Blue Ribbon Real Estate"
                 width={260}
                 height={64}
-                className="h-[40px] sm:h-[48px] lg:h-[64px] w-auto"
+                className="h-[64px] sm:h-[80px] lg:h-[100px] w-auto"
               />
             </Link>
             <button

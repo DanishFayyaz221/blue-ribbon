@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -10,36 +9,38 @@ type DealType = (typeof dealTypes)[number];
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative h-[clamp(560px,75vh,960px)] w-full">
+      <div className="relative aspect-[1920/990] min-h-[460px] w-full">
         <div className="absolute inset-0 scale-[1.04] blur-[6px]">
-          <Image
-            src="/images/dynamic.png"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
+          <video
+            className="h-full w-full object-cover"
+            src="/hero-video/hero.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden
           />
         </div>
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-1/2 -translate-y-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(2.25rem,4vw,4.75rem)] leading-[1.1] tracking-[-0.01em]">
+          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.875rem,3vw,3.5rem)] leading-[1.1] tracking-[-0.01em]">
             Own Your <span className="text-brand-sky">Australian Dream</span>
           </h1>
 
-          <div className="mt-[clamp(36px,4vw,64px)]">
+          <div className="mt-[clamp(28px,2.8vw,48px)]">
             <SearchBar />
           </div>
+        </div>
 
-          <div className="mt-[clamp(28px,3vw,56px)] flex justify-center">
-            <Link
-              href="/appraisal"
-              className="flex h-[48px] sm:h-[58px] w-full max-w-[556px] items-center justify-center bg-white/30 px-4 text-center font-display text-[14px] sm:text-[18px] lg:text-[20px] font-medium text-white backdrop-blur-sm transition hover:bg-white/40"
-            >
-              Get your property estimate in just 9 seconds!
-            </Link>
-          </div>
+        <div className="container-page absolute inset-x-0 bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
+          <Link
+            href="/appraisal"
+            className="flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition hover:bg-white/40"
+          >
+            Get your property estimate in just 9 seconds!
+          </Link>
         </div>
       </div>
     </section>
@@ -54,12 +55,12 @@ function SearchBar() {
   return (
     <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0">
       <div className="flex w-full flex-1 flex-col items-stretch bg-white sm:flex-row">
-        <div className="relative flex h-[56px] sm:h-[64px] lg:h-[72px] w-full sm:w-[180px] lg:w-[195px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
+        <div className="relative flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[170px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
           <button
             type="button"
             onClick={() => setDealOpen((v) => !v)}
             aria-expanded={dealOpen}
-            className="flex h-full w-full items-center justify-center gap-[8px] font-display text-[16px] lg:text-[20px] font-medium text-black"
+            className="flex h-full w-full items-center justify-center gap-[8px] font-display text-[15px] lg:text-[17px] font-medium text-black"
           >
             {deal}
             <svg
@@ -95,15 +96,15 @@ function SearchBar() {
           )}
         </div>
 
-        <div className="flex h-[56px] sm:h-[64px] lg:h-[72px] flex-1 items-center px-[16px] lg:px-[21px]">
+        <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] flex-1 items-center px-[16px] lg:px-[20px]">
           <input
             type="text"
             placeholder="Enter suburb, postcode, region or address"
-            className="w-full bg-transparent font-display text-[14px] lg:text-[18px] font-medium tracking-[0.02em] text-black placeholder:text-brand-graychat focus:outline-none"
+            className="w-full bg-transparent font-display text-[13px] lg:text-[15px] font-medium tracking-[0.02em] text-black placeholder:text-brand-graychat focus:outline-none"
           />
         </div>
 
-        <div className="flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between gap-[12px] border-t sm:border-t-0 sm:border-l border-brand-silver px-[16px] lg:px-[21px] sm:w-[280px] lg:w-[300px]">
+        <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] items-center justify-between gap-[12px] border-t sm:border-t-0 sm:border-l border-brand-silver px-[16px] lg:px-[20px] sm:w-[260px] lg:w-[280px]">
           <label className="flex cursor-pointer items-center gap-[12px]">
             <input
               type="checkbox"
@@ -139,7 +140,7 @@ function SearchBar() {
 
       <button
         type="button"
-        className="flex h-[56px] sm:h-[64px] lg:h-[72px] w-full sm:w-[180px] lg:w-[220px] items-center justify-center rounded-[20px] sm:rounded-[24px] bg-brand-navy font-display text-[16px] lg:text-[19px] font-medium text-white transition hover:bg-brand-navy-deep sm:ml-0"
+        className="flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[180px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-brand-navy font-display text-[14px] lg:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep sm:ml-0"
       >
         Search
       </button>
