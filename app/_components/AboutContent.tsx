@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "./ui/Button";
 
 const values = [
   {
@@ -17,92 +18,88 @@ const values = [
 
 export function AboutContent() {
   return (
-    <section className="w-[1920px] bg-white pb-[96px] pt-[40px]">
-      <div className="mx-[74.667px] w-[1770.667px]">
-        <div className="flex items-start justify-between gap-[64px]">
-          <div className="w-[760px] pt-[24px]">
-            <h2 className="font-display text-[40px] font-bold leading-[48px] tracking-[-0.5px] text-brand-navy">
+    <section className="w-full bg-white pb-[clamp(56px,5vw,96px)] pt-[clamp(32px,3vw,56px)]">
+      <div className="container-page">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(28px,3vw,64px)]">
+          <div>
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15] tracking-[-0.01em]">
               Your Australian
               <br />
               Property Partners
             </h2>
-            <p className="mt-[28px] font-display text-[14.5px] font-medium leading-[26px] text-[#11181c]">
-              Established to redefine excellence, Blue Ribbon Real Estate has
-              rapidly emerged as a premier agency and a respected industry
-              leader across the Australian market.
+            <p className="mt-[clamp(20px,1.6vw,28px)] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+              Established to redefine excellence, Blue Ribbon Real Estate has rapidly
+              emerged as a premier agency and a respected industry leader across the
+              Australian market.
             </p>
-            <p className="mt-[20px] font-display text-[14.5px] font-medium leading-[26px] text-[#11181c]">
-              Committed to raising the bar, Blue Ribbon was founded to transform
-              the real estate experience through a dedication to integrity and
-              local expertise. Our service focuses on more than just
-              transactions; it is about supporting our clients&apos; lifestyles,
-              financial growth, and long-term security.
+            <p className="mt-[16px] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+              Committed to raising the bar, Blue Ribbon was founded to transform the
+              real estate experience through a dedication to integrity and local
+              expertise. Our service focuses on more than just transactions; it is about
+              supporting our clients&rsquo; lifestyles, financial growth, and long-term
+              security.
             </p>
           </div>
-          <div className="relative h-[440px] w-[860px] overflow-hidden rounded-[8px]">
+          <div className="relative aspect-[860/440] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)]">
             <Image
               src="/about-us-images/image 5.png"
               alt="Blue Ribbon agent meeting with clients"
               fill
-              sizes="860px"
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
         </div>
 
-        <div className="mt-[96px] flex items-start justify-between gap-[64px]">
-          <div className="relative h-[440px] w-[860px] overflow-hidden rounded-[8px]">
+        <div className="mt-[clamp(48px,4vw,96px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(28px,3vw,64px)]">
+          <div className="relative aspect-[860/440] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)] lg:order-1">
             <Image
               src="/about-us-images/image 6.png"
               alt="Blue Ribbon team with happy clients"
               fill
-              sizes="860px"
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
-          <div className="w-[760px] pt-[24px]">
-            <h2 className="font-display text-[40px] font-bold leading-[48px] tracking-[-0.5px] text-brand-navy">
+          <div className="lg:order-2">
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15] tracking-[-0.01em]">
               Your Excellence
               <br />
               In Property
             </h2>
-            <p className="mt-[28px] font-display text-[14.5px] font-medium leading-[26px] text-[#11181c]">
-              Blue Ribbon is driven by a team of dynamic professionals united by
-              a singular passion to secure the absolute best results for every
-              Australian homeowner. Blending modern innovation with traditional
-              integrity, our steadfast commitment to these core principles
-              distinguishes us within the competitive retail market. By
-              constantly evolving and refining our expertise, we provide an
-              elevated standard of service designed to exceed your property
-              goals.
+            <p className="mt-[clamp(20px,1.6vw,28px)] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+              Blue Ribbon is driven by a team of dynamic professionals united by a
+              singular passion to secure the absolute best results for every Australian
+              homeowner. Blending modern innovation with traditional integrity, our
+              steadfast commitment to these core principles distinguishes us within the
+              competitive retail market. By constantly evolving and refining our
+              expertise, we provide an elevated standard of service designed to exceed
+              your property goals.
             </p>
-            <p className="mt-[20px] font-display text-[14.5px] font-medium leading-[26px] text-[#11181c]">
-              Trust that your most significant investment is managed with the
-              highest level of care.
+            <p className="mt-[16px] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+              Trust that your most significant investment is managed with the highest
+              level of care.
             </p>
           </div>
         </div>
 
-        <div className="mt-[96px] grid grid-cols-3 gap-[56px]">
+        <div className="mt-[clamp(48px,4vw,96px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(24px,2.5vw,56px)]">
           {values.map((v) => (
             <div key={v.title}>
-              <h3 className="font-display text-[17px] font-bold leading-[24px] text-brand-navy">
+              <h3 className="font-display text-[16px] sm:text-[18px] font-bold text-brand-navy">
                 {v.title}
               </h3>
-              <p className="mt-[16px] font-display text-[13.5px] font-medium leading-[22px] text-[#11181c]">
+              <p className="mt-[12px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
                 {v.body}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-[56px]">
-          <a
-            href="#"
-            className="inline-flex h-[44px] items-center justify-center rounded-[28px] border border-brand-navy px-[28px] font-display text-[13.5px] font-medium text-brand-navy transition hover:bg-brand-navy hover:text-white"
-          >
+        <div className="mt-[clamp(36px,3vw,56px)]">
+          <Button href="/contact" variant="outline-dark" size="sm">
             Contact Team
-          </a>
+          </Button>
         </div>
       </div>
     </section>

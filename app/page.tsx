@@ -1,16 +1,16 @@
-import { Nav } from "./_components/Nav";
-import { Hero } from "./_components/Hero";
-import { BridgeToHome } from "./_components/BridgeToHome";
-import { BestSuitedForYou } from "./_components/BestSuitedForYou";
-import { ParramattaCTA } from "./_components/ParramattaCTA";
-import { LatestProperties } from "./_components/LatestProperties";
-import { HappyClients } from "./_components/HappyClients";
-import { SellWithUs } from "./_components/SellWithUs";
-import { Footer } from "./_components/Footer";
+import { Nav } from "./_components/layout/Nav";
+import { Footer } from "./_components/layout/Footer";
+import { Hero } from "./_components/home/Hero";
+import { BridgeToHome } from "./_components/home/BridgeToHome";
+import { BestSuitedForYou } from "./_components/home/BestSuitedForYou";
+import { ParramattaCTA } from "./_components/home/ParramattaCTA";
+import { LatestProperties } from "./_components/home/LatestProperties";
+import { HappyClients } from "./_components/home/HappyClients";
+import { SellWithUs } from "./_components/home/SellWithUs";
 
 export default function Home() {
   return (
-    <div className="mx-auto w-[1920px] bg-white">
+    <div className="min-h-screen bg-white">
       <Nav />
       <main>
         <Hero />

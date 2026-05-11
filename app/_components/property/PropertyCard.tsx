@@ -1,0 +1,116 @@
+import Image from "next/image";
+import Link from "next/link";
+
+export type PropertyCardData = {
+  href?: string;
+  image: string;
+  address: string;
+  guide?: string;
+  beds?: number;
+  baths?: number;
+  cars?: number;
+  type?: string;
+};
+
+type PropertyCardProps = PropertyCardData & {
+  variant?: "wide" | "tall" | "compact";
+};
+
+export function PropertyCard({
+  href = "/property/1",
+  image,
+  address,
+  guide,
+  beds,
+  baths,
+  cars,
+  type,
+  variant = "tall",
+}: PropertyCardProps) {
+  const meta = beds || baths || cars || type ? (
+    <p className="mt-[6px] font-display text-[13px] sm:text-[14px] font-medium text-brand-bunker/80">
+      {[
+        beds != null && `${beds} Bed`,
+        baths != null && `${baths} Bath`,
+        cars != null && `${cars} Car`,
+        type,
+      ]
+        .filter(Boolean)
+        .join("  |  ")}
+    </p>
+  ) : null;
+
+  if (variant === "wide") {
+    return (
+      <Link href={href} className="group block w-full">
+        <div className="relative aspect-[869/435] w-full overflow-hidden rounded-[clamp(16px,1.7vw,32px)] shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
+          <Image
+            src={image}
+            alt={address}
+            fill
+            sizes="(max-width: 1024px) 100vw, 45vw"
+            className="object-cover transition duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+        <div className="mt-[clamp(20px,2vw,40px)] font-display">
+          <p className="text-[clamp(16px,1.18vw,22px)] font-medium leading-[1.4] text-brand-navy">
+            {address}
+          </p>
+          {guide && (
+            <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-black mt-[4px]">
+              Guide {guide}
+            </p>
+          )}
+          {meta}
+        </div>
+      </Link>
+    );
+  }
+
+  if (variant === "compact") {
+    return (
+      <Link href={href} className="group block w-full">
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[12px]">
+          <Image
+            src={image}
+            alt={address}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+        <div className="mt-[14px] font-display">
+          <p className="text-[15px] font-medium leading-[1.3] text-white">{address}</p>
+          {guide && (
+            <p className="text-[13px] leading-[1.4] text-white/80 mt-[2px]">Guide {guide}</p>
+          )}
+        </div>
+      </Link>
+    );
+  }
+
+  return (
+    <Link href={href} className="group block w-full">
+      <div className="relative aspect-[418/575] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
+        <Image
+          src={image}
+          alt={address}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="mt-[clamp(16px,2vw,42px)] font-display">
+        <p className="text-[clamp(16px,1.18vw,22px)] font-medium leading-[1.4] text-brand-navy">
+          {address}
+        </p>
+        {guide && (
+          <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-black mt-[4px]">
+            Guide {guide}
+          </p>
+        )}
+        {meta}
+      </div>
+    </Link>
+  );
+}

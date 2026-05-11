@@ -35,7 +35,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${playfair.variable} ${poppins.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body className="bg-white text-brand-bunker">{children}</body>
     </html>
   );
 }
