@@ -12,6 +12,7 @@ const agents: AgentCardData[] = Array.from({ length: 5 }, () => ({
 }));
 
 export default function AgentsPage() {
+  console.log(" 🚀 AgentsPage rendered");
   return (
     <div className="min-h-screen bg-white">
       <Nav />
