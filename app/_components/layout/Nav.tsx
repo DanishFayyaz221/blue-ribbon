@@ -114,7 +114,33 @@ export function Nav() {
             </button>
           </div>
 
-          <div className="container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
+          {/* Mobile drawer */}
+          <div className="md:hidden container-page pt-[28px] pb-[40px]">
+            <ul className="flex flex-col gap-[24px]">
+              {[
+                { label: "Buy", href: "/buy" },
+                { label: "Sell", href: "/appraisal" },
+                { label: "Rent", href: "/buy?type=rent" },
+                { label: "Our Team", href: "/agents" },
+                { label: "About Us", href: "/about" },
+                { label: "Contact Us", href: "/contact" },
+                { label: "Property Estimate", href: "/appraisal" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="font-display text-[18px] font-bold text-brand-bunker hover:text-brand-navy"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Tablet / desktop drawer */}
+          <div className="hidden md:block container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
             <div className="grid grid-cols-1 gap-x-[64px] gap-y-[40px] lg:grid-cols-12 lg:items-start">
               <div className="flex flex-col gap-[16px] lg:col-span-2">
                 {buyLinks.map((link) => (

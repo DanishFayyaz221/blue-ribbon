@@ -45,7 +45,8 @@ export default function PropertyViewPage() {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        <div className="container-page pt-[16px] pb-[16px]">
+        <MobilePropertyView />
+        <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
@@ -55,20 +56,20 @@ export default function PropertyViewPage() {
           />
         </div>
 
-        <div className="container-page">
+        <div className="hidden sm:block container-page">
           <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
             <Image
               src="/images/home.png"
               alt="Property hero"
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 639px) 1px, 100vw"
               className="object-cover"
             />
           </div>
         </div>
 
-        <div className="container-page mt-[clamp(20px,1.8vw,32px)]">
+        <div className="hidden sm:block container-page mt-[clamp(20px,1.8vw,32px)]">
           <div className="flex items-center justify-between border-b border-brand-silver/40 pb-[16px]">
             <div className="flex flex-1 items-center justify-center gap-[clamp(24px,3vw,56px)]">
               <button
@@ -88,7 +89,7 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <div className="container-page mt-[clamp(32px,3vw,56px)] grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-x-[clamp(28px,3vw,64px)] gap-y-[clamp(28px,2.5vw,48px)]">
+        <div className="hidden sm:grid container-page mt-[clamp(32px,3vw,56px)] grid-cols-1 lg:grid-cols-[1fr_420px] gap-x-[clamp(28px,3vw,64px)] gap-y-[clamp(28px,2.5vw,48px)]">
           <div>
             <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.75rem,2.6vw,3rem)] leading-[1.1]">
               24 Virginia Road,
@@ -177,23 +178,62 @@ export default function PropertyViewPage() {
           </aside>
         </div>
 
-        <div className="container-page mt-[clamp(56px,4vw,80px)]">
+        <div className="hidden sm:block container-page mt-[clamp(56px,4vw,80px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
-            <Image src="/images/find-an-office.png" alt="Map" fill sizes="100vw" className="object-cover" />
+            <Image src="/images/find-an-office.png" alt="Map" fill sizes="(max-width: 639px) 1px, 100vw" className="object-cover" />
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-navy px-[16px] py-[8px] font-display text-[13px] font-medium text-white">
               24 Virginia Road
             </div>
           </div>
         </div>
 
-        <section className="w-full mt-[clamp(56px,5vw,96px)] bg-brand-navy py-[clamp(40px,3.5vw,72px)]">
+        <section className="w-full bg-brand-navy py-[clamp(32px,3.5vw,72px)] sm:mt-[clamp(56px,5vw,96px)]">
           <div className="container-page">
-            <h2 className="font-display font-bold text-white text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+            <h2 className="font-display font-bold text-white text-[24px] sm:text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
               Others also viewed
             </h2>
-            <div className="mt-[clamp(24px,2.4vw,40px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(16px,1.7vw,32px)]">
+          </div>
+
+          {/* Mobile: horizontal slider */}
+          <div className="sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+            {similar.map((_, i) => (
+              <Link
+                key={i}
+                href="/property/1"
+                className="snap-start shrink-0 basis-[46%] overflow-hidden rounded-[14px] bg-white/5"
+              >
+                <div className="relative aspect-[3/2] w-full overflow-hidden">
+                  <Image
+                    src="/images/avenue.png"
+                    alt="4 Hillcrest Ave, Tacoma"
+                    fill
+                    sizes="50vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-[12px]">
+                  <p className="font-display text-[13px] font-medium text-white">
+                    4 Hillcrest Ave, Tacoma
+                  </p>
+                  <p className="mt-[2px] font-display text-[12px] text-white/70">
+                    Price on request
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop: 3-col grid */}
+          <div className="hidden sm:block container-page">
+            <div className="mt-[clamp(24px,2.4vw,40px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(16px,1.7vw,32px)]">
               {similar.map((p, i) => (
-                <PropertyCard key={i} {...p} variant="compact" />
+                <PropertyCard
+                  key={i}
+                  {...p}
+                  address="4 Hillcrest Ave, Tacoma"
+                  guide="Price on request"
+                  variant="compact"
+                />
               ))}
             </div>
           </div>
@@ -253,5 +293,210 @@ function AgentMini({ name, phone, email, image }: AgentData) {
         Email
       </a>
     </article>
+  );
+}
+
+function MobilePropertyView() {
+  return (
+    <div className="sm:hidden">
+      <section className="container-page pt-[8px]">
+        <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[14px]">
+          <Image
+            src="/images/home.png"
+            alt="Property hero"
+            fill
+            priority
+            sizes="(max-width: 639px) 100vw, 1px"
+            className="object-cover"
+          />
+        </div>
+      </section>
+
+      <div className="container-page mt-[16px]">
+        <div className="flex border-b border-brand-silver/50">
+          <button
+            type="button"
+            className="relative flex-1 py-[12px] font-display text-[14px] font-semibold text-brand-navy"
+          >
+            All Photos
+            <span className="absolute bottom-[-1px] left-1/2 h-[2px] w-[80px] -translate-x-1/2 bg-brand-navy" />
+          </button>
+          <button
+            type="button"
+            className="flex-1 py-[12px] font-display text-[14px] font-medium text-brand-bunker/60"
+          >
+            Floor Plan
+          </button>
+        </div>
+      </div>
+
+      <section className="container-page mt-[20px]">
+        <h1 className="font-display font-bold text-brand-bunker text-[24px] leading-[1.2]">
+          24 Virginia Road,
+          <br />
+          Hamlyn Terrace
+        </h1>
+
+        <div className="mt-[20px] flex items-end gap-[clamp(20px,6vw,32px)]">
+          <MobileStat number="4" label="Beds" large />
+          <MobileStat number="2" label="Baths" />
+          <MobileStat number="2" label="Cars" />
+        </div>
+
+        <div className="mt-[24px] flex gap-[12px]">
+          <Link
+            href="#enquire"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
+          >
+            Enquire
+          </Link>
+          <Link
+            href="#share"
+            className="flex h-[48px] flex-1 items-center justify-center rounded-[24px] border border-brand-navy font-display text-[14px] font-semibold text-brand-navy transition hover:bg-brand-soft"
+          >
+            Share
+          </Link>
+        </div>
+
+        <p className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker/80">
+          Enjoy modern comfort in this stunning an display Coast Home, thoughtfully
+          designed for effortless living and entertaining.
+        </p>
+        <Link
+          href="#more"
+          className="mt-[14px] inline-block font-display text-[13px] font-bold text-brand-navy"
+        >
+          Read more
+        </Link>
+
+        <div className="mt-[24px] flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
+          <span className="font-display text-[13px] text-brand-bunker/70">Price</span>
+          <span className="font-display text-[13px] font-semibold text-brand-bunker">
+            $1,100,000 – $1,200,000
+          </span>
+        </div>
+        <div className="flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
+          <span className="font-display text-[13px] text-brand-bunker/70">Next Inspection</span>
+          <span className="font-display text-[13px] font-semibold text-brand-bunker">
+            By appointment
+          </span>
+        </div>
+      </section>
+
+      <section className="container-page mt-[20px]">
+        <h2 className="font-display text-[18px] font-bold text-brand-bunker">Your Agents</h2>
+        <div className="mt-[14px] grid grid-cols-2 gap-[12px]">
+          {agents.map((a, i) => (
+            <article
+              key={i}
+              className="flex flex-col items-center rounded-[14px] bg-[#F1F2F4] p-[16px] text-center"
+            >
+              <div className="relative h-[68px] w-[68px] overflow-hidden rounded-full bg-white">
+                <Image
+                  src={a.image}
+                  alt={a.name}
+                  fill
+                  sizes="68px"
+                  className="object-cover object-top"
+                />
+              </div>
+              <p className="mt-[10px] font-display text-[14px] font-semibold text-brand-bunker">
+                {a.name}
+              </p>
+              <p className="mt-[2px] font-display text-[11px] text-brand-bunker/70">
+                0413 423 00 00
+              </p>
+              <a
+                href={`mailto:${a.email}`}
+                className="mt-[6px] font-display text-[12px] font-semibold text-brand-navy underline underline-offset-4"
+              >
+                Email
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="container-page mt-[28px]">
+        <div className="flex items-center gap-[8px]">
+          <button
+            type="button"
+            className="rounded-[20px] bg-brand-navy px-[18px] py-[8px] font-display text-[12px] font-semibold text-white"
+          >
+            Map View
+          </button>
+          <button
+            type="button"
+            className="rounded-[20px] border border-brand-silver bg-white px-[18px] py-[8px] font-display text-[12px] font-medium text-brand-bunker"
+          >
+            Satellite
+          </button>
+          <button
+            type="button"
+            className="rounded-[20px] border border-brand-silver bg-white px-[18px] py-[8px] font-display text-[12px] font-medium text-brand-bunker"
+          >
+            Street View
+          </button>
+        </div>
+      </section>
+
+      <section className="container-page mt-[24px]">
+        <h2 className="font-display text-[18px] font-bold text-brand-bunker">
+          Property Information
+        </h2>
+        <dl className="mt-[12px]">
+          <div className="flex items-center justify-between border-t border-brand-silver/40 py-[12px]">
+            <dt className="font-display text-[13px] text-brand-bunker/70">
+              Land size approx. (sqm)
+            </dt>
+            <dd className="font-display text-[13px] font-semibold text-brand-bunker">493</dd>
+          </div>
+          <div className="flex items-center justify-between border-t border-brand-silver/40 py-[12px]">
+            <dt className="font-display text-[13px] text-brand-bunker/70">Council rates (pa)</dt>
+            <dd className="font-display text-[13px] font-semibold text-brand-bunker">1,543</dd>
+          </div>
+          <div className="flex items-center justify-between border-t border-b border-brand-silver/40 py-[12px]">
+            <dt className="font-display text-[13px] text-brand-bunker/70">Water rates (pa)</dt>
+            <dd className="font-display text-[13px] font-semibold text-brand-bunker">1,185</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="container-page mt-[20px] pb-[40px]">
+        <h2 className="font-display text-[18px] font-bold text-brand-bunker">Resources</h2>
+        <div className="mt-[10px] flex items-center justify-between py-[10px]">
+          <span className="font-display text-[13px] text-brand-bunker/70">Home loan calculator</span>
+          <Link
+            href="#calculator"
+            className="font-display text-[13px] font-bold text-brand-navy underline underline-offset-4"
+          >
+            View
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function MobileStat({
+  number,
+  label,
+  large = false,
+}: {
+  number: string;
+  label: string;
+  large?: boolean;
+}) {
+  return (
+    <div className="flex items-baseline gap-[6px]">
+      <span
+        className={`font-display font-bold leading-none text-brand-navy ${
+          large ? "text-[44px]" : "text-[32px]"
+        }`}
+      >
+        {number}
+      </span>
+      <span className="font-display text-[13px] text-brand-bunker/70">{label}</span>
+    </div>
   );
 }
