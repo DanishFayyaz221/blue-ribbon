@@ -31,6 +31,14 @@ const intents = [
   "I'm just doing research",
 ] as const;
 
+// Mapping used in BOTH mobile and desktop result step so labels match the image
+const intentOptions = [
+  { label: "Buy a property", intent: "I'm thinking of buying" },
+  { label: "Sell my property", intent: "I'm thinking of selling" },
+  { label: "Buy and sell", intent: "I'm thinking of selling and buying" },
+  { label: "Do a bit of research", intent: "I'm just doing research" },
+] as const;
+
 export default function AppraisalPage() {
   const [step, setStep] = useState<Step>("address");
   const [address, setAddress] = useState("");
@@ -38,6 +46,7 @@ export default function AppraisalPage() {
   const [mobileReportType, setMobileReportType] = useState<"residential" | "rental" | "commercial">("residential");
   const [intent, setIntent] = useState<(typeof intents)[number] | null>(null);
   const [agree, setAgree] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
@@ -336,18 +345,11 @@ export default function AppraisalPage() {
                     What are you looking to do?
                   </p>
                   <div className="mt-[18px] flex flex-col gap-[10px]">
-                    {(
-                      [
-                        { mobile: "Buy a property", intent: "I'm thinking of buying" },
-                        { mobile: "Sell my property", intent: "I'm thinking of selling" },
-                        { mobile: "Buy and sell", intent: "I'm thinking of selling and buying" },
-                        { mobile: "Do a bit of research", intent: "I'm just doing research" },
-                      ] as const
-                    ).map((opt) => {
+                    {intentOptions.map((opt) => {
                       const active = intent === opt.intent;
                       return (
                         <button
-                          key={opt.mobile}
+                          key={opt.label}
                           type="button"
                           onClick={() => setIntent(opt.intent)}
                           className={`h-[44px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
@@ -356,7 +358,7 @@ export default function AppraisalPage() {
                               : "border border-brand-silver/70 bg-white text-brand-bunker hover:bg-brand-soft"
                           }`}
                         >
-                          {opt.mobile}
+                          {opt.label}
                         </button>
                       );
                     })}
@@ -376,6 +378,8 @@ export default function AppraisalPage() {
                   <label className="mt-[8px] flex items-start gap-[10px]">
                     <input
                       type="checkbox"
+                      checked={agreeTerms}
+                      onChange={(e) => setAgreeTerms(e.target.checked)}
                       className="mt-[3px] h-[14px] w-[14px] rounded"
                     />
                     <span className="font-display text-[11px] leading-[1.5] text-brand-bunker/70">
@@ -384,7 +388,7 @@ export default function AppraisalPage() {
                   </label>
                   <button
                     type="button"
-                    disabled={!intent || !agree}
+                    disabled={!intent || !agree || !agreeTerms}
                     className="mt-[18px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
                   >
                     View the Full Property Report
@@ -425,82 +429,160 @@ export default function AppraisalPage() {
               </section>
             </div>
 
-            {/* Desktop result (unchanged) */}
-            <section className="hidden sm:block container-page py-[clamp(40px,4vw,80px)]">
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,420px)] gap-[clamp(32px,3vw,64px)] items-start">
-                <div>
-                  <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.2]">
-                    Parade / 43 Hopetoun Avenue,
-                    <br />
-                    Vaucluse 2030
-                  </h1>
-                  <p className="mt-[12px] font-display text-[13px] sm:text-[14px] font-medium text-brand-bunker/70">
-                    3 Bed | 2 Bath | 1 Car | House
-                  </p>
-                  <div className="relative mt-[clamp(28px,2.5vw,48px)] aspect-[16/8] w-full overflow-hidden rounded-[12px] bg-brand-soft-2">
-                    <div className="absolute inset-0 grid place-items-center">
-                      <div className="text-center">
-                        <p className="font-display text-[11px] uppercase tracking-[0.12em] text-brand-bunker/60">
-                          Estimated Property Value
-                        </p>
-                        <p className="mt-[8px] font-display text-[clamp(20px,2vw,28px)] font-bold text-brand-bunker">
-                          $1.4M{" "}
-                          <span className="text-brand-sky">$1.55M</span>{" "}
-                          $1.6M
-                        </p>
+            {/* Desktop result — PIXEL-PERFECT MATCH TO REFERENCE IMAGE */}
+            <div className="hidden sm:block">
+              <div className="container-page pt-[24px] pb-[8px]">
+                <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
+              </div>
+
+              <section className="container-page pt-[clamp(40px,4vw,80px)] pb-[clamp(60px,5vw,100px)]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
+                  {/* LEFT COLUMN — Address + Property value range */}
+                  <div className="flex flex-col items-center pt-[clamp(40px,5vw,80px)] lg:pr-[clamp(8px,1vw,16px)]">
+                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.75rem,2.4vw,2.5rem)] leading-[1.2] tracking-[-0.01em]">
+                      Parade/43 Hopetoun Avenue,
+                      <br />
+                      Vaucluse 2030
+                    </h1>
+                    <p className="mt-[clamp(12px,1vw,18px)] text-center font-display text-[clamp(13px,1vw,15px)] font-medium text-brand-bunker/70">
+                      5 Bed&nbsp;&nbsp;|&nbsp;&nbsp;5 Bath&nbsp;&nbsp;|&nbsp;&nbsp;4 Car&nbsp;&nbsp;|&nbsp;&nbsp;House
+                    </p>
+
+                    {/* Property value range */}
+                    <div className="mt-[clamp(56px,6vw,100px)] w-full max-w-[560px]">
+                      <p className="text-center font-display text-[clamp(11px,0.85vw,13px)] font-semibold uppercase tracking-[0.16em] text-brand-bunker/60">
+                        ESTIMATED PROPERTY VALUE
+                      </p>
+
+                      <div className="mt-[clamp(28px,2.6vw,44px)] flex items-center justify-center gap-[clamp(16px,2vw,36px)]">
+                        <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold text-brand-bunker/35">
+                          $8.57M
+                        </span>
+
+                        <div className="flex flex-col items-center">
+                          <div className="rounded-full bg-brand-sky px-[clamp(22px,2.2vw,32px)] py-[clamp(10px,1vw,14px)] shadow-[0_6px_20px_rgba(56,178,224,0.35)]">
+                            <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold leading-none text-white">
+                              $9.7M
+                            </span>
+                          </div>
+                          <div className="mt-[10px] flex flex-col items-center">
+                            <svg
+                              viewBox="0 0 12 8"
+                              className="h-[6px] w-[10px] text-brand-bunker"
+                              fill="currentColor"
+                              aria-hidden
+                            >
+                              <path d="M6 8L0 0H12L6 8Z" />
+                            </svg>
+                            <span className="mt-[4px] font-display text-[10px] font-bold uppercase tracking-[0.12em] text-brand-bunker">
+                              EST. VALUE
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold text-brand-bunker/35">
+                          $10.9M
+                        </span>
                       </div>
                     </div>
                   </div>
+
+                  {/* RIGHT COLUMN — "One last question!" card */}
+                  <aside className="w-full max-w-[clamp(380px,32vw,460px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(20px,1.8vw,28px)] bg-white p-[clamp(28px,2.6vw,40px)] shadow-[0_10px_40px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)]">
+                    <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(20px,1.8vw,28px)] leading-[1.2]">
+                      One last question!
+                    </h2>
+                    <p className="mt-[clamp(10px,0.9vw,14px)] text-center font-display text-[clamp(12px,0.95vw,14px)] text-brand-bunker/70">
+                      What are you looking to do?
+                    </p>
+
+                    <div className="mt-[clamp(20px,1.8vw,28px)] flex flex-col gap-[clamp(10px,0.9vw,14px)]">
+                      {intentOptions.map((opt) => {
+                        const active = intent === opt.intent;
+                        return (
+                          <button
+                            key={opt.label}
+                            type="button"
+                            onClick={() => setIntent(opt.intent)}
+                            className={`relative flex h-[clamp(44px,3.6vw,52px)] w-full items-center justify-center rounded-full px-[20px] font-display text-[clamp(13px,1vw,15px)] font-medium transition ${
+                              active
+                                ? "bg-brand-sky text-white shadow-[0_4px_14px_rgba(56,178,224,0.35)]"
+                                : "border border-brand-silver/60 bg-white text-brand-bunker hover:border-brand-silver hover:bg-brand-soft"
+                            }`}
+                          >
+                            {active && (
+                              <svg
+                                viewBox="0 0 20 20"
+                                className="absolute left-[20px] h-[14px] w-[14px]"
+                                fill="currentColor"
+                                aria-hidden
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.704 5.29a1 1 0 010 1.42l-8 8a1 1 0 01-1.42 0l-4-4a1 1 0 011.42-1.42L8 12.59l7.29-7.3a1 1 0 011.42 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                            <span>{opt.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* First consent */}
+                    <label className="mt-[clamp(18px,1.6vw,24px)] flex items-start gap-[10px]">
+                      <input
+                        type="checkbox"
+                        checked={agree}
+                        onChange={(e) => setAgree(e.target.checked)}
+                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                      />
+                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                        I agree that the information I&rsquo;ve provided on this Website can be used by Blue Ribbon Real Estate{" "}
+                        <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-navy">
+                          Privacy Policy
+                        </Link>{" "}
+                        to contact me about the property market, promotional campaigns and for other marketing purposes.
+                      </span>
+                    </label>
+
+                    {/* Terms section */}
+                    <p className="mt-[clamp(14px,1.2vw,18px)] font-display text-[clamp(11px,0.85vw,13px)] font-medium text-brand-bunker">
+                      Terms and conditions
+                    </p>
+
+                    <label className="mt-[clamp(6px,0.6vw,10px)] flex items-start gap-[10px]">
+                      <input
+                        type="checkbox"
+                        checked={agreeTerms}
+                        onChange={(e) => setAgreeTerms(e.target.checked)}
+                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                      />
+                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                        I have read and understood the{" "}
+                        <Link href="/terms" className="underline underline-offset-2 hover:text-brand-navy">
+                          Terms of Use
+                        </Link>{" "}
+                        and{" "}
+                        <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-navy">
+                          Privacy Policy
+                        </Link>{" "}
+                        in respect of the Reports and Cotality Data accessed on this Website.
+                      </span>
+                    </label>
+
+                    <button
+                      type="button"
+                      disabled={!intent || !agree || !agreeTerms}
+                      className="mt-[clamp(22px,2vw,30px)] h-[clamp(48px,3.8vw,56px)] w-full rounded-full bg-brand-sky font-display text-[clamp(12px,0.95vw,14px)] font-bold uppercase tracking-[0.1em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      VIEW THE FULL PROPERTY REPORT
+                    </button>
+                  </aside>
                 </div>
-                <aside className="rounded-[12px] bg-brand-soft-2 p-[clamp(20px,2vw,32px)]">
-                  <h2 className="text-center font-display text-[18px] sm:text-[20px] font-semibold text-brand-bunker">
-                    One last question!
-                  </h2>
-                  <p className="mt-[8px] text-center font-display text-[13px] text-brand-bunker/70">
-                    What are you looking to do?
-                  </p>
-                  <div className="mt-[16px] flex flex-col gap-[10px]">
-                    {intents.map((label) => {
-                      const active = intent === label;
-                      return (
-                        <button
-                          key={label}
-                          type="button"
-                          onClick={() => setIntent(label)}
-                          className={`h-[44px] rounded-[12px] px-[16px] font-display text-[13px] font-medium transition ${
-                            active
-                              ? "bg-brand-sky text-white"
-                              : "bg-white text-brand-bunker hover:bg-brand-soft"
-                          }`}
-                        >
-                          {label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <label className="mt-[14px] flex items-start gap-[10px]">
-                    <input
-                      type="checkbox"
-                      checked={agree}
-                      onChange={(e) => setAgree(e.target.checked)}
-                      className="mt-[3px] h-[14px] w-[14px] rounded"
-                    />
-                    <span className="font-display text-[11px] leading-[1.5] text-brand-bunker/70">
-                      I agree to the Terms &amp; Conditions and consent to be contacted about
-                      property and market updates relevant to my interest.
-                    </span>
-                  </label>
-                  <button
-                    type="button"
-                    disabled={!intent || !agree}
-                    className="mt-[16px] h-[48px] w-full rounded-[12px] bg-brand-navy font-display text-[13px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
-                  >
-                    View the Full Property Report
-                  </button>
-                </aside>
-              </div>
-            </section>
-            <div className="hidden sm:block">
+              </section>
+
               <GetInTouchCTA />
             </div>
           </>
@@ -648,8 +730,8 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
 
       {/* Desktop layout (unchanged) */}
       <section className="hidden sm:block container-page py-[clamp(40px,4vw,80px)]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-[clamp(28px,3vw,64px)] items-start">
-          <div className="mx-auto w-full max-w-[640px] lg:mx-0">
+        <div className="flex flex-col items-stretch gap-[24px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
+          <div className="mx-auto w-full max-w-[640px] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(120px,9vw,180px)]">
             <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
               Vaucluse Stats
             </h2>
