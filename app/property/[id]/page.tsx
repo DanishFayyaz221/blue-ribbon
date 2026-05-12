@@ -120,9 +120,12 @@ export default function PropertyViewPage() {
           </div>
 
           <aside className="lg:sticky lg:top-[24px] lg:self-start">
-            <div className="flex items-center justify-around pb-[20px]">
-              <Stat number="4" label="Beds" />
+            {/* Stats — 4 | 2 | 2 exact match to image */}
+            <div className="flex items-end justify-center gap-0 pb-[clamp(32px,3vw,48px)]">
+              <Stat number="4" label="Beds" large />
+              <StatDivider />
               <Stat number="2" label="Baths" />
+              <StatDivider />
               <Stat number="2" label="Cars" />
             </div>
 
@@ -244,16 +247,37 @@ export default function PropertyViewPage() {
   );
 }
 
-function Stat({ number, label, padded = false }: { number: string; label: string; padded?: boolean }) {
+function Stat({
+  number,
+  label,
+  large = false,
+}: {
+  number: string;
+  label: string;
+  large?: boolean;
+}) {
   return (
-    <div className={`flex flex-col items-center ${padded ? "pl-[12px]" : ""}`}>
-      <span className="font-display text-[26px] font-bold leading-none text-brand-bunker">
+    <div className="flex flex-1 flex-col items-center px-[clamp(8px,1vw,16px)]">
+      <span
+        className={`font-display font-bold leading-[0.95] text-brand-bunker ${
+          large ? "text-[clamp(34px,3vw,44px)]" : "text-[clamp(22px,2vw,28px)]"
+        }`}
+      >
         {number}
       </span>
-      <span className="mt-[6px] font-display text-[11px] font-normal text-brand-bunker/70">
+      <span className="mt-[clamp(8px,0.8vw,12px)] font-display text-[clamp(10px,0.8vw,12px)] font-normal text-brand-bunker/70">
         {label}
       </span>
     </div>
+  );
+}
+
+function StatDivider() {
+  return (
+    <div
+      className="self-stretch w-px bg-brand-silver/60"
+      aria-hidden
+    />
   );
 }
 
