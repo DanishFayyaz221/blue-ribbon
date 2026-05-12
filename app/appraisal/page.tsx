@@ -167,51 +167,7 @@ export default function AppraisalPage() {
           </>
         )}
 
-        {step === "details" && (
-          <section className="container-page py-[clamp(40px,4vw,80px)]">
-            <div className="mx-auto max-w-[820px]">
-              <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
-                Tell us a little more about your property
-              </h1>
-              <div className="mt-[clamp(32px,2.5vw,48px)] grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                {[
-                  { label: "Bedrooms", options: ["1", "2", "3", "4", "5+"] },
-                  { label: "Bathrooms", options: ["1", "2", "3", "4+"] },
-                  { label: "Car Spaces", options: ["0", "1", "2", "3+"] },
-                  { label: "Property Type", options: ["House", "Apartment", "Townhouse", "Land"] },
-                ].map((f) => (
-                  <label key={f.label} className="flex flex-col gap-[6px]">
-                    <span className="font-display text-[13px] font-medium text-brand-bunker/70">
-                      {f.label}
-                    </span>
-                    <select className="h-[48px] rounded-[10px] border border-brand-silver bg-white px-[14px] font-display text-[14px] text-brand-bunker focus:border-brand-navy focus:outline-none">
-                      {f.options.map((o) => (
-                        <option key={o}>{o}</option>
-                      ))}
-                    </select>
-                  </label>
-                ))}
-              </div>
-
-              <div className="mt-[clamp(28px,2vw,40px)] flex justify-end gap-[12px]">
-                <button
-                  type="button"
-                  onClick={() => setStep("address")}
-                  className="h-[48px] rounded-[12px] border border-brand-navy px-[24px] font-display text-[14px] font-medium text-brand-navy transition hover:bg-brand-soft"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStep("result")}
-                  className="h-[48px] rounded-[12px] bg-brand-navy px-[24px] font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
-                >
-                  Continue
-                </button>
-              </div>
-            </div>
-          </section>
-        )}
+        {step === "details" && <DetailsStep onContinue={() => setStep("result")} />}
 
         {step === "result" && (
           <>
@@ -296,4 +252,149 @@ export default function AppraisalPage() {
       <Footer />
     </div>
   );
+}
+
+type StatItem = {
+  label: string;
+  value: string;
+  date: string;
+  icon: "growth" | "house-circle" | "house-bar" | "calendar" | "house-tag" | "hourglass";
+};
+
+const suburbStats: StatItem[] = [
+  { label: "MEDIAN VALUE\n(12 MONTHS)", value: "$9.74M", date: "in February 2025", icon: "growth" },
+  { label: "ANNUAL CHANGE IN MEDIAN VALUE\n(5 YEARS)", value: "51.5%", date: "in February 2025", icon: "house-circle" },
+  { label: "PROPERTIES SOLD\n(12 MONTHS)", value: "116", date: "in December 2025", icon: "house-bar" },
+  { label: "MEDIAN DAYS ON MARKET\n(12 MONTHS)", value: "41", date: "in December 2025", icon: "calendar" },
+  { label: "MEDIAN ASKING RENT\n(12 MONTHS)", value: "$2200", date: "in February 2025", icon: "house-tag" },
+  { label: "AVG. HOLD PERIOD\n(12 MONTHS)", value: "11.9 yrs", date: "in December 2025", icon: "hourglass" },
+];
+
+function DetailsStep({ onContinue }: { onContinue: () => void }) {
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
+
+  return (
+    <section className="container-page py-[clamp(40px,4vw,80px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-[clamp(28px,3vw,64px)] items-start">
+        <div className="mx-auto w-full max-w-[640px] lg:mx-0">
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+            Vaucluse Stats
+          </h2>
+          <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(28px,2.4vw,40px)] gap-x-[clamp(16px,1.6vw,28px)]">
+            {suburbStats.map((s) => (
+              <div key={s.label} className="flex flex-col items-center text-center">
+                <StatIcon name={s.icon} />
+                <p className="mt-[10px] whitespace-pre-line font-display text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
+                  {s.label}
+                </p>
+                <p className="mt-[10px] font-display text-[clamp(20px,1.6vw,26px)] font-bold text-brand-sky">
+                  {s.value}
+                </p>
+                <p className="mt-[4px] font-display text-[10px] sm:text-[11px] text-brand-bunker/60">
+                  {s.date}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-[clamp(24px,2vw,40px)] text-center">
+            <a
+              href="#disclaimer"
+              className="font-display text-[13px] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+            >
+              Disclaimer
+            </a>
+          </div>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onContinue();
+          }}
+          className="mx-auto w-full max-w-[440px] rounded-[28px] bg-white p-[clamp(28px,2.4vw,40px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+        >
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+            Hey there!
+          </h2>
+          <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[13px] sm:text-[14px] text-brand-bunker/70 leading-[1.5]">
+            Please tell us who you are to receive your FREE in-depth Digital Property Report
+            instantly.
+          </p>
+          <input
+            type="text"
+            required
+            value={first}
+            onChange={(e) => setFirst(e.target.value)}
+            placeholder="First name *"
+            className="mt-[clamp(20px,1.6vw,28px)] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+          />
+          <input
+            type="text"
+            required
+            value={last}
+            onChange={(e) => setLast(e.target.value)}
+            placeholder="Last name *"
+            className="mt-[12px] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+          />
+          <button
+            type="submit"
+            className="mt-[clamp(16px,1.4vw,24px)] h-[48px] w-full rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+          >
+            NEXT
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function StatIcon({ name }: { name: StatItem["icon"] }) {
+  const common = "h-[40px] w-[40px] text-brand-bunker";
+  switch (name) {
+    case "growth":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M3 3v18h18" />
+          <path d="M7 15l4-4 3 3 5-7" />
+          <path d="M19 5v5h-5" />
+        </svg>
+      );
+    case "house-circle":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" />
+          <circle cx="17" cy="6" r="3" />
+          <path d="M15 5l1.5 1.5L19 4" />
+        </svg>
+      );
+    case "house-bar":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
+          <path d="M8 17v-3M12 17v-5M16 17v-2" />
+        </svg>
+      );
+    case "calendar":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M3 9h18M8 3v4M16 3v4" />
+        </svg>
+      );
+    case "house-tag":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />
+          <path d="M9 14h6M9 17h4" />
+        </svg>
+      );
+    case "hourglass":
+      return (
+        <svg viewBox="0 0 24 24" className={common} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M6 2h12M6 22h12" />
+          <path d="M7 2v4c0 3 5 4 5 6s-5 3-5 6v4M17 2v4c0 3-5 4-5 6s5 3 5 6v4" />
+        </svg>
+      );
+  }
 }
