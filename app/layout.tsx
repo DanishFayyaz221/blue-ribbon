@@ -5,11 +5,13 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const poppins = Poppins({
@@ -17,6 +19,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,9 +36,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${playfair.variable} ${poppins.variable} antialiased`}
     >
-      <body className="bg-white text-brand-bunker">{children}</body>
+      <body
+        suppressHydrationWarning
+        className="bg-white text-brand-bunker"
+      >
+        {children}
+      </body>
     </html>
   );
 }

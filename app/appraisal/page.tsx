@@ -274,7 +274,7 @@ export default function AppraisalPage() {
                     src="/images/handshake-house.png"
                     alt=""
                     fill
-                    sizes="100vw"
+                    sizes="(max-width: 639px) 100vw, 1px"
                     className="absolute inset-0 z-0 object-cover"
                   />
                   <div className="absolute inset-0 z-10 bg-brand-navy/85" />
@@ -403,7 +403,7 @@ export default function AppraisalPage() {
                       src="/images/handshake-house.png"
                       alt=""
                       fill
-                      sizes="100vw"
+                      sizes="(max-width: 639px) 100vw, 1px"
                       className="absolute inset-0 z-0 object-cover"
                     />
                     <div className="absolute inset-0 z-10 bg-brand-navy/85" />
@@ -702,7 +702,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                 src="/images/handshake-house.png"
                 alt=""
                 fill
-                sizes="100vw"
+                sizes="(max-width: 639px) 100vw, 1px"
                 className="absolute inset-0 z-0 object-cover"
               />
               <div className="absolute inset-0 z-10 bg-brand-navy/85" />
