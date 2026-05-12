@@ -301,7 +301,100 @@ export default function AppraisalPage() {
 
         {step === "result" && (
           <>
-            <section className="container-page py-[clamp(40px,4vw,80px)]">
+            {/* Mobile result */}
+            <div className="sm:hidden">
+              <div className="container-page pt-[12px] pb-[16px]">
+                <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
+              </div>
+              <section className="w-full bg-brand-navy">
+                <div className="px-[24px] py-[36px]">
+                  <h1 className="text-center font-display font-bold text-white text-[22px] leading-[1.25]">
+                    Parade/43 Hopetoun Avenue,
+                    <br />
+                    Vaucluse 2030
+                  </h1>
+                  <p className="mt-[10px] text-center font-display text-[13px] font-medium text-white/85">
+                    5 Bed | 5 Bath | 4 Car | House
+                  </p>
+                  <div className="mt-[24px] rounded-[12px] bg-white/10 px-[20px] py-[22px] text-center">
+                    <p className="font-display text-[11px] uppercase tracking-[0.1em] text-white/75">
+                      Estimated Property Value
+                    </p>
+                    <p className="mt-[8px] font-display text-[28px] font-bold text-brand-sky">
+                      $8.57M &mdash; $10.9M
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="container-page py-[24px]">
+                <div className="rounded-[16px] border border-brand-silver/60 bg-white p-[20px]">
+                  <h2 className="text-center font-display font-bold text-brand-bunker text-[20px]">
+                    One last question!
+                  </h2>
+                  <p className="mt-[8px] text-center font-display text-[13px] text-brand-bunker/70">
+                    What are you looking to do?
+                  </p>
+                  <div className="mt-[18px] flex flex-col gap-[10px]">
+                    {(
+                      [
+                        { mobile: "Buy a property", intent: "I'm thinking of buying" },
+                        { mobile: "Sell my property", intent: "I'm thinking of selling" },
+                        { mobile: "Buy and sell", intent: "I'm thinking of selling and buying" },
+                        { mobile: "Do a bit of research", intent: "I'm just doing research" },
+                      ] as const
+                    ).map((opt) => {
+                      const active = intent === opt.intent;
+                      return (
+                        <button
+                          key={opt.mobile}
+                          type="button"
+                          onClick={() => setIntent(opt.intent)}
+                          className={`h-[44px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
+                            active
+                              ? "bg-brand-sky text-white"
+                              : "border border-brand-silver/70 bg-white text-brand-bunker hover:bg-brand-soft"
+                          }`}
+                        >
+                          {opt.mobile}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <label className="mt-[14px] flex items-start gap-[10px]">
+                    <input
+                      type="checkbox"
+                      checked={agree}
+                      onChange={(e) => setAgree(e.target.checked)}
+                      className="mt-[3px] h-[14px] w-[14px] rounded"
+                    />
+                    <span className="font-display text-[11px] leading-[1.5] text-brand-bunker/70">
+                      I agree that the information provided on this Website can be used by
+                      Blue Ribbon Real Estate to contact me.
+                    </span>
+                  </label>
+                  <label className="mt-[8px] flex items-start gap-[10px]">
+                    <input
+                      type="checkbox"
+                      className="mt-[3px] h-[14px] w-[14px] rounded"
+                    />
+                    <span className="font-display text-[11px] leading-[1.5] text-brand-bunker/70">
+                      I have read and understood the Terms of Use and Privacy Policy.
+                    </span>
+                  </label>
+                  <button
+                    type="button"
+                    disabled={!intent || !agree}
+                    className="mt-[18px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
+                  >
+                    View the Full Property Report
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            {/* Desktop result (unchanged) */}
+            <section className="hidden sm:block container-page py-[clamp(40px,4vw,80px)]">
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,420px)] gap-[clamp(32px,3vw,64px)] items-start">
                 <div>
                   <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.2]">
@@ -389,15 +482,16 @@ type StatItem = {
   value: string;
   date: string;
   icon: "growth" | "house-circle" | "house-bar" | "calendar" | "house-tag" | "hourglass";
+  tone?: "sky" | "navy";
 };
 
 const suburbStats: StatItem[] = [
-  { label: "MEDIAN VALUE\n(12 MONTHS)", value: "$9.74M", date: "in February 2025", icon: "growth" },
-  { label: "ANNUAL CHANGE IN MEDIAN VALUE\n(5 YEARS)", value: "51.5%", date: "in February 2025", icon: "house-circle" },
-  { label: "PROPERTIES SOLD\n(12 MONTHS)", value: "116", date: "in December 2025", icon: "house-bar" },
-  { label: "MEDIAN DAYS ON MARKET\n(12 MONTHS)", value: "41", date: "in December 2025", icon: "calendar" },
-  { label: "MEDIAN ASKING RENT\n(12 MONTHS)", value: "$2200", date: "in February 2025", icon: "house-tag" },
-  { label: "AVG. HOLD PERIOD\n(12 MONTHS)", value: "11.9 yrs", date: "in December 2025", icon: "hourglass" },
+  { label: "MEDIAN VALUE\n(12 MONTHS)", value: "$9.74M", date: "in February 2026", icon: "growth", tone: "sky" },
+  { label: "ANNUAL CHANGE IN MEDIAN VALUE\n(5 YEARS)", value: "51.5%", date: "in February 2026", icon: "house-circle", tone: "sky" },
+  { label: "PROPERTIES SOLD\n(12 MONTHS)", value: "116", date: "in December 2025", icon: "house-bar", tone: "sky" },
+  { label: "MEDIAN DAYS ON MARKET\n(12 MONTHS)", value: "41", date: "in December 2025", icon: "calendar", tone: "navy" },
+  { label: "MEDIAN ASKING RENT\n(12 MONTHS)", value: "$2200", date: "in February 2026", icon: "house-tag", tone: "navy" },
+  { label: "AVG. HOLD PERIOD\n(12 MONTHS)", value: "11.9 yrs", date: "in December 2025", icon: "hourglass", tone: "navy" },
 ];
 
 function DetailsStep({ onContinue }: { onContinue: () => void }) {
@@ -405,77 +499,192 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
   const [last, setLast] = useState("");
 
   return (
-    <section className="container-page py-[clamp(40px,4vw,80px)]">
-      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-[clamp(28px,3vw,64px)] items-start">
-        <div className="mx-auto w-full max-w-[640px] lg:mx-0">
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+    <>
+      {/* Mobile layout */}
+      <div className="sm:hidden">
+        <div className="container-page pt-[16px] pb-[16px]">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
+        </div>
+        <section className="container-page pb-[40px]">
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[26px] leading-[1.15]">
             Vaucluse Stats
           </h2>
-          <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(28px,2.4vw,40px)] gap-x-[clamp(16px,1.6vw,28px)]">
+          <div className="mt-[24px] grid grid-cols-2 gap-[14px]">
             {suburbStats.map((s) => (
-              <div key={s.label} className="flex flex-col items-center text-center">
-                <StatIcon name={s.icon} />
-                <p className="mt-[10px] whitespace-pre-line font-display text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
+              <div
+                key={s.label}
+                className="rounded-[12px] bg-[#F1F2F4] px-[14px] py-[20px] text-center"
+              >
+                <p className="whitespace-pre-line font-display text-[10px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
                   {s.label}
                 </p>
-                <p className="mt-[10px] font-display text-[clamp(20px,1.6vw,26px)] font-bold text-brand-sky">
+                <p
+                  className={`mt-[10px] font-display text-[26px] font-bold ${
+                    s.tone === "navy" ? "text-brand-navy" : "text-brand-sky"
+                  }`}
+                >
                   {s.value}
                 </p>
-                <p className="mt-[4px] font-display text-[10px] sm:text-[11px] text-brand-bunker/60">
+                <p className="mt-[6px] font-display text-[11px] text-brand-bunker/60">
                   {s.date}
                 </p>
               </div>
             ))}
           </div>
-          <div className="mt-[clamp(24px,2vw,40px)] text-center">
+          <div className="mt-[24px] text-center">
             <a
               href="#disclaimer"
-              className="font-display text-[13px] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+              className="font-display text-[14px] font-bold text-brand-bunker hover:text-brand-navy"
             >
               Disclaimer
             </a>
           </div>
-        </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onContinue();
-          }}
-          className="mx-auto w-full max-w-[440px] rounded-[28px] bg-white p-[clamp(28px,2.4vw,40px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
-        >
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
-            Hey there!
-          </h2>
-          <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[13px] sm:text-[14px] text-brand-bunker/70 leading-[1.5]">
-            Please tell us who you are to receive your FREE in-depth Digital Property Report
-            instantly.
-          </p>
-          <input
-            type="text"
-            required
-            value={first}
-            onChange={(e) => setFirst(e.target.value)}
-            placeholder="First name *"
-            className="mt-[clamp(20px,1.6vw,28px)] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
-          />
-          <input
-            type="text"
-            required
-            value={last}
-            onChange={(e) => setLast(e.target.value)}
-            placeholder="Last name *"
-            className="mt-[12px] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
-          />
-          <button
-            type="submit"
-            className="mt-[clamp(16px,1.4vw,24px)] h-[48px] w-full rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onContinue();
+            }}
+            className="mt-[32px] rounded-[20px] bg-white p-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
           >
-            NEXT
-          </button>
-        </form>
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[22px]">
+              Hey there!
+            </h2>
+            <p className="mt-[10px] text-center font-display text-[13px] text-brand-bunker/70 leading-[1.5]">
+              Please tell us who you are to receive your FREE in-depth Digital Property
+              Report instantly.
+            </p>
+            <input
+              type="text"
+              required
+              value={first}
+              onChange={(e) => setFirst(e.target.value)}
+              placeholder="First name *"
+              className="mt-[20px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+            />
+            <input
+              type="text"
+              required
+              value={last}
+              onChange={(e) => setLast(e.target.value)}
+              placeholder="Last name *"
+              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+            />
+            <button
+              type="submit"
+              className="mt-[14px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+            >
+              NEXT
+            </button>
+          </form>
+        </section>
+
+        <section className="w-full bg-white">
+          <div className="w-full">
+            <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+              <Image
+                src="/images/handshake-house.png"
+                alt=""
+                fill
+                sizes="100vw"
+                className="absolute inset-0 z-0 object-cover"
+              />
+              <div className="absolute inset-0 z-10 bg-brand-navy/85" />
+              <div className="relative z-20">
+                <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                  Want to get in touch
+                  <br />
+                  with us?
+                </h2>
+                <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                  We&rsquo;re all about offering supportive, expert advice every step of
+                  the way.
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                >
+                  Contact our Agent
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+
+      {/* Desktop layout (unchanged) */}
+      <section className="hidden sm:block container-page py-[clamp(40px,4vw,80px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-[clamp(28px,3vw,64px)] items-start">
+          <div className="mx-auto w-full max-w-[640px] lg:mx-0">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+              Vaucluse Stats
+            </h2>
+            <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(28px,2.4vw,40px)] gap-x-[clamp(16px,1.6vw,28px)]">
+              {suburbStats.map((s) => (
+                <div key={s.label} className="flex flex-col items-center text-center">
+                  <StatIcon name={s.icon} />
+                  <p className="mt-[10px] whitespace-pre-line font-display text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
+                    {s.label}
+                  </p>
+                  <p className="mt-[10px] font-display text-[clamp(20px,1.6vw,26px)] font-bold text-brand-sky">
+                    {s.value}
+                  </p>
+                  <p className="mt-[4px] font-display text-[10px] sm:text-[11px] text-brand-bunker/60">
+                    {s.date}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-[clamp(24px,2vw,40px)] text-center">
+              <a
+                href="#disclaimer"
+                className="font-display text-[13px] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+              >
+                Disclaimer
+              </a>
+            </div>
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onContinue();
+            }}
+            className="mx-auto w-full max-w-[440px] rounded-[28px] bg-white p-[clamp(28px,2.4vw,40px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+          >
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+              Hey there!
+            </h2>
+            <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[13px] sm:text-[14px] text-brand-bunker/70 leading-[1.5]">
+              Please tell us who you are to receive your FREE in-depth Digital Property Report
+              instantly.
+            </p>
+            <input
+              type="text"
+              required
+              value={first}
+              onChange={(e) => setFirst(e.target.value)}
+              placeholder="First name *"
+              className="mt-[clamp(20px,1.6vw,28px)] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+            />
+            <input
+              type="text"
+              required
+              value={last}
+              onChange={(e) => setLast(e.target.value)}
+              placeholder="Last name *"
+              className="mt-[12px] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+            />
+            <button
+              type="submit"
+              className="mt-[clamp(16px,1.4vw,24px)] h-[48px] w-full rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+            >
+              NEXT
+            </button>
+          </form>
+        </div>
+      </section>
+    </>
   );
 }
 
