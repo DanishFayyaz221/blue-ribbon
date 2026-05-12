@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
@@ -144,9 +145,17 @@ export default function AppraisalPage() {
             </section>
 
             <section className="container-page py-[clamp(48px,4vw,80px)]">
-              <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
-                Our latest Properties
-              </h2>
+              <div className="flex flex-col gap-[12px] sm:flex-row sm:items-end sm:justify-between">
+                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+                  Our latest Properties
+                </h2>
+                <Link
+                  href="/buy"
+                  className="font-display text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                >
+                  Explore more Properties
+                </Link>
+              </div>
               <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(16px,1.7vw,32px)]">
                 {latest.map((p, i) => (
                   <PropertyCard key={i} {...p} variant="tall" />

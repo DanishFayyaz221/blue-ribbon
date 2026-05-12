@@ -39,9 +39,11 @@ export function HappyClients() {
 
   const maxStart = Math.max(0, testimonials.length - visible);
   const safeStart = Math.min(start, maxStart);
-  const handlePrev = () => setStart((s) => (s === 0 ? maxStart : s - 1));
+  const handlePrev = () => setStart((s) => (s <= 0 ? maxStart : s - 1));
   const handleNext = () => setStart((s) => (s >= maxStart ? 0 : s + 1));
-  const items = testimonials.slice(safeStart, safeStart + visible);
+
+  const slideWidthPct = 100 / visible;
+  const translatePct = -(safeStart * slideWidthPct);
 
   return (
     <section className="w-full bg-white py-[clamp(56px,5vw,96px)]">
@@ -57,11 +59,11 @@ export function HappyClients() {
             type="button"
             onClick={handlePrev}
             aria-label="Previous testimonial"
-            className="absolute left-[clamp(8px,3vw,60px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center text-brand-navy transition hover:opacity-70"
+            className="absolute left-[clamp(8px,1.5vw,40px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition hover:bg-white hover:opacity-100 hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
-              className="h-[32px] w-[32px] lg:h-[36px] lg:w-[36px]"
+              className="h-[24px] w-[24px] lg:h-[28px] lg:w-[28px]"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -73,21 +75,32 @@ export function HappyClients() {
             </svg>
           </button>
 
-          <div className="flex justify-center gap-[clamp(20px,3.5vw,90px)] px-[clamp(48px,5vw,90px)]">
-            {items.map((t) => (
-              <TestimonialCard key={t.id} testimonial={t} />
-            ))}
+          <div className="overflow-hidden px-[clamp(56px,6vw,100px)]">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(${translatePct}%)` }}
+            >
+              {testimonials.map((t) => (
+                <div
+                  key={t.id}
+                  className="flex shrink-0 justify-center px-[clamp(10px,1.6vw,32px)]"
+                  style={{ width: `${slideWidthPct}%` }}
+                >
+                  <TestimonialCard testimonial={t} />
+                </div>
+              ))}
+            </div>
           </div>
 
           <button
             type="button"
             onClick={handleNext}
             aria-label="Next testimonial"
-            className="absolute right-[clamp(8px,3vw,60px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center text-brand-navy transition hover:opacity-70"
+            className="absolute right-[clamp(8px,1.5vw,40px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition hover:bg-white hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
-              className="h-[32px] w-[32px] lg:h-[36px] lg:w-[36px]"
+              className="h-[24px] w-[24px] lg:h-[28px] lg:w-[28px]"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -98,6 +111,21 @@ export function HappyClients() {
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
+        </div>
+
+        <div className="mt-[clamp(24px,2vw,40px)] flex items-center justify-center gap-[8px]">
+          {Array.from({ length: maxStart + 1 }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setStart(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === safeStart}
+              className={`h-[8px] rounded-full transition-all duration-300 ${
+                i === safeStart ? "w-[24px] bg-brand-navy" : "w-[8px] bg-brand-silver hover:bg-brand-navy/50"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
