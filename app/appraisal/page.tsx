@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
+import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 import { OurValues } from "../_components/home/OurValues";
 import { PropertyCard, type PropertyCardData } from "../_components/property/PropertyCard";
@@ -34,6 +35,7 @@ export default function AppraisalPage() {
   const [step, setStep] = useState<Step>("address");
   const [address, setAddress] = useState("");
   const [reportType, setReportType] = useState<"sales" | "rental">("sales");
+  const [mobileReportType, setMobileReportType] = useState<"residential" | "rental" | "commercial">("residential");
   const [intent, setIntent] = useState<(typeof intents)[number] | null>(null);
   const [agree, setAgree] = useState(false);
 
@@ -43,14 +45,99 @@ export default function AppraisalPage() {
       <main>
         {step === "address" && (
           <>
-            <section className="relative w-full overflow-hidden">
+            {/* Mobile hero */}
+            <div className="sm:hidden">
+              <div className="container-page pt-[12px] pb-[16px]">
+                <Breadcrumb
+                  items={[
+                    { label: "Home", href: "/" },
+                    { label: "Buy", href: "/buy" },
+                    { label: "Property Estimate" },
+                  ]}
+                />
+              </div>
+              <section className="w-full">
+                <div className="relative overflow-hidden">
+                  <div className="relative aspect-[1/1] w-full">
+                    <Image
+                      src="/images/property-hero.png"
+                      alt=""
+                      fill
+                      priority
+                      sizes="(max-width: 639px) 100vw, 1px"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-brand-navy/55" />
+                    <div className="absolute inset-0 flex flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[24px]">
+                      <h1 className="text-center font-display font-bold text-white text-[28px] leading-[1.1] tracking-[-0.01em]">
+                        Get Your Property
+                        <br />
+                        Estimate in just
+                        <br />
+                        <span className="text-brand-sky">9 Seconds!</span>
+                      </h1>
+                      <p className="mx-auto mt-[16px] max-w-[320px] text-center font-display text-white/85 text-[12.5px] font-medium leading-[1.5]">
+                        Search the address below for a Digital Property Report that
+                        highlights market value including recent sales, rental history and
+                        more.
+                      </p>
+
+                      <div className="mt-[20px]">
+                        <div className="flex items-center justify-center gap-[8px]">
+                          {(["residential", "rental", "commercial"] as const).map((opt) => {
+                            const active = mobileReportType === opt;
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => setMobileReportType(opt)}
+                                className={`h-[34px] rounded-full px-[14px] font-display text-[12px] font-medium transition ${
+                                  active
+                                    ? "bg-brand-sky text-white"
+                                    : "border border-white/70 text-white hover:bg-white/10"
+                                }`}
+                              >
+                                {opt === "residential"
+                                  ? "Residential"
+                                  : opt === "rental"
+                                  ? "Rental"
+                                  : "Commercial"}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="mt-[16px] flex h-[48px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
+                          <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Start typing in the street address..."
+                            className="flex-1 bg-transparent pr-[12px] font-display text-[13px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setStep("details")}
+                            className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+                          >
+                            Search
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* Desktop hero (unchanged) */}
+            <section className="hidden sm:block relative w-full overflow-hidden">
               <div className="relative aspect-[1771/800] w-full">
                 <Image
                   src="/images/property-hero.png"
                   alt=""
                   fill
                   priority
-                  sizes="100vw"
+                  sizes="(max-width: 639px) 1px, 100vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black/35" />
@@ -120,7 +207,7 @@ export default function AppraisalPage() {
 
             <OurValues />
 
-            <section className="w-full bg-brand-soft py-[clamp(48px,4vw,80px)]">
+            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(48px,4vw,80px)]">
               <div className="container-page">
                 <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
                   Best Suited for You
@@ -152,7 +239,7 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <section className="container-page py-[clamp(48px,4vw,80px)]">
+            <section className="hidden sm:block container-page py-[clamp(48px,4vw,80px)]">
               <div className="flex flex-col gap-[12px] sm:flex-row sm:items-end sm:justify-between">
                 <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
                   Our latest Properties
@@ -171,7 +258,42 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <GetInTouchCTA />
+            <section className="sm:hidden w-full bg-white">
+              <div className="w-full">
+                <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+                  <Image
+                    src="/images/handshake-house.png"
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    className="absolute inset-0 z-0 object-cover"
+                  />
+                  <div className="absolute inset-0 z-10 bg-brand-navy/85" />
+                  <div className="relative z-20">
+                    <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                      Want to get in touch
+                      <br />
+                      with us?
+                    </h2>
+                    <p className="mt-[18px] font-display font-light text-white text-[16px] leading-[1.4]">
+                      We&rsquo;re all about offering supportive, expert advice every step of
+                      the way, making your property buying experience as seamless and
+                      enjoyable as possible.
+                    </p>
+                    <Link
+                      href="/contact"
+                      className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                    >
+                      Contact our Agent
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="hidden sm:block">
+              <GetInTouchCTA />
+            </div>
           </>
         )}
 
