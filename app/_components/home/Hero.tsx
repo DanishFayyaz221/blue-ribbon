@@ -9,7 +9,7 @@ type DealType = (typeof dealTypes)[number];
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative aspect-[1920/990] min-h-[460px] w-full">
+      <div className="relative aspect-[1920/990] min-h-[380px] sm:min-h-[460px] w-full">
         <div className="absolute inset-0 scale-[1.04] blur-[6px]">
           <video
             className="h-full w-full object-cover"
@@ -24,7 +24,7 @@ export function Hero() {
         </div>
         <div className="absolute inset-0 bg-black/30" />
 
-        <div className="container-page absolute inset-x-0 top-1/2 -translate-y-1/2">
+        <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
           <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(2rem,3vw,3.5rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
@@ -39,7 +39,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="container-page absolute inset-x-0 bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
+        <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
           <Link
             href="/appraisal"
             className="flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition hover:bg-white/40"
