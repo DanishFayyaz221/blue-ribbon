@@ -158,15 +158,15 @@ function MobileSearch() {
 
   return (
     <div className="mx-auto w-full max-w-[420px]">
-      <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white pl-[8px]">
+      <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
         <input
           type="text"
           placeholder="Enter suburb, postcode..."
-          className="flex-1 bg-transparent px-[14px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+          className="flex-1 bg-transparent pr-[12px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
         />
         <button
           type="button"
-          className="my-[6px] flex w-[100px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+          className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
         >
           Search
         </button>
