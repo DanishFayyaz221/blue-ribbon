@@ -114,7 +114,7 @@ export function Nav() {
             </button>
           </div>
 
-          <div className="container-page relative pb-[10rem] pt-[6vw] lg:pt-[10vw]">
+          <div className="container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
             <div className="grid grid-cols-1 gap-x-[64px] gap-y-[40px] lg:grid-cols-12 lg:items-start">
               <div className="flex flex-col gap-[16px] lg:col-span-2">
                 {buyLinks.map((link) => (
@@ -143,21 +143,16 @@ export function Nav() {
                 className="lg:col-span-3 lg:col-start-10"
               />
             </div>
-
-            <div
-              aria-hidden
-              className="pointer-events-none absolute bottom-0 right-0 hidden h-[280px] w-[680px] overflow-hidden md:block"
-            >
-              <div className="absolute -bottom-[80px] -right-[80px] h-[460px] w-[920px] origin-bottom-right -rotate-[18deg] bg-brand-navy" />
-              <Image
-                src="/logo/LOGO.png"
-                alt=""
-                width={520}
-                height={140}
-                className="absolute bottom-[60px] right-[60px] h-auto w-[420px] -rotate-[18deg] brightness-0 invert"
-              />
-            </div>
           </div>
+
+          <Image
+            aria-hidden
+            src="/logo/241.png"
+            alt=""
+            width={1200}
+            height={500}
+            className="pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
+          />
         </div>
       )}
     </>
