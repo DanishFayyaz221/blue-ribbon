@@ -21,6 +21,7 @@ const mobileAgents: MobileAgent[] = [
 ];
 
 export default function AgentsPage() {
+  console.log(" 🚀 AgentsPage rendered");
   return (
     <div className="min-h-screen bg-white">
       <Nav />
