@@ -28,7 +28,7 @@ export function PropertyCard({
   variant = "tall",
 }: PropertyCardProps) {
   const meta = beds != null || baths != null || cars != null || type ? (
-    <p className="mt-[8px] flex flex-wrap items-center gap-x-[18px] gap-y-[4px] font-display text-[13px] sm:text-[14px] font-semibold bg-white text-brand-navy sm:bg-transparent sm:text-brand-sky">
+    <p className="mt-[8px] flex flex-wrap items-center gap-x-[18px] gap-y-[4px] font-display text-[13px] font-semibold bg-white text-brand-navy sm:hidden">
       {beds != null && <span>{beds} Beds</span>}
       {baths != null && <span>{baths} Bath</span>}
       {cars != null && <span>{cars} Cars</span>}
