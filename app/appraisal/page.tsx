@@ -53,8 +53,8 @@ export default function AppraisalPage() {
                   sizes="100vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/45" />
-                <div className="absolute inset-0 flex items-center">
+                <div className="absolute inset-0 bg-black/35" />
+                <div className="absolute inset-0 flex flex-col pt-[clamp(40px,5vw,96px)] pb-[clamp(140px,15vw,240px)]">
                   <div className="container-page w-full">
                     <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.75rem,3.1vw,3.75rem)] leading-[1.1] tracking-[-0.01em]">
                       Get Your Property Estimate in just{" "}
@@ -65,45 +65,53 @@ export default function AppraisalPage() {
                       Digital Property Report that highlights the market value including
                       recent sales, rental history, suburb report and more.
                     </p>
+                  </div>
 
-                    <div className="mt-[clamp(20px,1.8vw,32px)] flex flex-wrap items-center justify-center gap-x-[clamp(20px,2vw,40px)] gap-y-[10px]">
-                      {(["sales", "rental"] as const).map((opt) => {
-                        const active = reportType === opt;
-                        return (
-                          <label key={opt} className="flex cursor-pointer items-center gap-[10px]">
-                            <input
-                              type="radio"
-                              name="reportType"
-                              checked={active}
-                              onChange={() => setReportType(opt)}
-                              className="sr-only"
-                            />
-                            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border-[1.5px] border-white">
-                              {active && <span className="h-[9px] w-[9px] rounded-full bg-brand-sky" />}
-                            </span>
-                            <span className="font-display text-[13px] sm:text-[14px] font-medium text-white">
-                              I&rsquo;m interested in a {opt === "sales" ? "Sales" : "Rental"} report
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
+                  <div className="container-page relative mt-auto w-full">
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+clamp(24px,3vw,40px))] w-full max-w-[1080px] -translate-x-1/2 -translate-y-1/2 bg-black/25 blur-[1px]"
+                    />
+                    <div className="relative">
+                      <div className="flex flex-wrap items-center justify-center gap-x-[clamp(20px,2vw,40px)] gap-y-[10px]">
+                        {(["sales", "rental"] as const).map((opt) => {
+                          const active = reportType === opt;
+                          return (
+                            <label key={opt} className="flex cursor-pointer items-center gap-[10px]">
+                              <input
+                                type="radio"
+                                name="reportType"
+                                checked={active}
+                                onChange={() => setReportType(opt)}
+                                className="sr-only"
+                              />
+                              <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border-[1.5px] border-white">
+                                {active && <span className="h-[9px] w-[9px] rounded-full bg-brand-sky" />}
+                              </span>
+                              <span className="font-display text-[13px] sm:text-[14px] font-medium text-white">
+                                I&rsquo;m interested in a {opt === "sales" ? "Sales" : "Rental"} report
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
 
-                    <div className="mx-auto mt-[clamp(28px,2.4vw,48px)] flex w-full max-w-[1024px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0">
-                      <input
-                        type="text"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Start typing to find your address"
-                        className="h-[56px] sm:h-[64px] flex-1 bg-white px-[20px] font-display text-[15px] sm:text-[16px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setStep("details")}
-                        className="flex h-[56px] sm:h-[64px] w-full sm:w-[180px] items-center justify-center rounded-[12px] sm:rounded-none bg-brand-navy font-display text-[15px] sm:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep"
-                      >
-                        Search
-                      </button>
+                      <div className="mx-auto mt-[clamp(14px,1.2vw,24px)] flex w-full max-w-[1024px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0">
+                        <input
+                          type="text"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          placeholder="Start typing to find your address"
+                          className="h-[56px] sm:h-[64px] flex-1 bg-white px-[20px] font-display text-[15px] sm:text-[16px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setStep("details")}
+                          className="flex h-[56px] sm:h-[64px] w-full sm:w-[180px] items-center justify-center rounded-[12px] sm:rounded-none bg-brand-navy font-display text-[15px] sm:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep"
+                        >
+                          Search
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
