@@ -391,6 +391,38 @@ export default function AppraisalPage() {
                   </button>
                 </div>
               </section>
+
+              <section className="w-full bg-white">
+                <div className="w-full">
+                  <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+                    <Image
+                      src="/images/handshake-house.png"
+                      alt=""
+                      fill
+                      sizes="100vw"
+                      className="absolute inset-0 z-0 object-cover"
+                    />
+                    <div className="absolute inset-0 z-10 bg-brand-navy/85" />
+                    <div className="relative z-20">
+                      <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                        Want to get in touch
+                        <br />
+                        with us?
+                      </h2>
+                      <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                        We&rsquo;re all about offering supportive, expert advice every
+                        step of the way.
+                      </p>
+                      <Link
+                        href="/contact"
+                        className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                      >
+                        Contact our Agent
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
 
             {/* Desktop result (unchanged) */}
@@ -468,7 +500,9 @@ export default function AppraisalPage() {
                 </aside>
               </div>
             </section>
-            <GetInTouchCTA />
+            <div className="hidden sm:block">
+              <GetInTouchCTA />
+            </div>
           </>
         )}
       </main>
