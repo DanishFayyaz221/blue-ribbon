@@ -25,12 +25,17 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-1/2 -translate-y-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.875rem,3vw,3.5rem)] leading-[1.1] tracking-[-0.01em]">
-            Own Your <span className="text-brand-sky">Australian Dream</span>
+          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(2rem,3vw,3.5rem)] leading-[1.1] tracking-[-0.01em]">
+            <span className="block sm:inline">Own Your</span>{" "}
+            <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
           </h1>
 
-          <div className="mt-[clamp(28px,2.8vw,48px)]">
+          <div className="mt-[clamp(24px,2.8vw,48px)] hidden sm:block">
             <SearchBar />
+          </div>
+
+          <div className="mt-[24px] sm:hidden">
+            <MobileSearch />
           </div>
         </div>
 
@@ -144,6 +149,53 @@ function SearchBar() {
       >
         Search
       </button>
+    </div>
+  );
+}
+
+function MobileSearch() {
+  const [deal, setDeal] = useState<DealType>("Buy");
+
+  return (
+    <div className="mx-auto w-full max-w-[420px]">
+      <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white pl-[8px]">
+        <input
+          type="text"
+          placeholder="Enter suburb, postcode..."
+          className="flex-1 bg-transparent px-[14px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+        />
+        <button
+          type="button"
+          className="my-[6px] flex w-[100px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+        >
+          Search
+        </button>
+      </div>
+
+      <div className="mt-[18px] flex items-center justify-between px-[8px]">
+        {dealTypes.map((d) => {
+          const active = deal === d;
+          return (
+            <button
+              key={d}
+              type="button"
+              onClick={() => setDeal(d)}
+              className="relative flex h-[28px] items-center justify-center"
+            >
+              <span
+                className={`font-display text-[15px] font-medium ${
+                  active ? "text-white" : "text-white/70"
+                }`}
+              >
+                {d}
+              </span>
+              {active && (
+                <span className="absolute -bottom-[4px] left-0 right-0 h-[2px] bg-white" />
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

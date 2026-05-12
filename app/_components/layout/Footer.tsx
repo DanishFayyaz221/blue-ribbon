@@ -1,4 +1,23 @@
+import Image from "next/image";
 import Link from "next/link";
+
+const mobileAboutLinks = [
+  { label: "Our Story", href: "/about" },
+  { label: "Leadership", href: "/agents" },
+  { label: "Contact Us", href: "/contact" },
+];
+
+const mobileInsightsLinks = [
+  { label: "Sell your Property", href: "/appraisal" },
+  { label: "Market Updates", href: "/buy" },
+  { label: "Newsletter", href: "#newsletter" },
+];
+
+const mobileOfficeLinks = [
+  { label: "Office Location", href: "/contact" },
+  { label: "Meet an Agent", href: "/agents" },
+  { label: "Find an Office", href: "/contact" },
+];
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
@@ -26,7 +45,75 @@ const officeLinks = [
 
 export function Footer() {
   return (
-    <footer className="w-full bg-white">
+    <>
+      <MobileFooter />
+      <DesktopFooter />
+    </>
+  );
+}
+
+function MobileFooter() {
+  return (
+    <footer className="lg:hidden w-full bg-[#0a0a0a] text-white">
+      <div className="container-page pt-[32px] pb-[28px]">
+        <Image
+          src="/logo/mobile%20footer.png"
+          alt="Blue Ribbon Real Estate"
+          width={260}
+          height={64}
+          className="h-[32px] w-auto"
+        />
+
+        <div className="mt-[32px] flex flex-col gap-[28px]">
+          <MobileLinkColumn title="About Us" links={mobileAboutLinks} />
+          <MobileLinkColumn title="Insights" links={mobileInsightsLinks} />
+          <MobileLinkColumn title="Our Office" links={mobileOfficeLinks} />
+        </div>
+
+        <Link
+          href="#refer"
+          className="mt-[32px] inline-flex h-[44px] items-center justify-center rounded-[20px] bg-brand-navy px-[24px] font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+        >
+          Refer a Friend
+        </Link>
+
+        <p className="mt-[28px] font-display text-[12px] text-white/60">
+          © 2026 Blue Ribbon Real Estate. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+function MobileLinkColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <h3 className="font-display text-[15px] font-bold text-white">{title}</h3>
+      <ul className="mt-[12px] flex flex-col gap-[10px]">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="font-display text-[14px] font-medium text-white/70 hover:text-white"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function DesktopFooter() {
+  return (
+    <footer className="hidden lg:block w-full bg-white">
       <div className="container-page pt-[clamp(48px,5.5vw,96px)] pb-[clamp(36px,3vw,56px)]">
         <div className="grid gap-x-[clamp(20px,2.4vw,40px)] gap-y-[40px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-[180px_1fr_1fr_1fr_auto]">
           <div className="flex flex-col gap-[14px] sm:order-1">

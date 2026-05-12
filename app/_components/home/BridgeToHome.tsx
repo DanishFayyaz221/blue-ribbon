@@ -27,7 +27,7 @@ export function BridgeToHome() {
           <h2 className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.75rem,2.6vw,3.15rem)] leading-[1.1]">
             Your bridge to home
           </h2>
-          <div className="flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
+          <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
             {tabs.map((tab) => {
               const isActive = active === tab;
               return (
@@ -53,19 +53,23 @@ export function BridgeToHome() {
           </div>
         </div>
 
-        <div className="mt-[clamp(40px,3.5vw,72px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(16px,1.7vw,32px)]">
+        <div className="mt-[clamp(28px,3.5vw,72px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.7vw,32px)]">
           {tiles.map((tile) => (
             <Link key={tile.label} href={tile.href} className="group block">
-              <div className="relative aspect-[418/575] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
+              <div className="relative aspect-[16/10] sm:aspect-[418/575] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
                 <Image
                   src={tile.src}
                   alt={tile.label}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition duration-500 group-hover:scale-[1.03]"
                 />
+                <div className="absolute inset-0 sm:hidden bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                <p className="absolute bottom-[10px] left-[12px] right-[12px] sm:hidden font-display text-[13px] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                  {tile.label}
+                </p>
               </div>
-              <p className="mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(16px,1.16vw,22px)] font-medium tracking-[0.02em] text-brand-mineshaft">
+              <p className="hidden sm:block mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(16px,1.16vw,22px)] font-medium tracking-[0.02em] text-brand-mineshaft">
                 {tile.label}
               </p>
             </Link>

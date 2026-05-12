@@ -27,23 +27,22 @@ export function PropertyCard({
   type,
   variant = "tall",
 }: PropertyCardProps) {
-  const meta = beds || baths || cars || type ? (
-    <p className="mt-[6px] font-display text-[13px] sm:text-[14px] font-medium text-brand-bunker/80">
-      {[
-        beds != null && `${beds} Bed`,
-        baths != null && `${baths} Bath`,
-        cars != null && `${cars} Car`,
-        type,
-      ]
-        .filter(Boolean)
-        .join("  |  ")}
+  const meta = beds != null || baths != null || cars != null || type ? (
+    <p className="mt-[8px] flex flex-wrap items-center gap-x-[18px] gap-y-[4px] font-display text-[13px] sm:text-[14px] font-semibold bg-white text-brand-navy sm:bg-transparent sm:text-brand-sky">
+      {beds != null && <span>{beds} Beds</span>}
+      {baths != null && <span>{baths} Bath</span>}
+      {cars != null && <span>{cars} Cars</span>}
+      {type && <span>{type}</span>}
     </p>
   ) : null;
 
   if (variant === "wide") {
     return (
-      <Link href={href} className="group block w-full">
-        <div className="relative aspect-[869/435] w-full overflow-hidden rounded-[clamp(16px,1.7vw,32px)] shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
+      <Link
+        href={href}
+        className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.7vw,32px)] sm:border-0 sm:bg-transparent sm:overflow-visible"
+      >
+        <div className="relative aspect-[869/435] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
           <Image
             src={image}
             alt={address}
@@ -52,12 +51,12 @@ export function PropertyCard({
             className="object-cover transition duration-500 group-hover:scale-[1.02]"
           />
         </div>
-        <div className="mt-[clamp(20px,2vw,40px)] font-display">
-          <p className="text-[clamp(16px,1.18vw,22px)] font-medium leading-[1.4] text-brand-navy">
+        <div className="p-[16px] sm:p-0 sm:mt-[clamp(20px,2vw,40px)] font-display">
+          <p className="text-[clamp(16px,1.18vw,22px)] font-semibold sm:font-medium leading-[1.4] text-brand-navy">
             {address}
           </p>
           {guide && (
-            <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-black mt-[4px]">
+            <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-brand-bunker/70 sm:text-black mt-[4px]">
               Guide {guide}
             </p>
           )}

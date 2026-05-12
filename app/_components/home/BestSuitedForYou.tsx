@@ -4,11 +4,14 @@ const properties: PropertyCardData[] = Array.from({ length: 6 }, () => ({
   image: "/images/dynamic.png",
   address: "10 Carlotta Avenue, Gordon",
   guide: "$4,500,000 - $4,900,000",
+  beds: 4,
+  baths: 2,
+  cars: 2,
 }));
 
 export function BestSuitedForYou() {
   return (
-    <section className="w-full bg-brand-soft py-[clamp(56px,5vw,96px)]">
+    <section className="w-full bg-white sm:bg-brand-soft py-[clamp(56px,5vw,96px)]">
       <div className="container-page">
         <h2 className="font-display font-bold text-brand-navy text-[clamp(1.75rem,2.6vw,3.15rem)] leading-[1.1]">
           Best Suited for You

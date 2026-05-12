@@ -12,16 +12,48 @@ type Testimonial = {
   rating: number;
 };
 
-const baseQuote =
-  "This foundation is a game-changer! It provides flawless coverage without feeling heavy, and it lasts all day. I've never felt more confident in my skin.";
-
-const testimonials: Testimonial[] = Array.from({ length: 5 }, (_, i) => ({
-  id: i + 1,
-  image: "/images/happy-client.png",
-  quote: baseQuote,
-  name: "Jessica Miller",
-  rating: 4,
-}));
+const testimonials: Testimonial[] = [
+  {
+    id: 1,
+    image: "/images/happy-client.png",
+    quote:
+      "Exceptional service from start to finish. The team went above and beyond to find our dream home.",
+    name: "Sarah M.",
+    rating: 5,
+  },
+  {
+    id: 2,
+    image: "/images/happy-client.png",
+    quote:
+      "Exceptional service from start to finish. The team made the entire buying process smooth and easy.",
+    name: "James K.",
+    rating: 4,
+  },
+  {
+    id: 3,
+    image: "/images/happy-client.png",
+    quote:
+      "Their local knowledge is unmatched. We sold above expectation and felt supported the whole way.",
+    name: "Priya R.",
+    rating: 5,
+  },
+  {
+    id: 4,
+    image: "/images/happy-client.png",
+    quote:
+      "Honest, friendly, and incredibly professional. I cannot recommend Blue Ribbon highly enough.",
+    name: "Daniel T.",
+    rating: 5,
+  },
+  {
+    id: 5,
+    image: "/images/happy-client.png",
+    quote:
+      "From appraisal to settlement they kept us informed at every step. A truly stress-free experience.",
+    name: "Olivia C.",
+    rating: 4,
+  },
+];
 
 export function HappyClients() {
   const [visible, setVisible] = useState(3);
@@ -46,14 +78,33 @@ export function HappyClients() {
   const translatePct = -(safeStart * slideWidthPct);
 
   return (
-    <section className="w-full bg-white py-[clamp(56px,5vw,96px)]">
+    <section className="w-full bg-white py-[clamp(40px,5vw,96px)]">
       <div className="container-page">
-        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.75rem,2.6vw,3.15rem)] leading-[1.1]">
+        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.6vw,3.15rem)] leading-[1.1]">
           Meet Our Happy Clients
         </h2>
       </div>
 
-      <div className="relative mt-[clamp(36px,3.5vw,64px)]">
+      {/* Mobile: horizontal-scroll plain cards (no image) */}
+      <div className="sm:hidden mt-[24px] no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+        {testimonials.map((t) => (
+          <article
+            key={t.id}
+            className="snap-start shrink-0 basis-[78%] rounded-[20px] bg-[#F5F5F7] p-[24px]"
+          >
+            <Stars rating={t.rating} size={20} />
+            <p className="mt-[18px] font-display text-[15px] leading-[1.55] text-brand-bunker">
+              &ldquo;{t.quote}&rdquo;
+            </p>
+            <p className="mt-[20px] font-display text-[15px] font-bold text-brand-navy">
+              {t.name}
+            </p>
+          </article>
+        ))}
+      </div>
+
+      {/* Tablet / desktop: original slider carousel with images */}
+      <div className="hidden sm:block relative mt-[clamp(36px,3.5vw,64px)]">
         <div className="container-page relative">
           <button
             type="button"
