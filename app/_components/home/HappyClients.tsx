@@ -103,30 +103,28 @@ export function HappyClients() {
         ))}
       </div>
 
-      {/* Tablet / desktop: original slider carousel with images */}
+      {/* Tablet / desktop: slider carousel with images */}
       <div className="hidden sm:block relative mt-[clamp(36px,3.5vw,64px)]">
-        <div className="container-page relative">
+        <div className="relative px-[clamp(20px,3vw,64px)]">
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous testimonial"
-            className="absolute left-[clamp(8px,1.5vw,40px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition hover:bg-white hover:opacity-100 hover:scale-105"
+            className="absolute left-[clamp(8px,1.5vw,32px)] top-1/2 z-10 flex h-[46px] w-[46px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
           >
             <svg
               viewBox="0 0 24 24"
-              className="h-[24px] w-[24px] lg:h-[28px] lg:w-[28px]"
+              className="h-[20px] w-[20px]"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth="2.5"
               aria-hidden
             >
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
 
-          <div className="overflow-hidden px-[clamp(56px,6vw,100px)]">
+          <div className="overflow-hidden px-[clamp(40px,4vw,72px)]">
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(${translatePct}%)` }}
@@ -134,7 +132,7 @@ export function HappyClients() {
               {testimonials.map((t) => (
                 <div
                   key={t.id}
-                  className="flex shrink-0 justify-center px-[clamp(10px,1.6vw,32px)]"
+                  className="flex shrink-0 justify-center px-[clamp(6px,0.8vw,14px)]"
                   style={{ width: `${slideWidthPct}%` }}
                 >
                   <TestimonialCard testimonial={t} />
@@ -147,36 +145,19 @@ export function HappyClients() {
             type="button"
             onClick={handleNext}
             aria-label="Next testimonial"
-            className="absolute right-[clamp(8px,1.5vw,40px)] top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition hover:bg-white hover:scale-105"
+            className="absolute right-[clamp(8px,1.5vw,32px)] top-1/2 z-10 flex h-[46px] w-[46px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
           >
             <svg
               viewBox="0 0 24 24"
-              className="h-[24px] w-[24px] lg:h-[28px] lg:w-[28px]"
+              className="h-[20px] w-[20px]"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth="2.5"
               aria-hidden
             >
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
-        </div>
-
-        <div className="mt-[clamp(24px,2vw,40px)] flex items-center justify-center gap-[8px]">
-          {Array.from({ length: maxStart + 1 }).map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setStart(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === safeStart}
-              className={`h-[8px] rounded-full transition-all duration-300 ${
-                i === safeStart ? "w-[24px] bg-brand-navy" : "w-[8px] bg-brand-silver hover:bg-brand-navy/50"
-              }`}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -185,22 +166,22 @@ export function HappyClients() {
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <article className="flex w-full max-w-[384px] flex-col overflow-hidden rounded-[18px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
-      <div className="relative m-[16px] aspect-[348/284] overflow-hidden rounded-[2px]">
+    <article className="flex w-full max-w-[340px] flex-col overflow-hidden rounded-[14px] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+      <div className="relative mx-[14px] mt-[14px] aspect-[252/200] overflow-hidden rounded-[6px]">
         <Image
           src={testimonial.image}
           alt={testimonial.name}
           fill
-          sizes="(max-width: 768px) 90vw, 348px"
+          sizes="(max-width: 768px) 90vw, 252px"
           className="object-cover"
         />
       </div>
-      <div className="px-[clamp(20px,1.7vw,32px)] pt-[20px] pb-[clamp(20px,1.7vw,32px)]">
-        <Stars rating={testimonial.rating} size={22} />
-        <p className="mt-[14px] font-display text-[14px] leading-[1.4] text-[#2c2c2c]">
+      <div className="px-[18px] pt-[14px] pb-[20px]">
+        <Stars rating={testimonial.rating} size={14} />
+        <p className="mt-[10px] font-display text-[11px] leading-[1.5] text-brand-bunker/85">
           &ldquo;{testimonial.quote}&rdquo;
         </p>
-        <p className="mt-[16px] font-display text-[18px] font-semibold text-[#2c2c2c]">
+        <p className="mt-[14px] font-display text-[14px] font-semibold text-brand-bunker">
           {testimonial.name}
         </p>
       </div>

@@ -182,10 +182,14 @@ export default function PropertyViewPage() {
 
         <div className="hidden sm:block container-page mt-[clamp(56px,4vw,80px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
-            <Image src="/images/find-an-office.png" alt="Map" fill sizes="(max-width: 639px) 1px, 100vw" className="object-cover" />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-navy px-[16px] py-[8px] font-display text-[13px] font-medium text-white">
-              24 Virginia Road
-            </div>
+            <iframe
+              title="24 Virginia Road, Hamlyn Terrace"
+              src="https://www.google.com/maps?q=24+Virginia+Road,+Hamlyn+Terrace+NSW+2259&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
           </div>
         </div>
 
