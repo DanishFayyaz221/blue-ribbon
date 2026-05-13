@@ -5,6 +5,7 @@ import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
 import { Button } from "../../_components/ui/Button";
 import { PropertyCard, type PropertyCardData } from "../../_components/property/PropertyCard";
+import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
 
 type AgentData = {
   name: string;
@@ -130,9 +131,7 @@ export default function PropertyViewPage() {
             </div>
 
             <div className="flex gap-[10px]">
-              <Button href="#enquire" variant="primary" size="sm" className="flex-1">
-                Enquire
-              </Button>
+              <EnquireTrigger className="flex-1" />
               <Button href="#share" variant="outline-dark" size="sm" className="flex-1">
                 Share
               </Button>
@@ -368,12 +367,7 @@ function MobilePropertyView() {
         </div>
 
         <div className="mt-[24px] flex gap-[12px]">
-          <Link
-            href="#enquire"
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
-          >
-            Enquire
-          </Link>
+          <EnquireTrigger variant="navy-pill" className="flex-1" />
           <Link
             href="#share"
             className="flex h-[48px] flex-1 items-center justify-center rounded-[24px] border border-brand-navy font-display text-[14px] font-semibold text-brand-navy transition hover:bg-brand-soft"

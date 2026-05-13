@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type ModalAgent = {
   name: string;
@@ -34,6 +35,7 @@ const defaultAgents: ModalAgent[] = [
 const helpOptions = ["Price Guide", "Book an inspection", "Similar Properties"] as const;
 
 export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [help, setHelp] = useState<(typeof helpOptions)[number] | null>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -41,6 +43,10 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
   const [mobile, setMobile] = useState("");
   const [message, setMessage] = useState("");
   const [agree, setAgree] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -60,14 +66,14 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
+  const modal = (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="enquiry-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-[16px] sm:p-[24px]"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-[16px] sm:p-[24px]"
     >
       <button
         type="button"
@@ -209,6 +215,8 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
       </div>
     </div>
   );
+
+  return createPortal(modal, document.body);
 }
 
 function Field({
