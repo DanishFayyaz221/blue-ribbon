@@ -145,12 +145,13 @@ export default function ContactPage() {
 
         <section className="hidden sm:block container-page mt-[clamp(48px,4vw,80px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
-            <Image
-              src="/images/find-an-office.png"
-              alt="Map"
-              fill
-              sizes="(max-width: 639px) 1px, 100vw"
-              className="object-cover"
+            <iframe
+              src="https://www.google.com/maps?q=11%2F76-80+Station+Street%2C+Wentworthville+NSW+2145&z=16&output=embed"
+              title="Blue Ribbon Real Estate office location"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
             />
           </div>
         </section>

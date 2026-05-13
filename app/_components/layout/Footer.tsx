@@ -59,8 +59,11 @@ function MobileFooter() {
         <Image
           src="/logo/mobile%20footer.png"
           alt="Blue Ribbon Real Estate"
-          width={260}
-          height={64}
+          width={1122}
+          height={193}
+          quality={100}
+          priority
+          sizes="200px"
           className="h-[32px] w-auto"
         />
 
