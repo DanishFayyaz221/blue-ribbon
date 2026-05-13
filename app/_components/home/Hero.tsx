@@ -25,12 +25,12 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(2rem,3vw,3.5rem)] leading-[1.1] tracking-[-0.01em]">
+          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.8rem,2.7vw,3.15rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
           </h1>
 
-          <div className="mt-[clamp(24px,2.8vw,48px)] hidden sm:block">
+          <div className="mt-[clamp(22px,2.5vw,42px)] hidden sm:block">
             <SearchBar />
           </div>
 

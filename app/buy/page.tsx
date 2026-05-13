@@ -73,14 +73,14 @@ export default function BuyPage() {
         </section>
 
         {/* Desktop search bar */}
-        <div className="hidden sm:block container-page mt-[clamp(40px,4vw,80px)]">
+        <div className="hidden sm:block container-page mt-[clamp(36px,3.6vw,72px)]">
           <PropertySearchBar />
         </div>
 
         {/* Mobile: Buy Your Dream + cards */}
-        <div className="sm:hidden container-page mt-[20px]">
+        <div className="sm:hidden container-page mt-[18px]">
           <div className="flex items-end justify-between">
-            <h1 className="font-display font-bold text-brand-bunker text-[24px] leading-[1.15]">
+            <h1 className="font-display font-bold text-brand-bunker text-[22px] leading-[1.15]">
               Buy Your Dream
             </h1>
             <Link
@@ -120,9 +120,9 @@ export default function BuyPage() {
         </div>
 
         {/* Desktop: list/map toggle + grid */}
-        <div className="hidden sm:block container-page mt-[clamp(36px,3.5vw,64px)]">
-          <div className="flex flex-col gap-[16px] sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+        <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
+          <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
               Buy Your Dream
             </h1>
             <div className="flex items-center gap-[6px] rounded-full border border-brand-silver p-[4px]">
@@ -141,21 +141,21 @@ export default function BuyPage() {
             </div>
           </div>
 
-          <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(16px,1.7vw,32px)]">
+          <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
             {featured.map((p, i) => (
               <PropertyCard key={i} {...p} variant="tall" />
             ))}
           </div>
 
-          <div className="mt-[clamp(40px,3vw,56px)]">
+          <div className="mt-[clamp(36px,2.7vw,50px)]">
             <Pagination total={5} />
           </div>
         </div>
 
         {/* Mobile: Our latest Properties (horizontal scroll) */}
-        <div className="sm:hidden mt-[32px]">
+        <div className="sm:hidden mt-[28px]">
           <div className="container-page">
-            <h2 className="font-display font-bold text-brand-bunker text-[20px] leading-[1.15]">
+            <h2 className="font-display font-bold text-brand-bunker text-[18px] leading-[1.15]">
               Our latest Properties
             </h2>
           </div>
@@ -169,9 +169,9 @@ export default function BuyPage() {
         </div>
 
         {/* Mobile: Want to get in touch CTA */}
-        <section className="sm:hidden w-full bg-white mt-[32px]">
+        <section className="sm:hidden w-full bg-white mt-[28px]">
           <div className="w-full">
-            <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+            <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
               <Image
                 src="/images/handshake-house.png"
                 alt=""
@@ -181,18 +181,18 @@ export default function BuyPage() {
               />
               <div className="absolute inset-0 z-10 bg-brand-navy/85" />
               <div className="relative z-20">
-                <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
                   Want to get in touch
                   <br />
                   with us?
                 </h2>
-                <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
                   We&rsquo;re all about offering supportive, expert advice every step of
                   the way.
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                  className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
                 >
                   Contact our Agent
                 </Link>
@@ -202,20 +202,20 @@ export default function BuyPage() {
         </section>
 
         {/* Desktop: Our latest Properties (grid) */}
-        <div className="hidden sm:block container-page mt-[clamp(56px,5vw,96px)]">
+        <div className="hidden sm:block container-page mt-[clamp(50px,4.5vw,86px)]">
           <div className="flex items-end justify-between">
-            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
               Our latest Properties
             </h2>
           </div>
-          <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(16px,1.7vw,32px)]">
+          <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
             {latest.map((p, i) => (
               <PropertyCard key={i} {...p} variant="tall" />
             ))}
           </div>
         </div>
 
-        <div className="hidden sm:block mt-[clamp(56px,5vw,96px)]">
+        <div className="hidden sm:block mt-[clamp(50px,4.5vw,86px)]">
           <GetInTouchCTA />
         </div>
       </main>

@@ -15,26 +15,26 @@ const values = [
 
 export function OurValues() {
   return (
-    <section className="w-full bg-brand-navy py-[clamp(56px,5vw,96px)]">
+    <section className="w-full bg-brand-navy py-[clamp(50px,4.5vw,86px)]">
       <div className="container-page">
-        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.25] whitespace-nowrap">
+        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.25rem,1.7vw,2rem)] leading-[1.25] whitespace-nowrap">
           Through our local insight and commitment, we aim to
           <br />
           deliver premium results that truly stand out.
         </h2>
-        <p className="mx-auto mt-[clamp(20px,1.6vw,28px)] max-w-[520px] text-center font-display font-normal text-white/90 text-[12px] sm:text-[13px] leading-[1.65] tracking-[0.01em]">
+        <p className="mx-auto mt-[clamp(18px,1.45vw,25px)] max-w-[520px] text-center font-display font-normal text-white/90 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
           Our passion for quality service, extensive market expertise, and bespoke strategy
           are all focused on securing the highest potential value throughout your property
           journey.
         </p>
 
-        <div className="mt-[clamp(40px,3.5vw,72px)] grid grid-cols-1 sm:grid-cols-3 gap-[clamp(24px,2.5vw,56px)]">
+        <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-1 sm:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">
           {values.map((v) => (
             <div key={v.title}>
-              <h3 className="font-display text-[16px] sm:text-[18px] font-semibold text-white">
+              <h3 className="font-display text-[15px] sm:text-[17px] font-semibold text-white">
                 {v.title}
               </h3>
-              <p className="mt-[12px] font-display text-white/85 text-[12px] sm:text-[13px] leading-[1.65] tracking-[0.01em]">
+              <p className="mt-[10px] font-display text-white/85 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
                 {v.body}
               </p>
             </div>

@@ -47,6 +47,7 @@ export default function PropertyViewPage() {
       <Nav />
       <main>
         <MobilePropertyView />
+        
         <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
           <Breadcrumb
             items={[
@@ -90,15 +91,15 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <div className="hidden sm:grid container-page mt-[clamp(32px,3vw,56px)] grid-cols-1 lg:grid-cols-[1fr_420px] gap-x-[clamp(28px,3vw,64px)] gap-y-[clamp(28px,2.5vw,48px)]">
+        <div className="hidden sm:grid container-page mt-[clamp(28px,2.7vw,50px)] grid-cols-1 lg:grid-cols-[1fr_320px] gap-x-[clamp(24px,2.7vw,56px)] gap-y-[clamp(24px,2.25vw,42px)]">
           <div>
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.75rem,2.6vw,3rem)] leading-[1.1]">
+            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.575rem,2.35vw,2.7rem)] leading-[1.1]">
               24 Virginia Road,
               <br />
               Hamlyn Terrace
             </h1>
 
-            <p className="mt-[clamp(20px,1.6vw,28px)] font-display text-[14px] sm:text-[15px] leading-[1.7] text-brand-bunker/80 max-w-[640px]">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] leading-[1.7] text-brand-bunker/80 max-w-[640px]">
               Enjoy modern comfort in this stunning ex-display Coral Home, thoughtfully
               designed for effortless living and entertaining. Light filled interiors and
               soaring ceilings enhance the sense of space, flowing through generous living
@@ -107,13 +108,13 @@ export default function PropertyViewPage() {
               quality finishes and practical design throughout.
             </p>
 
-            <div className="mt-[clamp(20px,1.8vw,32px)]">
+            <div className="mt-[clamp(18px,1.6vw,28px)]">
               <Button href="#more" variant="outline-dark" size="sm">
                 Read more
               </Button>
             </div>
 
-            <div className="mt-[clamp(40px,3.5vw,72px)] grid grid-cols-1 sm:grid-cols-2 gap-[clamp(16px,1.4vw,24px)]">
+            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-1 sm:grid-cols-2 gap-[clamp(14px,1.25vw,22px)]">
               {agents.map((a, i) => (
                 <AgentMini key={i} {...a} />
               ))}
@@ -121,18 +122,44 @@ export default function PropertyViewPage() {
           </div>
 
           <aside className="lg:sticky lg:top-[24px] lg:self-start">
-            {/* Stats — 4 | 2 | 2 exact match to image */}
-            <div className="flex items-end justify-center gap-0 pb-[clamp(32px,3vw,48px)]">
-              <Stat number="4" label="Beds" large />
-              <StatDivider />
-              <Stat number="2" label="Baths" />
-              <StatDivider />
-              <Stat number="2" label="Cars" />
+            {/* Stats — 4 | 2 | 2 - with darker visible dividers */}
+            <div className="flex items-center justify-end gap-0 pb-[clamp(24px,2.2vw,36px)] border-b border-brand-silver/40">
+              <div className="text-right">
+                <div className="font-display font-medium text-brand-bunker text-[clamp(40px,3.6vw,52px)] leading-[0.95]">
+                  4
+                </div>
+                <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
+                  Beds
+                </div>
+              </div>
+              <div className="w-px h-10 mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
+              <div className="text-right">
+                <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
+                  2
+                </div>
+                <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
+                  Baths
+                </div>
+              </div>
+              <div className="w-px h-10 mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
+              <div className="text-right">
+                <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
+                  2
+                </div>
+                <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
+                  Cars
+                </div>
+              </div>
             </div>
 
-            <div className="flex gap-[10px]">
+            <div className="flex gap-[10px] mt-[clamp(24px,2.2vw,36px)]">
               <EnquireTrigger className="flex-1" />
-              <Button href="#share" variant="outline-dark" size="sm" className="flex-1">
+              <Button
+                href="#share"
+                variant="outline-dark"
+                size="sm"
+                className="flex-1 !h-[42px] !rounded-full"
+              >
                 Share
               </Button>
             </div>
@@ -180,7 +207,7 @@ export default function PropertyViewPage() {
           </aside>
         </div>
 
-        <div className="hidden sm:block container-page mt-[clamp(56px,4vw,80px)]">
+        <div className="hidden sm:block container-page mt-[clamp(50px,3.6vw,72px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
               title="24 Virginia Road, Hamlyn Terrace"
@@ -193,9 +220,9 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <section className="w-full bg-brand-navy py-[clamp(32px,3.5vw,72px)] sm:mt-[clamp(56px,5vw,96px)]">
+        <section className="w-full bg-brand-navy py-[clamp(28px,3.15vw,64px)] sm:mt-[clamp(50px,4.5vw,86px)]">
           <div className="container-page">
-            <h2 className="font-display font-bold text-white text-[24px] sm:text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+            <h2 className="font-display font-bold text-white text-[22px] sm:text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
               Others also viewed
             </h2>
           </div>
@@ -231,7 +258,7 @@ export default function PropertyViewPage() {
 
           {/* Desktop: 3-col grid */}
           <div className="hidden sm:block container-page">
-            <div className="mt-[clamp(24px,2.4vw,40px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(16px,1.7vw,32px)]">
+            <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
               {similar.map((p, i) => (
                 <PropertyCard
                   key={i}
@@ -247,40 +274,6 @@ export default function PropertyViewPage() {
       </main>
       <Footer />
     </div>
-  );
-}
-
-function Stat({
-  number,
-  label,
-  large = false,
-}: {
-  number: string;
-  label: string;
-  large?: boolean;
-}) {
-  return (
-    <div className="flex flex-1 flex-col items-center px-[clamp(8px,1vw,16px)]">
-      <span
-        className={`font-display font-bold leading-[0.95] text-brand-bunker ${
-          large ? "text-[clamp(34px,3vw,44px)]" : "text-[clamp(22px,2vw,28px)]"
-        }`}
-      >
-        {number}
-      </span>
-      <span className="mt-[clamp(8px,0.8vw,12px)] font-display text-[clamp(10px,0.8vw,12px)] font-normal text-brand-bunker/70">
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function StatDivider() {
-  return (
-    <div
-      className="self-stretch w-px bg-brand-silver/60"
-      aria-hidden
-    />
   );
 }
 
@@ -364,10 +357,28 @@ function MobilePropertyView() {
           Hamlyn Terrace
         </h1>
 
-        <div className="mt-[20px] flex items-end gap-[clamp(20px,6vw,32px)]">
-          <MobileStat number="4" label="Beds" large />
-          <MobileStat number="2" label="Baths" />
-          <MobileStat number="2" label="Cars" />
+        {/* Mobile Stats - with darker dividers */}
+        <div className="mt-[20px] flex items-center justify-start gap-[clamp(16px,5vw,24px)]">
+          <div className="flex items-baseline gap-[6px]">
+            <span className="font-display font-medium leading-none text-brand-navy text-[44px]">
+              4
+            </span>
+            <span className="font-display text-[13px] text-brand-bunker/70">Beds</span>
+          </div>
+          <div className="w-px h-8 bg-gray-400" />
+          <div className="flex items-baseline gap-[6px]">
+            <span className="font-display font-medium leading-none text-brand-navy text-[28px]">
+              2
+            </span>
+            <span className="font-display text-[13px] text-brand-bunker/70">Baths</span>
+          </div>
+          <div className="w-px h-8 bg-gray-400" />
+          <div className="flex items-baseline gap-[6px]">
+            <span className="font-display font-medium leading-none text-brand-navy text-[28px]">
+              2
+            </span>
+            <span className="font-display text-[13px] text-brand-bunker/70">Cars</span>
+          </div>
         </div>
 
         <div className="mt-[24px] flex gap-[12px]">
@@ -496,29 +507,6 @@ function MobilePropertyView() {
           </Link>
         </div>
       </section>
-    </div>
-  );
-}
-
-function MobileStat({
-  number,
-  label,
-  large = false,
-}: {
-  number: string;
-  label: string;
-  large?: boolean;
-}) {
-  return (
-    <div className="flex items-baseline gap-[6px]">
-      <span
-        className={`font-display font-bold leading-none text-brand-navy ${
-          large ? "text-[44px]" : "text-[32px]"
-        }`}
-      >
-        {number}
-      </span>
-      <span className="font-display text-[13px] text-brand-bunker/70">{label}</span>
     </div>
   );
 }

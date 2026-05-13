@@ -11,13 +11,13 @@ const properties: PropertyCardData[] = Array.from({ length: 6 }, () => ({
 
 export function BestSuitedForYou() {
   return (
-    <section className="w-full bg-white sm:bg-brand-soft py-[clamp(56px,5vw,96px)]">
+    <section className="w-full bg-white sm:bg-brand-soft py-[clamp(50px,4.5vw,86px)]">
       <div className="container-page">
-        <h2 className="font-display font-bold text-brand-navy text-[clamp(1.75rem,2.6vw,3.15rem)] leading-[1.1]">
+        <h2 className="font-display font-bold text-brand-navy text-[clamp(1.575rem,2.35vw,2.85rem)] leading-[1.1]">
           Best Suited for You
         </h2>
 
-        <div className="mt-[clamp(40px,3.5vw,72px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(20px,1.7vw,32px)] gap-y-[clamp(28px,2.4vw,46px)]">
+        <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
           {properties.map((p, i) => (
             <PropertyCard key={i} {...p} variant="wide" />
           ))}

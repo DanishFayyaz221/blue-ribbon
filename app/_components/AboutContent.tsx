@@ -18,21 +18,21 @@ const values = [
 
 export function AboutContent() {
   return (
-    <section className="w-full bg-white pb-[clamp(56px,5vw,96px)] pt-[clamp(32px,3vw,56px)]">
+    <section className="w-full bg-white pb-[clamp(50px,4.5vw,86px)] pt-[clamp(28px,2.7vw,50px)]">
       <div className="container-page">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(28px,3vw,64px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
           <div>
-            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15] tracking-[-0.01em]">
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15] tracking-[-0.01em]">
               Your Australian
               <br />
               Property Partners
             </h2>
-            <p className="mt-[clamp(20px,1.6vw,28px)] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
               Established to redefine excellence, Blue Ribbon Real Estate has rapidly
               emerged as a premier agency and a respected industry leader across the
               Australian market.
             </p>
-            <p className="mt-[16px] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
               Committed to raising the bar, Blue Ribbon was founded to transform the
               real estate experience through a dedication to integrity and local
               expertise. Our service focuses on more than just transactions; it is about
@@ -51,7 +51,7 @@ export function AboutContent() {
           </div>
         </div>
 
-        <div className="mt-[clamp(48px,4vw,96px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(28px,3vw,64px)]">
+        <div className="mt-[clamp(44px,3.6vw,86px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
           <div className="relative aspect-[860/440] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)] lg:order-1">
             <Image
               src="/about-us-images/image 6.png"
@@ -62,12 +62,12 @@ export function AboutContent() {
             />
           </div>
           <div className="lg:order-2">
-            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15] tracking-[-0.01em]">
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15] tracking-[-0.01em]">
               Your Excellence
               <br />
               In Property
             </h2>
-            <p className="mt-[clamp(20px,1.6vw,28px)] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
               Blue Ribbon is driven by a team of dynamic professionals united by a
               singular passion to secure the absolute best results for every Australian
               homeowner. Blending modern innovation with traditional integrity, our
@@ -76,27 +76,27 @@ export function AboutContent() {
               expertise, we provide an elevated standard of service designed to exceed
               your property goals.
             </p>
-            <p className="mt-[16px] font-display text-[14px] sm:text-[15px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
               Trust that your most significant investment is managed with the highest
               level of care.
             </p>
           </div>
         </div>
 
-        <div className="mt-[clamp(48px,4vw,96px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(24px,2.5vw,56px)]">
+        <div className="mt-[clamp(44px,3.6vw,86px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">
           {values.map((v) => (
             <div key={v.title}>
-              <h3 className="font-display text-[16px] sm:text-[18px] font-bold text-brand-navy">
+              <h3 className="font-display text-[15px] sm:text-[17px] font-bold text-brand-navy">
                 {v.title}
               </h3>
-              <p className="mt-[12px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+              <p className="mt-[10px] font-display text-[12px] sm:text-[13px] font-medium leading-[1.7] text-brand-bunker">
                 {v.body}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-[clamp(36px,3vw,56px)]">
+        <div className="mt-[clamp(32px,2.7vw,50px)]">
           <Button href="/contact" variant="outline-dark" size="sm">
             Contact Team
           </Button>

@@ -35,13 +35,13 @@ export default function AboutPage() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-brand-navy/75" />
-              <div className="absolute inset-0 flex flex-col justify-center px-[24px]">
-                <h1 className="font-display font-bold text-white text-[34px] leading-[1.05]">
+              <div className="absolute inset-0 flex flex-col justify-center px-[22px]">
+                <h1 className="font-display font-bold text-white text-[30px] leading-[1.05]">
                   About
                   <br />
                   Blue Ribbon
                 </h1>
-                <p className="mt-[16px] font-display text-white/85 text-[13px] leading-[1.55] max-w-[320px]">
+                <p className="mt-[14px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]">
                   With a legacy of trust and excellence, Blue Ribbon Real Estate has been
                   connecting families with their dream homes across Western Sydney.
                 </p>
@@ -61,11 +61,11 @@ export default function AboutPage() {
             </div>
           </section>
 
-          <section className="container-page pb-[24px]">
-            <h2 className="font-display font-bold text-brand-bunker text-[22px] leading-[1.2]">
+          <section className="container-page pb-[22px]">
+            <h2 className="font-display font-bold text-brand-bunker text-[20px] leading-[1.2]">
               Our Story
             </h2>
-            <p className="mt-[14px] font-display text-[13px] leading-[1.65] text-brand-bunker/80">
+            <p className="mt-[12px] font-display text-[12.5px] leading-[1.65] text-brand-bunker/80">
               Founded with a vision to redefine real estate in Western Sydney, our team
               brings together decades of local expertise, market knowledge, and genuine
               passion for helping people find their perfect home. Every property we
@@ -73,15 +73,15 @@ export default function AboutPage() {
             </p>
           </section>
 
-          <section className="container-page pb-[28px]">
-            <div className="rounded-[14px] bg-[#F1F2F4] p-[20px]">
-              <div className="grid grid-cols-3 gap-[8px]">
+          <section className="container-page pb-[24px]">
+            <div className="rounded-[14px] bg-[#F1F2F4] p-[18px]">
+              <div className="grid grid-cols-3 gap-[6px]">
                 {mobileStats.map((s) => (
                   <div key={s.label} className="text-center">
-                    <p className="font-display text-[26px] font-bold leading-none text-brand-navy">
+                    <p className="font-display text-[23px] font-bold leading-none text-brand-navy">
                       {s.value}
                     </p>
-                    <p className="mt-[8px] font-display text-[11px] text-brand-bunker/70 leading-[1.3]">
+                    <p className="mt-[6px] font-display text-[10.5px] text-brand-bunker/70 leading-[1.3]">
                       {s.label}
                     </p>
                   </div>
@@ -92,7 +92,7 @@ export default function AboutPage() {
 
           <section className="w-full bg-white">
             <div className="w-full">
-              <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+              <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
                 <Image
                   src="/images/handshake-house.png"
                   alt=""
@@ -102,18 +102,18 @@ export default function AboutPage() {
                 />
                 <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                 <div className="relative z-20">
-                  <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                  <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
                     Want to get in touch
                     <br />
                     with us?
                   </h2>
-                  <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                  <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
                     We&rsquo;re all about offering supportive, expert advice every step of
                     the way.
                   </p>
                   <Link
                     href="/contact"
-                    className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
                   >
                     Contact our Agent
                   </Link>

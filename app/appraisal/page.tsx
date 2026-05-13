@@ -150,13 +150,13 @@ export default function AppraisalPage() {
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black/35" />
-                <div className="absolute inset-0 flex flex-col pt-[clamp(40px,5vw,96px)] pb-[clamp(140px,15vw,240px)]">
+                <div className="absolute inset-0 flex flex-col pt-[clamp(36px,4.5vw,86px)] pb-[clamp(125px,13.5vw,216px)]">
                   <div className="container-page w-full">
-                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.75rem,3.1vw,3.75rem)] leading-[1.1] tracking-[-0.01em]">
+                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.575rem,2.8vw,3.35rem)] leading-[1.1] tracking-[-0.01em]">
                       Get Your Property Estimate in just{" "}
                       <span className="text-brand-sky">9 Seconds!</span>
                     </h1>
-                    <p className="mx-auto mt-[clamp(12px,1vw,18px)] max-w-[760px] text-center font-display text-white text-[clamp(13px,0.95vw,17px)] font-medium leading-[1.5] tracking-[0.01em]">
+                    <p className="mx-auto mt-[clamp(10px,0.9vw,16px)] max-w-[760px] text-center font-display text-white text-[clamp(12px,0.85vw,15px)] font-medium leading-[1.5] tracking-[0.01em]">
                       Looking to buy or sell a property? Search the address below for a
                       Digital Property Report that highlights the market value including
                       recent sales, rental history, suburb report and more.
@@ -216,12 +216,12 @@ export default function AppraisalPage() {
 
             <OurValues />
 
-            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(48px,4vw,80px)]">
+            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(44px,3.6vw,72px)]">
               <div className="container-page">
-                <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+                <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
                   Best Suited for You
                 </h2>
-                <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(20px,1.7vw,32px)] gap-y-[clamp(28px,2.4vw,46px)]">
+                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
                   {samples.map((p, i) => (
                     <PropertyCard key={i} {...p} variant="wide" />
                   ))}
@@ -229,38 +229,38 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <section className="w-full bg-brand-navy py-[clamp(28px,2.6vw,52px)]">
-              <div className="container-page flex flex-col items-start gap-[16px] sm:flex-row sm:items-center sm:justify-between">
+            <section className="w-full bg-brand-navy py-[clamp(26px,2.35vw,46px)]">
+              <div className="container-page flex flex-col items-start gap-[14px] sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="font-display font-bold text-white text-[clamp(20px,1.8vw,32px)] leading-[1.2]">
+                  <h2 className="font-display font-bold text-white text-[clamp(18px,1.6vw,28px)] leading-[1.2]">
                     Get Your Property Estimate in just 9 seconds!
                   </h2>
-                  <p className="mt-[6px] font-display text-white/85 text-[12px] sm:text-[13px] font-normal">
+                  <p className="mt-[5px] font-display text-white/85 text-[11.5px] sm:text-[12.5px] font-normal">
                     Connect with your local Agent now
                   </p>
                 </div>
                 <a
                   href="/contact"
-                  className="font-display text-white text-[14px] sm:text-[15px] font-medium underline underline-offset-4 hover:opacity-80"
+                  className="font-display text-white text-[13px] sm:text-[14px] font-medium underline underline-offset-4 hover:opacity-80"
                 >
                   Get in touch
                 </a>
               </div>
             </section>
 
-            <section className="hidden sm:block container-page py-[clamp(48px,4vw,80px)]">
-              <div className="flex flex-col gap-[12px] sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+            <section className="hidden sm:block container-page py-[clamp(44px,3.6vw,72px)]">
+              <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
+                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
                   Our latest Properties
                 </h2>
                 <Link
                   href="/buy"
-                  className="font-display text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                  className="font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
                 >
                   Explore more Properties
                 </Link>
               </div>
-              <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(16px,1.7vw,32px)]">
+              <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
                 {latest.map((p, i) => (
                   <PropertyCard key={i} {...p} variant="tall" />
                 ))}
@@ -269,7 +269,7 @@ export default function AppraisalPage() {
 
             <section className="sm:hidden w-full bg-white">
               <div className="w-full">
-                <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+                <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
                   <Image
                     src="/images/handshake-house.png"
                     alt=""
@@ -279,19 +279,19 @@ export default function AppraisalPage() {
                   />
                   <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                   <div className="relative z-20">
-                    <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                    <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
                       Want to get in touch
                       <br />
                       with us?
                     </h2>
-                    <p className="mt-[18px] font-display font-light text-white text-[16px] leading-[1.4]">
+                    <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.4]">
                       We&rsquo;re all about offering supportive, expert advice every step of
                       the way, making your property buying experience as seamless and
                       enjoyable as possible.
                     </p>
                     <Link
                       href="/contact"
-                      className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                      className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
                     >
                       Contact our Agent
                     </Link>
@@ -435,33 +435,33 @@ export default function AppraisalPage() {
                 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
               </div>
 
-              <section className="container-page pt-[clamp(40px,4vw,80px)] pb-[clamp(60px,5vw,100px)]">
+              <section className="container-page pt-[clamp(36px,3.6vw,72px)] pb-[clamp(54px,4.5vw,90px)]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
                   {/* LEFT COLUMN — Address + Property value range */}
-                  <div className="flex flex-col items-center pt-[clamp(40px,5vw,80px)] lg:pr-[clamp(8px,1vw,16px)]">
-                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.75rem,2.4vw,2.5rem)] leading-[1.2] tracking-[-0.01em]">
+                  <div className="flex flex-col items-center pt-[clamp(36px,4.5vw,72px)] lg:pr-[clamp(8px,1vw,16px)]">
+                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.575rem,2.15vw,2.25rem)] leading-[1.2] tracking-[-0.01em]">
                       Parade/43 Hopetoun Avenue,
                       <br />
                       Vaucluse 2030
                     </h1>
-                    <p className="mt-[clamp(12px,1vw,18px)] text-center font-display text-[clamp(13px,1vw,15px)] font-medium text-brand-bunker/70">
+                    <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[clamp(12px,0.9vw,14px)] font-medium text-brand-bunker/70">
                       5 Bed&nbsp;&nbsp;|&nbsp;&nbsp;5 Bath&nbsp;&nbsp;|&nbsp;&nbsp;4 Car&nbsp;&nbsp;|&nbsp;&nbsp;House
                     </p>
 
                     {/* Property value range */}
-                    <div className="mt-[clamp(56px,6vw,100px)] w-full max-w-[560px]">
-                      <p className="text-center font-display text-[clamp(11px,0.85vw,13px)] font-semibold uppercase tracking-[0.16em] text-brand-bunker/60">
+                    <div className="mt-[clamp(50px,5.4vw,90px)] w-full max-w-[560px]">
+                      <p className="text-center font-display text-[clamp(10.5px,0.78vw,12px)] font-semibold uppercase tracking-[0.16em] text-brand-bunker/60">
                         ESTIMATED PROPERTY VALUE
                       </p>
 
-                      <div className="mt-[clamp(28px,2.6vw,44px)] flex items-center justify-center gap-[clamp(16px,2vw,36px)]">
-                        <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold text-brand-bunker/35">
+                      <div className="mt-[clamp(24px,2.35vw,40px)] flex items-center justify-center gap-[clamp(14px,1.8vw,32px)]">
+                        <span className="font-display text-[clamp(18px,1.7vw,25px)] font-bold text-brand-bunker/35">
                           $8.57M
                         </span>
 
                         <div className="flex flex-col items-center">
-                          <div className="rounded-full bg-brand-sky px-[clamp(22px,2.2vw,32px)] py-[clamp(10px,1vw,14px)] shadow-[0_6px_20px_rgba(56,178,224,0.35)]">
-                            <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold leading-none text-white">
+                          <div className="rounded-full bg-brand-sky px-[clamp(20px,2vw,28px)] py-[clamp(9px,0.9vw,12px)] shadow-[0_6px_20px_rgba(56,178,224,0.35)]">
+                            <span className="font-display text-[clamp(18px,1.7vw,25px)] font-bold leading-none text-white">
                               $9.7M
                             </span>
                           </div>
@@ -480,7 +480,7 @@ export default function AppraisalPage() {
                           </div>
                         </div>
 
-                        <span className="font-display text-[clamp(20px,1.9vw,28px)] font-bold text-brand-bunker/35">
+                        <span className="font-display text-[clamp(18px,1.7vw,25px)] font-bold text-brand-bunker/35">
                           $10.9M
                         </span>
                       </div>
@@ -489,14 +489,14 @@ export default function AppraisalPage() {
 
                   {/* RIGHT COLUMN — "One last question!" card */}
                   <aside className="w-full max-w-[clamp(380px,32vw,460px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(20px,1.8vw,28px)] bg-white p-[clamp(28px,2.6vw,40px)] shadow-[0_10px_40px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)]">
-                    <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(20px,1.8vw,28px)] leading-[1.2]">
+                    <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(18px,1.6vw,25px)] leading-[1.2]">
                       One last question!
                     </h2>
-                    <p className="mt-[clamp(10px,0.9vw,14px)] text-center font-display text-[clamp(12px,0.95vw,14px)] text-brand-bunker/70">
+                    <p className="mt-[clamp(9px,0.8vw,12px)] text-center font-display text-[clamp(11.5px,0.85vw,13px)] text-brand-bunker/70">
                       What are you looking to do?
                     </p>
 
-                    <div className="mt-[clamp(20px,1.8vw,28px)] flex flex-col gap-[clamp(10px,0.9vw,14px)]">
+                    <div className="mt-[clamp(18px,1.6vw,25px)] flex flex-col gap-[clamp(9px,0.8vw,12px)]">
                       {intentOptions.map((opt) => {
                         const active = intent === opt.intent;
                         return (
@@ -621,36 +621,36 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
         <div className="container-page pt-[16px] pb-[16px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
         </div>
-        <section className="container-page pb-[40px]">
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[26px] leading-[1.15]">
+        <section className="container-page pb-[36px]">
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[23px] leading-[1.15]">
             Vaucluse Stats
           </h2>
-          <div className="mt-[24px] grid grid-cols-2 gap-[14px]">
+          <div className="mt-[22px] grid grid-cols-2 gap-[12px]">
             {suburbStats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-[12px] bg-[#F1F2F4] px-[14px] py-[20px] text-center"
+                className="rounded-[12px] bg-[#F1F2F4] px-[12px] py-[18px] text-center"
               >
-                <p className="whitespace-pre-line font-display text-[10px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
+                <p className="whitespace-pre-line font-display text-[9.5px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
                   {s.label}
                 </p>
                 <p
-                  className={`mt-[10px] font-display text-[26px] font-bold ${
+                  className={`mt-[8px] font-display text-[23px] font-bold ${
                     s.tone === "navy" ? "text-brand-navy" : "text-brand-sky"
                   }`}
                 >
                   {s.value}
                 </p>
-                <p className="mt-[6px] font-display text-[11px] text-brand-bunker/60">
+                <p className="mt-[5px] font-display text-[10.5px] text-brand-bunker/60">
                   {s.date}
                 </p>
               </div>
             ))}
           </div>
-          <div className="mt-[24px] text-center">
+          <div className="mt-[22px] text-center">
             <a
               href="#disclaimer"
-              className="font-display text-[14px] font-bold text-brand-bunker hover:text-brand-navy"
+              className="font-display text-[13px] font-bold text-brand-bunker hover:text-brand-navy"
             >
               Disclaimer
             </a>
@@ -661,12 +661,12 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="mt-[32px] rounded-[20px] bg-white p-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+            className="mt-[28px] rounded-[20px] bg-white p-[22px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
           >
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[22px]">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[20px]">
               Hey there!
             </h2>
-            <p className="mt-[10px] text-center font-display text-[13px] text-brand-bunker/70 leading-[1.5]">
+            <p className="mt-[8px] text-center font-display text-[12.5px] text-brand-bunker/70 leading-[1.5]">
               Please tell us who you are to receive your FREE in-depth Digital Property
               Report instantly.
             </p>
@@ -676,7 +676,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[20px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[18px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -684,11 +684,11 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[8px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
-              className="mt-[14px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+              className="mt-[12px] h-[42px] w-full rounded-[22px] bg-brand-navy font-display text-[12.5px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
             >
               NEXT
             </button>
@@ -697,7 +697,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
 
         <section className="w-full bg-white">
           <div className="w-full">
-            <div className="relative isolate overflow-hidden px-[28px] py-[36px]">
+            <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
               <Image
                 src="/images/handshake-house.png"
                 alt=""
@@ -707,18 +707,18 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               />
               <div className="absolute inset-0 z-10 bg-brand-navy/85" />
               <div className="relative z-20">
-                <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
                   Want to get in touch
                   <br />
                   with us?
                 </h2>
-                <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
                   We&rsquo;re all about offering supportive, expert advice every step of
                   the way.
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                  className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
                 >
                   Contact our Agent
                 </Link>
@@ -729,32 +729,32 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
       </div>
 
       {/* Desktop layout (unchanged) */}
-      <section className="hidden sm:block container-page py-[clamp(40px,4vw,80px)]">
-        <div className="flex flex-col items-stretch gap-[24px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
-          <div className="mx-auto w-full max-w-[640px] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(120px,9vw,180px)]">
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+      <section className="hidden sm:block container-page py-[clamp(36px,3.6vw,72px)]">
+        <div className="flex flex-col items-stretch gap-[22px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
+          <div className="mx-auto w-full max-w-[640px] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(108px,8vw,160px)]">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.6vw,1.8rem)] leading-[1.15]">
               Vaucluse Stats
             </h2>
-            <div className="mt-[clamp(28px,2.5vw,48px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(28px,2.4vw,40px)] gap-x-[clamp(16px,1.6vw,28px)]">
+            <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(24px,2.15vw,36px)] gap-x-[clamp(14px,1.4vw,25px)]">
               {suburbStats.map((s) => (
                 <div key={s.label} className="flex flex-col items-center text-center">
                   <StatIcon name={s.icon} />
-                  <p className="mt-[10px] whitespace-pre-line font-display text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
+                  <p className="mt-[8px] whitespace-pre-line font-display text-[9.5px] sm:text-[10.5px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
                     {s.label}
                   </p>
-                  <p className="mt-[10px] font-display text-[clamp(20px,1.6vw,26px)] font-bold text-brand-sky">
+                  <p className="mt-[8px] font-display text-[clamp(18px,1.45vw,23px)] font-bold text-brand-sky">
                     {s.value}
                   </p>
-                  <p className="mt-[4px] font-display text-[10px] sm:text-[11px] text-brand-bunker/60">
+                  <p className="mt-[3px] font-display text-[9.5px] sm:text-[10.5px] text-brand-bunker/60">
                     {s.date}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="mt-[clamp(24px,2vw,40px)] text-center">
+            <div className="mt-[clamp(20px,1.8vw,36px)] text-center">
               <a
                 href="#disclaimer"
-                className="font-display text-[13px] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                className="font-display text-[12.5px] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
               >
                 Disclaimer
               </a>
@@ -766,12 +766,12 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="mx-auto w-full max-w-[440px] rounded-[28px] bg-white p-[clamp(28px,2.4vw,40px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+            className="mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
           >
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,1.8vw,2rem)] leading-[1.15]">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.6vw,1.8rem)] leading-[1.15]">
               Hey there!
             </h2>
-            <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[13px] sm:text-[14px] text-brand-bunker/70 leading-[1.5]">
+            <p className="mt-[clamp(8px,0.8vw,14px)] text-center font-display text-[12.5px] sm:text-[13.5px] text-brand-bunker/70 leading-[1.5]">
               Please tell us who you are to receive your FREE in-depth Digital Property Report
               instantly.
             </p>
@@ -781,7 +781,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[clamp(20px,1.6vw,28px)] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[clamp(18px,1.45vw,25px)] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -789,11 +789,11 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[12px] h-[48px] w-full rounded-[24px] bg-brand-soft-2 px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
-              className="mt-[clamp(16px,1.4vw,24px)] h-[48px] w-full rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
+              className="mt-[clamp(14px,1.25vw,22px)] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold tracking-[0.05em] text-white transition hover:bg-brand-navy-deep"
             >
               NEXT
             </button>
@@ -805,7 +805,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
 }
 
 function StatIcon({ name }: { name: StatItem["icon"] }) {
-  const common = "h-[40px] w-[40px] text-brand-bunker";
+  const common = "h-[36px] w-[36px] text-brand-bunker";
   switch (name) {
     case "growth":
       return (

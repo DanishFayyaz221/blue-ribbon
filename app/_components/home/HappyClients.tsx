@@ -78,9 +78,9 @@ export function HappyClients() {
   const translatePct = -(safeStart * slideWidthPct);
 
   return (
-    <section className="w-full bg-white py-[clamp(40px,5vw,96px)]">
+    <section className="w-full bg-white py-[clamp(36px,4.5vw,86px)]">
       <div className="container-page">
-        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.6vw,3.15rem)] leading-[1.1]">
+        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.25rem,2.35vw,2.85rem)] leading-[1.1]">
           Meet Our Happy Clients
         </h2>
       </div>
@@ -104,7 +104,7 @@ export function HappyClients() {
       </div>
 
       {/* Tablet / desktop: slider carousel with images */}
-      <div className="hidden sm:block relative mt-[clamp(36px,3.5vw,64px)]">
+      <div className="hidden sm:block relative mt-[clamp(32px,3.15vw,58px)]">
         <div className="relative px-[clamp(20px,3vw,64px)]">
           <button
             type="button"

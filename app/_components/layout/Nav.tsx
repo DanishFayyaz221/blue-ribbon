@@ -54,7 +54,7 @@ export function Nav() {
               width={260}
               height={64}
               priority
-              className="h-[80px] sm:h-[80px] lg:h-[100px] w-auto"
+              className="h-[72px] sm:h-[72px] lg:h-[90px] w-auto"
             />
           </Link>
           <button
@@ -90,7 +90,7 @@ export function Nav() {
                 alt="Blue Ribbon Real Estate"
                 width={260}
                 height={64}
-                className="h-[80px] sm:h-[80px] lg:h-[100px] w-auto"
+                className="h-[72px] sm:h-[72px] lg:h-[90px] w-auto"
               />
             </Link>
             <button
@@ -115,8 +115,8 @@ export function Nav() {
           </div>
 
           {/* Mobile drawer */}
-          <div className="md:hidden container-page pt-[28px] pb-[40px]">
-            <ul className="flex flex-col gap-[24px]">
+          <div className="md:hidden container-page pt-[24px] pb-[36px]">
+            <ul className="flex flex-col gap-[20px]">
               {[
                 { label: "Buy", href: "/buy" },
                 { label: "Sell", href: "/appraisal" },
@@ -141,8 +141,8 @@ export function Nav() {
 
           {/* Tablet / desktop drawer */}
           <div className="hidden md:block container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
-            <div className="grid grid-cols-1 gap-x-[64px] gap-y-[40px] lg:grid-cols-12 lg:items-start">
-              <div className="flex flex-col gap-[16px] lg:col-span-2">
+            <div className="grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
+              <div className="flex flex-col gap-[14px] lg:col-span-2">
                 {buyLinks.map((link) => (
                   <Link
                     key={link.label}

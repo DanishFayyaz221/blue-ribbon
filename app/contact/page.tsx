@@ -26,13 +26,13 @@ export default function ContactPage() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-brand-navy/80" />
-              <div className="absolute inset-0 flex flex-col justify-center px-[24px]">
-                <h1 className="font-display font-bold text-white text-[28px] leading-[1.15]">
+              <div className="absolute inset-0 flex flex-col justify-center px-[22px]">
+                <h1 className="font-display font-bold text-white text-[25px] leading-[1.15]">
                   Want to get in
                   <br />
                   touch with us?
                 </h1>
-                <p className="mt-[14px] font-display text-white/85 text-[13px] leading-[1.55] max-w-[320px]">
+                <p className="mt-[12px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]">
                   We&rsquo;re all about offering unparalleled service, expert advice, every
                   step of the way.
                 </p>
@@ -40,42 +40,42 @@ export default function ContactPage() {
             </div>
           </section>
 
-          <section className="container-page py-[24px]">
-            <form className="flex flex-col gap-[12px]">
+          <section className="container-page py-[22px]">
+            <form className="flex flex-col gap-[10px]">
               <input
                 type="text"
                 placeholder="Full Name"
-                className="h-[48px] w-full rounded-[24px] bg-[#F1F2F4] px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
               />
               <input
                 type="email"
                 placeholder="Email Address"
-                className="h-[48px] w-full rounded-[24px] bg-[#F1F2F4] px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
               />
               <input
                 type="tel"
                 placeholder="Phone Number"
-                className="h-[48px] w-full rounded-[24px] bg-[#F1F2F4] px-[20px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
               />
               <textarea
                 placeholder="Your Message"
                 rows={4}
-                className="w-full resize-none rounded-[20px] bg-[#F1F2F4] px-[20px] py-[14px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+                className="w-full resize-none rounded-[18px] bg-[#F1F2F4] px-[18px] py-[12px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
               />
               <button
                 type="submit"
-                className="mt-[6px] h-[48px] w-full rounded-[24px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
+                className="mt-[4px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep"
               >
                 Send Message
               </button>
             </form>
           </section>
 
-          <div className="h-[80px] bg-[#EDEFF2]" />
+          <div className="h-[72px] bg-[#EDEFF2]" />
 
-          <section className="container-page py-[28px]">
-            <h2 className="font-display font-bold text-brand-bunker text-[22px]">Our Office</h2>
-            <div className="mt-[14px] flex flex-col gap-[6px] font-display text-[13px] text-brand-bunker/85">
+          <section className="container-page py-[24px]">
+            <h2 className="font-display font-bold text-brand-bunker text-[20px]">Our Office</h2>
+            <div className="mt-[12px] flex flex-col gap-[5px] font-display text-[12.5px] text-brand-bunker/85">
               <p>11/76-80 Station Street</p>
               <p>Wentworthville, NSW 2145</p>
               <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
@@ -106,8 +106,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(48px,4vw,96px)]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(32px,3vw,64px)] items-start">
+        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,86px)]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(28px,2.7vw,56px)] items-start">
             <div className="relative aspect-[860/520] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)]">
               <Image
                 src="/contact/contact-1.png"
@@ -118,10 +118,10 @@ export default function ContactPage() {
               />
             </div>
             <div>
-              <h2 className="font-display font-bold text-brand-navy text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+              <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
                 Visit Our Office
               </h2>
-              <p className="mt-[clamp(16px,1.5vw,28px)] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+              <p className="mt-[clamp(14px,1.35vw,25px)] font-display text-[12.5px] sm:text-[13.5px] font-medium leading-[1.7] text-brand-bunker">
                 Our team and clients are committed to creating relationships beyond just
                 the property. By delivering personalized practical solutions, with a smile,
                 we cultivate a high level of trust and lifelong connections — your trusted
@@ -130,7 +130,7 @@ export default function ContactPage() {
                 memorable experience built on a personalised touch, professional intuition
                 and consistent excellence in everything that we do.
               </p>
-              <div className="mt-[24px] flex flex-col gap-[6px] font-display text-[13px] sm:text-[14px] font-semibold text-brand-bunker">
+              <div className="mt-[22px] flex flex-col gap-[5px] font-display text-[12.5px] sm:text-[13.5px] font-semibold text-brand-bunker">
                 <p>11/76-80 Station Street, Wentworthville, NSW 2145</p>
                 <a href="mailto:sales@blueribbonre.com.au" className="font-medium hover:underline">
                   sales@blueribbonre.com.au
@@ -143,7 +143,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(48px,4vw,80px)]">
+        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,72px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
               src="https://www.google.com/maps?q=11%2F76-80+Station+Street%2C+Wentworthville+NSW+2145&z=16&output=embed"
@@ -156,11 +156,11 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(48px,4vw,96px)] mb-[clamp(56px,5vw,96px)]">
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.15]">
+        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,86px)] mb-[clamp(50px,4.5vw,86px)]">
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
             Get in Touch
           </h2>
-          <div className="mt-[clamp(28px,2.5vw,48px)] mx-auto w-full max-w-[680px]">
+          <div className="mt-[clamp(24px,2.25vw,42px)] mx-auto w-full max-w-[680px]">
             <ContactForm />
           </div>
         </section>
