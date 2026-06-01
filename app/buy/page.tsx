@@ -60,7 +60,7 @@ export default function BuyPage() {
 
         {/* Desktop hero image */}
         <section className="hidden sm:block relative w-full overflow-hidden">
-          <div className="relative aspect-[1920/990] min-h-[460px] w-full">
+          <div className="relative aspect-[1920/860] min-h-[380px] max-h-[600px] w-full">
             <Image
               src="/contact/contact-us.png"
               alt="Featured property"
@@ -122,7 +122,7 @@ export default function BuyPage() {
         {/* Desktop: list/map toggle + grid */}
         <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Buy Your Dream
             </h1>
             <div className="flex items-center gap-[6px] rounded-full border border-brand-silver p-[4px]">
@@ -141,7 +141,7 @@ export default function BuyPage() {
             </div>
           </div>
 
-          <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
+          <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
             {featured.map((p, i) => (
               <PropertyCard key={i} {...p} variant="tall" />
             ))}
@@ -202,20 +202,20 @@ export default function BuyPage() {
         </section>
 
         {/* Desktop: Our latest Properties (grid) */}
-        <div className="hidden sm:block container-page mt-[clamp(50px,4.5vw,86px)]">
+        <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
           <div className="flex items-end justify-between">
-            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Our latest Properties
             </h2>
           </div>
-          <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
+          <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
             {latest.map((p, i) => (
               <PropertyCard key={i} {...p} variant="tall" />
             ))}
           </div>
         </div>
 
-        <div className="hidden sm:block mt-[clamp(50px,4.5vw,86px)]">
+        <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
           <GetInTouchCTA />
         </div>
       </main>

@@ -19,9 +19,9 @@ export function GetInTouchCTA({
   return (
     <section className="w-full bg-brand-navy">
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:aspect-[1920/720]">
-        <div className="flex items-center px-[clamp(22px,4.5vw,86px)] py-[clamp(32px,3.15vw,58px)] lg:py-0">
+        <div className="flex items-center px-[clamp(22px,4.5vw,86px)] py-[clamp(28px,2.7vw,50px)] lg:py-0">
           <div className="w-full max-w-[380px]">
-            <h2 className="font-display font-bold text-white text-[clamp(1.575rem,2.35vw,2.7rem)] leading-[1.1]">
+            <h2 className="font-display font-bold text-white text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
               {title}
             </h2>
             <p className="mt-[clamp(18px,1.45vw,25px)] font-display font-normal text-white/90 text-[11.5px] sm:text-[12.5px] leading-[1.55] tracking-[0.01em]">

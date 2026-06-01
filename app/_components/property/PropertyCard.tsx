@@ -42,7 +42,7 @@ export function PropertyCard({
         href={href}
         className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.7vw,32px)] sm:border-0 sm:bg-transparent sm:overflow-visible"
       >
-        <div className="relative aspect-[869/435] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
+        <div className="relative aspect-[869/360] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
           <Image
             src={image}
             alt={address}
@@ -67,6 +67,7 @@ export function PropertyCard({
   }
 
   if (variant === "compact") {
+    const guideText = guide?.startsWith("$") ? `Guide ${guide}` : guide;
     return (
       <Link href={href} className="group block w-full">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[12px]">
@@ -80,8 +81,8 @@ export function PropertyCard({
         </div>
         <div className="mt-[14px] font-display">
           <p className="text-[15px] font-medium leading-[1.3] text-white">{address}</p>
-          {guide && (
-            <p className="text-[13px] leading-[1.4] text-white/80 mt-[2px]">Guide {guide}</p>
+          {guideText && (
+            <p className="text-[13px] leading-[1.4] text-white/80 mt-[2px]">{guideText}</p>
           )}
         </div>
       </Link>
@@ -90,7 +91,7 @@ export function PropertyCard({
 
   return (
     <Link href={href} className="group block w-full">
-      <div className="relative aspect-[418/575] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
         <Image
           src={image}
           alt={address}

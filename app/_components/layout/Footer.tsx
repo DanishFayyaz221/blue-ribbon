@@ -117,7 +117,7 @@ function MobileLinkColumn({
 function DesktopFooter() {
   return (
     <footer className="hidden lg:block w-full bg-white">
-      <div className="container-page pt-[clamp(44px,4.95vw,86px)] pb-[clamp(32px,2.7vw,50px)]">
+      <div className="container-page pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)]">
         <div className="grid gap-x-[clamp(18px,2.15vw,36px)] gap-y-[36px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-[170px_1fr_1fr_1fr_auto]">
           <div className="flex flex-col gap-[14px] sm:order-1">
             {buyLinks.map((link) => (

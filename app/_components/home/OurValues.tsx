@@ -15,9 +15,9 @@ const values = [
 
 export function OurValues() {
   return (
-    <section className="w-full bg-brand-navy py-[clamp(50px,4.5vw,86px)]">
+    <section className="w-full bg-brand-navy py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
-        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.25rem,1.7vw,2rem)] leading-[1.25] whitespace-nowrap">
+        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.15rem,1.5vw,1.8rem)] leading-[1.25] whitespace-nowrap">
           Through our local insight and commitment, we aim to
           <br />
           deliver premium results that truly stand out.

@@ -117,7 +117,7 @@ export default function AgentsPage() {
           </div>
 
           <section className="container-page">
-            <div className="relative aspect-[1771/898] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft">
+            <div className="relative aspect-[1771/780] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft">
               <Image
                 src="/our-team/hero.png"
                 alt="Blue Ribbon team"
@@ -131,8 +131,8 @@ export default function AgentsPage() {
             </div>
           </section>
 
-          <section className="container-page mt-[clamp(44px,3.6vw,72px)]">
-            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+          <section className="container-page mt-[clamp(38px,3.15vw,64px)]">
+            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Meet our Team
             </h2>
             <div className="mt-[clamp(28px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(18px,1.6vw,28px)]">
@@ -142,14 +142,14 @@ export default function AgentsPage() {
             </div>
           </section>
 
-          <section className="w-full mt-[clamp(50px,4.5vw,86px)] bg-brand-navy">
+          <section className="w-full mt-[clamp(44px,4vw,76px)] bg-brand-navy">
             <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="flex items-center px-[clamp(22px,12.5vw,250px)] py-[clamp(44px,3.6vw,64px)]">
+              <div className="flex items-center px-[clamp(22px,12.5vw,250px)] py-[clamp(38px,3.15vw,56px)]">
                 <div className="w-full max-w-[360px]">
-                  <h2 className="font-display font-medium text-white text-[clamp(1.25rem,1.55vw,1.8rem)] leading-[1.1]">
+                  <h2 className="font-display font-medium text-white text-[clamp(1.15rem,1.4vw,1.6rem)] leading-[1.1]">
                     Ready to start?
                   </h2>
-                  <p className="mt-[clamp(7px,0.6vw,12px)] font-display font-light text-white text-[clamp(1.25rem,1.55vw,1.8rem)] leading-[1.15]">
+                  <p className="mt-[clamp(7px,0.6vw,12px)] font-display font-light text-white text-[clamp(1.15rem,1.4vw,1.6rem)] leading-[1.15]">
                     Connect with a Blueribbon specialist in Parramatta
                   </p>
                   <p className="mt-[clamp(18px,1.45vw,28px)] font-display text-white/90 text-[11.5px] sm:text-[12.5px] font-normal leading-[1.5] tracking-[0.02em]">

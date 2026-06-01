@@ -9,7 +9,7 @@ type DealType = (typeof dealTypes)[number];
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative aspect-[1920/990] min-h-[380px] sm:min-h-[460px] w-full">
+      <div className="relative aspect-[1920/860] min-h-[380px] sm:min-h-[460px] max-h-[680px] w-full">
         <div className="absolute inset-0 scale-[1.04] blur-[6px]">
           <video
             className="h-full w-full object-cover"
@@ -25,7 +25,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.8rem,2.7vw,3.15rem)] leading-[1.1] tracking-[-0.01em]">
+          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
           </h1>

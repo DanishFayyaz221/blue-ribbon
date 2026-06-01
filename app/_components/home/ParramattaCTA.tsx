@@ -36,34 +36,36 @@ export function ParramattaCTA() {
       </section>
 
       {/* Desktop / tablet (existing dark navy split layout) */}
-      <section className="hidden lg:block w-full bg-brand-navy">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
-          <div className="flex items-center px-[clamp(18px,3.5vw,68px)] py-[clamp(44px,3.6vw,64px)]">
-            <div className="w-full max-w-[760px]">
-              <h2 className="font-display font-bold text-brand-citrine text-[clamp(1.575rem,2.65vw,3.2rem)] leading-[1.1]">
-                Set within the dynamic urban heart of Parramatta
-              </h2>
-              <p className="mt-[clamp(24px,3.15vw,64px)] font-display text-brand-citrine text-[clamp(14px,0.95vw,18px)] font-medium leading-[1.4] tracking-[0.02em]">
-                The Riverwalk Residences by Blueribbon offer a curated collection of
-                sophisticated urban homes, defined by design excellence and unparalleled
-                connection. Embrace the convenience of riverside living and the pulse of a
-                thriving community.
-              </p>
-              <div className="mt-[clamp(20px,2vw,32px)]">
-                <Button href="/contact" variant="outline" size="lg">
-                  Contact our Agent
-                </Button>
+      <section className="hidden lg:block w-full bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/bg.png')" }}>
+        <div className="container-page">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[clamp(24px,2.5vw,48px)]">
+            <div className="flex items-center py-[clamp(32px,2.8vw,48px)]">
+              <div className="w-full max-w-[760px]">
+                <h2 className="font-display font-bold text-brand-citrine text-[clamp(1.3rem,2vw,2.25rem)] leading-[1.1]">
+                  Set within the dynamic urban heart of Parramatta
+                </h2>
+                <p className="mt-[clamp(24px,3.15vw,64px)] font-display text-brand-citrine text-[clamp(14px,0.95vw,18px)] font-medium leading-[1.4] tracking-[0.02em]">
+                  The Riverwalk Residences by Blueribbon offer a curated collection of
+                  sophisticated urban homes, defined by design excellence and unparalleled
+                  connection. Embrace the convenience of riverside living and the pulse of a
+                  thriving community.
+                </p>
+                <div className="mt-[clamp(20px,2vw,32px)]">
+                  <Button href="/contact" variant="outline" size="lg">
+                    Contact our Agent
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="relative h-[240px] sm:h-[325px] lg:h-auto lg:min-h-[430px] overflow-hidden">
-            <Image
-              src="/images/dynamic.png"
-              alt="Riverwalk Residences in Parramatta"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
+            <div className="relative h-[240px] sm:h-[325px] lg:h-auto lg:min-h-[520px] overflow-hidden mr-[calc(50%-50vw)]">
+              <Image
+                src="/images/dynamic.png"
+                alt="Riverwalk Residences in Parramatta"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>

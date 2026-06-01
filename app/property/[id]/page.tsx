@@ -59,7 +59,7 @@ export default function PropertyViewPage() {
         </div>
 
         <div className="hidden sm:block container-page">
-          <div className="relative aspect-[16/8] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
+          <div className="relative aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
             <Image
               src="/images/home.png"
               alt="Property hero"
@@ -91,15 +91,15 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <div className="hidden sm:grid container-page mt-[clamp(28px,2.7vw,50px)] grid-cols-1 lg:grid-cols-[1fr_320px] gap-x-[clamp(24px,2.7vw,56px)] gap-y-[clamp(24px,2.25vw,42px)]">
+        <div className="hidden sm:grid container-page mt-[clamp(28px,2.7vw,50px)] grid-cols-1 lg:grid-cols-[1fr_clamp(360px,30vw,460px)] gap-x-[clamp(24px,2.7vw,56px)] gap-y-[clamp(24px,2.25vw,42px)]">
           <div>
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.575rem,2.35vw,2.7rem)] leading-[1.1]">
+            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.1vw,2.4rem)] leading-[1.1]">
               24 Virginia Road,
               <br />
               Hamlyn Terrace
             </h1>
 
-            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] leading-[1.7] text-brand-bunker/80 max-w-[640px]">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-brand-bunker/80 max-w-[640px]">
               Enjoy modern comfort in this stunning ex-display Coral Home, thoughtfully
               designed for effortless living and entertaining. Light filled interiors and
               soaring ceilings enhance the sense of space, flowing through generous living
@@ -114,7 +114,7 @@ export default function PropertyViewPage() {
               </Button>
             </div>
 
-            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-1 sm:grid-cols-2 gap-[clamp(14px,1.25vw,22px)]">
+            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[520px]">
               {agents.map((a, i) => (
                 <AgentMini key={i} {...a} />
               ))}
@@ -207,22 +207,42 @@ export default function PropertyViewPage() {
           </aside>
         </div>
 
-        <div className="hidden sm:block container-page mt-[clamp(50px,3.6vw,72px)]">
+        <div className="hidden sm:block container-page mt-[clamp(44px,3.15vw,64px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
               title="24 Virginia Road, Hamlyn Terrace"
-              src="https://www.google.com/maps?q=24+Virginia+Road,+Hamlyn+Terrace+NSW+2259&output=embed"
+              src="https://www.google.com/maps?q=24+Virginia+Road,+Hamlyn+Terrace+NSW+2259&output=embed&z=10"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0"
             />
+            <div className="pointer-events-none absolute left-[clamp(12px,1.2vw,20px)] top-[clamp(12px,1.2vw,20px)] z-10 flex items-center gap-[6px] rounded-[8px] bg-white p-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
+              <button
+                type="button"
+                className="pointer-events-auto rounded-[6px] bg-brand-navy px-[14px] py-[8px] font-display text-[12px] font-semibold text-white"
+              >
+                Map View
+              </button>
+              <button
+                type="button"
+                className="pointer-events-auto rounded-[6px] px-[14px] py-[8px] font-display text-[12px] font-medium text-brand-bunker hover:bg-brand-soft"
+              >
+                Satellite View
+              </button>
+              <button
+                type="button"
+                className="pointer-events-auto rounded-[6px] px-[14px] py-[8px] font-display text-[12px] font-medium text-brand-bunker hover:bg-brand-soft"
+              >
+                Street View
+              </button>
+            </div>
           </div>
         </div>
 
-        <section className="w-full bg-brand-navy py-[clamp(28px,3.15vw,64px)] sm:mt-[clamp(50px,4.5vw,86px)]">
+        <section className="w-full bg-brand-navy py-[clamp(24px,2.7vw,56px)] sm:mt-[clamp(44px,4vw,76px)]">
           <div className="container-page">
-            <h2 className="font-display font-bold text-white text-[22px] sm:text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+            <h2 className="font-display font-bold text-white text-[22px] sm:text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1] sm:max-w-[clamp(180px,16vw,260px)]">
               Others also viewed
             </h2>
           </div>
@@ -238,7 +258,7 @@ export default function PropertyViewPage() {
                 <div className="relative aspect-[3/2] w-full overflow-hidden">
                   <Image
                     src="/images/avenue.png"
-                    alt="4 Hillcrest Ave, Tacoma"
+                    alt="4 Hillcrest Avenue, Tacoma"
                     fill
                     sizes="50vw"
                     className="object-cover"
@@ -246,7 +266,7 @@ export default function PropertyViewPage() {
                 </div>
                 <div className="p-[12px]">
                   <p className="font-display text-[13px] font-medium text-white">
-                    4 Hillcrest Ave, Tacoma
+                    4 Hillcrest Avenue, Tacoma
                   </p>
                   <p className="mt-[2px] font-display text-[12px] text-white/70">
                     Price on request
@@ -263,7 +283,7 @@ export default function PropertyViewPage() {
                 <PropertyCard
                   key={i}
                   {...p}
-                  address="4 Hillcrest Ave, Tacoma"
+                  address="4 Hillcrest Avenue, Tacoma"
                   guide="Price on request"
                   variant="compact"
                 />

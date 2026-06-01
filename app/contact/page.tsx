@@ -94,7 +94,7 @@ export default function ContactPage() {
         </div>
 
         <section className="hidden sm:block container-page">
-          <div className="relative aspect-[1771/898] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
+          <div className="relative aspect-[1771/780] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
             <Image
               src="/contact/contact-us.png"
               alt="Visit our office"
@@ -106,7 +106,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,86px)]">
+        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,76px)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(28px,2.7vw,56px)] items-start">
             <div className="relative aspect-[860/520] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)]">
               <Image
@@ -118,7 +118,7 @@ export default function ContactPage() {
               />
             </div>
             <div>
-              <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+              <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
                 Visit Our Office
               </h2>
               <p className="mt-[clamp(14px,1.35vw,25px)] font-display text-[12.5px] sm:text-[13.5px] font-medium leading-[1.7] text-brand-bunker">
@@ -143,7 +143,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,72px)]">
+        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,64px)]">
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
               src="https://www.google.com/maps?q=11%2F76-80+Station+Street%2C+Wentworthville+NSW+2145&z=16&output=embed"
@@ -156,8 +156,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="hidden sm:block container-page mt-[clamp(44px,3.6vw,86px)] mb-[clamp(50px,4.5vw,86px)]">
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,76px)] mb-[clamp(44px,4vw,76px)]">
+          <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
             Get in Touch
           </h2>
           <div className="mt-[clamp(24px,2.25vw,42px)] mx-auto w-full max-w-[680px]">

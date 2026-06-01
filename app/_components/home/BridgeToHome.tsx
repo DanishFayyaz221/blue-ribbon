@@ -21,10 +21,10 @@ export function BridgeToHome() {
   const [active, setActive] = useState<(typeof tabs)[number]>("Buying");
 
   return (
-    <section className="w-full bg-white py-[clamp(50px,4.5vw,86px)]">
+    <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[20px] sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.575rem,2.35vw,2.85rem)] leading-[1.1]">
+          <h2 className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
             Your bridge to home
           </h2>
           <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
@@ -53,10 +53,10 @@ export function BridgeToHome() {
           </div>
         </div>
 
-        <div className="mt-[clamp(24px,3.15vw,64px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.5vw,28px)]">
+        <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
           {tiles.map((tile) => (
             <Link key={tile.label} href={tile.href} className="group block">
-              <div className="relative aspect-[16/10] sm:aspect-[418/575] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
+              <div className="relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
                 <Image
                   src={tile.src}
                   alt={tile.label}

@@ -9,10 +9,10 @@ const properties: PropertyCardData[] = Array.from({ length: 4 }, () => ({
 
 export function LatestProperties() {
   return (
-    <section className="w-full bg-white py-[clamp(36px,4.5vw,86px)]">
+    <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.25rem,2.35vw,2.85rem)] leading-[1.1]">
+          <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
             Our latest Properties
           </h2>
           <Link
@@ -40,7 +40,7 @@ export function LatestProperties() {
         </div>
 
         {/* Tablet / desktop: grid (unchanged) */}
-        <div className="hidden sm:grid mt-[clamp(32px,3.15vw,64px)] grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
+        <div className="hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
           {properties.map((p, i) => (
             <PropertyCard key={i} {...p} variant="tall" />
           ))}

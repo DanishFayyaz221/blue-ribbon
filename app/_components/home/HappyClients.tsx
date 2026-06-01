@@ -78,9 +78,9 @@ export function HappyClients() {
   const translatePct = -(safeStart * slideWidthPct);
 
   return (
-    <section className="w-full bg-white py-[clamp(36px,4.5vw,86px)]">
+    <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
-        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.25rem,2.35vw,2.85rem)] leading-[1.1]">
+        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
           Meet Our Happy Clients
         </h2>
       </div>
@@ -104,7 +104,7 @@ export function HappyClients() {
       </div>
 
       {/* Tablet / desktop: slider carousel with images */}
-      <div className="hidden sm:block relative mt-[clamp(32px,3.15vw,58px)]">
+      <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
         <div className="relative px-[clamp(20px,3vw,64px)]">
           <button
             type="button"
@@ -132,7 +132,7 @@ export function HappyClients() {
               {testimonials.map((t) => (
                 <div
                   key={t.id}
-                  className="flex shrink-0 justify-center px-[clamp(6px,0.8vw,14px)]"
+                  className="flex shrink-0 justify-center px-[clamp(2px,0.3vw,6px)]"
                   style={{ width: `${slideWidthPct}%` }}
                 >
                   <TestimonialCard testimonial={t} />

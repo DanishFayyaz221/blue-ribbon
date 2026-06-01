@@ -150,9 +150,9 @@ export default function AppraisalPage() {
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black/35" />
-                <div className="absolute inset-0 flex flex-col pt-[clamp(36px,4.5vw,86px)] pb-[clamp(125px,13.5vw,216px)]">
+                <div className="absolute inset-0 flex flex-col pt-[clamp(32px,4vw,76px)] pb-[clamp(110px,12vw,190px)]">
                   <div className="container-page w-full">
-                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.575rem,2.8vw,3.35rem)] leading-[1.1] tracking-[-0.01em]">
+                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.4rem,2.5vw,2.95rem)] leading-[1.1] tracking-[-0.01em]">
                       Get Your Property Estimate in just{" "}
                       <span className="text-brand-sky">9 Seconds!</span>
                     </h1>
@@ -216,9 +216,9 @@ export default function AppraisalPage() {
 
             <OurValues />
 
-            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(44px,3.6vw,72px)]">
+            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(38px,3.15vw,64px)]">
               <div className="container-page">
-                <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+                <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
                   Best Suited for You
                 </h2>
                 <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
@@ -229,7 +229,7 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <section className="w-full bg-brand-navy py-[clamp(26px,2.35vw,46px)]">
+            <section className="w-full bg-brand-navy py-[clamp(22px,2.1vw,40px)]">
               <div className="container-page flex flex-col items-start gap-[14px] sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="font-display font-bold text-white text-[clamp(18px,1.6vw,28px)] leading-[1.2]">
@@ -248,9 +248,9 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <section className="hidden sm:block container-page py-[clamp(44px,3.6vw,72px)]">
+            <section className="hidden sm:block container-page py-[clamp(38px,3.15vw,64px)]">
               <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15]">
+                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
                   Our latest Properties
                 </h2>
                 <Link
@@ -435,11 +435,11 @@ export default function AppraisalPage() {
                 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
               </div>
 
-              <section className="container-page pt-[clamp(36px,3.6vw,72px)] pb-[clamp(54px,4.5vw,90px)]">
+              <section className="container-page pt-[clamp(32px,3.15vw,64px)] pb-[clamp(48px,4vw,80px)]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
                   {/* LEFT COLUMN — Address + Property value range */}
-                  <div className="flex flex-col items-center pt-[clamp(36px,4.5vw,72px)] lg:pr-[clamp(8px,1vw,16px)]">
-                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.575rem,2.15vw,2.25rem)] leading-[1.2] tracking-[-0.01em]">
+                  <div className="flex flex-col items-center pt-[clamp(32px,4vw,64px)] lg:pr-[clamp(8px,1vw,16px)]">
+                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.4rem,1.95vw,2rem)] leading-[1.2] tracking-[-0.01em]">
                       Parade/43 Hopetoun Avenue,
                       <br />
                       Vaucluse 2030
@@ -729,10 +729,10 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
       </div>
 
       {/* Desktop layout (unchanged) */}
-      <section className="hidden sm:block container-page py-[clamp(36px,3.6vw,72px)]">
+      <section className="hidden sm:block container-page py-[clamp(32px,3.15vw,64px)]">
         <div className="flex flex-col items-stretch gap-[22px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
           <div className="mx-auto w-full max-w-[640px] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(108px,8vw,160px)]">
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.6vw,1.8rem)] leading-[1.15]">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
               Vaucluse Stats
             </h2>
             <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(24px,2.15vw,36px)] gap-x-[clamp(14px,1.4vw,25px)]">
@@ -768,7 +768,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
             }}
             className="mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
           >
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.35rem,1.6vw,1.8rem)] leading-[1.15]">
+            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
               Hey there!
             </h2>
             <p className="mt-[clamp(8px,0.8vw,14px)] text-center font-display text-[12.5px] sm:text-[13.5px] text-brand-bunker/70 leading-[1.5]">

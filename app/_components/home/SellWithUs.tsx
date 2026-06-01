@@ -44,12 +44,12 @@ export function SellWithUs() {
       {/* Tablet / desktop: original split layout */}
       <section className="hidden lg:block w-full bg-brand-navy">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          <div className="flex items-center px-[clamp(18px,3.5vw,68px)] py-[clamp(44px,3.6vw,64px)]">
+          <div className="flex items-center px-[clamp(18px,3.5vw,68px)] py-[clamp(32px,2.8vw,48px)]">
             <div className="w-full max-w-[760px]">
-              <h2 className="font-display font-bold text-white text-[clamp(1.8rem,2.8vw,3.35rem)] leading-[1.07]">
+              <h2 className="font-display font-bold text-white text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.07]">
                 Want to Sell with us?
               </h2>
-              <p className="mt-[10px] font-display font-light text-white text-[clamp(1.35rem,2.7vw,3.3rem)] leading-[1.07]">
+              <p className="mt-[10px] font-display font-light text-white text-[clamp(1.1rem,2vw,2.4rem)] leading-[1.07]">
                 We&rsquo;re always looking for the next premier property to represent
               </p>
               <p className="mt-[clamp(24px,3.15vw,64px)] font-display font-medium text-white text-[clamp(14px,0.95vw,18px)] leading-[1.4] tracking-[0.02em]">
@@ -63,7 +63,7 @@ export function SellWithUs() {
               </div>
             </div>
           </div>
-          <div className="relative h-[240px] sm:h-[325px] lg:h-auto lg:min-h-[500px] overflow-hidden">
+          <div className="relative h-[240px] sm:h-[325px] lg:h-auto lg:min-h-[420px] overflow-hidden">
             <Image
               src="/images/handshake-house.png"
               alt="Handshake closing a property deal in front of a house"

@@ -18,11 +18,11 @@ const values = [
 
 export function AboutContent() {
   return (
-    <section className="w-full bg-white pb-[clamp(50px,4.5vw,86px)] pt-[clamp(28px,2.7vw,50px)]">
+    <section className="w-full bg-white pb-[clamp(44px,4vw,76px)] pt-[clamp(24px,2.4vw,44px)]">
       <div className="container-page">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
           <div>
-            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15] tracking-[-0.01em]">
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15] tracking-[-0.01em]">
               Your Australian
               <br />
               Property Partners
@@ -51,7 +51,7 @@ export function AboutContent() {
           </div>
         </div>
 
-        <div className="mt-[clamp(44px,3.6vw,86px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
+        <div className="mt-[clamp(38px,3.15vw,76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
           <div className="relative aspect-[860/440] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)] lg:order-1">
             <Image
               src="/about-us-images/image 6.png"
@@ -62,7 +62,7 @@ export function AboutContent() {
             />
           </div>
           <div className="lg:order-2">
-            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.35rem,1.9vw,2.25rem)] leading-[1.15] tracking-[-0.01em]">
+            <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15] tracking-[-0.01em]">
               Your Excellence
               <br />
               In Property
@@ -83,7 +83,7 @@ export function AboutContent() {
           </div>
         </div>
 
-        <div className="mt-[clamp(44px,3.6vw,86px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">
+        <div className="mt-[clamp(38px,3.15vw,76px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">
           {values.map((v) => (
             <div key={v.title}>
               <h3 className="font-display text-[15px] sm:text-[17px] font-bold text-brand-navy">

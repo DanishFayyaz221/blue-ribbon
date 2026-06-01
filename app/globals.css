@@ -14,14 +14,14 @@
 }
 
 :root {
-  /* Fluid horizontal page padding (matches Figma's 74.67px at 1920px) */
-  --page-px: clamp(1.125rem, 3.5vw, 4.2rem);
-  --container-max: 1920px;
+  /* Fluid horizontal page padding */
+  --page-px: clamp(1rem, 3vw, 3rem);
+  --container-max: 1280px;
 }
 
-@media (min-width: 1920px) {
+@media (min-width: 1280px) {
   :root {
-    --page-px: 4.2rem;
+    --page-px: 3rem;
   }
 }
 

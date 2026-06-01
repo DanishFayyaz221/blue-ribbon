@@ -22,7 +22,11 @@
       "Bash(curl -o \"d:\\\\blue-ribbon\\\\.figma-screenshot.png\" \"https://www.figma.com/api/mcp/asset/ab8d3410-276e-4cef-a609-0eb220f8d0df\")",
       "Bash(dir d:\\\\blue-ribbon\\\\app\\\\_components)",
       "Bash(python -c \"import json; data=json.load\\(open\\(r'C:\\\\Users\\\\Axis\\\\.claude\\\\projects\\\\d--blue-ribbon\\\\9d295a7e-857f-49f5-8309-34eaf6bdc6dd\\\\tool-results\\\\mcp-claude_ai_Figma-get_metadata-1778484739268.txt','r',encoding='utf-8'\\)\\); import re; xml=data[0]['text']; frames=re.findall\\(r'<frame id=\\\\\"\\(\\\\d+:\\\\d+\\)\\\\\" name=\\\\\"\\([^\\\\\"]+\\)\\\\\" x=\\\\\"\\([-\\\\d\\\\.]+\\)\\\\\" y=\\\\\"\\([-\\\\d\\\\.]+\\)\\\\\" width=\\\\\"\\([\\\\d\\\\.]+\\)\\\\\" height=\\\\\"\\([\\\\d\\\\.]+\\)\\\\\"', xml\\); top_frames = [f for f in frames if float\\(f[4]\\)>1500 and float\\(f[5]\\)>1000]; [print\\(f\\) for f in top_frames[:50]]\")",
-      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:\\\\Users\\\\Axis\\\\.claude\\\\projects\\\\d--blue-ribbon\\\\9d295a7e-857f-49f5-8309-34eaf6bdc6dd\\\\tool-results\\\\mcp-claude_ai_Figma-get_metadata-1778484739268.txt','r',encoding='utf-8'\\)\\); import re; xml=data[0]['text']; print\\(len\\(xml\\)\\)\")"
+      "Bash(python -c \"import json; data=json.load\\(open\\(r'C:\\\\Users\\\\Axis\\\\.claude\\\\projects\\\\d--blue-ribbon\\\\9d295a7e-857f-49f5-8309-34eaf6bdc6dd\\\\tool-results\\\\mcp-claude_ai_Figma-get_metadata-1778484739268.txt','r',encoding='utf-8'\\)\\); import re; xml=data[0]['text']; print\\(len\\(xml\\)\\)\")",
+      "Bash(npx tsc *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000 :3001\")",
+      "Bash(findstr LISTENING)"
     ]
   }
 }
