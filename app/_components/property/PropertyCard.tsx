@@ -42,7 +42,7 @@ export function PropertyCard({
         href={href}
         className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.7vw,32px)] sm:border-0 sm:bg-transparent sm:overflow-visible"
       >
-        <div className="relative aspect-[869/360] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
+        <div className="relative aspect-[15/8] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
           <Image
             src={image}
             alt={address}

@@ -65,11 +65,11 @@ export function BridgeToHome() {
                   className="object-cover transition duration-500 group-hover:scale-[1.03]"
                 />
                 <div className="absolute inset-0 sm:hidden bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                <p className="absolute bottom-[10px] left-[12px] right-[12px] sm:hidden font-display text-[13px] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                <p className="absolute bottom-[10px] left-[12px] right-[12px] sm:hidden font-display text-[11px] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
                   {tile.label}
                 </p>
               </div>
-              <p className="hidden sm:block mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(16px,1.16vw,22px)] font-medium tracking-[0.02em] text-brand-mineshaft">
+              <p className="hidden sm:block whitespace-nowrap mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(13px,0.9vw,16px)] font-medium tracking-[0.02em] text-brand-mineshaft">
                 {tile.label}
               </p>
             </Link>

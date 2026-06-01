@@ -17,7 +17,7 @@ export function BestSuitedForYou() {
           Best Suited for You
         </h2>
 
-        <div className="mt-[clamp(28px,2.7vw,52px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(16px,1.3vw,24px)] gap-y-[clamp(20px,1.8vw,32px)]">
+        <div className="mt-[clamp(28px,2.7vw,52px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(20px,1.8vw,32px)]">
           {properties.map((p, i) => (
             <PropertyCard key={i} {...p} variant="wide" />
           ))}

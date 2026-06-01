@@ -124,7 +124,8 @@ export function HappyClients() {
             </svg>
           </button>
 
-          <div className="overflow-hidden px-[clamp(40px,4vw,72px)]">
+          {/* px -> mx: 4th card peek nahi karega */}
+          <div className="overflow-hidden mx-[clamp(40px,4vw,72px)] py-[28px]">
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(${translatePct}%)` }}
@@ -166,7 +167,8 @@ export function HappyClients() {
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <article className="flex w-full max-w-[340px] flex-col overflow-hidden rounded-[14px] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+    /* 👇 sirf bottom shadow: 0px 4px 4px 0px #00000040 (bg par halo nahi) */
+    <article className="flex w-full max-w-[340px] flex-col overflow-hidden rounded-[14px] bg-white shadow-[0px_4px_4px_0px_#00000040]">
       <div className="relative mx-[14px] mt-[14px] aspect-[252/200] overflow-hidden rounded-[6px]">
         <Image
           src={testimonial.image}
