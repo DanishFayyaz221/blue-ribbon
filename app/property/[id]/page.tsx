@@ -123,8 +123,8 @@ export default function PropertyViewPage() {
 
           <aside className="lg:sticky lg:top-[24px] lg:self-start">
             {/* Stats — 4 | 2 | 2 - with darker visible dividers */}
-            <div className="flex items-center justify-end gap-0 pb-[clamp(24px,2.2vw,36px)] border-b border-brand-silver/40">
-              <div className="text-right">
+            <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] mt-[calc(-1*clamp(28px,2.7vw,50px))]">
+              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
                 <div className="font-display font-medium text-brand-bunker text-[clamp(40px,3.6vw,52px)] leading-[0.95]">
                   4
                 </div>
@@ -132,8 +132,8 @@ export default function PropertyViewPage() {
                   Beds
                 </div>
               </div>
-              <div className="w-px h-10 mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
-              <div className="text-right">
+              <div className="w-px self-stretch mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
+              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
                 <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
                   2
                 </div>
@@ -141,8 +141,8 @@ export default function PropertyViewPage() {
                   Baths
                 </div>
               </div>
-              <div className="w-px h-10 mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
-              <div className="text-right">
+              <div className="w-px self-stretch mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
+              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
                 <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
                   2
                 </div>
@@ -211,28 +211,28 @@ export default function PropertyViewPage() {
           <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
               title="24 Virginia Road, Hamlyn Terrace"
-              src="https://www.google.com/maps?q=24+Virginia+Road,+Hamlyn+Terrace+NSW+2259&output=embed&z=10"
+              src="https://www.google.com/maps?q=-33.2557,151.4709&output=embed&z=12"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0"
             />
-            <div className="pointer-events-none absolute left-[clamp(12px,1.2vw,20px)] top-[clamp(12px,1.2vw,20px)] z-10 flex items-center gap-[6px] rounded-[8px] bg-white p-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.12)]">
+            <div className="pointer-events-none absolute left-[clamp(16px,1.6vw,28px)] top-[clamp(16px,1.6vw,28px)] z-10 flex items-center gap-[8px] rounded-[10px] bg-white p-[6px] shadow-[0_4px_14px_rgba(0,0,0,0.14)]">
               <button
                 type="button"
-                className="pointer-events-auto rounded-[6px] bg-brand-navy px-[14px] py-[8px] font-display text-[12px] font-semibold text-white"
+                className="pointer-events-auto rounded-[8px] bg-brand-navy px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-semibold text-white"
               >
                 Map View
               </button>
               <button
                 type="button"
-                className="pointer-events-auto rounded-[6px] px-[14px] py-[8px] font-display text-[12px] font-medium text-brand-bunker hover:bg-brand-soft"
+                className="pointer-events-auto rounded-[8px] px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-medium text-brand-bunker hover:bg-brand-soft"
               >
                 Satellite View
               </button>
               <button
                 type="button"
-                className="pointer-events-auto rounded-[6px] px-[14px] py-[8px] font-display text-[12px] font-medium text-brand-bunker hover:bg-brand-soft"
+                className="pointer-events-auto rounded-[8px] px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-medium text-brand-bunker hover:bg-brand-soft"
               >
                 Street View
               </button>
@@ -240,15 +240,27 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <section className="w-full bg-brand-navy py-[clamp(24px,2.7vw,56px)] sm:mt-[clamp(44px,4vw,76px)]">
-          <div className="container-page">
+        <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] sm:mt-[clamp(44px,4vw,76px)]">
+          {/* Navy fabric background */}
+          <Image
+            src="/images/bg.png"
+            alt=""
+            fill
+            quality={90}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          {/* Navy overlay (#001F4D @ ~12%) */}
+          <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
+
+          <div className="relative z-10 container-page">
             <h2 className="font-display font-bold text-white text-[22px] sm:text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1] sm:max-w-[clamp(180px,16vw,260px)]">
               Others also viewed
             </h2>
           </div>
 
           {/* Mobile: horizontal slider */}
-          <div className="sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+          <div className="relative z-10 sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
             {similar.map((_, i) => (
               <Link
                 key={i}
@@ -277,7 +289,7 @@ export default function PropertyViewPage() {
           </div>
 
           {/* Desktop: 3-col grid */}
-          <div className="hidden sm:block container-page">
+          <div className="relative z-10 hidden sm:block container-page">
             <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
               {similar.map((p, i) => (
                 <PropertyCard
