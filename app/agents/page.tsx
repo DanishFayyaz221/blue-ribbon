@@ -142,17 +142,29 @@ export default function AgentsPage() {
             </div>
           </section>
 
-          <section className="w-full mt-[clamp(44px,4vw,76px)] bg-brand-navy">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="flex items-center px-[clamp(22px,12.5vw,250px)] py-[clamp(38px,3.15vw,56px)]">
-                <div className="w-full max-w-[360px]">
-                  <h2 className="font-display font-medium text-white text-[clamp(1.15rem,1.4vw,1.6rem)] leading-[1.1]">
+          <section className="relative w-full mt-[clamp(44px,4vw,76px)] overflow-hidden">
+            {/* Navy fabric background */}
+            <Image
+              src="/images/bg.png"
+              alt=""
+              fill
+              quality={90}
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            {/* Navy overlay (#001F4D @ ~12%) */}
+            <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
+              <div className="flex items-center px-[clamp(22px,9vw,180px)] py-[clamp(38px,3.15vw,56px)]">
+                <div className="w-full max-w-[520px]">
+                  <h2 className="font-display font-semibold text-white text-[clamp(1.9rem,2.6vw,3rem)] leading-[1.05]">
                     Ready to start?
                   </h2>
-                  <p className="mt-[clamp(7px,0.6vw,12px)] font-display font-light text-white text-[clamp(1.15rem,1.4vw,1.6rem)] leading-[1.15]">
+                  <p className="mt-[clamp(12px,1vw,18px)] font-display font-light text-white text-[clamp(1.9rem,3vw,3.25rem)] leading-[1.07]">
                     Connect with a Blueribbon specialist in Parramatta
                   </p>
-                  <p className="mt-[clamp(18px,1.45vw,28px)] font-display text-white/90 text-[11.5px] sm:text-[12.5px] font-normal leading-[1.5] tracking-[0.02em]">
+                  <p className="mt-[clamp(20px,1.6vw,30px)] font-display text-white/90 text-[13px] sm:text-[15px] font-normal leading-[1.55] tracking-[0.02em]">
                     We provide the local expertise and supportive advice needed to navigate
                     the Western Sydney market with confidence. From your first inquiry to the
                     final signature, we ensure your property journey is seamless, transparent,
