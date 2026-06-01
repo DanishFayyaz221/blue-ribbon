@@ -118,40 +118,25 @@ function DesktopFooter() {
   return (
     <footer className="hidden lg:block w-full bg-white">
       <div className="container-page pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)]">
-        <div className="grid gap-x-[clamp(18px,2.15vw,36px)] gap-y-[36px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-[170px_1fr_1fr_1fr_auto]">
-          <div className="flex flex-col gap-[14px] sm:order-1">
+        {/* Top row: buttons | About | Insights | Our Office | social+logo */}
+        <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[360px_1fr_1fr_1fr_auto]">
+          <div className="flex flex-col gap-[12px]">
             {buyLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="flex h-[44px] w-full max-w-[160px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
+                className="flex h-[46px] w-full max-w-[150px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} className="sm:order-2" />
-          <LinkColumn title="Insights" links={insightsLinks} className="sm:order-3" />
-          <div className="sm:order-4">
-            <LinkColumn title="Our Office" links={officeLinks} />
-            <div className="mt-[16px] flex flex-col gap-[2px] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
-              <p>11/76-80 Station Street,</p>
-              <p>Wentworthville, NSW 2145</p>
-              <p className="not-italic mt-[8px]">
-                <a href="mailto:sales@blueribbonre.com.au" className="hover:underline italic">
-                  sales@blueribbonre.com.au
-                </a>
-              </p>
-              <p className="italic">
-                <a href="tel:1300579093" className="hover:underline">
-                  1300 579 093
-                </a>
-              </p>
-            </div>
-          </div>
+          <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} />
+          <LinkColumn title="Insights" links={insightsLinks} />
+          <LinkColumn title="Our Office" links={officeLinks} />
 
-          <div className="flex flex-col gap-[20px] sm:order-5 sm:col-span-2 lg:col-span-1">
+          <div className="flex flex-col gap-[20px]">
             <div className="flex items-center gap-[14px]">
               <SocialLink label="Facebook">
                 <FacebookIcon />
@@ -175,6 +160,27 @@ function DesktopFooter() {
               sizes="180px"
               className="h-auto w-[180px]"
             />
+          </div>
+        </div>
+
+        {/* Address row: aligned under About Us / Insights columns */}
+        <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[360px_1fr_1fr_1fr_auto]">
+          <div aria-hidden />
+          <div className="col-start-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+            <p>11/76-80 Station Street,</p>
+            <p>Wentworthville, NSW 2145</p>
+          </div>
+          <div className="col-start-3 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+            <p className="whitespace-nowrap">
+              <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
+                sales@blueribbonre.com.au
+              </a>
+            </p>
+            <p>
+              <a href="tel:1300579093" className="hover:underline">
+                1300 579 093
+              </a>
+            </p>
           </div>
         </div>
       </div>

@@ -42,7 +42,14 @@ export function SellWithUs() {
       </section>
 
       {/* Tablet / desktop: original split layout */}
-      <section className="hidden lg:block w-full bg-brand-navy">
+      <section className="hidden lg:block relative isolate w-full overflow-hidden">
+        <Image
+          src="/images/bg.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="absolute inset-0 -z-10 object-cover"
+        />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="flex items-center px-[clamp(18px,3.5vw,68px)] py-[clamp(32px,2.8vw,48px)]">
             <div className="w-full max-w-[760px]">
