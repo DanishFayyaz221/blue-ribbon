@@ -52,11 +52,11 @@ export function SellWithUs() {
         />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="flex items-center px-[clamp(18px,3.5vw,68px)] py-[clamp(32px,2.8vw,48px)]">
-            <div className="w-full max-w-[760px]">
-              <h2 className="font-display font-bold text-white text-[clamp(1.5rem,2.1vw,2.5rem)] leading-[1.07]">
+            <div className="w-full max-w-[620px]">
+              <h2 className="font-display font-bold text-white text-[clamp(2rem,2.7vw,3.25rem)] leading-[1.05]">
                 Want to Sell with us?
               </h2>
-              <p className="mt-[10px] font-display font-light text-white text-[clamp(1.1rem,2vw,2.4rem)] leading-[1.07]">
+              <p className="mt-[clamp(16px,1.4vw,24px)] font-display font-light text-white text-[clamp(1.6rem,2.7vw,2.9rem)] leading-[1.07]">
                 We&rsquo;re always looking for the next premier property to represent
               </p>
               <p className="mt-[clamp(24px,3.15vw,64px)] font-display font-medium text-white text-[clamp(14px,0.95vw,18px)] leading-[1.4] tracking-[0.02em]">
@@ -64,7 +64,7 @@ export function SellWithUs() {
                 Western Sydney and ensure your next move is a success.
               </p>
               <div className="mt-[clamp(20px,2vw,32px)]">
-                <Button href="/contact" variant="outline" size="lg">
+                <Button href="/contact" variant="outline" size="md">
                   Contact our Agent
                 </Button>
               </div>

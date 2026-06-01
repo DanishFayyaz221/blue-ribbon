@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const values = [
   {
     title: "Unity",
@@ -15,9 +17,21 @@ const values = [
 
 export function OurValues() {
   return (
-    <section className="w-full bg-brand-navy py-[clamp(36px,3.2vw,60px)]">
-      <div className="container-page">
-        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.15rem,1.5vw,1.8rem)] leading-[1.25] whitespace-nowrap">
+    <section className="relative w-full overflow-hidden py-[clamp(64px,6vw,120px)]">
+      {/* Navy fabric background — ParramattaCTA jaisa */}
+      <Image
+        src="/images/bg.png"
+        alt=""
+        fill
+        quality={90}
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+      {/* Navy overlay (#001F4D @ ~12%) */}
+      <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
+
+      <div className="relative z-10 container-page">
+        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.75rem,2.6vw,2.9rem)] leading-[1.25] whitespace-nowrap">
           Through our local insight and commitment, we aim to
           <br />
           deliver premium results that truly stand out.
@@ -34,7 +48,9 @@ export function OurValues() {
               <h3 className="font-display text-[15px] sm:text-[17px] font-semibold text-white">
                 {v.title}
               </h3>
-              <p className="mt-[10px] font-display text-white/85 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
+              {/* Title ke neeche line — image jaisa */}
+              <div className="mt-[12px] h-[2px] w-full bg-white/25" />
+              <p className="mt-[16px] font-display text-white/85 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
                 {v.body}
               </p>
             </div>

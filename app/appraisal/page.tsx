@@ -229,8 +229,20 @@ export default function AppraisalPage() {
               </div>
             </section>
 
-            <section className="w-full bg-brand-navy py-[clamp(22px,2.1vw,40px)]">
-              <div className="container-page flex flex-col items-start gap-[14px] sm:flex-row sm:items-center sm:justify-between">
+            <section className="relative w-full overflow-hidden py-[clamp(22px,2.1vw,40px)]">
+              {/* Navy fabric background */}
+              <Image
+                src="/images/bg.png"
+                alt=""
+                fill
+                quality={90}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+              {/* Navy overlay (#001F4D @ ~12%) */}
+              <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
+
+              <div className="relative z-10 container-page flex flex-col items-start gap-[14px] sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="font-display font-bold text-white text-[clamp(18px,1.6vw,28px)] leading-[1.2]">
                     Get Your Property Estimate in just 9 seconds!
