@@ -125,20 +125,12 @@ export default function BuyPage() {
             <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Buy Your Dream
             </h1>
-            <div className="flex items-center gap-[6px] rounded-full border border-brand-silver p-[4px]">
-              <button
-                type="button"
-                className="rounded-full bg-brand-navy px-[18px] py-[8px] font-display text-[13px] font-medium text-white"
-              >
-                List
-              </button>
-              <button
-                type="button"
-                className="rounded-full px-[18px] py-[8px] font-display text-[13px] font-medium text-brand-bunker"
-              >
-                Map
-              </button>
-            </div>
+            <Link
+              href="/appraisal"
+              className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+            >
+              Sell your property
+            </Link>
           </div>
 
           <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
@@ -207,6 +199,12 @@ export default function BuyPage() {
             <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Our latest Properties
             </h2>
+            <Link
+              href="/buy"
+              className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+            >
+              Explore more Properties
+            </Link>
           </div>
           <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
             {latest.map((p, i) => (
