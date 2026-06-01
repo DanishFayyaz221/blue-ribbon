@@ -117,26 +117,26 @@ function MobileLinkColumn({
 function DesktopFooter() {
   return (
     <footer className="hidden lg:block w-full bg-white">
-      <div className="container-page pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)]">
+      <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)] xl:max-w-none">
         {/* Top row: buttons | About | Insights | Our Office | social+logo */}
-        <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[360px_1fr_1fr_1fr_auto]">
-          <div className="flex flex-col gap-[12px]">
+        <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
+          <div className="col-start-1 flex flex-col gap-[12px]">
             {buyLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="flex h-[46px] w-full max-w-[150px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
+                className="flex h-[46px] w-[150px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} />
-          <LinkColumn title="Insights" links={insightsLinks} />
-          <LinkColumn title="Our Office" links={officeLinks} />
+          <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} className="col-start-3" />
+          <LinkColumn title="Insights" links={insightsLinks} className="col-start-4" />
+          <LinkColumn title="Our Office" links={officeLinks} className="col-start-5" />
 
-          <div className="flex flex-col gap-[20px]">
+          <div className="col-start-7 flex flex-col gap-[20px] justify-self-end">
             <div className="flex items-center gap-[14px]">
               <SocialLink label="Facebook">
                 <FacebookIcon />
@@ -164,13 +164,12 @@ function DesktopFooter() {
         </div>
 
         {/* Address row: aligned under About Us / Insights columns */}
-        <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[360px_1fr_1fr_1fr_auto]">
-          <div aria-hidden />
-          <div className="col-start-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+        <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
+          <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
             <p>11/76-80 Station Street,</p>
             <p>Wentworthville, NSW 2145</p>
           </div>
-          <div className="col-start-3 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+          <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
             <p className="whitespace-nowrap">
               <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
                 sales@blueribbonre.com.au
@@ -186,7 +185,7 @@ function DesktopFooter() {
       </div>
 
       <div className="bg-black text-white">
-        <div className="container-page flex flex-col gap-[6px] py-[14px] text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] flex flex-col gap-[6px] py-[14px] text-center sm:flex-row sm:items-center sm:justify-between sm:text-left xl:max-w-none">
           <p className="font-display text-[13px] sm:text-[15px] font-medium leading-[1.4]">
             ©2026 Blue Ribbon Real Estate. All Rights Reserved.
           </p>
