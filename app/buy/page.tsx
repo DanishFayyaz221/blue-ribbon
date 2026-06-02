@@ -10,8 +10,8 @@ import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 
 const featured: PropertyCardData[] = Array.from({ length: 12 }, () => ({
   image: "/images/latest-properties.png",
-  address: "10 Carlotta Avenue, Gordon",
-  guide: "$4,500,000 - $4,900,000",
+  address: "23 Dick Street, Henley",
+  guide: "$8,500,000",
 }));
 
 const mobileFeatured: PropertyCardData[] = [
