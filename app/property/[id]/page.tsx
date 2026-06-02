@@ -164,12 +164,12 @@ export default function PropertyViewPage() {
             </div>
 
             <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(24px,2.2vw,36px)]">
-              <EnquireTrigger className="flex-1 !h-[52px] !text-[15px]" />
+              <EnquireTrigger className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]" />
               <Button
                 href="#share"
                 variant="outline-dark"
                 size="sm"
-                className="flex-1 !h-[52px] !rounded-full !text-[15px]"
+                className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
               >
                 Share
               </Button>
@@ -219,7 +219,7 @@ export default function PropertyViewPage() {
         </div>
 
         <div className="hidden sm:block container-page mt-[clamp(44px,3.15vw,64px)]">
-          <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
+          <div className="relative aspect-[16/7] md:aspect-[16/6] w-full overflow-hidden bg-brand-soft-2">
             <iframe
               title="24 Virginia Road, Hamlyn Terrace"
               src="https://www.google.com/maps?q=-33.2557,151.4709&output=embed&z=12"
@@ -228,22 +228,22 @@ export default function PropertyViewPage() {
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0"
             />
-            <div className="pointer-events-none absolute left-[clamp(16px,1.6vw,28px)] top-[clamp(16px,1.6vw,28px)] z-10 flex items-center gap-[8px] rounded-[10px] bg-white p-[6px] shadow-[0_4px_14px_rgba(0,0,0,0.14)]">
+            <div className="pointer-events-none absolute left-0 top-0 z-10 flex items-center gap-[2px] bg-white p-[4px] shadow-[0_4px_14px_rgba(0,0,0,0.14)]">
               <button
                 type="button"
-                className="pointer-events-auto rounded-[8px] bg-brand-navy px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-semibold text-white"
+                className="pointer-events-auto rounded-[6px] bg-brand-navy px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-semibold text-white"
               >
                 Map View
               </button>
               <button
                 type="button"
-                className="pointer-events-auto rounded-[8px] px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-medium text-brand-bunker hover:bg-brand-soft"
+                className="pointer-events-auto rounded-[6px] px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker hover:bg-brand-soft"
               >
                 Satellite View
               </button>
               <button
                 type="button"
-                className="pointer-events-auto rounded-[8px] px-[clamp(20px,1.8vw,32px)] py-[clamp(10px,0.9vw,16px)] font-display text-[clamp(13px,0.95vw,16px)] font-medium text-brand-bunker hover:bg-brand-soft"
+                className="pointer-events-auto rounded-[6px] px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker hover:bg-brand-soft"
               >
                 Street View
               </button>
@@ -251,8 +251,8 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] sm:mt-0">
-          {/* Navy fabric background */}
+        {/* Mobile: full-bleed navy section */}
+        <section className="sm:hidden relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)]">
           <Image
             src="/images/bg.png"
             alt=""
@@ -261,17 +261,15 @@ export default function PropertyViewPage() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          {/* Navy overlay (#001F4D @ ~12%) */}
           <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
 
           <div className="relative z-10 container-page">
-            <h2 className="font-display font-bold text-white text-[22px] sm:text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1] sm:max-w-[clamp(180px,16vw,260px)]">
+            <h2 className="font-display font-bold text-white text-[22px] leading-[1.1]">
               Others also viewed
             </h2>
           </div>
 
-          {/* Mobile: horizontal slider */}
-          <div className="relative z-10 sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+          <div className="relative z-10 mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
             {similar.map((_, i) => (
               <Link
                 key={i}
@@ -298,22 +296,39 @@ export default function PropertyViewPage() {
               </Link>
             ))}
           </div>
-
-          {/* Desktop: 3-col grid */}
-          <div className="relative z-10 hidden sm:block container-page">
-            <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
-              {similar.map((p, i) => (
-                <PropertyCard
-                  key={i}
-                  {...p}
-                  address="4 Hillcrest Avenue, Tacoma"
-                  guide="Price on request"
-                  variant="compact"
-                />
-              ))}
-            </div>
-          </div>
         </section>
+
+        {/* Desktop: navy section aligned to container-page (matches heading X) */}
+        <div className="hidden sm:block container-page">
+          <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] px-[clamp(20px,2vw,40px)] rounded-b-[clamp(8px,1vw,16px)]">
+            <Image
+              src="/images/bg.png"
+              alt=""
+              fill
+              quality={90}
+              sizes="(min-width: 1280px) 1280px, 100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
+
+            <div className="relative z-10">
+              <h2 className="font-display font-bold text-white text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1]">
+                Others also viewed
+              </h2>
+              <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
+                {similar.map((p, i) => (
+                  <PropertyCard
+                    key={i}
+                    {...p}
+                    address="4 Hillcrest Avenue, Tacoma"
+                    guide="Price on request"
+                    variant="compact"
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
       <Footer />
     </div>
