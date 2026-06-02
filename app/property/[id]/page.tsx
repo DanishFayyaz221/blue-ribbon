@@ -314,7 +314,9 @@ export default function PropertyViewPage() {
 
             <div className="relative z-10">
               <h2 className="font-display font-bold text-white text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1]">
-                Others also viewed
+                Others also
+                <br />
+                viewed
               </h2>
               <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
                 {similar.map((p, i) => (
