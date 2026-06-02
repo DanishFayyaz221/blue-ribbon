@@ -649,7 +649,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                   {s.label}
                 </p>
                 <p
-                  className={`mt-[8px] font-display text-[23px] font-light ${
+                  className={`mt-[8px] font-display text-[27px] font-light ${
                     s.tone === "navy" ? "text-brand-navy" : "text-brand-sky"
                   }`}
                 >
@@ -675,7 +675,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="mt-[28px] rounded-[20px] bg-white p-[22px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+            className="mt-[28px] rounded-[20px] bg-white p-[22px] pt-[44px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
           >
             <h2 className="text-center font-display font-light text-brand-bunker text-[20px]">
               Hey there!
@@ -690,7 +690,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[18px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[18px] h-[42px] w-full rounded-[22px] bg-[#F2F2F2] px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -698,7 +698,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[8px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[8px] h-[42px] w-full rounded-[22px] bg-[#F2F2F2] px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
@@ -756,7 +756,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                   <p className="mt-[8px] whitespace-pre-line font-display text-[9.5px] sm:text-[10.5px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
                     {s.label}
                   </p>
-                  <p className="mt-[8px] font-display text-[clamp(18px,1.45vw,23px)] font-light text-brand-sky">
+                  <p className="mt-[8px] font-display text-[clamp(21px,1.7vw,27px)] font-light text-brand-sky">
                     {s.value}
                   </p>
                   <p className="mt-[3px] font-display text-[9.5px] sm:text-[10.5px] text-brand-bunker/60">
@@ -780,7 +780,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="relative right-[clamp(10px,2vw,36px)] mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]"
+            className="relative right-[clamp(10px,2vw,36px)] mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] pt-[clamp(40px,3.4vw,60px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]"
           >
             <h2 className="text-center font-display font-light text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
               Hey there!
@@ -795,7 +795,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[clamp(18px,1.45vw,25px)] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[clamp(18px,1.45vw,25px)] h-[44px] w-full rounded-[22px] bg-[#F2F2F2] px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -803,7 +803,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-[#F2F2F2] px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
