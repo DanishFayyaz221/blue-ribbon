@@ -119,7 +119,7 @@ export default function PropertyViewPage() {
               </Button>
             </div>
 
-            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[520px]">
+            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[440px]">
               {agents.map((a, i) => (
                 <AgentMini key={i} {...a} />
               ))}
@@ -356,7 +356,7 @@ function DetailRow({ label, value, topSpace = false }: { label: string; value: s
 function AgentMini({ name, phone, email, image }: AgentData) {
   return (
     <article className="overflow-hidden">
-      <div className="relative aspect-[9/10] w-full overflow-hidden rounded-[12px] bg-brand-bunker/80">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[12px] bg-brand-bunker/80">
         <Image
           src={image}
           alt={name}
