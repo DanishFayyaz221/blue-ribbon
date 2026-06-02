@@ -70,7 +70,7 @@ export function PropertyCard({
     const guideText = guide?.startsWith("$") ? `Guide ${guide}` : guide;
     return (
       <Link href={href} className="group block w-full">
-        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[12px]">
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[clamp(10px,1vw,16px)]">
           <Image
             src={image}
             alt={address}
@@ -79,10 +79,10 @@ export function PropertyCard({
             className="object-cover transition duration-500 group-hover:scale-[1.02]"
           />
         </div>
-        <div className="mt-[14px] font-display">
-          <p className="text-[15px] font-medium leading-[1.3] text-white">{address}</p>
+        <div className="mt-[clamp(14px,1.4vw,22px)] font-display">
+          <p className="text-[clamp(14px,1.05vw,17px)] font-medium leading-[1.3] text-white">{address}</p>
           {guideText && (
-            <p className="text-[13px] leading-[1.4] text-white/80 mt-[2px]">{guideText}</p>
+            <p className="text-[clamp(12px,0.85vw,14px)] leading-[1.4] text-white/80 mt-[4px]">{guideText}</p>
           )}
         </div>
       </Link>
