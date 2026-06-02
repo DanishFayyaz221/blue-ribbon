@@ -126,7 +126,7 @@ export default function PropertyViewPage() {
             </div>
           </div>
 
-          <aside className="lg:sticky lg:top-[24px] lg:self-start">
+          <aside className="lg:sticky lg:top-[64px] lg:self-start">
             {/* Stats — 4 | 2 | 2 - with darker visible dividers */}
             <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] mt-[calc(-1*clamp(28px,2.7vw,50px))]">
               <div className="text-right pt-[clamp(6px,0.6vw,10px)] pb-[clamp(8px,0.8vw,14px)]">
