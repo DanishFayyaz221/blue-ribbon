@@ -7,8 +7,8 @@ import { Button } from "../_components/ui/Button";
 import { AgentCard, type AgentCardData } from "../_components/agents/AgentCard";
 
 const agents: AgentCardData[] = Array.from({ length: 5 }, () => ({
-  name: "Alex Smith",
-  role: "Co-Founder | Chief Executive Officer",
+  name: "Ven Kan",
+  role: "Managing Director, Chief Executive Officer",
   image: "/our-team/our-team.png",
 }));
 
@@ -161,7 +161,7 @@ export default function AgentsPage() {
                   <h2 className="font-display font-semibold text-white text-[clamp(1.9rem,2.6vw,3rem)] leading-[1.05]">
                     Ready to start?
                   </h2>
-                  <p className="mt-[clamp(12px,1vw,18px)] font-display font-light text-white text-[clamp(1.9rem,3vw,3.25rem)] leading-[1.07]">
+                  <p className="mt-[clamp(12px,1vw,18px)] font-display font-[300] text-white text-[clamp(1.9rem,3vw,3.25rem)] leading-[1.07]">
                     Connect with a Blueribbon specialist in Parramatta
                   </p>
                   <p className="mt-[clamp(20px,1.6vw,30px)] font-display text-white/90 text-[13px] sm:text-[15px] font-normal leading-[1.55] tracking-[0.02em]">

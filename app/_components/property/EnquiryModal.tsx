@@ -132,7 +132,7 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
                 </p>
                 <a
                   href={`mailto:${a.email}`}
-                  className="mt-[4px] inline-block font-display text-[12px] font-medium text-brand-navy underline underline-offset-4 hover:opacity-80"
+                  className="mt-[4px] inline-block font-display text-[12px] font-medium text-[#39B7FF] underline underline-offset-4 hover:opacity-80"
                 >
                   Email
                 </a>
@@ -145,7 +145,7 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
               e.preventDefault();
               onClose();
             }}
-            className="rounded-[10px] bg-[#EFEFF2] p-[clamp(16px,2vw,24px)]"
+            className="rounded-[10px] bg-[#F1F0ED] p-[clamp(16px,2vw,24px)]"
           >
             <Field label="How can we help?" required>
               <div className="mt-[10px] flex flex-wrap gap-[8px]">
@@ -206,7 +206,7 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
             <button
               type="submit"
               disabled={!agree}
-              className="mt-[16px] h-[44px] rounded-[22px] bg-brand-navy px-[28px] font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
+              className="mt-[56px] h-[44px] rounded-[22px] bg-brand-navy px-[28px] font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
             >
               Submit
             </button>
@@ -230,7 +230,7 @@ function Field({
 }) {
   return (
     <div className="mt-[12px] first:mt-0">
-      <span className="font-display text-[12px] font-medium text-brand-bunker">
+      <span className="font-display text-[10px] font-medium text-brand-bunker">
         {label}
         {required && <span className="text-brand-bunker">*</span>}
       </span>

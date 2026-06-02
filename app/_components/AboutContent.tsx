@@ -97,7 +97,7 @@ export function AboutContent() {
         </div>
 
         <div className="mt-[clamp(32px,2.7vw,50px)]">
-          <Button href="/contact" variant="outline-dark" size="sm">
+          <Button href="/contact" variant="outline-dark" size="sm" className="!h-[52px] !px-[24px] !text-[15px]">
             Contact Team
           </Button>
         </div>

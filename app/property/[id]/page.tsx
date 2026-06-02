@@ -99,7 +99,7 @@ export default function PropertyViewPage() {
               Hamlyn Terrace
             </h1>
 
-            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-brand-bunker/80 max-w-[640px]">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-[#202020] max-w-[640px]">
               Enjoy modern comfort in this stunning ex-display Coral Home, thoughtfully
               designed for effortless living and entertaining. Light filled interiors and
               soaring ceilings enhance the sense of space, flowing through generous living
@@ -163,7 +163,7 @@ export default function PropertyViewPage() {
               </div>
             </div>
 
-            <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(24px,2.2vw,36px)]">
+            <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(48px,4.5vw,72px)]">
               <EnquireTrigger className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]" />
               <Button
                 href="#share"
@@ -188,7 +188,7 @@ export default function PropertyViewPage() {
                     key={d.label}
                     className="flex items-center justify-between py-[10px]"
                   >
-                    <dt className="font-display text-[15px] text-[#202020]">
+                    <dt className="font-display font-medium text-[15px] text-[#202020]">
                       {d.label}
                     </dt>
                     <dd className="font-display text-[15px] font-medium text-[#202020]">
@@ -204,7 +204,7 @@ export default function PropertyViewPage() {
                 Resource
               </h3>
               <div className="mt-[6px] flex items-center justify-between py-[10px]">
-                <span className="font-display text-[15px] text-[#202020]">
+                <span className="font-display font-medium text-[15px] text-[#202020]">
                   Home loan calculator
                 </span>
                 <Link
@@ -228,10 +228,10 @@ export default function PropertyViewPage() {
               allowFullScreen
               className="absolute inset-0 h-full w-full border-0"
             />
-            <div className="pointer-events-none absolute left-0 top-0 z-10 flex items-center gap-[2px] bg-white p-[4px] shadow-[0_4px_14px_rgba(0,0,0,0.14)]">
+            <div className="pointer-events-none absolute left-[clamp(8px,0.8vw,14px)] top-[clamp(8px,0.8vw,14px)] z-10 flex items-stretch gap-[6px] bg-white pr-[6px] shadow-[0_4px_14px_rgba(0,0,0,0.14)]">
               <button
                 type="button"
-                className="pointer-events-auto rounded-[6px] bg-brand-navy px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-semibold text-white"
+                className="pointer-events-auto bg-brand-navy px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-medium text-white"
               >
                 Map View
               </button>
@@ -241,6 +241,7 @@ export default function PropertyViewPage() {
               >
                 Satellite View
               </button>
+              <span aria-hidden className="self-stretch w-[1px] bg-gray-300" />
               <button
                 type="button"
                 className="pointer-events-auto rounded-[6px] px-[clamp(16px,1.4vw,28px)] py-[clamp(8px,0.7vw,14px)] font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker hover:bg-brand-soft"
@@ -342,7 +343,7 @@ function DetailRow({ label, value, topSpace = false }: { label: string; value: s
         topSpace ? "mt-[14px]" : ""
       }`}
     >
-      <span className="font-display text-[15px] text-[#202020]">{label}</span>
+      <span className="font-display font-medium text-[15px] text-[#202020]">{label}</span>
       <span className="font-display text-[15px] font-semibold text-[#202020]">
         {value}
       </span>
@@ -363,7 +364,7 @@ function AgentMini({ name, phone, email, image }: AgentData) {
         />
       </div>
       <p className="mt-[12px] font-display text-[14px] font-semibold text-brand-bunker">{name}</p>
-      <p className="mt-[2px] font-display text-[13px] text-brand-bunker/80">{phone}</p>
+      <p className="mt-[2px] font-display text-[13px] font-medium text-[#202020]">{phone}</p>
       <a
         href={`mailto:${email}`}
         className="mt-[2px] inline-block font-display text-[13px] font-medium text-brand-navy underline underline-offset-4 hover:opacity-80"
