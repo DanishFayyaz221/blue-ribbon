@@ -124,27 +124,33 @@ export default function PropertyViewPage() {
           <aside className="lg:sticky lg:top-[24px] lg:self-start">
             {/* Stats — 4 | 2 | 2 - with darker visible dividers */}
             <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] mt-[calc(-1*clamp(28px,2.7vw,50px))]">
-              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
-                <div className="font-display font-medium text-brand-bunker text-[clamp(40px,3.6vw,52px)] leading-[0.95]">
-                  4
+              <div className="text-right pt-[clamp(6px,0.6vw,10px)] pb-[clamp(8px,0.8vw,14px)]">
+                <div className="flex h-[clamp(40px,3.6vw,52px)] items-start justify-end">
+                  <span className="-mt-[clamp(3px,0.4vw,6px)] font-display font-medium text-brand-bunker text-[clamp(40px,3.6vw,52px)] leading-none">
+                    4
+                  </span>
                 </div>
                 <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
                   Beds
                 </div>
               </div>
-              <div className="w-px self-stretch mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
-              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
-                <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
-                  2
+              <div className="w-px self-center h-[clamp(46px,3.8vw,58px)] mx-[clamp(12px,1.5vw,20px)] bg-gray-300" />
+              <div className="text-right pt-[clamp(6px,0.6vw,10px)] pb-[clamp(8px,0.8vw,14px)]">
+                <div className="flex h-[clamp(40px,3.6vw,52px)] items-start justify-end">
+                  <span className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-none">
+                    2
+                  </span>
                 </div>
                 <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
                   Baths
                 </div>
               </div>
-              <div className="w-px self-stretch mx-[clamp(12px,1.5vw,20px)] bg-gray-400" />
-              <div className="text-right pt-[clamp(18px,1.6vw,26px)] pb-[clamp(8px,0.8vw,14px)]">
-                <div className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-[0.95]">
-                  2
+              <div className="w-px self-center h-[clamp(46px,3.8vw,58px)] mx-[clamp(12px,1.5vw,20px)] bg-gray-300" />
+              <div className="text-right pt-[clamp(6px,0.6vw,10px)] pb-[clamp(8px,0.8vw,14px)]">
+                <div className="flex h-[clamp(40px,3.6vw,52px)] items-start justify-end">
+                  <span className="font-display font-medium text-brand-bunker text-[clamp(24px,2vw,28px)] leading-none">
+                    2
+                  </span>
                 </div>
                 <div className="mt-[clamp(6px,0.6vw,10px)] font-display text-[clamp(10px,0.78vw,12px)] font-normal text-brand-bunker/70">
                   Cars
@@ -152,13 +158,13 @@ export default function PropertyViewPage() {
               </div>
             </div>
 
-            <div className="flex gap-[10px] mt-[clamp(24px,2.2vw,36px)]">
-              <EnquireTrigger className="flex-1" />
+            <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(24px,2.2vw,36px)]">
+              <EnquireTrigger className="flex-1 !h-[52px] !text-[15px]" />
               <Button
                 href="#share"
                 variant="outline-dark"
                 size="sm"
-                className="flex-1 !h-[42px] !rounded-full"
+                className="flex-1 !h-[52px] !rounded-full !text-[15px]"
               >
                 Share
               </Button>
@@ -168,19 +174,19 @@ export default function PropertyViewPage() {
             <DetailRow label="Next inspection" value="By appointment" />
 
             <div className="mt-[16px] pt-[4px]">
-              <h3 className="font-display text-[13px] font-semibold text-brand-bunker">
+              <h3 className="font-display text-[16px] font-semibold text-[#202020]">
                 Property information
               </h3>
               <dl className="mt-[8px]">
                 {propertyInfo.map((d) => (
                   <div
                     key={d.label}
-                    className="flex items-center justify-between py-[8px]"
+                    className="flex items-center justify-between py-[10px]"
                   >
-                    <dt className="font-display text-[12px] text-brand-bunker/70">
+                    <dt className="font-display text-[15px] text-[#202020]">
                       {d.label}
                     </dt>
-                    <dd className="font-display text-[12px] font-medium text-brand-bunker">
+                    <dd className="font-display text-[15px] font-medium text-[#202020]">
                       {d.value}
                     </dd>
                   </div>
@@ -189,16 +195,16 @@ export default function PropertyViewPage() {
             </div>
 
             <div className="mt-[12px] border-t border-brand-silver/40 pt-[14px]">
-              <h3 className="font-display text-[13px] font-semibold text-brand-bunker">
+              <h3 className="font-display text-[16px] font-semibold text-[#202020]">
                 Resource
               </h3>
-              <div className="mt-[6px] flex items-center justify-between py-[8px]">
-                <span className="font-display text-[12px] text-brand-bunker/70">
+              <div className="mt-[6px] flex items-center justify-between py-[10px]">
+                <span className="font-display text-[15px] text-[#202020]">
                   Home loan calculator
                 </span>
                 <Link
                   href="#calculator"
-                  className="font-display text-[12px] font-medium text-brand-navy underline underline-offset-4 hover:opacity-80"
+                  className="font-display text-[15px] font-medium text-[#202020] underline underline-offset-4 hover:opacity-80"
                 >
                   View
                 </Link>
@@ -240,7 +246,7 @@ export default function PropertyViewPage() {
           </div>
         </div>
 
-        <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] sm:mt-[clamp(44px,4vw,76px)]">
+        <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] sm:mt-0">
           {/* Navy fabric background */}
           <Image
             src="/images/bg.png"
@@ -312,12 +318,12 @@ export default function PropertyViewPage() {
 function DetailRow({ label, value, topSpace = false }: { label: string; value: string; topSpace?: boolean }) {
   return (
     <div
-      className={`flex items-center justify-between border-b border-brand-silver/40 py-[12px] ${
+      className={`flex items-center justify-between border-b border-brand-silver/40 py-[14px] ${
         topSpace ? "mt-[14px]" : ""
       }`}
     >
-      <span className="font-display text-[12px] text-brand-bunker/70">{label}</span>
-      <span className="font-display text-[12px] font-semibold text-brand-bunker">
+      <span className="font-display text-[15px] text-[#202020]">{label}</span>
+      <span className="font-display text-[15px] font-semibold text-[#202020]">
         {value}
       </span>
     </div>
