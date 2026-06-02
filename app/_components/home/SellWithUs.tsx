@@ -71,7 +71,7 @@ export function SellWithUs() {
         {/* Text — left 50% */}
         <div className="relative z-10 container-page">
           <div className="flex items-center min-h-[clamp(360px,42vw,560px)] py-[clamp(28px,3vw,48px)] pr-[clamp(16px,2vw,32px)]">
-            <div className="w-[calc(50%-clamp(8px,1vw,16px))] max-w-[620px]">
+            <div className="-ml-[24px] xl:-ml-[44px] w-[calc(50%-clamp(8px,1vw,16px))] max-w-[620px]">
               <h2 className="font-display font-bold text-white text-[clamp(1.5rem,2.7vw,3.25rem)] leading-[1.05]">
                 Want to Sell with us?
               </h2>
