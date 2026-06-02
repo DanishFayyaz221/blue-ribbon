@@ -119,14 +119,14 @@ export default function PropertyViewPage() {
               </Button>
             </div>
 
-            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[520px]">
+            <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[440px]">
               {agents.map((a, i) => (
                 <AgentMini key={i} {...a} />
               ))}
             </div>
           </div>
 
-          <aside className="lg:sticky lg:top-[24px] lg:self-start">
+          <aside className="lg:sticky lg:top-[64px] lg:self-start">
             {/* Stats — 4 | 2 | 2 - with darker visible dividers */}
             <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] mt-[calc(-1*clamp(28px,2.7vw,50px))]">
               <div className="text-right pt-[clamp(6px,0.6vw,10px)] pb-[clamp(8px,0.8vw,14px)]">
@@ -314,7 +314,9 @@ export default function PropertyViewPage() {
 
             <div className="relative z-10">
               <h2 className="font-display font-bold text-white text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1]">
-                Others also viewed
+                Others also
+                <br />
+                viewed
               </h2>
               <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
                 {similar.map((p, i) => (
@@ -354,7 +356,7 @@ function DetailRow({ label, value, topSpace = false }: { label: string; value: s
 function AgentMini({ name, phone, email, image }: AgentData) {
   return (
     <article className="overflow-hidden">
-      <div className="relative aspect-[9/10] w-full overflow-hidden rounded-[12px] bg-brand-bunker/80">
+      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[12px] bg-brand-bunker/80">
         <Image
           src={image}
           alt={name}
