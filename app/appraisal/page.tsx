@@ -350,10 +350,10 @@ export default function AppraisalPage() {
 
               <section className="container-page py-[24px]">
                 <div className="rounded-[16px] border border-brand-silver/60 bg-white p-[20px]">
-                  <h2 className="text-center font-display font-bold text-brand-bunker text-[20px]">
+                  <h2 className="mt-[30px] text-center font-display font-light text-[#000000] text-[27px]">
                     One last question!
                   </h2>
-                  <p className="mt-[8px] text-center font-display text-[13px] text-brand-bunker/70">
+                  <p className="mt-[18px] text-center font-display text-[13px] text-brand-bunker/70">
                     What are you looking to do?
                   </p>
                   <div className="mt-[18px] flex flex-col gap-[10px]">
@@ -364,10 +364,10 @@ export default function AppraisalPage() {
                           key={opt.label}
                           type="button"
                           onClick={() => setIntent(opt.intent)}
-                          className={`h-[44px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
+                          className={`h-[38px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
                             active
-                              ? "bg-brand-sky text-white"
-                              : "border border-brand-silver/70 bg-white text-brand-bunker hover:bg-brand-soft"
+                              ? "bg-[#39B7FF] text-white"
+                              : "border border-[#3D3D3D] bg-white text-brand-bunker hover:bg-brand-soft"
                           }`}
                         >
                           {opt.label}
@@ -401,7 +401,7 @@ export default function AppraisalPage() {
                   <button
                     type="button"
                     disabled={!intent || !agree || !agreeTerms}
-                    className="mt-[18px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
+                    className="mt-[18px] mb-[32px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
                   >
                     View the Full Property Report
                   </button>
@@ -502,11 +502,11 @@ export default function AppraisalPage() {
                   </div>
 
                   {/* RIGHT COLUMN — "One last question!" card */}
-                  <aside className="w-full max-w-[clamp(380px,32vw,460px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(20px,1.8vw,28px)] bg-white p-[clamp(28px,2.6vw,40px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
-                    <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(18px,1.6vw,25px)] leading-[1.2]">
+                  <aside className="w-full max-w-[clamp(350px,29vw,420px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(18px,1.6vw,26px)] bg-white p-[clamp(22px,2.1vw,32px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
+                    <h2 className="mt-[clamp(18px,2vw,30px)] text-center font-display font-light text-[#000000] text-[clamp(20px,1.8vw,28px)] leading-[1.2]">
                       One last question!
                     </h2>
-                    <p className="mt-[clamp(9px,0.8vw,12px)] text-center font-display text-[clamp(11.5px,0.85vw,13px)] text-brand-bunker/70">
+                    <p className="mt-[clamp(18px,1.6vw,24px)] text-center font-display text-[clamp(11.5px,0.85vw,13px)] text-brand-bunker/70">
                       What are you looking to do?
                     </p>
 
@@ -518,10 +518,10 @@ export default function AppraisalPage() {
                             key={opt.label}
                             type="button"
                             onClick={() => setIntent(opt.intent)}
-                            className={`relative flex h-[clamp(44px,3.6vw,52px)] w-full items-center justify-center rounded-full px-[20px] font-display text-[clamp(13px,1vw,15px)] font-medium transition ${
+                            className={`relative flex h-[clamp(34px,2.7vw,42px)] w-full items-center justify-center rounded-full px-[20px] font-display text-[clamp(12px,0.95vw,14px)] font-medium transition ${
                               active
-                                ? "bg-brand-sky text-white shadow-[0_4px_14px_rgba(56,178,224,0.35)]"
-                                : "border border-brand-silver/60 bg-white text-brand-bunker hover:border-brand-silver hover:bg-brand-soft"
+                                ? "bg-[#39B7FF] text-white shadow-[0_4px_14px_rgba(56,178,224,0.35)]"
+                                : "border border-[#3D3D3D] bg-white text-brand-bunker hover:border-[#3D3D3D] hover:bg-brand-soft"
                             }`}
                           >
                             {active && (
@@ -550,9 +550,9 @@ export default function AppraisalPage() {
                         type="checkbox"
                         checked={agree}
                         onChange={(e) => setAgree(e.target.checked)}
-                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                        className="mt-[3px] h-[14px] w-[14px] accent-[#000000]"
                       />
-                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                      <span className="font-display text-[clamp(9.5px,0.72vw,11px)] leading-[1.5] text-brand-bunker/75">
                         I agree that the information I&rsquo;ve provided on this Website can be used by Blue Ribbon Real Estate{" "}
                         <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-navy">
                           Privacy Policy
@@ -562,6 +562,7 @@ export default function AppraisalPage() {
                     </label>
 
                     {/* Terms section */}
+                    <hr className="mt-[clamp(14px,1.2vw,18px)] border-t border-brand-silver/60" />
                     <p className="mt-[clamp(14px,1.2vw,18px)] font-display text-[clamp(11px,0.85vw,13px)] font-medium text-brand-bunker">
                       Terms and conditions
                     </p>
@@ -571,9 +572,9 @@ export default function AppraisalPage() {
                         type="checkbox"
                         checked={agreeTerms}
                         onChange={(e) => setAgreeTerms(e.target.checked)}
-                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                        className="mt-[3px] h-[14px] w-[14px] accent-[#000000]"
                       />
-                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                      <span className="font-display text-[clamp(8.5px,0.62vw,9.5px)] leading-[1.45] text-brand-bunker/75">
                         I have read and understood the{" "}
                         <Link href="/terms" className="underline underline-offset-2 hover:text-brand-navy">
                           Terms of Use
@@ -589,7 +590,7 @@ export default function AppraisalPage() {
                     <button
                       type="button"
                       disabled={!intent || !agree || !agreeTerms}
-                      className="mt-[clamp(22px,2vw,30px)] h-[clamp(48px,3.8vw,56px)] w-full rounded-full bg-[#001F4D] font-display text-[clamp(12px,0.95vw,14px)] font-bold uppercase tracking-[0.1em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="mt-[clamp(16px,1.6vw,24px)] mb-[clamp(8px,1vw,14px)] h-[clamp(42px,3.2vw,48px)] w-full rounded-full bg-[#001F4D] font-display text-[clamp(11px,0.9vw,13px)] font-bold uppercase tracking-[0.1em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       VIEW THE FULL PROPERTY REPORT
                     </button>
