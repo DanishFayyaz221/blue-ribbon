@@ -130,12 +130,12 @@ export default function ContactPage() {
                 memorable experience built on a personalised touch, professional intuition
                 and consistent excellence in everything that we do.
               </p>
-              <div className="mt-[22px] flex flex-col gap-[5px] font-display text-[12.5px] sm:text-[13.5px] font-semibold text-brand-bunker">
+              <div className="mt-[22px] flex flex-col gap-[5px] font-display text-[12.5px] sm:text-[13.5px] font-bold text-[#000000]">
                 <p>11/76-80 Station Street, Wentworthville, NSW 2145</p>
-                <a href="mailto:sales@blueribbonre.com.au" className="font-medium hover:underline">
+                <a href="mailto:sales@blueribbonre.com.au" className="font-bold hover:underline">
                   sales@blueribbonre.com.au
                 </a>
-                <a href="tel:1300579093" className="font-medium hover:underline">
+                <a href="tel:1300579093" className="font-bold hover:underline">
                   1300 579 093
                 </a>
               </div>

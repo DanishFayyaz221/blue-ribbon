@@ -27,12 +27,12 @@ export function AboutContent() {
               <br />
               Property Partners
             </h2>
-            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-normal leading-[1.7] text-brand-bunker">
               Established to redefine excellence, Blue Ribbon Real Estate has rapidly
               emerged as a premier agency and a respected industry leader across the
               Australian market.
             </p>
-            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-normal leading-[1.7] text-brand-bunker">
               Committed to raising the bar, Blue Ribbon was founded to transform the
               real estate experience through a dedication to integrity and local
               expertise. Our service focuses on more than just transactions; it is about
@@ -51,7 +51,7 @@ export function AboutContent() {
           </div>
         </div>
 
-        <div className="mt-[clamp(38px,3.15vw,76px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
+        <div className="mt-[clamp(64px,6vw,120px)] grid grid-cols-1 lg:grid-cols-2 items-center gap-[clamp(24px,2.7vw,56px)]">
           <div className="relative aspect-[860/440] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)] lg:order-1">
             <Image
               src="/about-us-images/image 6.png"
@@ -67,7 +67,7 @@ export function AboutContent() {
               <br />
               In Property
             </h2>
-            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[clamp(18px,1.45vw,25px)] font-display text-[13px] sm:text-[14px] font-normal leading-[1.7] text-brand-bunker">
               Blue Ribbon is driven by a team of dynamic professionals united by a
               singular passion to secure the absolute best results for every Australian
               homeowner. Blending modern innovation with traditional integrity, our
@@ -76,7 +76,7 @@ export function AboutContent() {
               expertise, we provide an elevated standard of service designed to exceed
               your property goals.
             </p>
-            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-medium leading-[1.7] text-brand-bunker">
+            <p className="mt-[14px] font-display text-[13px] sm:text-[14px] font-normal leading-[1.7] text-brand-bunker">
               Trust that your most significant investment is managed with the highest
               level of care.
             </p>
@@ -86,10 +86,10 @@ export function AboutContent() {
         <div className="mt-[clamp(38px,3.15vw,76px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">
           {values.map((v) => (
             <div key={v.title}>
-              <h3 className="font-display text-[15px] sm:text-[17px] font-bold text-brand-navy">
+              <h3 className="font-display text-[15px] sm:text-[17px] font-bold text-[#000000]">
                 {v.title}
               </h3>
-              <p className="mt-[10px] font-display text-[12px] sm:text-[13px] font-medium leading-[1.7] text-brand-bunker">
+              <p className="mt-[10px] font-display text-[12px] sm:text-[13px] font-normal leading-[1.7] text-brand-bunker">
                 {v.body}
               </p>
             </div>
