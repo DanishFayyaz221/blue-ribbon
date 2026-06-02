@@ -17,7 +17,7 @@ const values = [
 
 export function OurValues() {
   return (
-    <section className="relative w-full overflow-hidden py-[clamp(64px,6vw,120px)]">
+    <section className="relative w-full overflow-hidden pt-[clamp(32px,3vw,60px)] pb-[clamp(64px,6vw,120px)]">
       {/* Navy fabric background — ParramattaCTA jaisa */}
       <Image
         src="/images/bg.png"
@@ -31,15 +31,19 @@ export function OurValues() {
       <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
 
       <div className="relative z-10 container-page">
-        <h2 className="mx-auto max-w-[900px] text-center font-display font-bold text-white text-[clamp(1.75rem,2.6vw,2.9rem)] leading-[1.25] whitespace-nowrap">
+        <h2 className="relative -left-[clamp(12px,2vw,40px)] mx-auto max-w-[960px] text-center font-display font-bold text-white text-[clamp(1.5rem,2.4vw,2.6rem)] leading-[1.25] sm:whitespace-nowrap">
           Through our local insight and commitment, we aim to
           <br />
-          deliver premium results that truly stand out.
+          <span className="relative left-[clamp(30px,3.8vw,76px)]">
+            deliver premium results that truly stand out.
+          </span>
         </h2>
-        <p className="mx-auto mt-[clamp(18px,1.45vw,25px)] max-w-[520px] text-center font-display font-normal text-white/90 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
-          Our passion for quality service, extensive market expertise, and bespoke strategy
-          are all focused on securing the highest potential value throughout your property
-          journey.
+        <p className="mx-auto mt-[clamp(18px,1.45vw,25px)] max-w-[600px] text-center font-display font-normal text-white/90 text-[11.5px] sm:text-[12.5px] leading-[1.65] tracking-[0.01em]">
+          Our passion for quality service, extensive market expertise,
+          <br />
+          and bespoke strategy are all focused on securing the highest potential
+          <br />
+          value throughout your property journey.
         </p>
 
         <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-1 sm:grid-cols-3 gap-[clamp(20px,2.25vw,50px)]">

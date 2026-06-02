@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 const tiles = [
   { label: "Advanced Search", href: "/buy", src: "/images/latest-properties.png" },
@@ -15,11 +12,7 @@ const tiles = [
   },
 ] as const;
 
-const tabs = ["Buying", "Selling", "Renting"] as const;
-
 export function BridgeToHome() {
-  const [active, setActive] = useState<(typeof tabs)[number]>("Buying");
-
   return (
     <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
@@ -27,30 +20,6 @@ export function BridgeToHome() {
           <h2 className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
             Your bridge to home
           </h2>
-          <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
-            {tabs.map((tab) => {
-              const isActive = active === tab;
-              return (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActive(tab)}
-                  className="relative flex h-full min-w-[110px] sm:min-w-[180px] items-center justify-center px-[8px]"
-                >
-                  <span
-                    className={`font-display text-[15px] sm:text-[18px] lg:text-[20px] font-medium tracking-[0.02em] ${
-                      isActive ? "text-brand-bunker" : "text-black/70"
-                    }`}
-                  >
-                    {tab}
-                  </span>
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-brand-bunker" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
         <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">

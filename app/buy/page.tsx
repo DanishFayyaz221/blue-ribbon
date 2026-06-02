@@ -59,8 +59,8 @@ export default function BuyPage() {
         </div>
 
         {/* Desktop hero image */}
-        <section className="hidden sm:block relative w-full overflow-hidden">
-          <div className="relative aspect-[1920/860] min-h-[380px] max-h-[600px] w-full">
+        <section className="hidden sm:block container-page">
+          <div className="relative aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
             <Image
               src="/contact/contact-us.png"
               alt="Featured property"
