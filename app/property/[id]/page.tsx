@@ -109,7 +109,12 @@ export default function PropertyViewPage() {
             </p>
 
             <div className="mt-[clamp(18px,1.6vw,28px)]">
-              <Button href="#more" variant="outline-dark" size="sm">
+              <Button
+                href="#more"
+                variant="outline-dark"
+                size="md"
+                className="!h-[58px] !px-[68px] !rounded-[16px] !text-[15px] !border-[#001F4D]"
+              >
                 Read more
               </Button>
             </div>
