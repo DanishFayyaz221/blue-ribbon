@@ -67,7 +67,6 @@ export default function AppraisalPage() {
               </div>
               <section className="w-full">
                 <div className="relative overflow-hidden">
-                  <div className="relative aspect-[1/1] w-full">
                     <Image
                       src="/images/property-hero.png"
                       alt=""
@@ -77,7 +76,7 @@ export default function AppraisalPage() {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-brand-navy/55" />
-                    <div className="absolute inset-0 flex flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[24px]">
+                    <div className="relative flex min-h-[100vw] flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[32px]">
                       <h1 className="text-center font-display font-bold text-white text-[28px] leading-[1.1] tracking-[-0.01em]">
                         Get Your Property
                         <br />
@@ -133,7 +132,6 @@ export default function AppraisalPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </section>
             </div>
@@ -341,7 +339,7 @@ export default function AppraisalPage() {
                     <p className="font-display text-[11px] uppercase tracking-[0.1em] text-white/75">
                       Estimated Property Value
                     </p>
-                    <p className="mt-[8px] font-display text-[28px] font-bold text-brand-sky">
+                    <p className="mt-[8px] whitespace-nowrap font-display text-[28px] font-bold text-brand-sky">
                       $8.57M &mdash; $10.9M
                     </p>
                   </div>
@@ -350,10 +348,10 @@ export default function AppraisalPage() {
 
               <section className="container-page py-[24px]">
                 <div className="rounded-[16px] border border-brand-silver/60 bg-white p-[20px]">
-                  <h2 className="text-center font-display font-bold text-brand-bunker text-[20px]">
+                  <h2 className="mt-[30px] text-center font-display font-light text-[#000000] text-[27px]">
                     One last question!
                   </h2>
-                  <p className="mt-[8px] text-center font-display text-[13px] text-brand-bunker/70">
+                  <p className="mt-[18px] text-center font-display text-[13px] text-brand-bunker/70">
                     What are you looking to do?
                   </p>
                   <div className="mt-[18px] flex flex-col gap-[10px]">
@@ -364,10 +362,10 @@ export default function AppraisalPage() {
                           key={opt.label}
                           type="button"
                           onClick={() => setIntent(opt.intent)}
-                          className={`h-[44px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
+                          className={`h-[38px] rounded-[12px] px-[16px] font-display text-[14px] font-medium transition ${
                             active
-                              ? "bg-brand-sky text-white"
-                              : "border border-brand-silver/70 bg-white text-brand-bunker hover:bg-brand-soft"
+                              ? "bg-[#39B7FF] text-white"
+                              : "border border-[#3D3D3D] bg-white text-brand-bunker hover:bg-brand-soft"
                           }`}
                         >
                           {opt.label}
@@ -401,7 +399,7 @@ export default function AppraisalPage() {
                   <button
                     type="button"
                     disabled={!intent || !agree || !agreeTerms}
-                    className="mt-[18px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
+                    className="mt-[18px] mb-[32px] h-[48px] w-full rounded-[10px] bg-brand-bunker font-display text-[12px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-black disabled:opacity-50"
                   >
                     View the Full Property Report
                   </button>
@@ -461,12 +459,13 @@ export default function AppraisalPage() {
                     </p>
 
                     {/* Property value range */}
-                    <div className="mt-[clamp(50px,5.4vw,90px)] w-full max-w-[560px]">
-                      <p className="text-center font-display text-[clamp(10.5px,0.78vw,12px)] font-semibold uppercase tracking-[0.16em] text-brand-bunker/60">
+                    <div className="mt-[clamp(50px,5.4vw,90px)] w-full max-w-[560px] bg-[#e8e8e8] p-[clamp(24px,2.4vw,40px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
+                      <p className="text-center font-display text-[clamp(13px,1vw,16px)] font-bold uppercase tracking-[0.14em] text-[#828282]">
                         ESTIMATED PROPERTY VALUE
                       </p>
 
-                      <div className="mt-[clamp(24px,2.35vw,40px)] flex items-center justify-center gap-[clamp(14px,1.8vw,32px)]">
+                      <div className="relative mt-[clamp(24px,2.35vw,40px)]">
+                      <div className="flex items-center justify-center gap-[clamp(14px,1.8vw,32px)] blur-[10px] select-none pointer-events-none">
                         <span className="font-display text-[clamp(18px,1.7vw,25px)] font-bold text-brand-bunker/35">
                           $8.57M
                         </span>
@@ -496,15 +495,16 @@ export default function AppraisalPage() {
                           $10.9M
                         </span>
                       </div>
+                      </div>
                     </div>
                   </div>
 
                   {/* RIGHT COLUMN — "One last question!" card */}
-                  <aside className="w-full max-w-[clamp(380px,32vw,460px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(20px,1.8vw,28px)] bg-white p-[clamp(28px,2.6vw,40px)] shadow-[0_10px_40px_rgba(15,23,42,0.08),0_2px_8px_rgba(15,23,42,0.04)]">
-                    <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(18px,1.6vw,25px)] leading-[1.2]">
+                  <aside className="w-full max-w-[clamp(350px,29vw,420px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(18px,1.6vw,26px)] bg-white p-[clamp(22px,2.1vw,32px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
+                    <h2 className="mt-[clamp(18px,2vw,30px)] text-center font-display font-light text-[#000000] text-[clamp(20px,1.8vw,28px)] leading-[1.2]">
                       One last question!
                     </h2>
-                    <p className="mt-[clamp(9px,0.8vw,12px)] text-center font-display text-[clamp(11.5px,0.85vw,13px)] text-brand-bunker/70">
+                    <p className="mt-[clamp(18px,1.6vw,24px)] text-center font-display text-[clamp(11.5px,0.85vw,13px)] text-brand-bunker/70">
                       What are you looking to do?
                     </p>
 
@@ -516,22 +516,22 @@ export default function AppraisalPage() {
                             key={opt.label}
                             type="button"
                             onClick={() => setIntent(opt.intent)}
-                            className={`relative flex h-[clamp(44px,3.6vw,52px)] w-full items-center justify-center rounded-full px-[20px] font-display text-[clamp(13px,1vw,15px)] font-medium transition ${
+                            className={`relative flex h-[clamp(34px,2.7vw,42px)] w-full items-center justify-center rounded-full px-[20px] font-display text-[clamp(12px,0.95vw,14px)] font-medium transition ${
                               active
-                                ? "bg-brand-sky text-white shadow-[0_4px_14px_rgba(56,178,224,0.35)]"
-                                : "border border-brand-silver/60 bg-white text-brand-bunker hover:border-brand-silver hover:bg-brand-soft"
+                                ? "bg-[#39B7FF] text-white shadow-[0_4px_14px_rgba(56,178,224,0.35)]"
+                                : "border border-[#3D3D3D] bg-white text-brand-bunker hover:border-[#3D3D3D] hover:bg-brand-soft"
                             }`}
                           >
                             {active && (
                               <svg
                                 viewBox="0 0 20 20"
-                                className="absolute left-[20px] h-[14px] w-[14px]"
+                                className="mr-[8px] h-[16px] w-[16px] shrink-0"
                                 fill="currentColor"
                                 aria-hidden
                               >
                                 <path
                                   fillRule="evenodd"
-                                  d="M16.704 5.29a1 1 0 010 1.42l-8 8a1 1 0 01-1.42 0l-4-4a1 1 0 011.42-1.42L8 12.59l7.29-7.3a1 1 0 011.42 0z"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                   clipRule="evenodd"
                                 />
                               </svg>
@@ -548,9 +548,9 @@ export default function AppraisalPage() {
                         type="checkbox"
                         checked={agree}
                         onChange={(e) => setAgree(e.target.checked)}
-                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                        className="mt-[3px] h-[14px] w-[14px] accent-[#000000]"
                       />
-                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                      <span className="font-display text-[clamp(9.5px,0.72vw,11px)] leading-[1.5] text-brand-bunker/75">
                         I agree that the information I&rsquo;ve provided on this Website can be used by Blue Ribbon Real Estate{" "}
                         <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-navy">
                           Privacy Policy
@@ -560,6 +560,7 @@ export default function AppraisalPage() {
                     </label>
 
                     {/* Terms section */}
+                    <hr className="mt-[clamp(14px,1.2vw,18px)] border-t border-brand-silver/60" />
                     <p className="mt-[clamp(14px,1.2vw,18px)] font-display text-[clamp(11px,0.85vw,13px)] font-medium text-brand-bunker">
                       Terms and conditions
                     </p>
@@ -569,9 +570,9 @@ export default function AppraisalPage() {
                         type="checkbox"
                         checked={agreeTerms}
                         onChange={(e) => setAgreeTerms(e.target.checked)}
-                        className="mt-[3px] h-[14px] w-[14px] accent-brand-sky"
+                        className="mt-[3px] h-[14px] w-[14px] accent-[#000000]"
                       />
-                      <span className="font-display text-[clamp(10.5px,0.78vw,12px)] leading-[1.55] text-brand-bunker/75">
+                      <span className="font-display text-[clamp(8.5px,0.62vw,9.5px)] leading-[1.45] text-brand-bunker/75">
                         I have read and understood the{" "}
                         <Link href="/terms" className="underline underline-offset-2 hover:text-brand-navy">
                           Terms of Use
@@ -587,7 +588,7 @@ export default function AppraisalPage() {
                     <button
                       type="button"
                       disabled={!intent || !agree || !agreeTerms}
-                      className="mt-[clamp(22px,2vw,30px)] h-[clamp(48px,3.8vw,56px)] w-full rounded-full bg-brand-sky font-display text-[clamp(12px,0.95vw,14px)] font-bold uppercase tracking-[0.1em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="mt-[clamp(16px,1.6vw,24px)] mb-[clamp(8px,1vw,14px)] h-[clamp(42px,3.2vw,48px)] w-full rounded-full bg-[#001F4D] font-display text-[clamp(11px,0.9vw,13px)] font-bold uppercase tracking-[0.1em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       VIEW THE FULL PROPERTY REPORT
                     </button>
@@ -647,7 +648,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                   {s.label}
                 </p>
                 <p
-                  className={`mt-[8px] font-display text-[23px] font-bold ${
+                  className={`mt-[8px] font-display text-[27px] font-bold ${
                     s.tone === "navy" ? "text-brand-navy" : "text-brand-sky"
                   }`}
                 >
@@ -673,9 +674,9 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="mt-[28px] rounded-[20px] bg-white p-[22px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+            className="mt-[28px] rounded-[20px] bg-white p-[22px] pt-[44px] shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
           >
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[20px]">
+            <h2 className="text-center font-display font-light text-brand-bunker text-[20px]">
               Hey there!
             </h2>
             <p className="mt-[8px] text-center font-display text-[12.5px] text-brand-bunker/70 leading-[1.5]">
@@ -688,7 +689,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[18px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[18px] h-[42px] w-full rounded-[22px] bg-[#F2F2F2] px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -696,7 +697,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[8px] h-[42px] w-full rounded-[22px] bg-brand-soft-2 px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[8px] h-[42px] w-full rounded-[22px] bg-[#F2F2F2] px-[16px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
@@ -754,7 +755,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                   <p className="mt-[8px] whitespace-pre-line font-display text-[9.5px] sm:text-[10.5px] font-medium uppercase tracking-[0.06em] text-brand-bunker/70 leading-[1.3]">
                     {s.label}
                   </p>
-                  <p className="mt-[8px] font-display text-[clamp(18px,1.45vw,23px)] font-bold text-brand-sky">
+                  <p className="mt-[8px] font-display text-[clamp(21px,1.7vw,27px)] font-light text-brand-sky">
                     {s.value}
                   </p>
                   <p className="mt-[3px] font-display text-[9.5px] sm:text-[10.5px] text-brand-bunker/60">
@@ -778,9 +779,9 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               e.preventDefault();
               onContinue();
             }}
-            className="mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+            className="relative right-[clamp(10px,2vw,36px)] mx-auto w-full max-w-[420px] rounded-[26px] bg-white p-[clamp(24px,2.15vw,36px)] pt-[clamp(40px,3.4vw,60px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]"
           >
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
+            <h2 className="text-center font-display font-light text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
               Hey there!
             </h2>
             <p className="mt-[clamp(8px,0.8vw,14px)] text-center font-display text-[12.5px] sm:text-[13.5px] text-brand-bunker/70 leading-[1.5]">
@@ -793,7 +794,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={first}
               onChange={(e) => setFirst(e.target.value)}
               placeholder="First name *"
-              className="mt-[clamp(18px,1.45vw,25px)] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[clamp(18px,1.45vw,25px)] h-[44px] w-full rounded-[22px] bg-[#F2F2F2] px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <input
               type="text"
@@ -801,7 +802,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               value={last}
               onChange={(e) => setLast(e.target.value)}
               placeholder="Last name *"
-              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-brand-soft-2 px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
+              className="mt-[10px] h-[44px] w-full rounded-[22px] bg-[#F2F2F2] px-[18px] text-center font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:outline-none focus:ring-2 focus:ring-brand-navy/40"
             />
             <button
               type="submit"
@@ -812,6 +813,10 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
           </form>
         </div>
       </section>
+
+      <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
+        <GetInTouchCTA />
+      </div>
     </>
   );
 }

@@ -54,7 +54,7 @@ export function Nav() {
               width={260}
               height={64}
               priority
-              className="h-[72px] sm:h-[72px] lg:h-[90px] w-auto"
+              className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
             />
           </Link>
           <button
@@ -90,7 +90,7 @@ export function Nav() {
                 alt="Blue Ribbon Real Estate"
                 width={260}
                 height={64}
-                className="h-[72px] sm:h-[72px] lg:h-[90px] w-auto"
+                className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
               />
             </Link>
             <button
