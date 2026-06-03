@@ -67,7 +67,6 @@ export default function AppraisalPage() {
               </div>
               <section className="w-full">
                 <div className="relative overflow-hidden">
-                  <div className="relative aspect-[1/1] w-full">
                     <Image
                       src="/images/property-hero.png"
                       alt=""
@@ -77,7 +76,7 @@ export default function AppraisalPage() {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-brand-navy/55" />
-                    <div className="absolute inset-0 flex flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[24px]">
+                    <div className="relative flex min-h-[100vw] flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[32px]">
                       <h1 className="text-center font-display font-bold text-white text-[28px] leading-[1.1] tracking-[-0.01em]">
                         Get Your Property
                         <br />
@@ -133,7 +132,6 @@ export default function AppraisalPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </section>
             </div>
@@ -341,7 +339,7 @@ export default function AppraisalPage() {
                     <p className="font-display text-[11px] uppercase tracking-[0.1em] text-white/75">
                       Estimated Property Value
                     </p>
-                    <p className="mt-[8px] font-display text-[28px] font-bold text-brand-sky">
+                    <p className="mt-[8px] whitespace-nowrap font-display text-[28px] font-bold text-brand-sky">
                       $8.57M &mdash; $10.9M
                     </p>
                   </div>
@@ -650,7 +648,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                   {s.label}
                 </p>
                 <p
-                  className={`mt-[8px] font-display text-[27px] font-light ${
+                  className={`mt-[8px] font-display text-[27px] font-bold ${
                     s.tone === "navy" ? "text-brand-navy" : "text-brand-sky"
                   }`}
                 >
