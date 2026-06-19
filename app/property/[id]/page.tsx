@@ -301,7 +301,7 @@ export default function PropertyViewPage() {
 
         {/* Desktop: navy section aligned to container-page (matches heading X) */}
         <div className="hidden sm:block container-page">
-          <section className="relative w-full overflow-hidden py-[clamp(24px,2.7vw,56px)] px-[clamp(20px,2vw,40px)] rounded-b-[clamp(8px,1vw,16px)]">
+          <section className="relative w-full overflow-hidden py-[clamp(40px,4vw,80px)] px-[clamp(24px,2.8vw,56px)] rounded-b-[clamp(8px,1vw,16px)]">
             <Image
               src="/images/bg.png"
               alt=""
@@ -318,7 +318,7 @@ export default function PropertyViewPage() {
                 <br />
                 viewed
               </h2>
-              <div className="mt-[clamp(20px,2.15vw,36px)] grid grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
+              <div className="mt-[clamp(28px,3vw,56px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(16px,1.8vw,32px)]">
                 {similar.map((p, i) => (
                   <PropertyCard
                     key={i}
