@@ -1,4 +1,5 @@
 import { AppraisalFlow } from "../_components/appraisal/AppraisalFlow";
+import { DprReport } from "../_components/reports/DprReport";
 
 export const metadata = {
   title: "Property Report Preview | Blue Ribbon Real Estate",
@@ -7,5 +8,10 @@ export const metadata = {
 // Reached from /property-report after submitting the "Hey there!" form (NEXT).
 // Shows the result step ("One last question!" + estimated property value).
 export default function PropertyReportPreviewPage() {
-  return <AppraisalFlow initialStep="result" />;
+  return (
+    <>
+      <AppraisalFlow initialStep="result" />
+      <DprReport />
+    </>
+  );
 }
