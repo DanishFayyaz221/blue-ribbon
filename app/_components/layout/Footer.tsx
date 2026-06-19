@@ -8,7 +8,7 @@ const mobileAboutLinks = [
 ];
 
 const mobileInsightsLinks = [
-  { label: "Sell your Property", href: "/appraisal" },
+  { label: "Sell your Property", href: "/property-report-digital-appraisal" },
   { label: "Market Updates", href: "/buy" },
   { label: "Newsletter", href: "#newsletter" },
 ];
@@ -21,7 +21,7 @@ const mobileOfficeLinks = [
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
-  { label: "Sell", href: "/appraisal" },
+  { label: "Sell", href: "/property-report-digital-appraisal" },
   { label: "Rent", href: "/buy?type=rent" },
 ];
 
@@ -32,7 +32,7 @@ const aboutLinks = [
 ];
 
 const insightsLinks = [
-  { label: "Get your Property...", href: "/appraisal" },
+  { label: "Get your Property...", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
 ];

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
-  { label: "Sell", href: "/appraisal" },
+  { label: "Sell", href: "/property-report-digital-appraisal" },
   { label: "Rent", href: "/buy?type=rent" },
 ];
 
@@ -119,12 +119,12 @@ export function Nav() {
             <ul className="flex flex-col gap-[20px]">
               {[
                 { label: "Buy", href: "/buy" },
-                { label: "Sell", href: "/appraisal" },
+                { label: "Sell", href: "/property-report-digital-appraisal" },
                 { label: "Rent", href: "/buy?type=rent" },
                 { label: "Our Team", href: "/agents" },
                 { label: "About Us", href: "/about" },
                 { label: "Contact Us", href: "/contact" },
-                { label: "Property Estimate", href: "/appraisal" },
+                { label: "Property Estimate", href: "/property-report-digital-appraisal" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link

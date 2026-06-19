@@ -41,7 +41,7 @@ export function Hero() {
 
         <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
           <Link
-            href="/appraisal"
+            href="/property-report-digital-appraisal"
             className="flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition hover:bg-white/40"
           >
             Get your property estimate in just 9 seconds!

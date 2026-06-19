@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Nav } from "../_components/layout/Nav";
-import { Footer } from "../_components/layout/Footer";
-import { Breadcrumb } from "../_components/ui/Breadcrumb";
-import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
-import { OurValues } from "../_components/home/OurValues";
-import { PropertyCard, type PropertyCardData } from "../_components/property/PropertyCard";
+import { Nav } from "../layout/Nav";
+import { Footer } from "../layout/Footer";
+import { Breadcrumb } from "../ui/Breadcrumb";
+import { GetInTouchCTA } from "../sections/GetInTouchCTA";
+import { OurValues } from "../home/OurValues";
+import { PropertyCard, type PropertyCardData } from "../property/PropertyCard";
 
-type Step = "address" | "details" | "result";
+export type Step = "address" | "details" | "result";
 
 const samples: PropertyCardData[] = Array.from({ length: 6 }, () => ({
   image: "/images/dynamic.png",
@@ -39,14 +40,50 @@ const intentOptions = [
   { label: "Do a bit of research", intent: "I'm just doing research" },
 ] as const;
 
-export default function AppraisalPage() {
-  const [step, setStep] = useState<Step>("address");
+export function AppraisalFlow({
+  initialStep = "address",
+  previewHref,
+}: {
+  initialStep?: Step;
+  // When set, the details-step "NEXT" navigates here instead of showing the
+  // result inline (used by the rental flow → /rental-report-preview).
+  previewHref?: string;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  // The selected report type is derived from the URL (not local state) so it
+  // stays correct after a shallow URL change AND after browser Back/Forward —
+  // local state would reset to the default when the route remounts.
+  const isRental = pathname === "/rental-report-digital-appraisal";
+
+  const [step, setStep] = useState<Step>(initialStep);
   const [address, setAddress] = useState("");
-  const [reportType, setReportType] = useState<"sales" | "rental">("sales");
-  const [mobileReportType, setMobileReportType] = useState<"residential" | "rental" | "commercial">("residential");
+  // Mobile only needs to distinguish residential vs commercial; "rental" is
+  // driven by the URL (isRental), like the desktop radios.
+  const [mobileType, setMobileType] = useState<"residential" | "commercial">("residential");
   const [intent, setIntent] = useState<(typeof intents)[number] | null>(null);
   const [agree, setAgree] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  // Choosing a report type keeps the visitor on the SAME page but shallow-updates
+  // the URL so each option has its own shareable route (no navigation/remount).
+  const selectSales = () =>
+    window.history.replaceState(null, "", "/property-report-digital-appraisal");
+  const selectRental = () =>
+    window.history.replaceState(null, "", "/rental-report-digital-appraisal");
+  const selectMobileType = (opt: "residential" | "rental" | "commercial") => {
+    if (opt === "rental") {
+      selectRental();
+    } else {
+      setMobileType(opt);
+      selectSales();
+    }
+  };
+
+  // Searching moves on to the report — each path has its own page.
+  const handleSearch = () => {
+    router.push(isRental ? "/rental-report" : "/property-report");
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -93,12 +130,13 @@ export default function AppraisalPage() {
                       <div className="mt-[20px]">
                         <div className="flex items-center justify-center gap-[8px]">
                           {(["residential", "rental", "commercial"] as const).map((opt) => {
-                            const active = mobileReportType === opt;
+                            const active =
+                              opt === "rental" ? isRental : !isRental && mobileType === opt;
                             return (
                               <button
                                 key={opt}
                                 type="button"
-                                onClick={() => setMobileReportType(opt)}
+                                onClick={() => selectMobileType(opt)}
                                 className={`h-[34px] rounded-full px-[14px] font-display text-[12px] font-medium transition ${
                                   active
                                     ? "bg-brand-sky text-white"
@@ -124,7 +162,7 @@ export default function AppraisalPage() {
                           />
                           <button
                             type="button"
-                            onClick={() => setStep("details")}
+                            onClick={() => handleSearch()}
                             className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
                           >
                             Search
@@ -169,14 +207,14 @@ export default function AppraisalPage() {
                     <div className="relative">
                       <div className="flex flex-wrap items-center justify-center gap-x-[clamp(20px,2vw,40px)] gap-y-[10px]">
                         {(["sales", "rental"] as const).map((opt) => {
-                          const active = reportType === opt;
+                          const active = opt === "rental" ? isRental : !isRental;
                           return (
                             <label key={opt} className="flex cursor-pointer items-center gap-[10px]">
                               <input
                                 type="radio"
                                 name="reportType"
                                 checked={active}
-                                onChange={() => setReportType(opt)}
+                                onChange={() => (opt === "rental" ? selectRental() : selectSales())}
                                 className="sr-only"
                               />
                               <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border-[1.5px] border-white">
@@ -200,7 +238,7 @@ export default function AppraisalPage() {
                         />
                         <button
                           type="button"
-                          onClick={() => setStep("details")}
+                          onClick={() => handleSearch()}
                           className="flex h-[56px] sm:h-[64px] w-full sm:w-[180px] items-center justify-center rounded-[12px] sm:rounded-none bg-brand-navy font-display text-[15px] sm:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep"
                         >
                           Search
@@ -316,7 +354,11 @@ export default function AppraisalPage() {
           </>
         )}
 
-        {step === "details" && <DetailsStep onContinue={() => setStep("result")} />}
+        {step === "details" && (
+          <DetailsStep
+            onContinue={() => (previewHref ? router.push(previewHref) : setStep("result"))}
+          />
+        )}
 
         {step === "result" && (
           <>

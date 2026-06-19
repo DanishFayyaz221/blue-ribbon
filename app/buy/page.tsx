@@ -84,7 +84,7 @@ export default function BuyPage() {
               Buy Your Dream
             </h1>
             <Link
-              href="/appraisal"
+              href="/property-report-digital-appraisal"
               className="font-display text-[13px] font-medium text-brand-bunker hover:text-brand-navy"
             >
               Sell yours →
@@ -126,7 +126,7 @@ export default function BuyPage() {
               Buy Your Dream
             </h1>
             <Link
-              href="/appraisal"
+              href="/property-report-digital-appraisal"
               className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
             >
               Sell your property
