@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
+import { ConstructionBanner } from "./_components/layout/ConstructionBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="bg-white text-brand-bunker"
       >
+        <ConstructionBanner />
         {children}
       </body>
     </html>
