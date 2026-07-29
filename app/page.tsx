@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Nav } from "./_components/layout/Nav";
 import { Footer } from "./_components/layout/Footer";
 import { Hero } from "./_components/home/Hero";
@@ -17,7 +18,11 @@ export default function Home() {
         <BridgeToHome />
         <BestSuitedForYou />
         <ParramattaCTA />
-        <LatestProperties />
+        {/* Streamed: the rest of the page is static and ships immediately,
+            while the listings section waits on the database. */}
+        <Suspense fallback={null}>
+          <LatestProperties />
+        </Suspense>
         <HappyClients />
         <SellWithUs />
       </main>

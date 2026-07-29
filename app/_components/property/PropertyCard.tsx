@@ -57,7 +57,7 @@ export function PropertyCard({
           </p>
           {guide && (
             <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-brand-bunker/70 sm:text-black mt-[4px]">
-              Guide {guide}
+              {guide}
             </p>
           )}
           {meta}
@@ -67,7 +67,6 @@ export function PropertyCard({
   }
 
   if (variant === "compact") {
-    const guideText = guide?.startsWith("$") ? `Guide ${guide}` : guide;
     return (
       <Link href={href} className="group block w-full">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[clamp(10px,1vw,16px)]">
@@ -81,8 +80,8 @@ export function PropertyCard({
         </div>
         <div className="mt-[clamp(14px,1.4vw,22px)] font-display">
           <p className="text-[clamp(14px,1.05vw,17px)] font-medium leading-[1.3] text-white">{address}</p>
-          {guideText && (
-            <p className="text-[clamp(12px,0.85vw,14px)] leading-[1.4] text-white/80 mt-[4px]">{guideText}</p>
+          {guide && (
+            <p className="text-[clamp(12px,0.85vw,14px)] leading-[1.4] text-white/80 mt-[4px]">{guide}</p>
           )}
         </div>
       </Link>
@@ -106,7 +105,7 @@ export function PropertyCard({
         </p>
         {guide && (
           <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-black mt-[4px]">
-            Guide {guide}
+            {guide}
           </p>
         )}
         {meta}

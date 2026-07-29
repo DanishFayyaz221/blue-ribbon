@@ -1,46 +1,100 @@
-"use client";
+import { SORT_OPTIONS, type SortKey } from "@/lib/db/queries";
+import { FILTERABLE_AMENITIES, amenityLabel } from "@/lib/reaxml/amenities";
 
-import { useState } from "react";
+type Props = {
+  /** Route the form submits to, e.g. "/rent". */
+  action?: string;
+  /** Current values, so the form reflects the active filters after a search. */
+  q?: string;
+  min?: string;
+  max?: string;
+  sort?: SortKey;
+  /** Suburbs with live stock, offered as autocomplete suggestions. */
+  suburbs?: string[];
+  /** Amenity keys currently ticked. */
+  amenities?: string[];
+  /** Rentals get a pet-friendly toggle; sales do not. */
+  showPetFriendly?: boolean;
+};
 
-const sortOptions = ["Most Recent First", "Price (Low to High)", "Price (High to Low)"] as const;
+const FIELD =
+  "h-[38px] rounded-none border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
 
-export function PropertySearchBar() {
-  const [suburb, setSuburb] = useState("");
-  const [min, setMin] = useState("");
-  const [max, setMax] = useState("");
-  const [sort, setSort] = useState<(typeof sortOptions)[number]>(sortOptions[0]);
+/**
+ * A plain GET form rather than client-side state.
+ *
+ * Submitting navigates to `?q=…&min=…`, which means the server does the
+ * filtering, results are shareable and crawlable URLs, and the whole thing
+ * works with JavaScript disabled.
+ */
+export function PropertySearchBar({
+  action = "/buy",
+  q = "",
+  min = "",
+  max = "",
+  sort = "recent",
+  suburbs = [],
+  amenities = [],
+  showPetFriendly = false,
+}: Props) {
+  const ticked = new Set(amenities);
+  const options: string[] = [
+    ...FILTERABLE_AMENITIES,
+    ...(showPetFriendly ? ["petFriendly"] : []),
+  ];
 
   return (
-    <div className="flex w-full flex-col gap-[12px] sm:flex-row sm:items-center">
+    <form action={action} method="get" className="w-full">
+      <div className="flex w-full flex-col gap-[12px] sm:flex-row sm:items-center">
       <input
         type="text"
-        value={suburb}
-        onChange={(e) => setSuburb(e.target.value)}
+        name="q"
+        defaultValue={q}
+        list="suburb-options"
         placeholder="Suburb, address or postcode"
-        className="h-[38px] flex-1 sm:min-w-[420px] rounded-none border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none"
+        aria-label="Suburb, address or postcode"
+        className={`${FIELD} flex-1 sm:min-w-[420px]`}
       />
+      {suburbs.length > 0 && (
+        <datalist id="suburb-options">
+          {suburbs.map((s) => (
+            <option key={s} value={s} />
+          ))}
+        </datalist>
+      )}
+
       <input
-        type="text"
-        value={min}
-        onChange={(e) => setMin(e.target.value)}
+        type="number"
+        name="min"
+        defaultValue={min}
+        min="0"
+        step="1"
         placeholder="Min $"
-        className="h-[38px] w-full sm:w-[170px] rounded-none border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none"
+        aria-label="Minimum price"
+        className={`${FIELD} w-full sm:w-[170px]`}
       />
       <input
-        type="text"
-        value={max}
-        onChange={(e) => setMax(e.target.value)}
+        type="number"
+        name="max"
+        defaultValue={max}
+        min="0"
+        step="1"
         placeholder="Max $"
-        className="h-[38px] w-full sm:w-[170px] rounded-none border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none"
+        aria-label="Maximum price"
+        className={`${FIELD} w-full sm:w-[170px]`}
       />
+
       <div className="relative w-full sm:w-[420px]">
         <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as (typeof sortOptions)[number])}
-          className="h-[38px] w-full appearance-none rounded-none border border-[#001F4D] bg-white px-[16px] pr-[36px] font-display text-[13px] text-brand-bunker focus:border-brand-navy focus:outline-none"
+          name="sort"
+          defaultValue={sort}
+          aria-label="Sort results"
+          className={`${FIELD} w-full appearance-none pr-[36px]`}
         >
-          {sortOptions.map((o) => (
-            <option key={o}>{o}</option>
+          {Object.entries(SORT_OPTIONS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
           ))}
         </select>
         <svg
@@ -56,16 +110,39 @@ export function PropertySearchBar() {
           <path d="M6 9l6 6 6-6" />
         </svg>
       </div>
+
       <button
-        type="button"
+        type="submit"
         className="flex h-[38px] w-full sm:w-auto items-center justify-center gap-[8px] rounded-none bg-[#001F4D] px-[20px] font-display text-[13px] font-medium text-white transition hover:bg-[#001a40]"
       >
         <svg viewBox="0 0 24 24" className="h-[14px] w-[14px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <circle cx="11" cy="11" r="7" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        Search
-      </button>
-    </div>
+          Search
+        </button>
+      </div>
+
+      {options.length > 0 && (
+        <fieldset className="mt-[14px] flex flex-wrap items-center gap-x-[18px] gap-y-[8px]">
+          <legend className="sr-only">Filter by features</legend>
+          {options.map((key) => (
+            <label
+              key={key}
+              className="flex cursor-pointer items-center gap-[7px] font-display text-[13px] text-brand-bunker"
+            >
+              <input
+                type="checkbox"
+                name="feature"
+                value={key}
+                defaultChecked={ticked.has(key)}
+                className="h-[15px] w-[15px] accent-[#001F4D]"
+              />
+              {amenityLabel(key)}
+            </label>
+          ))}
+        </fieldset>
+      )}
+    </form>
   );
 }

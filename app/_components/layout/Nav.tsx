@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const buyLinks = [
   { label: "Buy", href: "/buy" },
   { label: "Sell", href: "/property-report-digital-appraisal" },
-  { label: "Rent", href: "/buy?type=rent" },
+  { label: "Rent", href: "/rent" },
 ];
 
 const ownLinks = [
@@ -120,7 +120,7 @@ export function Nav() {
               {[
                 { label: "Buy", href: "/buy" },
                 { label: "Sell", href: "/property-report-digital-appraisal" },
-                { label: "Rent", href: "/buy?type=rent" },
+                { label: "Rent", href: "/rent" },
                 { label: "Our Team", href: "/agents" },
                 { label: "About Us", href: "/about" },
                 { label: "Contact Us", href: "/contact" },

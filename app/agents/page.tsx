@@ -1,27 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { Button } from "../_components/ui/Button";
-import { AgentCard, type AgentCardData } from "../_components/agents/AgentCard";
+import { AgentCard } from "../_components/agents/AgentCard";
+import { AgentAvatar } from "../_components/agents/AgentAvatar";
+import { getAgents } from "@/lib/db/queries";
+import { profileFor } from "@/lib/agents/profiles";
 
-const agents: AgentCardData[] = Array.from({ length: 5 }, () => ({
-  name: "Ven Kan",
-  role: "Managing Director, Chief Executive Officer",
-  image: "/our-team/our-team.png",
-}));
+export const metadata = {
+  title: "Our Team | Blue Ribbon Real Estate",
+  description:
+    "Meet the team behind Blue Ribbon Real Estate, servicing Parramatta and Western Sydney.",
+};
 
-type MobileAgent = { name: string; role: string };
-const mobileAgents: MobileAgent[] = [
-  { name: "Vern KAN", role: "Principal / Director" },
-  { name: "Sarah Chen", role: "Senior Agent" },
-  { name: "James Patel", role: "Property Manager" },
-  { name: "Lisa Wong", role: "Sales Agent" },
-];
+export default async function AgentsPage() {
+  // Defer to request time: the team list comes from the live feed, so it must
+  // not be frozen into the build output.
+  await connection();
 
-export default function AgentsPage() {
-  console.log(" 🚀 AgentsPage rendered");
+  const feedAgents = await getAgents();
+
+  // Names on this page are statements about who works at the agency, so the
+  // list is built strictly from agents the feed actually returns. Photos and
+  // roles come from the local profile map; contact details come from Agentbox.
+  const team = feedAgents.map((agent) => ({
+    ...agent,
+    ...profileFor(agent.email),
+    href: agent.email ? `mailto:${agent.email}` : "/contact",
+  }));
+
   return (
     <div className="min-h-screen bg-white">
       <Nav />
@@ -50,32 +60,36 @@ export default function AgentsPage() {
             </div>
           </section>
 
-          <section className="container-page py-[22px]">
-            <div className="grid grid-cols-2 gap-[12px]">
-              {mobileAgents.map((a, i) => (
-                <article
-                  key={i}
-                  className="overflow-hidden rounded-[14px] bg-[#F1F2F4] p-[10px]"
-                >
-                  <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px]">
-                    <Image
-                      src="/our-team/our-team.png"
-                      alt={a.name}
-                      fill
-                      sizes="50vw"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                  <p className="mt-[10px] text-center font-display text-[14px] font-bold text-brand-bunker">
-                    {a.name}
-                  </p>
-                  <p className="mt-[3px] text-center font-display text-[11.5px] text-brand-bunker/65">
-                    {a.role}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </section>
+          {team.length > 0 && (
+            <section className="container-page py-[22px]">
+              <div className="grid grid-cols-2 gap-[12px]">
+                {team.map((a) => (
+                  <article
+                    key={a.key}
+                    className="overflow-hidden rounded-[14px] bg-[#F1F2F4] p-[10px]"
+                  >
+                    <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px]">
+                      <AgentAvatar name={a.name} image={a.image} sizes="50vw" />
+                    </div>
+                    <p className="mt-[10px] text-center font-display text-[14px] font-bold text-brand-bunker">
+                      {a.name}
+                    </p>
+                    <p className="mt-[3px] text-center font-display text-[11.5px] text-brand-bunker/65">
+                      {a.role}
+                    </p>
+                    {(a.mobile ?? a.phone) && (
+                      <a
+                        href={`tel:${(a.mobile ?? a.phone ?? "").replace(/\s/g, "")}`}
+                        className="mt-[6px] block text-center font-display text-[11px] font-semibold text-brand-navy"
+                      >
+                        {a.mobile ?? a.phone}
+                      </a>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="w-full bg-white">
             <div className="w-full">
@@ -110,7 +124,7 @@ export default function AgentsPage() {
           </section>
         </div>
 
-        {/* Desktop layout (unchanged) */}
+        {/* Desktop layout */}
         <div className="hidden sm:block">
           <div className="container-page pt-[16px] pb-[16px]">
             <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Our Team" }]} />
@@ -126,24 +140,32 @@ export default function AgentsPage() {
                 sizes="(max-width: 639px) 1px, 100vw"
                 className="object-cover"
               />
-              <div className="absolute inset-x-0 bottom-[clamp(20px,3vw,48px)] flex items-center justify-center">
-              </div>
             </div>
           </section>
 
-          <section className="container-page mt-[clamp(38px,3.15vw,64px)]">
-            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-              Meet our Team
-            </h2>
-            <div className="mt-[clamp(28px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(18px,1.6vw,28px)]">
-              {agents.map((a, i) => (
-                <AgentCard key={i} {...a} />
-              ))}
-            </div>
-          </section>
+          {team.length > 0 && (
+            <section className="container-page mt-[clamp(38px,3.15vw,64px)]">
+              <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+                Meet our Team
+              </h2>
+              <div className="mt-[clamp(28px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(18px,1.6vw,28px)]">
+                {team.map((a) => (
+                  <AgentCard
+                    key={a.key}
+                    name={a.name}
+                    role={a.role}
+                    image={a.image}
+                    email={a.email}
+                    phone={a.mobile ?? a.phone}
+                    listingCount={a.listingCount}
+                    href={a.href}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="relative w-full mt-[clamp(44px,4vw,76px)] overflow-hidden">
-            {/* Navy fabric background */}
             <Image
               src="/images/bg.png"
               alt=""
@@ -152,7 +174,6 @@ export default function AgentsPage() {
               sizes="100vw"
               className="object-cover object-center"
             />
-            {/* Navy overlay (#001F4D @ ~12%) */}
             <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">

@@ -4,34 +4,43 @@ import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
-import { PropertyCard, type PropertyCardData } from "../_components/property/PropertyCard";
-import { Pagination } from "../_components/sections/Pagination";
+import { PropertyCard } from "../_components/property/PropertyCard";
+import { EmptyListings } from "../_components/property/EmptyListings";
+import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
-
-const featured: PropertyCardData[] = Array.from({ length: 12 }, () => ({
-  image: "/images/latest-properties.png",
-  address: "23 Dick Street, Henley",
-  guide: "$8,500,000",
-}));
-
-const mobileFeatured: PropertyCardData[] = [
-  { image: "/images/latest-properties.png", address: "15 Brick Street, Hurley", guide: "$975,000" },
-  { image: "/images/latest-properties.png", address: "33 Dick Hill Rd, Hurley", guide: "$675,000" },
-  { image: "/images/latest-properties.png", address: "22 Brick Street, Hurley", guide: "$575,000" },
-  { image: "/images/latest-properties.png", address: "33 Oaks Street, Hurley", guide: "$575,000" },
-  { image: "/images/latest-properties.png", address: "15 Brick Street, Hurley", guide: "$975,000" },
-  { image: "/images/latest-properties.png", address: "22 Oaks Street, Hurley", guide: "$675,000" },
-];
-
-const latest: PropertyCardData[] = Array.from({ length: 4 }, () => ({
-  image: "/images/latest-properties.png",
-  address: "23 Dick Street, Henley",
-  guide: "$8,500,000",
-}));
+import {
+  SALE_CATEGORIES,
+  getLatestListings,
+  getListings,
+  getSuburbsWithCounts,
+  parseListingSearchParams,
+  type ListingSearchParams,
+} from "@/lib/db/queries";
 
 const mobileFilters = ["Buy", "Price", "Beds", "More"] as const;
 
-export default function BuyPage() {
+export const metadata = {
+  title: "Properties for Sale | Blue Ribbon Real Estate",
+  description:
+    "Browse homes for sale across Western Sydney with Blue Ribbon Real Estate.",
+};
+
+export default async function BuyPage({
+  searchParams,
+}: {
+  searchParams: Promise<ListingSearchParams>;
+}) {
+  const { query, form, amenities, isFiltered } = parseListingSearchParams(await searchParams);
+
+  const [results, latest, suburbs] = await Promise.all([
+    getListings({ ...query, categories: SALE_CATEGORIES, perPage: 12 }),
+    getLatestListings(undefined, 4),
+    getSuburbsWithCounts(SALE_CATEGORIES),
+  ]);
+
+  const { items, totalPages } = results;
+  const hasResults = items.length > 0;
+
   return (
     <div className="min-h-screen bg-white">
       <Nav />
@@ -74,7 +83,30 @@ export default function BuyPage() {
 
         {/* Desktop search bar */}
         <div className="hidden sm:block container-page mt-[clamp(36px,3.6vw,72px)]">
-          <PropertySearchBar />
+          <PropertySearchBar
+            action="/buy"
+            suburbs={suburbs.map((s) => s.name)}
+            amenities={amenities}
+            {...form}
+          />
+
+          {suburbs.length > 0 && (
+            <nav className="mt-[clamp(16px,1.4vw,24px)]" aria-label="Browse by suburb">
+              <ul className="flex flex-wrap gap-[10px]">
+                {suburbs.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/buy/${s.slug}`}
+                      className="inline-flex items-center gap-[6px] rounded-[16px] border border-brand-silver/70 px-[14px] py-[6px] font-display text-[13px] text-brand-bunker transition hover:border-brand-navy hover:text-brand-navy"
+                    >
+                      {s.name}
+                      <span className="text-brand-bunker/50">{s.count}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
 
         {/* Mobile: Buy Your Dream + cards */}
@@ -90,36 +122,43 @@ export default function BuyPage() {
               Sell yours →
             </Link>
           </div>
-          <div className="mt-[18px] grid grid-cols-2 gap-x-[12px] gap-y-[20px]">
-            {mobileFeatured.map((p, i) => (
-              <Link
-                key={i}
-                href="/property/1"
-                className="group block overflow-hidden rounded-[14px] border border-brand-silver/60 bg-white"
-              >
-                <div className="relative aspect-[3/2] w-full overflow-hidden">
-                  <Image
-                    src={p.image}
-                    alt={p.address}
-                    fill
-                    sizes="(max-width: 639px) 50vw, 1px"
-                    className="object-cover transition duration-500 group-hover:scale-[1.02]"
-                  />
-                </div>
-                <div className="p-[12px]">
-                  <p className="font-display text-[13px] font-semibold leading-[1.3] text-brand-bunker">
-                    {p.address}
-                  </p>
-                  <p className="mt-[2px] font-display text-[12px] text-brand-bunker/60">
-                    Guide {p.guide}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
+
+          {hasResults ? (
+            <div className="mt-[18px] grid grid-cols-2 gap-x-[12px] gap-y-[20px]">
+              {items.map((p) => (
+                <Link
+                  key={p.id}
+                  href={p.href}
+                  className="group block overflow-hidden rounded-[14px] border border-brand-silver/60 bg-white"
+                >
+                  <div className="relative aspect-[3/2] w-full overflow-hidden">
+                    <Image
+                      src={p.image}
+                      alt={p.address}
+                      fill
+                      sizes="(max-width: 639px) 50vw, 1px"
+                      className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                    />
+                  </div>
+                  <div className="p-[12px]">
+                    <p className="font-display text-[13px] font-semibold leading-[1.3] text-brand-bunker">
+                      {p.address}
+                    </p>
+                    <p className="mt-[2px] font-display text-[12px] text-brand-bunker/60">
+                      {p.guide}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-[18px]">
+              <NoSalesStock filtered={isFiltered} />
+            </div>
+          )}
         </div>
 
-        {/* Desktop: list/map toggle + grid */}
+        {/* Desktop: heading + grid */}
         <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
             <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
@@ -133,32 +172,47 @@ export default function BuyPage() {
             </Link>
           </div>
 
-          <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
-            {featured.map((p, i) => (
-              <PropertyCard key={i} {...p} variant="tall" />
-            ))}
-          </div>
+          {hasResults ? (
+            <>
+              <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+                {items.map((p) => (
+                  <PropertyCard key={p.id} {...p} variant="tall" />
+                ))}
+              </div>
 
-          <div className="mt-[clamp(36px,2.7vw,50px)]">
-            <Pagination total={5} />
-          </div>
+              <div className="mt-[clamp(36px,2.7vw,50px)]">
+                <PagerLinks
+                  page={query.page}
+                  totalPages={totalPages}
+                  basePath="/buy"
+                  params={form}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="mt-[clamp(22px,2vw,36px)]">
+              <NoSalesStock filtered={isFiltered} />
+            </div>
+          )}
         </div>
 
         {/* Mobile: Our latest Properties (horizontal scroll) */}
-        <div className="sm:hidden mt-[28px]">
-          <div className="container-page">
-            <h2 className="font-display font-bold text-brand-bunker text-[18px] leading-[1.15]">
-              Our latest Properties
-            </h2>
+        {latest.length > 0 && (
+          <div className="sm:hidden mt-[28px]">
+            <div className="container-page">
+              <h2 className="font-display font-bold text-brand-bunker text-[18px] leading-[1.15]">
+                Our latest Properties
+              </h2>
+            </div>
+            <div className="no-scrollbar mt-[16px] flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+              {latest.map((p) => (
+                <div key={p.id} className="snap-start shrink-0 basis-[60%]">
+                  <PropertyCard {...p} variant="wide" />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="no-scrollbar mt-[16px] flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-            {latest.map((p, i) => (
-              <div key={i} className="snap-start shrink-0 basis-[60%]">
-                <PropertyCard {...p} variant="wide" />
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
 
         {/* Mobile: Want to get in touch CTA */}
         <section className="sm:hidden w-full bg-white mt-[28px]">
@@ -194,24 +248,26 @@ export default function BuyPage() {
         </section>
 
         {/* Desktop: Our latest Properties (grid) */}
-        <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
-          <div className="flex items-end justify-between">
-            <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-              Our latest Properties
-            </h2>
-            <Link
-              href="/buy"
-              className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
-            >
-              Explore more Properties
-            </Link>
+        {latest.length > 0 && (
+          <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
+            <div className="flex items-end justify-between">
+              <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+                Our latest Properties
+              </h2>
+              <Link
+                href="/rent"
+                className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+              >
+                Explore more Properties
+              </Link>
+            </div>
+            <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+              {latest.map((p) => (
+                <PropertyCard key={p.id} {...p} variant="tall" />
+              ))}
+            </div>
           </div>
-          <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
-            {latest.map((p, i) => (
-              <PropertyCard key={i} {...p} variant="tall" />
-            ))}
-          </div>
-        </div>
+        )}
 
         <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
           <GetInTouchCTA />
@@ -219,5 +275,30 @@ export default function BuyPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function NoSalesStock({ filtered }: { filtered: boolean }) {
+  // A filtered search returning nothing is a different situation from having
+  // no sale stock at all, and saying so avoids implying the agency sells
+  // nothing when the visitor has simply searched too narrowly.
+  if (filtered) {
+    return (
+      <EmptyListings
+        title="No properties match your search"
+        message="Try widening the price range or searching a different suburb."
+        ctaLabel="Clear filters"
+        ctaHref="/buy"
+      />
+    );
+  }
+
+  return (
+    <EmptyListings
+      title="No properties for sale listed right now"
+      message="Our current listings are all rentals. New sale listings appear here automatically as soon as they go live in our system."
+      ctaLabel="View rentals"
+      ctaHref="/rent"
+    />
   );
 }

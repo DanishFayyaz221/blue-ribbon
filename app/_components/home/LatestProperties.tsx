@@ -1,13 +1,21 @@
 import Link from "next/link";
-import { PropertyCard, type PropertyCardData } from "../property/PropertyCard";
+import { connection } from "next/server";
+import { PropertyCard } from "../property/PropertyCard";
+import { getLatestListings } from "@/lib/db/queries";
 
-const properties: PropertyCardData[] = Array.from({ length: 4 }, () => ({
-  image: "/images/latest-properties.png",
-  address: "23 Elm Street, Hurley",
-  guide: "$925,000",
-}));
+export async function LatestProperties() {
+  // Defer to request time. Without this the home page would try to reach
+  // MongoDB during `next build`, and listings would be frozen at build output
+  // rather than reflecting the feed.
+  await connection();
 
-export function LatestProperties() {
+  // Deliberately unfiltered by category: until Agentbox re-exports the full
+  // book, the feed holds rentals only, and filtering to sales would leave the
+  // home page blank.
+  const properties = await getLatestListings(undefined, 4);
+
+  if (properties.length === 0) return null;
+
   return (
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
@@ -28,9 +36,9 @@ export function LatestProperties() {
         {/* Mobile: horizontal-scroll carousel */}
         <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
           <div className="no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-            {properties.map((p, i) => (
+            {properties.map((p) => (
               <div
-                key={i}
+                key={p.id}
                 className="snap-start shrink-0 basis-[78%]"
               >
                 <PropertyCard {...p} variant="wide" />
@@ -41,8 +49,8 @@ export function LatestProperties() {
 
         {/* Tablet / desktop: grid (unchanged) */}
         <div className="hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
-          {properties.map((p, i) => (
-            <PropertyCard key={i} {...p} variant="tall" />
+          {properties.map((p) => (
+            <PropertyCard key={p.id} {...p} variant="tall" />
           ))}
         </div>
       </div>
