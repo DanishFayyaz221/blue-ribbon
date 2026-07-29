@@ -13,18 +13,6 @@ import { PropertyCard, type PropertyCardData } from "../property/PropertyCard";
 
 export type Step = "address" | "details" | "result";
 
-const samples: PropertyCardData[] = Array.from({ length: 6 }, () => ({
-  image: "/images/dynamic.png",
-  address: "10 Carlotta Avenue, Gordon",
-  guide: "$4,500,000 - $4,900,000",
-}));
-
-const latest: PropertyCardData[] = Array.from({ length: 4 }, () => ({
-  image: "/images/latest-properties.png",
-  address: "23 Dick Street, Henley",
-  guide: "$8,500,000",
-}));
-
 const intents = [
   "I'm thinking of selling",
   "I'm thinking of buying",
@@ -43,11 +31,17 @@ const intentOptions = [
 export function AppraisalFlow({
   initialStep = "address",
   previewHref,
+  samples = [],
+  latest = [],
 }: {
   initialStep?: Step;
   // When set, the details-step "NEXT" navigates here instead of showing the
   // result inline (used by the rental flow → /rental-report-preview).
   previewHref?: string;
+  // Listings for the two card strips. Fetched by the page rather than here,
+  // because this is a client component and cannot reach the database itself.
+  samples?: PropertyCardData[];
+  latest?: PropertyCardData[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -252,18 +246,20 @@ export function AppraisalFlow({
 
             <OurValues />
 
-            <section className="hidden sm:block w-full bg-brand-soft py-[clamp(38px,3.15vw,64px)]">
-              <div className="container-page">
-                <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                  Best Suited for You
-                </h2>
-                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
-                  {samples.map((p, i) => (
-                    <PropertyCard key={i} {...p} variant="wide" />
-                  ))}
+            {samples.length > 0 && (
+              <section className="hidden sm:block w-full bg-brand-soft py-[clamp(38px,3.15vw,64px)]">
+                <div className="container-page">
+                  <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+                    Best Suited for You
+                  </h2>
+                  <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
+                    {samples.map((p, i) => (
+                      <PropertyCard key={p.href ?? i} {...p} variant="wide" />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             <section className="relative w-full overflow-hidden py-[clamp(22px,2.1vw,40px)]">
               {/* Navy fabric background */}
@@ -296,24 +292,26 @@ export function AppraisalFlow({
               </div>
             </section>
 
-            <section className="hidden sm:block container-page py-[clamp(38px,3.15vw,64px)]">
-              <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-                <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                  Our latest Properties
-                </h2>
-                <Link
-                  href="/buy"
-                  className="font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
-                >
-                  Explore more Properties
-                </Link>
-              </div>
-              <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
-                {latest.map((p, i) => (
-                  <PropertyCard key={i} {...p} variant="tall" />
-                ))}
-              </div>
-            </section>
+            {latest.length > 0 && (
+              <section className="hidden sm:block container-page py-[clamp(38px,3.15vw,64px)]">
+                <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
+                  <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+                    Our latest Properties
+                  </h2>
+                  <Link
+                    href="/buy"
+                    className="font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                  >
+                    Explore more Properties
+                  </Link>
+                </div>
+                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
+                  {latest.map((p, i) => (
+                    <PropertyCard key={p.href ?? i} {...p} variant="tall" />
+                  ))}
+                </div>
+              </section>
+            )}
 
             <section className="sm:hidden w-full bg-white">
               <div className="w-full">

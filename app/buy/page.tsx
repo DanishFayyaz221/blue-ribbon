@@ -9,11 +9,13 @@ import { EmptyListings } from "../_components/property/EmptyListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 import {
+  RENTAL_CATEGORIES,
   SALE_CATEGORIES,
   getLatestListings,
   getListings,
   getSuburbsWithCounts,
   parseListingSearchParams,
+  searchQueryString,
   type ListingSearchParams,
 } from "@/lib/db/queries";
 
@@ -40,6 +42,15 @@ export default async function BuyPage({
 
   const { items, totalPages } = results;
   const hasResults = items.length > 0;
+
+  // A sale search that finds nothing may still match a rental — and this page
+  // shows rentals further down under "Our latest Properties". Saying nothing
+  // reads as a contradiction: the visitor is told there is no match while the
+  // matching listing sits on screen. So count the other side and offer it.
+  const rentalMatches =
+    !hasResults && isFiltered
+      ? (await getListings({ ...query, categories: RENTAL_CATEGORIES, perPage: 1 })).total
+      : 0;
 
   return (
     <div className="min-h-screen bg-white">
@@ -153,7 +164,11 @@ export default async function BuyPage({
             </div>
           ) : (
             <div className="mt-[18px]">
-              <NoSalesStock filtered={isFiltered} />
+              <NoSalesStock
+                filtered={isFiltered}
+                rentalMatches={rentalMatches}
+                rentHref={`/rent${searchQueryString(form, amenities)}`}
+              />
             </div>
           )}
         </div>
@@ -191,7 +206,11 @@ export default async function BuyPage({
             </>
           ) : (
             <div className="mt-[clamp(22px,2vw,36px)]">
-              <NoSalesStock filtered={isFiltered} />
+              <NoSalesStock
+                filtered={isFiltered}
+                rentalMatches={rentalMatches}
+                rentHref={`/rent${searchQueryString(form, amenities)}`}
+              />
             </div>
           )}
         </div>
@@ -278,11 +297,33 @@ export default async function BuyPage({
   );
 }
 
-function NoSalesStock({ filtered }: { filtered: boolean }) {
+function NoSalesStock({
+  filtered,
+  rentalMatches = 0,
+  rentHref = "/rent",
+}: {
+  filtered: boolean;
+  rentalMatches?: number;
+  rentHref?: string;
+}) {
   // A filtered search returning nothing is a different situation from having
   // no sale stock at all, and saying so avoids implying the agency sells
   // nothing when the visitor has simply searched too narrowly.
   if (filtered) {
+    // The same search matched on the rental side. Send them there rather than
+    // leaving them to wonder why the listing appears further down the page.
+    if (rentalMatches > 0) {
+      const plural = rentalMatches === 1 ? "" : "s";
+      return (
+        <EmptyListings
+          title="Nothing for sale matches your search"
+          message={`We do have ${rentalMatches} rental${plural} matching it.`}
+          ctaLabel={`View ${rentalMatches === 1 ? "it" : "them"} in Rent`}
+          ctaHref={rentHref}
+        />
+      );
+    }
+
     return (
       <EmptyListings
         title="No properties match your search"

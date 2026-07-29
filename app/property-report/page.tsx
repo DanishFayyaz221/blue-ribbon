@@ -1,4 +1,5 @@
-import { AppraisalFlow } from "../_components/appraisal/AppraisalFlow";
+﻿import { AppraisalFlow } from "../_components/appraisal/AppraisalFlow";
+import { getAppraisalListings } from "../_components/appraisal/listings";
 import { DprReport } from "../_components/reports/DprReport";
 
 export const metadata = {
@@ -8,10 +9,12 @@ export const metadata = {
 // Reached by searching from the property (sales) appraisal page. Shows the
 // details/stats step (Vaucluse Stats + "Hey there!" form). NEXT goes to
 // /property-report-preview.
-export default function PropertyReportPage() {
+export default async function PropertyReportPage() {
+  const { samples, latest } = await getAppraisalListings();
+
   return (
     <>
-      <AppraisalFlow initialStep="details" previewHref="/property-report-preview" />
+      <AppraisalFlow initialStep="details" previewHref="/property-report-preview" samples={samples} latest={latest} />
       <DprReport />
     </>
   );

@@ -8,6 +8,7 @@ import { ParramattaCTA } from "./_components/home/ParramattaCTA";
 import { LatestProperties } from "./_components/home/LatestProperties";
 import { HappyClients } from "./_components/home/HappyClients";
 import { SellWithUs } from "./_components/home/SellWithUs";
+import { SuburbOptions } from "./_components/property/SuburbOptions";
 
 export default function Home() {
   return (
@@ -15,11 +16,19 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        {/* The hero's autocomplete values. Kept outside the hero and streamed
+            so the search box paints immediately rather than waiting on Mongo. */}
+        <Suspense fallback={null}>
+          <SuburbOptions id="hero-suburbs" />
+        </Suspense>
         <BridgeToHome />
-        <BestSuitedForYou />
+        {/* Streamed: the static parts of the page ship immediately, while the
+            listing-backed sections wait on the database. Separate boundaries so
+            a slow query in one does not hold up the other. */}
+        <Suspense fallback={null}>
+          <BestSuitedForYou />
+        </Suspense>
         <ParramattaCTA />
-        {/* Streamed: the rest of the page is static and ships immediately,
-            while the listings section waits on the database. */}
         <Suspense fallback={null}>
           <LatestProperties />
         </Suspense>

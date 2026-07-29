@@ -6,6 +6,21 @@ import { useState } from "react";
 const dealTypes = ["Buy", "Sell", "Rent"] as const;
 type DealType = (typeof dealTypes)[number];
 
+/** Suggestions are streamed in separately; see SuburbOptions. */
+const SUBURB_LIST_ID = "hero-suburbs";
+
+/**
+ * Where each deal type sends the visitor. Buy and Rent hand off to the results
+ * pages, which already own the filtering, so the hero never needs its own query
+ * layer. Sell is not a listings search at all — it belongs to the appraisal
+ * flow.
+ */
+function actionFor(deal: DealType): string {
+  if (deal === "Rent") return "/rent";
+  if (deal === "Sell") return "/property-report-digital-appraisal";
+  return "/buy";
+}
+
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
@@ -58,7 +73,11 @@ function SearchBar() {
   const [surroundings, setSurroundings] = useState(true);
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0">
+    <form
+      action={actionFor(deal)}
+      method="get"
+      className="mx-auto flex w-full max-w-[1280px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0"
+    >
       <div className="flex w-full flex-1 flex-col items-stretch bg-white sm:flex-row">
         <div className="relative flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[170px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
           <button
@@ -104,6 +123,9 @@ function SearchBar() {
         <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] flex-1 items-center px-[16px] lg:px-[20px]">
           <input
             type="text"
+            name="q"
+            list={SUBURB_LIST_ID}
+            aria-label="Suburb, postcode, region or address"
             placeholder="Enter suburb, postcode, region or address"
             className="w-full bg-transparent font-display text-[13px] lg:text-[15px] font-medium tracking-[0.02em] text-black placeholder:text-brand-graychat focus:outline-none"
           />
@@ -150,12 +172,12 @@ function SearchBar() {
       </div>
 
       <button
-        type="button"
+        type="submit"
         className="flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[180px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-brand-navy font-display text-[14px] lg:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep sm:ml-0"
       >
         Search
       </button>
-    </div>
+    </form>
   );
 }
 
@@ -163,15 +185,18 @@ function MobileSearch() {
   const [deal, setDeal] = useState<DealType>("Buy");
 
   return (
-    <div className="mx-auto w-full max-w-[420px]">
+    <form action={actionFor(deal)} method="get" className="mx-auto w-full max-w-[420px]">
       <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
         <input
           type="text"
+          name="q"
+          list={SUBURB_LIST_ID}
+          aria-label="Suburb or postcode"
           placeholder="Enter suburb, postcode..."
           className="flex-1 bg-transparent pr-[12px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
         />
         <button
-          type="button"
+          type="submit"
           className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
         >
           Search
@@ -202,6 +227,6 @@ function MobileSearch() {
           );
         })}
       </div>
-    </div>
+    </form>
   );
 }

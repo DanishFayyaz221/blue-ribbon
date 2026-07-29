@@ -1,4 +1,5 @@
-import { AppraisalFlow } from "../_components/appraisal/AppraisalFlow";
+﻿import { AppraisalFlow } from "../_components/appraisal/AppraisalFlow";
+import { getAppraisalListings } from "../_components/appraisal/listings";
 import { DprReport } from "../_components/reports/DprReport";
 
 export const metadata = {
@@ -7,10 +8,12 @@ export const metadata = {
 
 // The complete property-estimate page. Selecting "Rental" + Search navigates
 // to /rental-report.
-export default function PropertyReportDigitalAppraisalPage() {
+export default async function PropertyReportDigitalAppraisalPage() {
+  const { samples, latest } = await getAppraisalListings();
+
   return (
     <>
-      <AppraisalFlow />
+      <AppraisalFlow samples={samples} latest={latest} />
       <DprReport />
     </>
   );

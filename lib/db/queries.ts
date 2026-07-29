@@ -232,6 +232,27 @@ export function parseListingSearchParams(sp: ListingSearchParams) {
   };
 }
 
+/**
+ * Rebuilds the active search as a query string, so the same search can be
+ * offered on the other side of the site. /buy and /rent accept identical
+ * parameters, so the search survives the hop intact.
+ */
+export function searchQueryString(
+  form: { q: string; min: string; max: string; sort: SortKey },
+  amenities: string[] = [],
+): string {
+  const sp = new URLSearchParams();
+  if (form.q) sp.set("q", form.q);
+  if (form.min) sp.set("min", form.min);
+  if (form.max) sp.set("max", form.max);
+  // "recent" is the default, so leaving it out keeps the link readable.
+  if (form.sort !== "recent") sp.set("sort", form.sort);
+  for (const a of amenities) sp.append("feature", a);
+
+  const qs = sp.toString();
+  return qs ? `?${qs}` : "";
+}
+
 /** "Seven Hills" -> "seven-hills", for suburb landing page URLs. */
 export function suburbSlug(name: string): string {
   return name

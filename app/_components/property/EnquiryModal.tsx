@@ -1,40 +1,31 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { AgentAvatar } from "../agents/AgentAvatar";
 
-type ModalAgent = {
+export type ModalAgent = {
   name: string;
   phone: string;
   email: string;
-  image: string;
+  /** Absent for agents with no headshot on file — initials are shown instead. */
+  image?: string;
 };
 
 type EnquiryModalProps = {
   open: boolean;
   onClose: () => void;
+  /**
+   * The listing's own agents, from the feed. Empty means the enquiry is not
+   * tied to a listing — the form still works, the agent column is simply
+   * omitted rather than filled with names that are not real.
+   */
   agents?: ModalAgent[];
 };
 
-const defaultAgents: ModalAgent[] = [
-  {
-    name: "Vanessa Denison-Pender",
-    phone: "0488 443 174",
-    email: "vanessa@blueribbonre.com.au",
-    image: "/our-team/our-team.png",
-  },
-  {
-    name: "Peter Armstrong",
-    phone: "0408 975 757",
-    email: "peter@blueribbonre.com.au",
-    image: "/our-team/our-team.png",
-  },
-];
-
 const helpOptions = ["Price Guide", "Book an inspection", "Similar Properties"] as const;
 
-export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryModalProps) {
+export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) {
   const [mounted, setMounted] = useState(false);
   const [help, setHelp] = useState<(typeof helpOptions)[number] | null>(null);
   const [firstName, setFirstName] = useState("");
@@ -111,34 +102,42 @@ export function EnquiryModal({ open, onClose, agents = defaultAgents }: EnquiryM
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-[clamp(16px,2vw,28px)] overflow-y-auto p-[clamp(20px,2.4vw,32px)]">
-          <div className="flex flex-row md:flex-col gap-[16px] md:gap-[20px]">
-            {agents.map((a) => (
-              <article key={a.name} className="w-full">
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px] bg-brand-soft-2">
-                  <Image
-                    src={a.image}
-                    alt={a.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 180px"
-                    className="object-cover object-top"
-                  />
-                </div>
-                <p className="mt-[10px] font-display text-[13px] font-semibold text-brand-bunker">
-                  {a.name}
-                </p>
-                <p className="mt-[2px] font-display text-[12px] text-brand-bunker/70">
-                  {a.phone}
-                </p>
-                <a
-                  href={`mailto:${a.email}`}
-                  className="mt-[4px] inline-block font-display text-[12px] font-medium text-[#39B7FF] underline underline-offset-4 hover:opacity-80"
-                >
-                  Email
-                </a>
-              </article>
-            ))}
-          </div>
+        <div
+          className={`grid grid-cols-1 gap-[clamp(16px,2vw,28px)] overflow-y-auto p-[clamp(20px,2.4vw,32px)] ${
+            agents.length > 0 ? "md:grid-cols-[180px_1fr]" : ""
+          }`}
+        >
+          {agents.length > 0 && (
+            <div className="flex flex-row md:flex-col gap-[16px] md:gap-[20px]">
+              {agents.map((a) => (
+                <article key={a.name} className="w-full">
+                  <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px] bg-brand-soft-2">
+                    <AgentAvatar
+                      name={a.name}
+                      image={a.image}
+                      sizes="(max-width: 768px) 50vw, 180px"
+                    />
+                  </div>
+                  <p className="mt-[10px] font-display text-[13px] font-semibold text-brand-bunker">
+                    {a.name}
+                  </p>
+                  {a.phone && (
+                    <p className="mt-[2px] font-display text-[12px] text-brand-bunker/70">
+                      {a.phone}
+                    </p>
+                  )}
+                  {a.email && (
+                    <a
+                      href={`mailto:${a.email}`}
+                      className="mt-[4px] inline-block font-display text-[12px] font-medium text-[#39B7FF] underline underline-offset-4 hover:opacity-80"
+                    >
+                      Email
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+          )}
 
           <form
             onSubmit={(e) => {

@@ -6,7 +6,10 @@ import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
 import { Button } from "../../_components/ui/Button";
 import { PropertyCard } from "../../_components/property/PropertyCard";
+import { PhotoGallery } from "../../_components/property/PhotoGallery";
+import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
+import type { ModalAgent } from "../../_components/property/EnquiryModal";
 import { AgentAvatar } from "../../_components/agents/AgentAvatar";
 import { profileFor } from "@/lib/agents/profiles";
 import { amenityLabel } from "@/lib/reaxml/amenities";
@@ -52,8 +55,17 @@ export default async function PropertyViewPage({ params }: PageProps) {
     3,
   );
 
-  const hero = listing.images[0]?.src ?? HERO_FALLBACK;
   const backHref = listing.isRental ? "/rent" : "/buy";
+
+  // The enquiry modal previously carried two hardcoded names that do not work
+  // at this agency. Names shown next to an enquiry form are a claim about who
+  // will answer it, so they come from the listing's own agents.
+  const enquiryAgents = listing.agents.map((a) => ({
+    name: a.name,
+    phone: a.mobile ?? a.phone ?? "",
+    email: a.email ?? "",
+    image: profileFor(a.email).image,
+  }));
   const backLabel = listing.isRental ? "Rent" : "Buy";
 
   const info: { label: string; value: string }[] = [];
@@ -76,7 +88,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        <MobilePropertyView listing={listing} hero={hero} info={info} />
+        <MobilePropertyView listing={listing} info={info} agents={enquiryAgents} />
 
         <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
           <Breadcrumb
@@ -89,56 +101,12 @@ export default async function PropertyViewPage({ params }: PageProps) {
         </div>
 
         <div className="hidden sm:block container-page">
-          <div className="relative aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
-            <Image
-              src={hero}
-              alt={listing.address}
-              fill
-              priority
-              sizes="(max-width: 639px) 1px, 100vw"
-              className="object-cover"
-            />
-          </div>
+          <PhotoGallery
+            images={listing.images}
+            address={listing.address}
+            fallback={HERO_FALLBACK}
+          />
         </div>
-
-        <div className="hidden sm:block container-page mt-[clamp(20px,1.8vw,32px)]">
-          <div className="flex items-center justify-between border-b border-brand-silver/40 pb-[16px]">
-            <div className="flex flex-1 items-center justify-center gap-[clamp(24px,3vw,56px)]">
-              <span className="font-display text-[14px] sm:text-[15px] font-medium text-brand-bunker">
-                All Photos
-              </span>
-              {listing.floorplans.length > 0 && (
-                <span className="font-display text-[14px] sm:text-[15px] font-medium text-brand-bunker/70">
-                  Floor Plan
-                </span>
-              )}
-            </div>
-            <span className="font-display text-[13px] text-brand-bunker/70">
-              {listing.images.length} photo{listing.images.length === 1 ? "" : "s"}
-            </span>
-          </div>
-        </div>
-
-        {listing.images.length > 1 && (
-          <div className="hidden sm:block container-page mt-[clamp(16px,1.4vw,24px)]">
-            <div className="grid grid-cols-4 gap-[clamp(8px,0.8vw,14px)]">
-              {listing.images.slice(1, 9).map((img) => (
-                <div
-                  key={img.src}
-                  className="relative aspect-[4/3] w-full overflow-hidden rounded-[clamp(6px,0.6vw,10px)]"
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="25vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         <div className="hidden sm:grid container-page mt-[clamp(28px,2.7vw,50px)] grid-cols-1 lg:grid-cols-[1fr_clamp(360px,30vw,460px)] gap-x-[clamp(24px,2.7vw,56px)] gap-y-[clamp(24px,2.25vw,42px)]">
           <div>
@@ -249,15 +217,18 @@ export default async function PropertyViewPage({ params }: PageProps) {
             </div>
 
             <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(48px,4.5vw,72px)]">
-              <EnquireTrigger className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]" />
-              <Button
-                href="#share"
-                variant="outline-dark"
-                size="sm"
+              <EnquireTrigger
+                agents={enquiryAgents}
                 className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
-              >
-                Share
-              </Button>
+              />
+              <ShareTrigger
+                path={`/property/${listing.slug}`}
+                address={listing.address}
+                guide={listing.guide}
+                image={listing.image}
+                type={listing.type}
+                className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
+              />
             </div>
 
             <DetailRow label={listing.isRental ? "Rent" : "Price"} value={listing.guide} topSpace />
@@ -426,26 +397,22 @@ function AgentMini({ name, email, mobile, phone }: AgentProps) {
 
 function MobilePropertyView({
   listing,
-  hero,
   info,
+  agents,
 }: {
   listing: ListingDetail;
-  hero: string;
   info: { label: string; value: string }[];
+  agents: ModalAgent[];
 }) {
   return (
     <div className="sm:hidden">
       <section className="container-page pt-[8px]">
-        <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[14px]">
-          <Image
-            src={hero}
-            alt={listing.address}
-            fill
-            priority
-            sizes="(max-width: 639px) 100vw, 1px"
-            className="object-cover"
-          />
-        </div>
+        <PhotoGallery
+          images={listing.images}
+          address={listing.address}
+          variant="hero"
+          fallback={HERO_FALLBACK}
+        />
       </section>
 
       <section className="container-page mt-[20px]">
@@ -462,13 +429,16 @@ function MobilePropertyView({
         </div>
 
         <div className="mt-[24px] flex gap-[12px]">
-          <EnquireTrigger variant="navy-pill" className="flex-1" />
-          <Link
-            href="#share"
-            className="flex h-[48px] flex-1 items-center justify-center rounded-[24px] border border-brand-navy font-display text-[14px] font-semibold text-brand-navy transition hover:bg-brand-soft"
-          >
-            Share
-          </Link>
+          <EnquireTrigger variant="navy-pill" agents={agents} className="flex-1" />
+          <ShareTrigger
+            path={`/property/${listing.slug}`}
+            address={listing.address}
+            guide={listing.guide}
+            image={listing.image}
+            type={listing.type}
+            variant="outline-pill"
+            className="flex-1"
+          />
         </div>
 
         <p className="mt-[20px] whitespace-pre-line font-display text-[13px] leading-[1.6] text-brand-bunker/80">
