@@ -9,6 +9,7 @@ import { LatestProperties } from "./_components/home/LatestProperties";
 import { HappyClients } from "./_components/home/HappyClients";
 import { SellWithUs } from "./_components/home/SellWithUs";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
+import { SectionBoundary } from "./_components/SectionBoundary";
 
 export default function Home() {
   return (
@@ -17,21 +18,31 @@ export default function Home() {
       <main>
         <Hero />
         {/* The hero's autocomplete values. Kept outside the hero and streamed
-            so the search box paints immediately rather than waiting on Mongo. */}
-        <Suspense fallback={null}>
-          <SuburbOptions id="hero-suburbs" />
-        </Suspense>
+            so the search box paints immediately rather than waiting on Mongo.
+            The search box still works without its suggestions. */}
+        <SectionBoundary>
+          <Suspense fallback={null}>
+            <SuburbOptions id="hero-suburbs" />
+          </Suspense>
+        </SectionBoundary>
         <BridgeToHome />
         {/* Streamed: the static parts of the page ship immediately, while the
             listing-backed sections wait on the database. Separate boundaries so
-            a slow query in one does not hold up the other. */}
-        <Suspense fallback={null}>
-          <BestSuitedForYou />
-        </Suspense>
+            a slow query in one does not hold up the other.
+            Each is also wrapped in a SectionBoundary, because Suspense covers a
+            pending query but not a failed one — the home page must survive an
+            unreachable database, since most of what is on it needs no data. */}
+        <SectionBoundary>
+          <Suspense fallback={null}>
+            <BestSuitedForYou />
+          </Suspense>
+        </SectionBoundary>
         <ParramattaCTA />
-        <Suspense fallback={null}>
-          <LatestProperties />
-        </Suspense>
+        <SectionBoundary>
+          <Suspense fallback={null}>
+            <LatestProperties />
+          </Suspense>
+        </SectionBoundary>
         <HappyClients />
         <SellWithUs />
       </main>
