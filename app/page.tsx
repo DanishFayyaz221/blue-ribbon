@@ -37,7 +37,11 @@ export default function Home() {
             <BestSuitedForYou />
           </Suspense>
         </SectionBoundary>
-        <ParramattaCTA />
+        <SectionBoundary>
+          <Suspense fallback={null}>
+            <ParramattaCTA />
+          </Suspense>
+        </SectionBoundary>
         <SectionBoundary>
           <Suspense fallback={null}>
             <LatestProperties />
