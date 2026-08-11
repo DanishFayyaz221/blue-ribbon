@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { DragScroll } from "../ui/DragScroll";
 import { Stars } from "../ui/Stars";
 
 type Testimonial = {
@@ -86,7 +87,7 @@ export function HappyClients() {
       </div>
 
       {/* Mobile: horizontal-scroll plain cards (no image) */}
-      <div className="sm:hidden mt-[24px] no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+      <DragScroll className="sm:hidden mt-[24px] no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
         {testimonials.map((t) => (
           <article
             key={t.id}
@@ -101,7 +102,7 @@ export function HappyClients() {
             </p>
           </article>
         ))}
-      </div>
+      </DragScroll>
 
       {/* Tablet / desktop: slider carousel with images */}
       <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">

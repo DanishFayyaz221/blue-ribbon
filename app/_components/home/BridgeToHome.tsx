@@ -7,7 +7,7 @@ import { useState } from "react";
 const tiles = [
   { label: "Advanced Search", href: "/buy", src: "/images/latest-properties.png" },
   { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
-  { label: "Find Your Desire", href: "/buy", src: "/images/find-an-office.png" },
+  { label: "Find Your Desire", href: "/property-report-digital-appraisal", src: "/images/find-an-office.png" },
   {
     label: "The BlueRibbon Difference",
     href: "/about",

@@ -67,7 +67,7 @@ function MobileFooter() {
           className="h-[32px] w-auto"
         />
 
-        <div className="mt-[28px] flex flex-col gap-[24px]">
+        <div className="mt-[28px] grid grid-cols-2 gap-x-[16px] gap-y-[28px] sm:grid-cols-3">
           <MobileLinkColumn title="About Us" links={mobileAboutLinks} />
           <MobileLinkColumn title="Insights" links={mobileInsightsLinks} />
           <MobileLinkColumn title="Our Office" links={mobileOfficeLinks} />

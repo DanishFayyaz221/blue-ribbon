@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { DragScroll } from "../ui/DragScroll";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -35,16 +36,16 @@ export async function LatestProperties() {
 
         {/* Mobile: horizontal-scroll carousel */}
         <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+          <DragScroll className="no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
             {properties.map((p) => (
               <div
                 key={p.id}
-                className="snap-start shrink-0 basis-[78%]"
+                className="flex snap-start shrink-0 basis-[78%]"
               >
                 <PropertyCard {...p} variant="wide" />
               </div>
             ))}
-          </div>
+          </DragScroll>
         </div>
 
         {/* Tablet / desktop: grid (unchanged) */}

@@ -26,10 +26,10 @@ export function SellWithUs() {
           />
           <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
           <div className="relative z-10 container-page py-[clamp(40px,9vw,64px)]">
-            <h2 className="font-display font-bold text-white text-[clamp(1.75rem,6vw,2.25rem)] leading-[1.1]">
+            <h2 className="font-display font-bold text-white text-[1.3rem] leading-[1.1]">
               Want to Sell with us?
             </h2>
-            <p className="mt-[clamp(12px,3vw,20px)] font-display font-light text-white text-[clamp(1.25rem,4.5vw,1.75rem)] leading-[1.15]">
+            <p className="mt-[clamp(12px,3vw,20px)] font-display font-light text-white text-[16px] leading-[1.3]">
               We&rsquo;re always looking for the next premier property to represent
             </p>
             <p className="mt-[clamp(16px,4vw,24px)] max-w-[560px] font-display font-medium text-white/90 text-[clamp(13px,2vw,15px)] leading-[1.55] tracking-[0.02em]">

@@ -24,8 +24,8 @@ function actionFor(deal: DealType): string {
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative aspect-[1920/860] min-h-[380px] sm:min-h-[460px] max-h-[680px] w-full">
-        <div className="absolute inset-0 scale-[1.04] blur-[6px]">
+      <div className="relative aspect-[1920/860] min-h-[calc(100svh-104px)] sm:min-h-[460px] sm:max-h-[680px] w-full">
+        <div className="absolute inset-0 sm:scale-[1.04] sm:blur-[6px]">
           <video
             className="h-full w-full object-cover"
             src="/hero-video/hero.mp4"
@@ -40,7 +40,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
+          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] sm:text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
           </h1>
@@ -182,10 +182,8 @@ function SearchBar() {
 }
 
 function MobileSearch() {
-  const [deal, setDeal] = useState<DealType>("Buy");
-
   return (
-    <form action={actionFor(deal)} method="get" className="mx-auto w-full max-w-[420px]">
+    <form action={actionFor("Buy")} method="get" className="mx-auto w-full max-w-[420px]">
       <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
         <input
           type="text"
@@ -201,31 +199,6 @@ function MobileSearch() {
         >
           Search
         </button>
-      </div>
-
-      <div className="mt-[18px] flex items-center justify-between px-[8px]">
-        {dealTypes.map((d) => {
-          const active = deal === d;
-          return (
-            <button
-              key={d}
-              type="button"
-              onClick={() => setDeal(d)}
-              className="relative flex h-[28px] items-center justify-center"
-            >
-              <span
-                className={`font-display text-[15px] font-medium ${
-                  active ? "text-white" : "text-white/70"
-                }`}
-              >
-                {d}
-              </span>
-              {active && (
-                <span className="absolute -bottom-[4px] left-0 right-0 h-[2px] bg-white" />
-              )}
-            </button>
-          );
-        })}
       </div>
     </form>
   );
