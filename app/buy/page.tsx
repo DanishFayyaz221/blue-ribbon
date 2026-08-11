@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
+import { MobileFilters } from "../_components/property/MobileFilters";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
@@ -18,8 +19,6 @@ import {
   searchQueryString,
   type ListingSearchParams,
 } from "@/lib/db/queries";
-
-const mobileFilters = ["Buy", "Price", "Beds", "More"] as const;
 
 export const metadata = {
   title: "Properties for Sale | Blue Ribbon Real Estate",
@@ -62,20 +61,7 @@ export default async function BuyPage({
 
         {/* Mobile filter chips */}
         <div className="sm:hidden container-page bg-[#F1F2F4] py-[12px]">
-          <div className="no-scrollbar flex gap-[10px] overflow-x-auto">
-            {mobileFilters.map((label) => (
-              <button
-                key={label}
-                type="button"
-                className="flex h-[36px] shrink-0 items-center gap-[6px] rounded-[8px] border border-brand-silver bg-white px-[14px] font-display text-[13px] font-medium text-brand-bunker"
-              >
-                {label}
-                <svg viewBox="0 0 24 24" className="h-[14px] w-[14px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
-            ))}
-          </div>
+          <MobileFilters basePath="/buy" {...form} features={amenities} />
         </div>
 
         {/* Desktop hero image */}

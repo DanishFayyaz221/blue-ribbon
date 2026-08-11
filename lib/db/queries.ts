@@ -185,6 +185,8 @@ export type ListingSearchParams = {
   q?: string;
   min?: string;
   max?: string;
+  /** Minimum bedrooms, e.g. "3" for 3+. */
+  beds?: string;
   sort?: string;
   page?: string;
   /** Checkbox group — one value when a single box is ticked, an array otherwise. */
@@ -214,6 +216,7 @@ export function parseListingSearchParams(sp: ListingSearchParams) {
       q: sp.q?.trim() || undefined,
       minPrice: toNumber(sp.min),
       maxPrice: toNumber(sp.max),
+      minBeds: toNumber(sp.beds),
       amenities: amenities.length ? amenities : undefined,
       sort,
       page: Math.max(1, Number(sp.page) || 1),
@@ -223,12 +226,13 @@ export function parseListingSearchParams(sp: ListingSearchParams) {
       q: sp.q ?? "",
       min: sp.min ?? "",
       max: sp.max ?? "",
+      beds: sp.beds ?? "",
       sort,
     },
     /** Ticked amenity boxes, for re-checking the form after a search. */
     amenities,
     /** Whether the visitor has actually filtered anything. */
-    isFiltered: Boolean(sp.q?.trim() || sp.min || sp.max || amenities.length),
+    isFiltered: Boolean(sp.q?.trim() || sp.min || sp.max || sp.beds || amenities.length),
   };
 }
 
@@ -238,13 +242,14 @@ export function parseListingSearchParams(sp: ListingSearchParams) {
  * parameters, so the search survives the hop intact.
  */
 export function searchQueryString(
-  form: { q: string; min: string; max: string; sort: SortKey },
+  form: { q: string; min: string; max: string; beds?: string; sort: SortKey },
   amenities: string[] = [],
 ): string {
   const sp = new URLSearchParams();
   if (form.q) sp.set("q", form.q);
   if (form.min) sp.set("min", form.min);
   if (form.max) sp.set("max", form.max);
+  if (form.beds) sp.set("beds", form.beds);
   // "recent" is the default, so leaving it out keeps the link readable.
   if (form.sort !== "recent") sp.set("sort", form.sort);
   for (const a of amenities) sp.append("feature", a);
