@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EnquiryModal, type ModalAgent } from "./EnquiryModal";
+import { EnquiryModal, type EnquiryListing, type ModalAgent } from "./EnquiryModal";
 
 type Variant = "primary" | "navy-pill";
 
@@ -11,6 +11,8 @@ type Props = {
   label?: string;
   /** The listing's agents, from the feed. */
   agents?: ModalAgent[];
+  /** The listing the enquiry is about, echoed into the notification email. */
+  listing?: EnquiryListing;
 };
 
 export function EnquireTrigger({
@@ -18,6 +20,7 @@ export function EnquireTrigger({
   className = "",
   label = "Enquire",
   agents,
+  listing,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -31,7 +34,7 @@ export function EnquireTrigger({
       <button type="button" onClick={() => setOpen(true)} className={`${base} ${className}`}>
         {label}
       </button>
-      <EnquiryModal open={open} onClose={() => setOpen(false)} agents={agents} />
+      <EnquiryModal open={open} onClose={() => setOpen(false)} agents={agents} listing={listing} />
     </>
   );
 }

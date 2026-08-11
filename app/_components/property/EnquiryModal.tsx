@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AgentAvatar } from "../agents/AgentAvatar";
+import { STUDIO_EMAIL, sendAdminNotification, sendVisitorAutoReply } from "@/lib/email/send";
 
 export type ModalAgent = {
   name: string;
@@ -10,6 +11,16 @@ export type ModalAgent = {
   email: string;
   /** Absent for agents with no headshot on file — initials are shown instead. */
   image?: string;
+};
+
+/** The listing the enquiry is about, echoed into the notification email. */
+export type EnquiryListing = {
+  address: string;
+  guide?: string;
+  type?: string;
+  beds?: number;
+  baths?: number;
+  cars?: number;
 };
 
 type EnquiryModalProps = {
@@ -21,11 +32,13 @@ type EnquiryModalProps = {
    * omitted rather than filled with names that are not real.
    */
   agents?: ModalAgent[];
+  /** Absent when the enquiry is not about a specific listing. */
+  listing?: EnquiryListing;
 };
 
 const helpOptions = ["Price Guide", "Book an inspection", "Similar Properties"] as const;
 
-export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) {
+export function EnquiryModal({ open, onClose, agents = [], listing }: EnquiryModalProps) {
   const [mounted, setMounted] = useState(false);
   const [help, setHelp] = useState<(typeof helpOptions)[number] | null>(null);
   const [firstName, setFirstName] = useState("");
@@ -34,6 +47,83 @@ export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) 
   const [mobile, setMobile] = useState("");
   const [message, setMessage] = useState("");
   const [agree, setAgree] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    // The notify template only renders variables it references, and it may
+    // not reference the phone or listing_* ones. Folding those into the
+    // message body guarantees they reach the inbox regardless of how the
+    // template is set up.
+    const facts = [
+      listing?.beds != null ? `${listing.beds} bed` : null,
+      listing?.baths != null ? `${listing.baths} bath` : null,
+      listing?.cars != null ? `${listing.cars} car` : null,
+    ].filter(Boolean);
+    const detailsBlock = [
+      "",
+      "----------------------------",
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      `Phone: ${mobile}`,
+      help ? `Visitor wants: ${help}` : null,
+      ...(listing
+        ? [
+          "",
+          "Property enquired about:",
+          `Address: ${listing.address}`,
+          listing.guide ? `Price: ${listing.guide}` : null,
+          listing.type ? `Type: ${listing.type}` : null,
+          facts.length ? `Features: ${facts.join(", ")}` : null,
+          `Link: ${window.location.href}`,
+          agents.length ? `Agent(s): ${agents.map((a) => a.name).join(", ")}` : null,
+        ]
+        : []),
+    ]
+      .filter((line) => line !== null)
+      .join("\n");
+
+    try {
+      await sendAdminNotification({
+        form_type: listing ? "Property enquiry" : "General enquiry",
+        help_with: help ?? undefined,
+        name: fullName,
+        from_name: fullName,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        from_email: email,
+        reply_to: email,
+        phone: mobile,
+        mobile,
+        message: `${message}${detailsBlock}`,
+        listing_address: listing?.address,
+        listing_price: listing?.guide,
+        listing_type: listing?.type,
+        listing_beds: listing?.beds != null ? String(listing.beds) : undefined,
+        listing_baths: listing?.baths != null ? String(listing.baths) : undefined,
+        listing_cars: listing?.cars != null ? String(listing.cars) : undefined,
+        listing_url: window.location.href,
+        agent_name: agents.map((a) => a.name).join(", ") || undefined,
+      });
+      // Fire-and-forget: the enquiry is already in, see sendVisitorAutoReply.
+      void sendVisitorAutoReply({
+        name: fullName,
+        to_name: fullName,
+        email,
+        to_email: email,
+        listing_address: listing?.address,
+      });
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
+  }
 
   useEffect(() => {
     setMounted(true);
@@ -139,11 +229,27 @@ export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) 
             </div>
           )}
 
+          {status === "sent" ? (
+            <div className="flex flex-col items-start justify-center rounded-[10px] bg-[#F1F0ED] p-[clamp(20px,2.4vw,32px)]">
+              <p className="font-display text-[18px] font-bold text-brand-navy">
+                Enquiry sent ✓
+              </p>
+              <p className="mt-[10px] font-display text-[13px] leading-[1.6] text-brand-bunker/80">
+                Thanks{firstName ? `, ${firstName}` : ""} — your enquiry
+                {listing ? ` about ${listing.address}` : ""} is on its way. We&rsquo;ll
+                be in touch soon.
+              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-[20px] h-[44px] rounded-[22px] bg-brand-navy px-[28px] font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep"
+              >
+                Close
+              </button>
+            </div>
+          ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              onClose();
-            }}
+            onSubmit={handleSubmit}
             className="rounded-[10px] bg-[#F1F0ED] p-[clamp(16px,2vw,24px)]"
           >
             <Field label="How can we help?" required>
@@ -186,6 +292,7 @@ export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) 
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Enter a description..."
                 rows={4}
+                required
                 className="mt-[6px] w-full resize-none rounded-[6px] border border-brand-silver bg-white px-[12px] py-[10px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none"
               />
             </Field>
@@ -202,14 +309,30 @@ export function EnquiryModal({ open, onClose, agents = [] }: EnquiryModalProps) 
               </span>
             </label>
 
+            {status === "error" && (
+              <p className="mt-[14px] font-display text-[12px] leading-[1.5] text-red-600">
+                Sorry, your enquiry could not be sent. Please try again
+                {STUDIO_EMAIL ? (
+                  <>
+                    {" "}or email us directly at{" "}
+                    <a href={`mailto:${STUDIO_EMAIL}`} className="font-semibold underline">
+                      {STUDIO_EMAIL}
+                    </a>
+                  </>
+                ) : null}
+                .
+              </p>
+            )}
+
             <button
               type="submit"
-              disabled={!agree}
+              disabled={!agree || status === "sending"}
               className="mt-[56px] h-[44px] rounded-[22px] bg-brand-navy px-[28px] font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
             >
-              Submit
+              {status === "sending" ? "Sending..." : "Submit"}
             </button>
           </form>
+          )}
         </div>
       </div>
     </div>
@@ -255,6 +378,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
+      required
       className="mt-[6px] h-[40px] w-full rounded-[6px] border border-brand-silver bg-white px-[12px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none"
     />
   );

@@ -219,6 +219,14 @@ export default async function PropertyViewPage({ params }: PageProps) {
             <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(48px,4.5vw,72px)]">
               <EnquireTrigger
                 agents={enquiryAgents}
+                listing={{
+                  address: listing.address,
+                  guide: listing.guide,
+                  type: listing.type,
+                  beds: listing.beds,
+                  baths: listing.baths,
+                  cars: listing.cars,
+                }}
                 className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
               />
               <ShareTrigger
@@ -429,7 +437,19 @@ function MobilePropertyView({
         </div>
 
         <div className="mt-[24px] flex gap-[12px]">
-          <EnquireTrigger variant="navy-pill" agents={agents} className="flex-1" />
+          <EnquireTrigger
+            variant="navy-pill"
+            agents={agents}
+            listing={{
+              address: listing.address,
+              guide: listing.guide,
+              type: listing.type,
+              beds: listing.beds,
+              baths: listing.baths,
+              cars: listing.cars,
+            }}
+            className="flex-1"
+          />
           <ShareTrigger
             path={`/property/${listing.slug}`}
             address={listing.address}

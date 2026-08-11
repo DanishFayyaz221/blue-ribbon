@@ -41,34 +41,7 @@ export default function ContactPage() {
           </section>
 
           <section className="container-page py-[22px]">
-            <form className="flex flex-col gap-[10px]">
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                className="h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-              />
-              <textarea
-                placeholder="Your Message"
-                rows={4}
-                className="w-full resize-none rounded-[18px] bg-[#F1F2F4] px-[18px] py-[12px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-              />
-              <button
-                type="submit"
-                className="mt-[4px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm variant="pill" />
           </section>
 
           <div className="h-[72px] bg-[#EDEFF2]" />
