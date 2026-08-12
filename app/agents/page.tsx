@@ -114,7 +114,7 @@ export default async function AgentsPage() {
                   </p>
                   <Link
                     href="/contact"
-                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
+                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
                   >
                     Contact our Agent
                   </Link>
@@ -192,7 +192,7 @@ export default async function AgentsPage() {
                     and rewarding.
                   </p>
                   <div className="mt-[clamp(20px,1.6vw,32px)]">
-                    <Button href="/contact" variant="outline" size="md">
+                    <Button href="/contact" variant="white" size="md">
                       Contact our Agent
                     </Button>
                   </div>

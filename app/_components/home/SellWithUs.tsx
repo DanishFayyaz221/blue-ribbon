@@ -37,7 +37,7 @@ export function SellWithUs() {
               Western Sydney and ensure your next move is a success.
             </p>
             <div className="mt-[clamp(24px,5vw,32px)]">
-              <Button href="/contact" variant="outline" size="lg">
+              <Button href="/contact" variant="white" size="lg">
                 Contact our Agent
               </Button>
             </div>
@@ -83,7 +83,7 @@ export function SellWithUs() {
                 Western Sydney and ensure your next move is a success.
               </p>
               <div className="mt-[clamp(16px,2vw,32px)]">
-                <Button href="/contact" variant="outline" size="md">
+                <Button href="/contact" variant="white" size="md">
                   Contact our Agent
                 </Button>
               </div>

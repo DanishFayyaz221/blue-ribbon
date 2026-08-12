@@ -184,18 +184,18 @@ function SearchBar() {
 function MobileSearch() {
   return (
     <form action={actionFor("Buy")} method="get" className="mx-auto w-full max-w-[420px]">
-      <div className="flex h-[52px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
+      <div className="flex h-[52px] w-full items-stretch rounded-[12px] bg-white p-[6px]">
         <input
           type="text"
           name="q"
           list={SUBURB_LIST_ID}
           aria-label="Suburb or postcode"
           placeholder="Enter suburb, postcode..."
-          className="flex-1 bg-transparent pr-[12px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+          className="min-w-0 flex-1 bg-transparent px-[12px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
         />
         <button
           type="submit"
-          className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+          className="flex h-full shrink-0 items-center justify-center rounded-[8px] bg-brand-navy px-[20px] font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
         >
           Search
         </button>

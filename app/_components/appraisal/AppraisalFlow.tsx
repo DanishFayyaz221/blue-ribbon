@@ -261,37 +261,6 @@ export function AppraisalFlow({
               </section>
             )}
 
-            <section className="relative w-full overflow-hidden py-[clamp(22px,2.1vw,40px)]">
-              {/* Navy fabric background */}
-              <Image
-                src="/images/bg.png"
-                alt=""
-                fill
-                quality={90}
-                sizes="100vw"
-                className="object-cover object-center"
-              />
-              {/* Navy overlay (#001F4D @ ~12%) */}
-              <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
-
-              <div className="relative z-10 container-page flex flex-col items-start gap-[14px] sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="font-display font-bold text-white text-[clamp(18px,1.6vw,28px)] leading-[1.2]">
-                    Get Your Property Estimate in just 9 seconds!
-                  </h2>
-                  <p className="mt-[5px] font-display text-white/85 text-[11.5px] sm:text-[12.5px] font-normal">
-                    Connect with your local Agent now
-                  </p>
-                </div>
-                <a
-                  href="/contact"
-                  className="font-display text-white text-[13px] sm:text-[14px] font-medium underline underline-offset-4 hover:opacity-80"
-                >
-                  Get in touch
-                </a>
-              </div>
-            </section>
-
             {latest.length > 0 && (
               <section className="hidden sm:block container-page py-[clamp(38px,3.15vw,64px)]">
                 <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
@@ -337,7 +306,7 @@ export function AppraisalFlow({
                     </p>
                     <Link
                       href="/contact"
-                      className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
+                      className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
                     >
                       Contact our Agent
                     </Link>
@@ -469,7 +438,7 @@ export function AppraisalFlow({
                       </p>
                       <Link
                         href="/contact"
-                        className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] border border-white px-[28px] font-display text-[14px] font-medium text-white transition hover:bg-white/10"
+                        className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] bg-white px-[28px] font-display text-[14px] font-medium text-black transition hover:bg-white/90"
                       >
                         Contact our Agent
                       </Link>
@@ -771,7 +740,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
+                  className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
                 >
                   Contact our Agent
                 </Link>

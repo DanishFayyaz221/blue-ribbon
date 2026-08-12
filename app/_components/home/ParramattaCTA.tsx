@@ -76,7 +76,7 @@ export async function ParramattaCTA() {
               thriving community.
             </p>
             <div className="mt-[clamp(24px,5vw,32px)]">
-              <Button href="/contact" variant="outline" size="lg">
+              <Button href="/contact" variant="white" size="lg">
                 Contact our Agent
               </Button>
             </div>
@@ -148,7 +148,7 @@ export async function ParramattaCTA() {
                 thriving community.
               </p>
               <div className="mt-[clamp(16px,1.8vw,28px)]">
-                <Button href="/contact" variant="outline" size="lg">
+                <Button href="/contact" variant="white" size="lg">
                   Contact our Agent
                 </Button>
               </div>

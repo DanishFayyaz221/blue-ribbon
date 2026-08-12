@@ -113,7 +113,7 @@ export default function AboutPage() {
                   </p>
                   <Link
                     href="/contact"
-                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] border border-white px-[24px] font-display text-[13px] font-medium text-white transition hover:bg-white/10"
+                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
                   >
                     Contact our Agent
                   </Link>

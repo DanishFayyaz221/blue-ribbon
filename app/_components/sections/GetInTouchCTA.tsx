@@ -49,7 +49,7 @@ export function GetInTouchCTA({
             <div className="mt-[clamp(28px,2.6vw,44px)]">
               <Button
                 href={buttonHref}
-                variant="outline"
+                variant="white"
                 size="md"
                 className="px-[clamp(20px,1.6vw,32px)]"
               >
