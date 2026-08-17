@@ -196,7 +196,7 @@ export function AppraisalFlow({
                   <div className="container-page relative mt-auto w-full">
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+clamp(24px,3vw,40px))] w-full max-w-[1080px] -translate-x-1/2 -translate-y-1/2 bg-black/25 blur-[1px]"
+                      className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+clamp(24px,3vw,40px))] w-full max-w-[1080px] -translate-x-1/2 -translate-y-1/2 rounded-[24px] bg-black/25 blur-[1px]"
                     />
                     <div className="relative">
                       <div className="flex flex-wrap items-center justify-center gap-x-[clamp(20px,2vw,40px)] gap-y-[10px]">
@@ -222,7 +222,7 @@ export function AppraisalFlow({
                         })}
                       </div>
 
-                      <div className="mx-auto mt-[clamp(14px,1.2vw,24px)] flex w-full max-w-[1024px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0">
+                      <div className="mx-auto mt-[clamp(14px,1.2vw,24px)] flex w-full max-w-[1024px] flex-col overflow-hidden rounded-[16px] bg-white sm:flex-row sm:items-stretch sm:rounded-[20px]">
                         <input
                           type="text"
                           value={address}
@@ -233,7 +233,7 @@ export function AppraisalFlow({
                         <button
                           type="button"
                           onClick={() => handleSearch()}
-                          className="flex h-[56px] sm:h-[64px] w-full sm:w-[180px] items-center justify-center rounded-[12px] sm:rounded-none bg-brand-navy font-display text-[15px] sm:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep"
+                          className="flex h-[56px] sm:h-[64px] w-full sm:w-[180px] items-center justify-center bg-brand-navy font-display text-[15px] sm:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep"
                         >
                           Search
                         </button>

@@ -24,10 +24,18 @@ function actionFor(deal: DealType): string {
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative aspect-[1920/860] min-h-[calc(100svh-104px)] sm:min-h-[460px] sm:max-h-[680px] w-full">
-        <div className="absolute inset-0 sm:scale-[1.04] sm:blur-[6px]">
+      {/*
+        FIX: previous aspect ratio (1920/860 ≈ 2.23:1) was much wider/shorter
+        than the source video's native ratio (~16:9 ≈ 1.78:1). Combined with
+        object-cover, that forced the browser to crop the top/bottom of the
+        video (cutting off heads, etc). Switching to aspect-video (16:9) with
+        a slightly taller min-height range fixes the crop while still filling
+        the hero nicely on all screen sizes.
+      */}
+      <div className="relative aspect-video min-h-[calc(100svh-104px)] sm:min-h-[560px] sm:max-h-[820px] w-full">
+        <div className="absolute inset-0">
           <video
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-top sm:object-center"
             src="/hero-video/hero.mp4"
             autoPlay
             loop
@@ -40,16 +48,16 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
-          <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] sm:text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
+          <h1 className="animate-fade-up text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] sm:text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
           </h1>
 
-          <div className="mt-[clamp(22px,2.5vw,42px)] hidden sm:block">
+          <div className="animate-fade-up [animation-delay:180ms] mt-[clamp(22px,2.5vw,42px)] hidden sm:block">
             <SearchBar />
           </div>
 
-          <div className="mt-[24px] sm:hidden">
+          <div className="animate-fade-up [animation-delay:180ms] mt-[24px] sm:hidden">
             <MobileSearch />
           </div>
         </div>
@@ -57,7 +65,7 @@ export function Hero() {
         <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
           <Link
             href="/property-report-digital-appraisal"
-            className="flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition hover:bg-white/40"
+            className="animate-fade-up [animation-delay:340ms] flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/40 hover:scale-[1.02]"
           >
             Get your property estimate in just 9 seconds!
           </Link>
@@ -78,7 +86,7 @@ function SearchBar() {
       method="get"
       className="mx-auto flex w-full max-w-[1280px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0"
     >
-      <div className="flex w-full flex-1 flex-col items-stretch bg-white sm:flex-row">
+      <div className="flex w-full flex-1 flex-col items-stretch overflow-hidden rounded-[16px] bg-white sm:flex-row sm:rounded-[20px]">
         <div className="relative flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[170px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
           <button
             type="button"
@@ -184,7 +192,7 @@ function SearchBar() {
 function MobileSearch() {
   return (
     <form action={actionFor("Buy")} method="get" className="mx-auto w-full max-w-[420px]">
-      <div className="flex h-[52px] w-full items-stretch rounded-[12px] bg-white p-[6px]">
+      <div className="flex h-[52px] w-full items-stretch rounded-[16px] bg-white p-[6px]">
         <input
           type="text"
           name="q"

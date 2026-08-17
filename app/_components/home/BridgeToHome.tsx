@@ -24,7 +24,7 @@ export function BridgeToHome() {
     <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[20px] sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
+          <h2 className="reveal font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
             Your bridge to home
           </h2>
           <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
@@ -54,8 +54,8 @@ export function BridgeToHome() {
         </div>
 
         <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
-          {tiles.map((tile) => (
-            <Link key={tile.label} href={tile.href} className="group block">
+          {tiles.map((tile, i) => (
+            <Link key={tile.label} href={tile.href} className={`group block reveal reveal-delay-${(i % 4) + 1} hover-lift`}>
               <div className="relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
                 <Image
                   src={tile.src}

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { DragScroll } from "../ui/DragScroll";
-import { Stars } from "../ui/Stars";
 
 type Testimonial = {
   id: number;
@@ -16,7 +15,7 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    image: "/images/happy-client.png",
+    image: "/reviews/1.png",
     quote:
       "Exceptional service from start to finish. The team went above and beyond to find our dream home.",
     name: "Sarah M.",
@@ -24,7 +23,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 2,
-    image: "/images/happy-client.png",
+    image: "/reviews/2.png",
     quote:
       "Exceptional service from start to finish. The team made the entire buying process smooth and easy.",
     name: "James K.",
@@ -32,7 +31,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 3,
-    image: "/images/happy-client.png",
+    image: "/reviews/3.png",
     quote:
       "Their local knowledge is unmatched. We sold above expectation and felt supported the whole way.",
     name: "Priya R.",
@@ -40,7 +39,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 4,
-    image: "/images/happy-client.png",
+    image: "/reviews/4.png",
     quote:
       "Honest, friendly, and incredibly professional. I cannot recommend Blue Ribbon highly enough.",
     name: "Daniel T.",
@@ -48,7 +47,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: 5,
-    image: "/images/happy-client.png",
+    image: "/reviews/5.png",
     quote:
       "From appraisal to settlement they kept us informed at every step. A truly stress-free experience.",
     name: "Olivia C.",
@@ -81,37 +80,39 @@ export function HappyClients() {
   return (
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
-        <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
+        <h2 className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
           Meet Our Happy Clients
         </h2>
       </div>
 
-      {/* Mobile: horizontal-scroll plain cards (no image) */}
+      {/* Mobile: horizontal-scroll image-only cards */}
       <DragScroll className="sm:hidden mt-[24px] no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
         {testimonials.map((t) => (
           <article
             key={t.id}
-            className="snap-start shrink-0 basis-[78%] rounded-[20px] bg-[#F5F5F7] p-[24px]"
+            className="snap-start shrink-0 basis-[78%] overflow-hidden rounded-[20px] bg-white shadow-[0px_4px_4px_0px_#00000040]"
           >
-            <Stars rating={t.rating} size={20} />
-            <p className="mt-[18px] font-display text-[15px] leading-[1.55] text-brand-bunker">
-              &ldquo;{t.quote}&rdquo;
-            </p>
-            <p className="mt-[20px] font-display text-[15px] font-bold text-brand-navy">
-              {t.name}
-            </p>
+            <div className="relative aspect-252/320 w-full">
+              <Image
+                src={t.image}
+                alt={t.name}
+                fill
+                sizes="78vw"
+                className="object-cover"
+              />
+            </div>
           </article>
         ))}
       </DragScroll>
 
       {/* Tablet / desktop: slider carousel with images */}
       <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
-        <div className="relative px-[clamp(20px,3vw,64px)]">
+        <div className="relative px-[clamp(8px,1.2vw,20px)]">
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous testimonial"
-            className="absolute left-[clamp(8px,1.5vw,32px)] top-1/2 z-10 flex h-[46px] w-[46px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
+            className="absolute left-0 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
           >
             <svg
               viewBox="0 0 24 24"
@@ -126,7 +127,7 @@ export function HappyClients() {
           </button>
 
           {/* px -> mx: 4th card peek nahi karega */}
-          <div className="overflow-hidden mx-[clamp(40px,4vw,72px)] py-[28px]">
+          <div className="overflow-hidden mx-[clamp(56px,5vw,80px)] py-[28px]">
             <div
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(${translatePct}%)` }}
@@ -134,7 +135,7 @@ export function HappyClients() {
               {testimonials.map((t) => (
                 <div
                   key={t.id}
-                  className="flex shrink-0 justify-center px-[clamp(2px,0.3vw,6px)]"
+                  className="flex shrink-0 justify-center px-[clamp(8px,0.9vw,16px)]"
                   style={{ width: `${slideWidthPct}%` }}
                 >
                   <TestimonialCard testimonial={t} />
@@ -147,7 +148,7 @@ export function HappyClients() {
             type="button"
             onClick={handleNext}
             aria-label="Next testimonial"
-            className="absolute right-[clamp(8px,1.5vw,32px)] top-1/2 z-10 flex h-[46px] w-[46px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
+            className="absolute right-0 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
           >
             <svg
               viewBox="0 0 24 24"
@@ -168,25 +169,15 @@ export function HappyClients() {
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    /* 👇 sirf bottom shadow: 0px 4px 4px 0px #00000040 (bg par halo nahi) */
-    <article className="flex w-full max-w-[340px] flex-col overflow-hidden rounded-[14px] bg-white shadow-[0px_4px_4px_0px_#00000040]">
-      <div className="relative mx-[14px] mt-[14px] aspect-[252/200] overflow-hidden rounded-[6px]">
+    <article className="flex w-full max-w-[440px] flex-col overflow-hidden rounded-[18px] bg-white shadow-[0px_4px_4px_0px_#00000040] transition-transform duration-300 hover:-translate-y-1">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[18px]">
         <Image
           src={testimonial.image}
           alt={testimonial.name}
           fill
-          sizes="(max-width: 768px) 90vw, 252px"
+          sizes="(max-width: 768px) 90vw, 440px"
           className="object-cover"
         />
-      </div>
-      <div className="px-[18px] pt-[14px] pb-[20px]">
-        <Stars rating={testimonial.rating} size={14} />
-        <p className="mt-[10px] font-display text-[11px] leading-[1.5] text-brand-bunker/85">
-          &ldquo;{testimonial.quote}&rdquo;
-        </p>
-        <p className="mt-[14px] font-display text-[14px] font-semibold text-brand-bunker">
-          {testimonial.name}
-        </p>
       </div>
     </article>
   );

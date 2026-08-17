@@ -17,7 +17,7 @@ export function SellWithUs() {
         </div>
         <div className="relative w-full">
           <Image
-            src="/images/bg.png"
+            src="/images/bw.png"
             alt=""
             fill
             quality={90}
@@ -26,7 +26,7 @@ export function SellWithUs() {
           />
           <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
           <div className="relative z-10 container-page py-[clamp(40px,9vw,64px)]">
-            <h2 className="font-display font-bold text-white text-[1.3rem] leading-[1.1]">
+            <h2 className="reveal font-display font-bold text-white text-[1.3rem] leading-[1.1]">
               Want to Sell with us?
             </h2>
             <p className="mt-[clamp(12px,3vw,20px)] font-display font-light text-white text-[16px] leading-[1.3]">
@@ -72,7 +72,7 @@ export function SellWithUs() {
         <div className="relative z-10 container-page">
           <div className="flex items-center min-h-[clamp(360px,42vw,560px)] py-[clamp(28px,3vw,48px)] pr-[clamp(16px,2vw,32px)]">
             <div className="-ml-[24px] xl:-ml-[44px] w-[calc(50%-clamp(8px,1vw,16px))] max-w-[620px]">
-              <h2 className="font-display font-bold text-white text-[clamp(1.5rem,2.7vw,3.25rem)] leading-[1.05]">
+              <h2 className="reveal font-display font-bold text-white text-[clamp(1.5rem,2.7vw,3.25rem)] leading-[1.05]">
                 Want to Sell with us?
               </h2>
               <p className="mt-[clamp(12px,1.4vw,24px)] font-display font-light text-white text-[clamp(1.25rem,2.4vw,2.9rem)] leading-[1.07]">

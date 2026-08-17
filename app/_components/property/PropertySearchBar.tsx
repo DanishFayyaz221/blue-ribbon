@@ -18,7 +18,7 @@ type Props = {
 };
 
 const FIELD =
-  "h-[38px] rounded-none border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
+  "h-[38px] rounded-[16px] sm:rounded-[20px] border border-[#001F4D] bg-white px-[16px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
 
 /**
  * A plain GET form rather than client-side state.
@@ -113,7 +113,7 @@ export function PropertySearchBar({
 
       <button
         type="submit"
-        className="flex h-[38px] w-full sm:w-auto items-center justify-center gap-[8px] rounded-none bg-[#001F4D] px-[20px] font-display text-[13px] font-medium text-white transition hover:bg-[#001a40]"
+        className="flex h-[38px] w-full sm:w-auto items-center justify-center gap-[8px] rounded-[16px] sm:rounded-[20px] bg-[#001F4D] px-[20px] font-display text-[13px] font-medium text-white transition hover:bg-[#001a40]"
       >
         <svg viewBox="0 0 24 24" className="h-[14px] w-[14px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <circle cx="11" cy="11" r="7" />
@@ -131,13 +131,27 @@ export function PropertySearchBar({
               key={key}
               className="flex cursor-pointer items-center gap-[7px] font-display text-[13px] text-brand-bunker"
             >
-              <input
-                type="checkbox"
-                name="feature"
-                value={key}
-                defaultChecked={ticked.has(key)}
-                className="h-[15px] w-[15px] accent-[#001F4D]"
-              />
+              <span className="relative inline-flex h-[15px] w-[15px] shrink-0 items-center justify-center">
+                <input
+                  type="checkbox"
+                  name="feature"
+                  value={key}
+                  defaultChecked={ticked.has(key)}
+                  className="peer h-[15px] w-[15px] appearance-none rounded-[4px] border border-[#001F4D] bg-white checked:bg-[#001F4D] focus:outline-none focus:ring-2 focus:ring-[#001F4D]/30"
+                />
+                <svg
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute h-[10px] w-[10px] opacity-0 peer-checked:opacity-100"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
               {amenityLabel(key)}
             </label>
           ))}

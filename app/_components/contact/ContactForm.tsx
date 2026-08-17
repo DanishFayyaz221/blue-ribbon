@@ -71,10 +71,10 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
 
   const inputClass = pill
     ? "h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-    : "h-[52px] w-full rounded-[10px] border border-brand-silver bg-white px-[18px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
+    : "h-[52px] w-full rounded-[26px] border border-brand-silver bg-white px-[22px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
   const textareaClass = pill
     ? "w-full resize-none rounded-[18px] bg-[#F1F2F4] px-[18px] py-[12px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-    : "w-full resize-none rounded-[10px] border border-brand-silver bg-white px-[18px] py-[16px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
+    : "w-full resize-none rounded-[24px] border border-brand-silver bg-white px-[22px] py-[16px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
 
   if (status === "sent") {
     return (

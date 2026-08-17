@@ -62,7 +62,7 @@ export async function ParramattaCTA() {
           />
           <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
           <div className="relative z-10 container-page py-[clamp(40px,9vw,64px)]">
-            <h2 className="font-display font-bold text-brand-citrine text-[1.3rem] leading-[1.15]">
+            <h2 className="reveal font-display font-bold text-brand-citrine text-[1.3rem] leading-[1.15]">
               Set within the dynamic
               <br />
               urban heart of
@@ -134,7 +134,7 @@ export async function ParramattaCTA() {
         <div className="relative z-10 container-page">
           <div className="flex items-center min-h-[clamp(360px,42vw,560px)] py-[clamp(28px,3vw,48px)] pr-[clamp(16px,2vw,32px)]">
             <div className="w-[calc(50%-clamp(8px,1vw,16px))] max-w-[600px]">
-              <h2 className="font-display font-bold text-brand-citrine text-[clamp(1.5rem,3.2vw,2.625rem)] leading-[1.1]">
+              <h2 className="reveal font-display font-bold text-brand-citrine text-[clamp(1.5rem,3.2vw,2.625rem)] leading-[1.1]">
                 Set within the dynamic
                 <br />
                 urban heart of

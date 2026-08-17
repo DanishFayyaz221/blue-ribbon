@@ -68,13 +68,13 @@ export default function ContactPage() {
 
         <section className="hidden sm:block container-page">
           <div className="relative aspect-[1771/780] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
-            <Image
-              src="/contact/contact-us.png"
-              alt="Visit our office"
-              fill
-              priority
-              sizes="(max-width: 639px) 1px, 100vw"
-              className="object-cover"
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              src="/hero-video/hero.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
             />
           </div>
         </section>
