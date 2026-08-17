@@ -17,7 +17,7 @@ export function SellWithUs() {
         </div>
         <div className="relative w-full">
           <Image
-            src="/images/bw.png"
+            src="/images/bg.png"
             alt=""
             fill
             quality={90}
