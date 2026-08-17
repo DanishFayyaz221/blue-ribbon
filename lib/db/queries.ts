@@ -310,18 +310,33 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
   } = query;
 
   const filter = publicFilter();
+
+  // Conditions that each need their own `$or`. A document can only carry one
+  // `$or` key, and both the text search and the pet-friendly lookup want one,
+  // so they are combined under `$and` instead of overwriting each other.
+  const and: Filter<ListingDoc>[] = [];
+
   if (categories?.length) filter.category = { $in: categories };
   if (suburb) filter["address.suburb"] = { $regex: `^${escapeRegex(suburb)}$`, $options: "i" };
   if (minBeds) filter["features.bedrooms"] = { $gte: minBeds };
 
   if (amenities?.length) {
-    // `petFriendly` is an allowance rather than a feature flag, so it lives in
-    // a different array and cannot go through the same $all.
+    // `petFriendly` is an allowance rather than a feature flag, so it cannot go
+    // through the same $all as the rest.
     const features = amenities.filter((a) => a !== "petFriendly");
-    const wantsPets = amenities.includes("petFriendly");
 
     if (features.length) filter["features.amenities"] = { $all: features };
-    if (wantsPets) filter.allowances = "petFriendly";
+
+    if (amenities.includes("petFriendly")) {
+      // REAXML can carry pet permission two ways: as its own `<allowances>`
+      // element, or as a flag inside `<features>` alongside the amenities. This
+      // agency's feed uses the second, leaving `allowances` empty on every
+      // document — so matching only `allowances` could never return anything.
+      // Accepting either keeps the filter correct whichever way the feed sends.
+      and.push({
+        $or: [{ allowances: "petFriendly" }, { "features.amenities": "petFriendly" }],
+      });
+    }
   }
 
   if (q?.trim()) {
@@ -329,12 +344,14 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
     // "Blacktown" does not also return every listing whose description merely
     // mentions Blacktown.
     const rx = { $regex: escapeRegex(q.trim()), $options: "i" };
-    filter.$or = [
-      { "address.suburb": rx },
-      { "address.street": rx },
-      { "address.postcode": rx },
-      { "address.full": rx },
-    ];
+    and.push({
+      $or: [
+        { "address.suburb": rx },
+        { "address.street": rx },
+        { "address.postcode": rx },
+        { "address.full": rx },
+      ],
+    });
   }
 
   if (minPrice !== undefined || maxPrice !== undefined) {
@@ -346,6 +363,8 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
     // honestly satisfy a price range.
     filter["price.display"] = true;
   }
+
+  if (and.length) filter.$and = and;
 
   const col = await listings();
   const safePage = Math.max(1, page);
@@ -377,6 +396,112 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
     totalPages: Math.max(1, Math.ceil(total / perPage)),
   };
 });
+
+/** A constraint the fallback had to give up on to find anything to show. */
+export type RelaxedConstraint = "amenities" | "beds" | "price" | "location";
+
+/** Named for the result, not the component that renders it — see
+ *  `app/_components/property/FallbackListings.tsx`. */
+export type FallbackResult = {
+  items: ListingCard[];
+  /** Which of the visitor's constraints were given up, widest-kept first. */
+  relaxed: RelaxedConstraint[];
+  /** True when even dropping every filter found nothing — the category is bare. */
+  exhausted: boolean;
+};
+
+/**
+ * Reports only the constraints the visitor actually set.
+ *
+ * A rung that drops the price range is meaningless to someone who never
+ * entered one, and saying "we ignored your price range" when they left it blank
+ * reads as a bug. So the ladder's intent is filtered down to what was really
+ * there before it reaches the copy.
+ */
+function constraintsActuallySet(
+  query: ListingQuery,
+  candidates: RelaxedConstraint[],
+): RelaxedConstraint[] {
+  const wasSet: Record<RelaxedConstraint, boolean> = {
+    amenities: Boolean(query.amenities?.length),
+    beds: Boolean(query.minBeds),
+    price: query.minPrice !== undefined || query.maxPrice !== undefined,
+    location: Boolean(query.q?.trim() || query.suburb),
+  };
+  return candidates.filter((c) => wasSet[c]);
+}
+
+/**
+ * Finds the closest thing to a search that matched nothing.
+ *
+ * Constraints are given up one at a time, weakest intent first, and the first
+ * rung that returns anything wins. The order is deliberate: feature filters are
+ * wishes, a bedroom count is a need, a budget is a hard limit, and a named
+ * suburb is usually the whole point — so location is surrendered last.
+ *
+ * Category is never relaxed. A visitor browsing sales is not helped by being
+ * shown rentals, however well they match.
+ *
+ * Rungs that would not loosen anything the visitor set are skipped rather than
+ * queried, so a bare "no such suburb" search costs one round trip, not four.
+ */
+export const getListingsWithFallback = cache(
+  async (query: ListingQuery, limit = 4): Promise<FallbackResult> => {
+    const base: ListingQuery = { ...query, page: 1, perPage: limit };
+
+    const ladder: { relaxed: RelaxedConstraint[]; query: ListingQuery }[] = [
+      {
+        relaxed: ["amenities"],
+        query: { ...base, amenities: undefined },
+      },
+      {
+        relaxed: ["amenities", "beds"],
+        query: { ...base, amenities: undefined, minBeds: undefined },
+      },
+      {
+        relaxed: ["amenities", "beds", "price"],
+        query: {
+          ...base,
+          amenities: undefined,
+          minBeds: undefined,
+          minPrice: undefined,
+          maxPrice: undefined,
+        },
+      },
+      {
+        relaxed: ["amenities", "beds", "price", "location"],
+        query: {
+          ...base,
+          amenities: undefined,
+          minBeds: undefined,
+          minPrice: undefined,
+          maxPrice: undefined,
+          q: undefined,
+          suburb: undefined,
+        },
+      },
+    ];
+
+    const tried = new Set<string>();
+
+    for (const rung of ladder) {
+      const relaxed = constraintsActuallySet(query, rung.relaxed);
+
+      // Nothing of the visitor's would actually be given up here, so this rung
+      // is just the search that already failed.
+      if (relaxed.length === 0) continue;
+
+      const signature = relaxed.join("+");
+      if (tried.has(signature)) continue;
+      tried.add(signature);
+
+      const { items } = await getListings(rung.query);
+      if (items.length > 0) return { items, relaxed, exhausted: false };
+    }
+
+    return { items: [], relaxed: [], exhausted: true };
+  },
+);
 
 export const getLatestListings = cache(
   async (categories?: ListingCategory[], limit = 4): Promise<ListingCard[]> => {

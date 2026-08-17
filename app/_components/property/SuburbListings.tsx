@@ -6,10 +6,12 @@ import { Breadcrumb } from "../ui/Breadcrumb";
 import { PropertyCard } from "./PropertyCard";
 import { PropertySearchBar } from "./PropertySearchBar";
 import { EmptyListings } from "./EmptyListings";
+import { FallbackListings } from "./FallbackListings";
 import { PagerLinks } from "../sections/PagerLinks";
 import { GetInTouchCTA } from "../sections/GetInTouchCTA";
 import {
   getListings,
+  getListingsWithFallback,
   getSuburbsWithCounts,
   parseListingSearchParams,
   type ListingSearchParams,
@@ -59,6 +61,14 @@ export async function SuburbListings({
   });
 
   const path = `${basePath}/${match.slug}`;
+
+  // The suburb is part of the route, so it is the last thing given up — the
+  // ladder exhausts price, beds and features inside the suburb first, and only
+  // then widens to the rest of the same category.
+  const fallback =
+    items.length === 0
+      ? await getListingsWithFallback({ ...query, categories, suburb: match.name }, 4)
+      : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -111,12 +121,22 @@ export async function SuburbListings({
             </>
           ) : (
             <div className="mt-[clamp(22px,2vw,36px)]">
-              <EmptyListings
-                title={`No properties match your search in ${match.name}`}
-                message="Try widening the price range or removing some feature filters."
-                ctaLabel={`All ${match.name} properties`}
-                ctaHref={path}
-              />
+              {fallback && fallback.items.length > 0 ? (
+                <FallbackListings
+                  items={fallback.items}
+                  relaxed={fallback.relaxed}
+                  q={form.q || match.name}
+                  noun={basePath === "/rent" ? "rentals" : "properties"}
+                  clearHref={path}
+                />
+              ) : (
+                <EmptyListings
+                  title={`No properties match your search in ${match.name}`}
+                  message="Try widening the price range or removing some feature filters."
+                  ctaLabel={`All ${match.name} properties`}
+                  ctaHref={path}
+                />
+              )}
             </div>
           )}
 

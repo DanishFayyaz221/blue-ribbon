@@ -3,17 +3,17 @@ import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
+import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import Link from "next/link";
 import {
   RENTAL_CATEGORIES,
-  SALE_CATEGORIES,
   getListings,
+  getListingsWithFallback,
   getSuburbsWithCounts,
   parseListingSearchParams,
-  searchQueryString,
   type ListingSearchParams,
 } from "@/lib/db/queries";
 
@@ -35,12 +35,12 @@ export default async function RentPage({
     getSuburbsWithCounts(RENTAL_CATEGORIES),
   ]);
 
-  // Mirror of the Buy page: a rental search that finds nothing may still match
-  // a property for sale, and pointing there beats a dead end.
-  const saleMatches =
+  // Mirror of the Buy page: when nothing matches, offer the nearest rentals
+  // rather than a dead end. Never crosses into sales.
+  const fallback =
     items.length === 0 && isFiltered
-      ? (await getListings({ ...query, categories: SALE_CATEGORIES, perPage: 1 })).total
-      : 0;
+      ? await getListingsWithFallback({ ...query, categories: RENTAL_CATEGORIES }, 4)
+      : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -113,12 +113,13 @@ export default async function RentPage({
           ) : (
             <div className="mt-[clamp(22px,2vw,36px)]">
               {isFiltered ? (
-                saleMatches > 0 ? (
-                  <EmptyListings
-                    title="No rentals match your search"
-                    message={`We do have ${saleMatches} propert${saleMatches === 1 ? "y" : "ies"} for sale matching it.`}
-                    ctaLabel={`View ${saleMatches === 1 ? "it" : "them"} in Buy`}
-                    ctaHref={`/buy${searchQueryString(form, amenities)}`}
+                fallback && fallback.items.length > 0 ? (
+                  <FallbackListings
+                    items={fallback.items}
+                    relaxed={fallback.relaxed}
+                    q={form.q}
+                    noun="rentals"
+                    clearHref="/rent"
                   />
                 ) : (
                   <EmptyListings

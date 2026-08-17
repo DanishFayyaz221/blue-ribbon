@@ -7,16 +7,17 @@ import { MobileFilters } from "../_components/property/MobileFilters";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
+import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 import {
-  RENTAL_CATEGORIES,
   SALE_CATEGORIES,
   getLatestListings,
   getListings,
+  getListingsWithFallback,
   getSuburbsWithCounts,
   parseListingSearchParams,
-  searchQueryString,
+  type FallbackResult,
   type ListingSearchParams,
 } from "@/lib/db/queries";
 
@@ -35,21 +36,21 @@ export default async function BuyPage({
 
   const [results, latest, suburbs] = await Promise.all([
     getListings({ ...query, categories: SALE_CATEGORIES, perPage: 12 }),
-    getLatestListings(undefined, 4),
+    // Scoped to sales: this page is for buyers, so the strip below the results
+    // should not be quietly padded out with rentals.
+    getLatestListings(SALE_CATEGORIES, 4),
     getSuburbsWithCounts(SALE_CATEGORIES),
   ]);
 
   const { items, totalPages } = results;
   const hasResults = items.length > 0;
 
-  // A sale search that finds nothing may still match a rental — and this page
-  // shows rentals further down under "Our latest Properties". Saying nothing
-  // reads as a contradiction: the visitor is told there is no match while the
-  // matching listing sits on screen. So count the other side and offer it.
-  const rentalMatches =
+  // Nothing matched, so find the nearest sale stock rather than ending on a
+  // dead end. Deliberately never crosses into rentals.
+  const fallback =
     !hasResults && isFiltered
-      ? (await getListings({ ...query, categories: RENTAL_CATEGORIES, perPage: 1 })).total
-      : 0;
+      ? await getListingsWithFallback({ ...query, categories: SALE_CATEGORIES }, 4)
+      : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -150,11 +151,7 @@ export default async function BuyPage({
             </div>
           ) : (
             <div className="mt-[18px]">
-              <NoSalesStock
-                filtered={isFiltered}
-                rentalMatches={rentalMatches}
-                rentHref={`/rent${searchQueryString(form, amenities)}`}
-              />
+              <NoSalesStock filtered={isFiltered} fallback={fallback} q={form.q} />
             </div>
           )}
         </div>
@@ -192,17 +189,15 @@ export default async function BuyPage({
             </>
           ) : (
             <div className="mt-[clamp(22px,2vw,36px)]">
-              <NoSalesStock
-                filtered={isFiltered}
-                rentalMatches={rentalMatches}
-                rentHref={`/rent${searchQueryString(form, amenities)}`}
-              />
+              <NoSalesStock filtered={isFiltered} fallback={fallback} q={form.q} />
             </div>
           )}
         </div>
 
-        {/* Mobile: Our latest Properties (horizontal scroll) */}
-        {latest.length > 0 && (
+        {/* Mobile: Our latest Properties (horizontal scroll). Hidden while the
+            fallback is showing — both pull from the same small pool, so they
+            would otherwise render the same cards twice on one screen. */}
+        {hasResults && latest.length > 0 && (
           <div className="sm:hidden mt-[28px]">
             <div className="container-page">
               <h2 className="font-display font-bold text-brand-bunker text-[18px] leading-[1.15]">
@@ -252,8 +247,9 @@ export default async function BuyPage({
           </div>
         </section>
 
-        {/* Desktop: Our latest Properties (grid) */}
-        {latest.length > 0 && (
+        {/* Desktop: Our latest Properties (grid). Hidden alongside the fallback
+            for the same reason as the mobile strip above. */}
+        {hasResults && latest.length > 0 && (
           <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
             <div className="flex items-end justify-between">
               <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
@@ -285,27 +281,27 @@ export default async function BuyPage({
 
 function NoSalesStock({
   filtered,
-  rentalMatches = 0,
-  rentHref = "/rent",
+  fallback,
+  q,
 }: {
   filtered: boolean;
-  rentalMatches?: number;
-  rentHref?: string;
+  fallback: FallbackResult | null;
+  q?: string;
 }) {
   // A filtered search returning nothing is a different situation from having
   // no sale stock at all, and saying so avoids implying the agency sells
   // nothing when the visitor has simply searched too narrowly.
   if (filtered) {
-    // The same search matched on the rental side. Send them there rather than
-    // leaving them to wonder why the listing appears further down the page.
-    if (rentalMatches > 0) {
-      const plural = rentalMatches === 1 ? "" : "s";
+    // There is nearer sale stock to offer, so show it instead of stopping at
+    // "nothing found".
+    if (fallback && fallback.items.length > 0) {
       return (
-        <EmptyListings
-          title="Nothing for sale matches your search"
-          message={`We do have ${rentalMatches} rental${plural} matching it.`}
-          ctaLabel={`View ${rentalMatches === 1 ? "it" : "them"} in Rent`}
-          ctaHref={rentHref}
+        <FallbackListings
+          items={fallback.items}
+          relaxed={fallback.relaxed}
+          q={q}
+          noun="properties"
+          clearHref="/buy"
         />
       );
     }
