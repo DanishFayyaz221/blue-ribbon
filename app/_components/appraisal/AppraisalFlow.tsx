@@ -10,6 +10,7 @@ import { Breadcrumb } from "../ui/Breadcrumb";
 import { GetInTouchCTA } from "../sections/GetInTouchCTA";
 import { OurValues } from "../home/OurValues";
 import { PropertyCard, type PropertyCardData } from "../property/PropertyCard";
+import { ArrowInline } from "../ui/ArrowInline";
 
 export type Step = "address" | "details" | "result";
 
@@ -269,9 +270,10 @@ export function AppraisalFlow({
                   </h2>
                   <Link
                     href="/buy"
-                    className="font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                    className="group inline-flex items-center font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
                   >
                     Explore more Properties
+                    <ArrowInline />
                   </Link>
                 </div>
                 <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">

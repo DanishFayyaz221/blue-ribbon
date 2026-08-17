@@ -57,7 +57,7 @@ export async function ParramattaCTA() {
             alt=""
             fill
             quality={90}
-            sizes="100vw"
+            sizes="(min-width: 1280px) 1280px, 100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
@@ -91,7 +91,7 @@ export async function ParramattaCTA() {
           alt=""
           fill
           quality={90}
-          sizes="100vw"
+          sizes="(min-width: 1280px) 1280px, 100vw"
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
@@ -113,8 +113,20 @@ export async function ParramattaCTA() {
               <p className="font-display text-[clamp(15px,1.2vw,20px)] font-semibold leading-[1.3] text-white">
                 {featured.address}
               </p>
-              <span className="mt-[clamp(10px,1vw,16px)] inline-flex h-[clamp(36px,2.6vw,44px)] items-center justify-center rounded-full border border-white px-[clamp(18px,1.6vw,26px)] font-display text-[clamp(12px,0.9vw,14px)] font-medium text-white transition group-hover:bg-white/10">
-                View Property →
+              <span className="group/btn relative isolate mt-[clamp(10px,1vw,16px)] inline-flex h-[56px] items-center justify-center gap-[8px] overflow-hidden rounded-[20px] bg-white px-7 font-display text-[15px] font-medium text-black transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:bg-brand-navy hover:text-white hover:before:translate-y-0">
+                <span className="relative z-10 inline-flex items-center gap-[8px]">
+                  View Property
+                  <span aria-hidden className="relative inline-flex h-[14px] w-[14px] shrink-0 overflow-hidden">
+                    <svg viewBox="0 0 24 24" className="absolute inset-0 h-full w-full transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover/btn:-translate-y-full" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="9 7 17 7 17 15" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" className="absolute inset-0 h-full w-full translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover/btn:translate-y-0" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="9 7 17 7 17 15" />
+                    </svg>
+                  </span>
+                </span>
               </span>
             </div>
           </Link>
@@ -148,7 +160,7 @@ export async function ParramattaCTA() {
                 thriving community.
               </p>
               <div className="mt-[clamp(16px,1.8vw,28px)]">
-                <Button href="/contact" variant="white" size="lg">
+                <Button href="/contact" variant="white" size="md">
                   Contact our Agent
                 </Button>
               </div>

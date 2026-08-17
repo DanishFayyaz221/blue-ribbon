@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const dealTypes = ["Buy", "Sell", "Rent"] as const;
 type DealType = (typeof dealTypes)[number];
@@ -32,10 +32,10 @@ export function Hero() {
         a slightly taller min-height range fixes the crop while still filling
         the hero nicely on all screen sizes.
       */}
-      <div className="relative aspect-video min-h-[calc(100svh-104px)] sm:min-h-[560px] sm:max-h-[820px] w-full">
-        <div className="absolute inset-0">
+      <div className="relative aspect-[3/4] sm:aspect-video min-h-[calc(100svh-104px)] sm:min-h-[680px] sm:max-h-[920px] w-full">
+        <div className="parallax-media absolute inset-0">
           <video
-            className="h-full w-full object-cover object-top sm:object-center"
+            className="h-full w-full object-cover object-top"
             src="/hero-video/hero.mp4"
             autoPlay
             loop
@@ -79,6 +79,26 @@ function SearchBar() {
   const [deal, setDeal] = useState<DealType>("Buy");
   const [dealOpen, setDealOpen] = useState(false);
   const [surroundings, setSurroundings] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const submitIfMatch = () => {
+      const list = input.list;
+      if (!list) return;
+      const matched = Array.from(list.options).some(
+        (opt) => opt.value === input.value,
+      );
+      if (matched) input.form?.requestSubmit();
+    };
+    input.addEventListener("input", submitIfMatch);
+    input.addEventListener("change", submitIfMatch);
+    return () => {
+      input.removeEventListener("input", submitIfMatch);
+      input.removeEventListener("change", submitIfMatch);
+    };
+  }, []);
 
   return (
     <form
@@ -130,6 +150,7 @@ function SearchBar() {
 
         <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] flex-1 items-center px-[16px] lg:px-[20px]">
           <input
+            ref={inputRef}
             type="text"
             name="q"
             list={SUBURB_LIST_ID}
@@ -181,19 +202,41 @@ function SearchBar() {
 
       <button
         type="submit"
-        className="flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[180px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-brand-navy font-display text-[14px] lg:text-[16px] font-medium text-white transition hover:bg-brand-navy-deep sm:ml-0"
+        className="group relative isolate flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[180px] items-center justify-center overflow-hidden rounded-[16px] sm:rounded-[20px] bg-brand-navy font-display text-[14px] lg:text-[16px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 sm:ml-0"
       >
-        Search
+        <span className="relative z-10">Search</span>
       </button>
     </form>
   );
 }
 
 function MobileSearch() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const submitIfMatch = () => {
+      const list = input.list;
+      if (!list) return;
+      const matched = Array.from(list.options).some(
+        (opt) => opt.value === input.value,
+      );
+      if (matched) input.form?.requestSubmit();
+    };
+    input.addEventListener("input", submitIfMatch);
+    input.addEventListener("change", submitIfMatch);
+    return () => {
+      input.removeEventListener("input", submitIfMatch);
+      input.removeEventListener("change", submitIfMatch);
+    };
+  }, []);
+
   return (
     <form action={actionFor("Buy")} method="get" className="mx-auto w-full max-w-[420px]">
       <div className="flex h-[52px] w-full items-stretch rounded-[16px] bg-white p-[6px]">
         <input
+          ref={inputRef}
           type="text"
           name="q"
           list={SUBURB_LIST_ID}
@@ -203,9 +246,9 @@ function MobileSearch() {
         />
         <button
           type="submit"
-          className="flex h-full shrink-0 items-center justify-center rounded-[8px] bg-brand-navy px-[20px] font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
+          className="group relative isolate flex h-full shrink-0 items-center justify-center overflow-hidden rounded-[8px] bg-brand-navy px-[20px] font-display text-[14px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
         >
-          Search
+          <span className="relative z-10">Search</span>
         </button>
       </div>
     </form>

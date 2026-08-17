@@ -44,7 +44,7 @@ export function PropertySearchBar({
   ];
 
   return (
-    <form action={action} method="get" className="w-full">
+    <form action={`${action}#results`} method="get" className="w-full">
       <div className="flex w-full flex-col gap-[12px] sm:flex-row sm:items-center">
       <input
         type="text"

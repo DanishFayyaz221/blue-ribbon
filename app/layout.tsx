@@ -3,6 +3,8 @@ import { Geist, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
 import { ConstructionBanner } from "./_components/layout/ConstructionBanner";
 import { RevealOnScroll } from "./_components/ui/RevealOnScroll";
+import { ScrollEffects } from "./_components/ui/ScrollEffects";
+import { SmoothScroll } from "./_components/ui/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +41,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${playfair.variable} ${poppins.variable} antialiased`}
     >
       <body
@@ -46,7 +49,9 @@ export default function RootLayout({
         className="bg-white text-brand-bunker"
       >
         <ConstructionBanner />
+        <SmoothScroll />
         <RevealOnScroll />
+        <ScrollEffects />
         {children}
       </body>
     </html>

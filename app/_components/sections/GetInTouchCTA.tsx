@@ -31,7 +31,7 @@ export function GetInTouchCTA({
         alt=""
         fill
         quality={90}
-        sizes="100vw"
+        sizes="(min-width: 1280px) 1280px, 100vw"
         className="object-cover object-center"
       />
       {/* Navy overlay (#001F4D @ ~12%) */}

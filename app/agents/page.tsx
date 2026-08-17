@@ -171,7 +171,7 @@ export default async function AgentsPage() {
               alt=""
               fill
               quality={90}
-              sizes="100vw"
+              sizes="(min-width: 1280px) 1280px, 100vw"
               className="object-cover object-center"
             />
             <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />

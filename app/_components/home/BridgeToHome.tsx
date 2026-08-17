@@ -56,7 +56,7 @@ export function BridgeToHome() {
         <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
           {tiles.map((tile, i) => (
             <Link key={tile.label} href={tile.href} className={`group block reveal reveal-delay-${(i % 4) + 1} hover-lift`}>
-              <div className="relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
+              <div className="scroll-scale-in relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
                 <Image
                   src={tile.src}
                   alt={tile.label}

@@ -52,7 +52,7 @@ export function SellWithUs() {
           alt=""
           fill
           quality={90}
-          sizes="100vw"
+          sizes="(min-width: 1280px) 1280px, 100vw"
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
@@ -71,18 +71,19 @@ export function SellWithUs() {
         {/* Text — left 50% */}
         <div className="relative z-10 container-page">
           <div className="flex items-center min-h-[clamp(360px,42vw,560px)] py-[clamp(28px,3vw,48px)] pr-[clamp(16px,2vw,32px)]">
-            <div className="-ml-[24px] xl:-ml-[44px] w-[calc(50%-clamp(8px,1vw,16px))] max-w-[620px]">
-              <h2 className="reveal font-display font-bold text-white text-[clamp(1.5rem,2.7vw,3.25rem)] leading-[1.05]">
+            <div className="w-[calc(50%-clamp(8px,1vw,16px))] max-w-[600px]">
+              <h2 className="reveal font-display font-bold text-white text-[clamp(1.5rem,3.2vw,2.625rem)] leading-[1.1]">
                 Want to Sell with us?
+                <br />
+                We&rsquo;re always looking for the
+                <br />
+                next premier property to represent
               </h2>
-              <p className="mt-[clamp(12px,1.4vw,24px)] font-display font-light text-white text-[clamp(1.25rem,2.4vw,2.9rem)] leading-[1.07]">
-                We&rsquo;re always looking for the next premier property to represent
-              </p>
-              <p className="mt-[clamp(16px,2.4vw,48px)] max-w-[460px] font-display font-medium text-white text-[clamp(12px,0.95vw,18px)] leading-[1.4] tracking-[0.02em]">
+              <p className="mt-[clamp(12px,1.6vw,24px)] max-w-[460px] font-display text-white text-[clamp(12px,1.2vw,15px)] font-medium leading-[1.55] tracking-[0.02em]">
                 Let&rsquo;s partner together to showcase your property to the heart of
                 Western Sydney and ensure your next move is a success.
               </p>
-              <div className="mt-[clamp(16px,2vw,32px)]">
+              <div className="mt-[clamp(16px,1.8vw,28px)]">
                 <Button href="/contact" variant="white" size="md">
                   Contact our Agent
                 </Button>

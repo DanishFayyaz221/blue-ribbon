@@ -7,6 +7,8 @@ import { MobileFilters } from "../_components/property/MobileFilters";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
+import { ScrollToResults } from "../_components/property/ScrollToResults";
+import { ArrowInline } from "../_components/ui/ArrowInline";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
@@ -54,6 +56,7 @@ export default async function BuyPage({
 
   return (
     <div className="min-h-screen bg-white">
+      {isFiltered && <ScrollToResults />}
       <Nav />
       <main>
         <div className="container-page pt-[16px] pb-[16px] sm:pb-[24px]">
@@ -157,17 +160,28 @@ export default async function BuyPage({
         </div>
 
         {/* Desktop: heading + grid */}
-        <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
+        <div id="results" className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)] scroll-mt-[80px]">
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
             <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Buy Your Dream
             </h1>
-            <Link
-              href="/property-report-digital-appraisal"
-              className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
-            >
-              Sell your property
-            </Link>
+            <div className="flex items-center gap-[20px]">
+              {isFiltered && (
+                <Link
+                  href="/buy#results"
+                  className="font-display text-[clamp(13px,0.95vw,15px)] font-semibold text-brand-navy underline underline-offset-4 hover:text-brand-navy-deep"
+                >
+                  Clear filters
+                </Link>
+              )}
+              <Link
+                href="/property-report-digital-appraisal"
+                className="group inline-flex items-center font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+              >
+                Sell your property
+                <ArrowInline />
+              </Link>
+            </div>
           </div>
 
           {hasResults ? (
@@ -257,9 +271,10 @@ export default async function BuyPage({
               </h2>
               <Link
                 href="/rent"
-                className="font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
+                className="group inline-flex items-center font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
               >
                 Explore more Properties
+                <ArrowInline />
               </Link>
             </div>
             <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">

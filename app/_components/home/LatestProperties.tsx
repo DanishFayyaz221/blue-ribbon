@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { connection } from "next/server";
 import { DragScroll } from "../ui/DragScroll";
+import { ArrowInline } from "../ui/ArrowInline";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -26,11 +27,11 @@ export async function LatestProperties() {
           </h2>
           <Link
             href="/buy"
-            className="inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker/70 sm:text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
+            className="group inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker/70 sm:text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
           >
             <span className="sm:hidden">See all</span>
             <span className="hidden sm:inline">Explore more Properties</span>
-            <span aria-hidden className="sm:hidden">→</span>
+            <ArrowInline />
           </Link>
         </div>
 

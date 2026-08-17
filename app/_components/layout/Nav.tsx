@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ArrowInline } from "../ui/ArrowInline";
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
@@ -45,9 +46,9 @@ export function Nav() {
 
   return (
     <>
-      <nav className="relative z-30 w-full bg-white overflow-visible">
+      <nav className="nav-shrink sticky top-0 z-30 w-full bg-white overflow-visible">
         <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
-          <Link href="/" className="block shrink-0">
+          <Link href="/" className="nav-logo block shrink-0">
             <Image
               src="/logo/LOGO.png"
               alt="Blue Ribbon Real Estate"
@@ -172,9 +173,9 @@ export function Nav() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex h-[52px] w-full max-w-[200px] items-center justify-center rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition hover:bg-brand-navy-deep"
+                    className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
                   >
-                    {link.label}
+                    <span className="relative z-10">{link.label}</span>
                   </Link>
                 ))}
 
@@ -255,9 +256,10 @@ function DrawerColumn({
             <Link
               href={link.href}
               onClick={onSelect}
-              className="font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
+              className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
             >
               {link.label}
+              <ArrowInline />
             </Link>
           </li>
         ))}
