@@ -245,7 +245,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           })}
         </div>
         <p className="mt-[6px] font-display text-[12.5px] leading-[1.5] text-white/85">
-          {testimonial.quote}
+          {testimonial.quote} 
         </p>
       </div>
     </article>
