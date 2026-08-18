@@ -36,7 +36,7 @@ export function AgentCard({
           type="button"
           tabIndex={-1}
           aria-hidden
-          className="pointer-events-none absolute bottom-[clamp(20px,2vw,32px)] left-[clamp(20px,2vw,32px)] flex h-[36px] w-[82px] items-center justify-center gap-[8px] bg-white/30 backdrop-blur-[1px]"
+          className="pointer-events-none absolute bottom-[clamp(20px,2vw,32px)] left-[clamp(20px,2vw,32px)] flex h-[36px] w-[82px] items-center justify-center gap-[8px] rounded-full bg-white/30 backdrop-blur-[1px]"
         >
           <svg viewBox="0 0 16 16" className="h-[16px] w-[16px] text-white" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <circle cx="8" cy="8" r="6.5" />
