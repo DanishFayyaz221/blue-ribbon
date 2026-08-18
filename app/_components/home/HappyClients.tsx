@@ -111,9 +111,9 @@ export function HappyClients() {
       </div>
 
       {/* Mobile: horizontal-scroll cards */}
-      <DragScroll className="sm:hidden mt-[24px] no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+      <DragScroll className="sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
         {testimonials.map((t) => (
-          <div key={t.id} className="snap-start shrink-0 basis-[82%]">
+          <div key={t.id} className="flex snap-start shrink-0 basis-[72%]">
             <TestimonialCard testimonial={t} />
           </div>
         ))}
@@ -190,7 +190,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           src={testimonial.image}
           alt={testimonial.name}
           fill
-          sizes="(max-width: 768px) 90vw, 440px"
+          sizes="(max-width: 768px) 72vw, 440px"
           className="object-cover"
         />
         <Image
@@ -202,9 +202,9 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           aria-hidden
         />
       </div>
-      <div className="relative flex flex-col items-center px-[22px] pt-[40px] pb-[14px] text-center">
+      <div className="relative flex flex-col items-center px-[16px] pt-[32px] pb-[12px] text-center sm:px-[22px] sm:pt-[40px] sm:pb-[14px]">
         <div
-          className="absolute -top-[36px] left-1/2 flex h-[72px] w-[72px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-[4px] border-white font-display text-[30px] font-semibold text-white"
+          className="absolute -top-[28px] left-1/2 flex h-[56px] w-[56px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-white font-display text-[22px] font-semibold text-white sm:-top-[36px] sm:h-[72px] sm:w-[72px] sm:border-[4px] sm:text-[30px]"
           style={{ backgroundColor: testimonial.avatarBg }}
         >
           {testimonial.avatarImage ? (
@@ -219,18 +219,18 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             initial
           )}
         </div>
-        <p className="font-display text-[18px] font-semibold text-white">
+        <p className="font-display text-[14px] font-semibold text-white sm:text-[18px]">
           {testimonial.name}
         </p>
-        <p className="mt-[2px] font-display text-[12px] text-white/70">
+        <p className="mt-[2px] font-display text-[10.5px] text-white/70 sm:text-[12px]">
           {testimonial.title}
         </p>
-        <div className="mt-[6px] flex items-center gap-[4px]">
+        <div className="mt-[6px] flex items-center gap-[3px] sm:gap-[4px]">
           {Array.from({ length: 5 }).map((_, i) => {
             const filled = i + 1 <= Math.floor(testimonial.rating);
             const half = !filled && i + 0.5 < testimonial.rating;
             return (
-              <span key={i} className="relative inline-block text-[16px] leading-none" aria-hidden>
+              <span key={i} className="relative inline-block text-[13px] leading-none sm:text-[16px]" aria-hidden>
                 <span className={filled ? "text-[#F5B301]" : "text-white/25"}>★</span>
                 {half && (
                   <span
@@ -244,8 +244,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             );
           })}
         </div>
-        <p className="mt-[6px] font-display text-[12.5px] leading-[1.5] text-white/85">
-          {testimonial.quote} 
+        <p className="mt-[6px] font-display text-[11px] leading-[1.45] text-white/85 sm:text-[12.5px] sm:leading-[1.5]">
+          {testimonial.quote}
         </p>
       </div>
     </article>

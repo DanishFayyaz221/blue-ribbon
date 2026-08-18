@@ -89,7 +89,7 @@ export function PropertyCard({
   }
 
   return (
-    <Link href={href} className="group block w-full">
+    <Link href={href} className="group flex h-full w-full flex-col">
       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
         <Image
           src={image}
@@ -99,12 +99,12 @@ export function PropertyCard({
           className="object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="mt-[clamp(16px,2vw,42px)] font-display">
-        <p className="text-[clamp(16px,1.18vw,22px)] font-medium leading-[1.4] text-brand-navy">
+      <div className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]">
+        <p className="line-clamp-3 text-[14px] font-semibold leading-[1.3] text-brand-navy sm:line-clamp-none sm:text-[clamp(16px,1.18vw,22px)] sm:font-medium sm:leading-[1.4]">
           {address}
         </p>
         {guide && (
-          <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-black mt-[4px]">
+          <p className="mt-[6px] line-clamp-2 text-[12px] leading-[1.4] text-brand-bunker/70 sm:mt-[4px] sm:line-clamp-none sm:text-[clamp(13px,0.95vw,18px)] sm:leading-[1.5] sm:text-black">
             {guide}
           </p>
         )}

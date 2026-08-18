@@ -35,8 +35,16 @@ export async function ParramattaCTA() {
               <p className="font-display text-[15px] font-semibold leading-[1.3] text-white">
                 {featured.address}
               </p>
-              <span className="mt-[10px] inline-flex h-[36px] items-center justify-center rounded-[18px] border border-white px-[18px] font-display text-[12px] font-medium text-white">
-                View Property →
+              <span className="group/btn relative isolate mt-[10px] inline-flex h-[42px] items-center justify-center gap-[8px] overflow-hidden rounded-[16px] bg-white px-[22px] font-display text-[13px] font-medium text-black transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:bg-brand-navy hover:text-white hover:before:translate-y-0">
+                <span className="relative z-10 inline-flex items-center gap-[8px]">
+                  View Property
+                  <span aria-hidden className="relative inline-flex h-[12px] w-[12px] shrink-0 overflow-hidden">
+                    <svg viewBox="0 0 24 24" className="absolute inset-0 h-full w-full transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover/btn:rotate-45" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="9 7 17 7 17 15" />
+                    </svg>
+                  </span>
+                </span>
               </span>
             </div>
           </Link>

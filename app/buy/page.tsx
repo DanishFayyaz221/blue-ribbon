@@ -125,12 +125,12 @@ export default async function BuyPage({
           </div>
 
           {hasResults ? (
-            <div className="mt-[18px] grid grid-cols-2 gap-x-[12px] gap-y-[20px]">
+            <div className="mt-[18px] grid grid-cols-2 items-stretch gap-x-[12px] gap-y-[20px]">
               {items.map((p) => (
                 <Link
                   key={p.id}
                   href={p.href}
-                  className="group block overflow-hidden rounded-[14px] border border-brand-silver/60 bg-white"
+                  className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-brand-silver/60 bg-white"
                 >
                   <div className="relative aspect-[3/2] w-full overflow-hidden">
                     <Image
@@ -141,11 +141,11 @@ export default async function BuyPage({
                       className="object-cover transition duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
-                  <div className="p-[12px]">
-                    <p className="font-display text-[13px] font-semibold leading-[1.3] text-brand-bunker">
+                  <div className="flex flex-1 flex-col p-[12px]">
+                    <p className="line-clamp-3 font-display text-[13px] font-semibold leading-[1.3] text-brand-bunker">
                       {p.address}
                     </p>
-                    <p className="mt-[2px] font-display text-[12px] text-brand-bunker/60">
+                    <p className="mt-auto pt-[10px] font-display text-[12px] text-brand-bunker/60">
                       {p.guide}
                     </p>
                   </div>
