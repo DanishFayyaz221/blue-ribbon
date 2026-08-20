@@ -62,7 +62,20 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
         message: `${message}\n\n----------------------------\n${extras.join("\n")}`,
       });
       // Fire-and-forget: the message is already in, see sendVisitorAutoReply.
-      void sendVisitorAutoReply({ name, to_name: name, email, to_email: email });
+      // No listing and no named agent here, so the template's property and
+      // agent sections gate themselves off — see lib/email/templates/reply.html.
+      void sendVisitorAutoReply({
+        to_email: email,
+        to_name: name.split(" ")[0] || name,
+        intro_line: values.subject
+          ? `We've received your message about "${values.subject}", and it has gone straight to our team.`
+          : "We've received your message, and it has gone straight to our team.",
+        message: message || undefined,
+        // Pinned to the live site, not the composing origin — a localhost link
+        // in a real inbox is dead. See EnquiryModal for the full reasoning.
+        cta_url: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/buy`,
+        cta_label: "Browse our listings",
+      });
       setStatus("sent");
     } catch {
       setStatus("error");

@@ -21,6 +21,12 @@ export type EnquiryListing = {
   beds?: number;
   baths?: number;
   cars?: number;
+  /**
+   * Primary photo, shown in the visitor's confirmation email. In production
+   * this arrives site-relative (`/media/...`); the modal makes it absolute,
+   * because an inbox has no origin to resolve a relative path against.
+   */
+  image?: string;
 };
 
 type EnquiryModalProps = {
@@ -56,6 +62,16 @@ export function EnquiryModal({ open, onClose, agents = [], listing }: EnquiryMod
 
     const fullName = `${firstName} ${lastName}`.trim();
 
+    // An email is read outside the browser that composed it, so every URL has
+    // to be absolute *and* publicly reachable. window.location.origin is not
+    // good enough: composed from localhost it produces links and images no
+    // inbox can resolve, which reads as a broken email rather than a broken
+    // dev setup. NEXT_PUBLIC_SITE_URL pins them to the live site.
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+    const absolute = (url: string | undefined) =>
+      !url ? undefined : /^https?:\/\//.test(url) ? url : `${origin}${url}`;
+    const pageUrl = `${origin}${window.location.pathname}`;
+
     // The notify template only renders variables it references, and it may
     // not reference the phone or listing_* ones. Folding those into the
     // message body guarantees they reach the inbox regardless of how the
@@ -80,13 +96,22 @@ export function EnquiryModal({ open, onClose, agents = [], listing }: EnquiryMod
           listing.guide ? `Price: ${listing.guide}` : null,
           listing.type ? `Type: ${listing.type}` : null,
           facts.length ? `Features: ${facts.join(", ")}` : null,
-          `Link: ${window.location.href}`,
+          `Link: ${pageUrl}`,
           agents.length ? `Agent(s): ${agents.map((a) => a.name).join(", ")}` : null,
         ]
         : []),
     ]
       .filter((line) => line !== null)
       .join("\n");
+
+    const introLine = listing
+      ? `We've received your enquiry about ${listing.address}, and it has gone straight to our sales team.`
+      : "We've received your enquiry, and it has gone straight to our sales team.";
+
+    // The templates gate whole sections on these with {{#var}}...{{/var}}, so
+    // an absent value must be undefined rather than an empty string — the
+    // property card and agent card disappear instead of rendering hollow.
+    const lead = agents[0];
 
     try {
       await sendAdminNotification({
@@ -103,21 +128,35 @@ export function EnquiryModal({ open, onClose, agents = [], listing }: EnquiryMod
         mobile,
         message: `${message}${detailsBlock}`,
         listing_address: listing?.address,
+        listing_image: absolute(listing?.image),
         listing_price: listing?.guide,
         listing_type: listing?.type,
         listing_beds: listing?.beds != null ? String(listing.beds) : undefined,
         listing_baths: listing?.baths != null ? String(listing.baths) : undefined,
         listing_cars: listing?.cars != null ? String(listing.cars) : undefined,
-        listing_url: window.location.href,
+        listing_url: pageUrl,
         agent_name: agents.map((a) => a.name).join(", ") || undefined,
       });
       // Fire-and-forget: the enquiry is already in, see sendVisitorAutoReply.
       void sendVisitorAutoReply({
-        name: fullName,
-        to_name: fullName,
-        email,
         to_email: email,
+        to_name: firstName || fullName,
+        intro_line: introLine,
+        help_with: help ?? undefined,
+        message: message || undefined,
         listing_address: listing?.address,
+        listing_image: absolute(listing?.image),
+        listing_price: listing?.guide,
+        listing_type: listing?.type,
+        listing_beds: listing?.beds != null ? String(listing.beds) : undefined,
+        listing_baths: listing?.baths != null ? String(listing.baths) : undefined,
+        listing_cars: listing?.cars != null ? String(listing.cars) : undefined,
+        agent_name: lead?.name,
+        agent_phone: lead?.phone,
+        agent_email: lead?.email,
+        agent_image: absolute(lead?.image),
+        cta_url: listing ? pageUrl : `${origin}/buy`,
+        cta_label: listing ? "View the property" : "Browse our listings",
       });
       setStatus("sent");
     } catch {

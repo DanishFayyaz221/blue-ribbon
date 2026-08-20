@@ -226,6 +226,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
                   beds: listing.beds,
                   baths: listing.baths,
                   cars: listing.cars,
+                  image: listing.image,
                 }}
                 className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
               />
@@ -447,6 +448,7 @@ function MobilePropertyView({
               beds: listing.beds,
               baths: listing.baths,
               cars: listing.cars,
+              image: listing.image,
             }}
             className="flex-1"
           />

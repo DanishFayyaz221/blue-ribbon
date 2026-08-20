@@ -1,0 +1,286 @@
+<!--
+  EmailJS template: VISITOR AUTO-REPLY  —  LIVE VERSION
+
+  Paste into EmailJS -> Email Templates -> Content -> "Code" view.
+  Template id goes into NEXT_PUBLIC_EMAILJS_REPLY_TEMPLATE.
+
+  Dashboard settings (the code cannot set these):
+    Subject     We've received your enquiry - Blue Ribbon Real Estate
+    To Email    {{to_email}}      <-- REQUIRED. EmailJS pre-fills the account
+                                      address; leaving that default sends the
+                                      visitor's confirmation to the studio and
+                                      the visitor gets nothing.
+    From Name   Blue Ribbon Real Estate
+    Reply To    sales@blueribbonre.com.au
+
+  Sections gate themselves with EmailJS's Mustache-style conditional blocks,
+  so one template serves both forms: a property enquiry shows the photo, price
+  and agent; a contact-page message shows neither instead of rendering empty
+  boxes. (Do not write a sample conditional in this comment — EmailJS parses
+  variables inside HTML comments too, and it becomes a phantom parameter.)
+
+  Sent by lib/email/send.ts -> sendVisitorAutoReply():
+    to_email, to_name, intro_line, help_with, message,
+    listing_address, listing_image, listing_price, listing_type,
+    listing_beds, listing_baths, listing_cars,
+    agent_name, agent_phone, agent_email, agent_image,
+    cta_url, cta_label
+-->
+<div style="margin:0;padding:0;background-color:#eef4fc;">
+
+  <!-- Preview text: shown beside the subject line in the inbox list. -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">
+    Your enquiry is with our sales team. We'll be in touch shortly.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef4fc;margin:0;padding:0;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="width:640px;max-width:100%;font-family:'Poppins','Helvetica Neue',Helvetica,Arial,sans-serif;">
+
+          <!-- Masthead: the wordmark is navy + sky blue, so it must sit on white. -->
+          <tr>
+            <td style="background-color:#ffffff;border-radius:18px 18px 0 0;padding:22px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="left" valign="middle">
+                    <img src="https://blueribbonrealestate.com.au/logo/LOGO.png"
+                         alt="Blue Ribbon Real Estate" width="168"
+                         style="display:block;width:168px;max-width:168px;height:auto;border:0;" />
+                  </td>
+                  <td align="right" valign="middle" style="font-size:13px;line-height:1.4;color:#001f4d;font-weight:600;white-space:nowrap;">
+                    <a href="tel:1300579093" style="color:#001f4d;text-decoration:none;">1300&nbsp;579&nbsp;093</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Hero -->
+          <tr>
+            <td style="background-color:#001f4d;padding:38px 32px 34px 32px;">
+              <p style="margin:0 0 12px 0;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;color:#2ebcef;">
+                Enquiry received
+              </p>
+              <h1 style="margin:0 0 14px 0;font-size:30px;line-height:1.2;font-weight:700;color:#ffffff;">
+                Thanks, {{to_name}}.
+              </h1>
+              <p style="margin:0;font-size:15px;line-height:1.65;color:#ffffff;opacity:0.82;">
+                {{intro_line}}
+              </p>
+            </td>
+          </tr>
+
+          {{#listing_address}}
+          <!-- Property photo — only when the enquiry came from a listing. -->
+          {{#listing_image}}
+          <tr>
+            <td style="background-color:#ffffff;padding:0;">
+              <img src="{{listing_image}}" alt="{{listing_address}}" width="640"
+                   style="display:block;width:100%;max-width:640px;height:auto;border:0;" />
+            </td>
+          </tr>
+          {{/listing_image}}
+          <tr>
+            <td style="background-color:#ffffff;padding:26px 32px 4px 32px;">
+              <p style="margin:0 0 6px 0;font-size:20px;line-height:1.35;font-weight:600;color:#001f4d;">
+                {{listing_address}}
+              </p>
+              {{#listing_price}}
+              <p style="margin:0 0 20px 0;font-size:16px;line-height:1.5;color:#11181c;">
+                {{listing_price}}
+              </p>
+              {{/listing_price}}
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="border-top:1px solid #e2eeff;border-bottom:1px solid #e2eeff;">
+                <tr>
+                  {{#listing_beds}}
+                  <td align="center" style="padding:16px 4px;">
+                    <p style="margin:0;font-size:19px;line-height:1.2;font-weight:700;color:#001f4d;">{{listing_beds}}</p>
+                    <p style="margin:3px 0 0 0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#11181c;opacity:0.6;">Beds</p>
+                  </td>
+                  {{/listing_beds}}
+                  {{#listing_baths}}
+                  <td align="center" style="padding:16px 4px;">
+                    <p style="margin:0;font-size:19px;line-height:1.2;font-weight:700;color:#001f4d;">{{listing_baths}}</p>
+                    <p style="margin:3px 0 0 0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#11181c;opacity:0.6;">Baths</p>
+                  </td>
+                  {{/listing_baths}}
+                  {{#listing_cars}}
+                  <td align="center" style="padding:16px 4px;">
+                    <p style="margin:0;font-size:19px;line-height:1.2;font-weight:700;color:#001f4d;">{{listing_cars}}</p>
+                    <p style="margin:3px 0 0 0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#11181c;opacity:0.6;">Cars</p>
+                  </td>
+                  {{/listing_cars}}
+                  {{#listing_type}}
+                  <td align="center" style="padding:16px 4px;">
+                    <p style="margin:0;font-size:13px;line-height:1.2;font-weight:700;color:#001f4d;">{{listing_type}}</p>
+                    <p style="margin:3px 0 0 0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#11181c;opacity:0.6;">Type</p>
+                  </td>
+                  {{/listing_type}}
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {{/listing_address}}
+
+          <!-- CTA -->
+          <tr>
+            <td align="center" style="background-color:#ffffff;padding:26px 32px 6px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="background-color:#001f4d;border-radius:26px;">
+                    <a href="{{cta_url}}"
+                       style="display:inline-block;padding:15px 40px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:26px;">
+                      {{cta_label}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Your enquiry -->
+          <tr>
+            <td style="background-color:#ffffff;padding:30px 32px 0 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="background-color:#f3f7ff;border-radius:16px;">
+                <tr>
+                  <td style="padding:24px 26px;">
+                    <p style="margin:0 0 16px 0;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#001f4d;">
+                      Your enquiry
+                    </p>
+                    {{#help_with}}
+                    <p style="margin:0 0 4px 0;font-size:12px;color:#11181c;opacity:0.55;">You asked about</p>
+                    <p style="margin:0 0 16px 0;font-size:14px;line-height:1.6;color:#11181c;font-weight:600;">
+                      {{help_with}}
+                    </p>
+                    {{/help_with}}
+                    {{#message}}
+                    <p style="margin:0 0 4px 0;font-size:12px;color:#11181c;opacity:0.55;">Your message</p>
+                    <p style="margin:0;font-size:14px;line-height:1.7;color:#11181c;">{{message}}</p>
+                    {{/message}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- What happens next -->
+          <tr>
+            <td style="background-color:#ffffff;padding:34px 32px 0 32px;">
+              <p style="margin:0 0 18px 0;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#001f4d;">
+                What happens next
+              </p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="34" valign="top" style="padding:0 14px 18px 0;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+                      <td align="center" width="28" height="28" style="background-color:#e2eeff;border-radius:14px;font-size:12px;font-weight:700;color:#001f4d;">1</td>
+                    </tr></table>
+                  </td>
+                  <td valign="top" style="padding:0 0 18px 0;font-size:14px;line-height:1.6;color:#11181c;">
+                    <strong style="color:#001f4d;">We review your enquiry</strong><br />
+                    <span style="opacity:0.7;">Your agent gets it straight away, with the property details attached.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="padding:0 14px 18px 0;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+                      <td align="center" width="28" height="28" style="background-color:#e2eeff;border-radius:14px;font-size:12px;font-weight:700;color:#001f4d;">2</td>
+                    </tr></table>
+                  </td>
+                  <td valign="top" style="padding:0 0 18px 0;font-size:14px;line-height:1.6;color:#11181c;">
+                    <strong style="color:#001f4d;">We call or email you back</strong><br />
+                    <span style="opacity:0.7;">Usually within one business day, on the details you gave us.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="34" valign="top" style="padding:0 14px 0 0;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+                      <td align="center" width="28" height="28" style="background-color:#e2eeff;border-radius:14px;font-size:12px;font-weight:700;color:#001f4d;">3</td>
+                    </tr></table>
+                  </td>
+                  <td valign="top" style="font-size:14px;line-height:1.6;color:#11181c;">
+                    <strong style="color:#001f4d;">We book your inspection</strong><br />
+                    <span style="opacity:0.7;">A private viewing or the next open home, whichever suits you.</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {{#agent_name}}
+          <!-- Your agent — only when the listing carries one. -->
+          <tr>
+            <td style="background-color:#ffffff;padding:34px 32px 36px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="border:1px solid #e2eeff;border-radius:16px;">
+                <tr>
+                  {{#agent_image}}
+                  <td width="96" valign="top" style="padding:20px 0 20px 20px;">
+                    <img src="{{agent_image}}" alt="{{agent_name}}" width="88"
+                         style="display:block;width:88px;height:110px;object-fit:cover;border-radius:12px;border:0;" />
+                  </td>
+                  {{/agent_image}}
+                  <td valign="middle" style="padding:20px;">
+                    <p style="margin:0 0 3px 0;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#2ebcef;">
+                      Your agent
+                    </p>
+                    <p style="margin:0 0 12px 0;font-size:17px;line-height:1.3;font-weight:600;color:#001f4d;">
+                      {{agent_name}}
+                    </p>
+                    <p style="margin:0;font-size:13px;line-height:1.9;color:#11181c;">
+                      {{#agent_phone}}<a href="tel:{{agent_phone}}" style="color:#001f4d;text-decoration:none;font-weight:600;">{{agent_phone}}</a><br />{{/agent_phone}}
+                      {{#agent_email}}<a href="mailto:{{agent_email}}" style="color:#001f4d;text-decoration:underline;">{{agent_email}}</a>{{/agent_email}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {{/agent_name}}
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f3f7ff;padding:32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="top" style="font-size:13px;line-height:1.8;color:#11181c;">
+                    <p style="margin:0 0 8px 0;font-size:15px;font-weight:700;color:#001f4d;">
+                      Blue Ribbon Real Estate
+                    </p>
+                    11/76-80 Station Street<br />
+                    Wentworthville NSW 2145<br />
+                    <a href="tel:1300579093" style="color:#001f4d;text-decoration:none;font-weight:600;">1300 579 093</a><br />
+                    <a href="mailto:sales@blueribbonre.com.au" style="color:#001f4d;text-decoration:none;">sales@blueribbonre.com.au</a>
+                  </td>
+                  <td valign="top" align="right" style="font-size:13px;line-height:2;">
+                    <a href="https://blueribbonrealestate.com.au/buy" style="color:#001f4d;text-decoration:none;">Buy</a><br />
+                    <a href="https://blueribbonrealestate.com.au/rent" style="color:#001f4d;text-decoration:none;">Rent</a><br />
+                    <a href="https://blueribbonrealestate.com.au/agents" style="color:#001f4d;text-decoration:none;">Our team</a><br />
+                    <a href="https://blueribbonrealestate.com.au/contact" style="color:#001f4d;text-decoration:none;">Contact</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Legal bar -->
+          <tr>
+            <td style="background-color:#001f4d;border-radius:0 0 18px 18px;padding:18px 32px;">
+              <p style="margin:0;font-size:11px;line-height:1.6;color:#ffffff;opacity:0.6;">
+                This is an automatic confirmation of an enquiry submitted on
+                blueribbonrealestate.com.au. If you didn&rsquo;t send it, you can safely
+                ignore this email.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
