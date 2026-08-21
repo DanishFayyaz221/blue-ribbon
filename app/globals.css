@@ -164,10 +164,14 @@ body {
   will-change: transform;
 }
 
+/* No will-change. It is meant to be set just before an animation and cleared
+   after; left on a selector it promotes every match to its own GPU layer for
+   the life of the page. Combined with a rounded, clipped ancestor that also
+   transforms, Chrome has been leaving stale layer content painted on screen.
+   The transform still composites fine without the hint. */
 .scroll-scale-in {
   transform: scale(var(--ss-scale, 1));
   transition: transform 0.25s ease-out;
-  will-change: transform;
 }
 
 /* Nav that shrinks on scroll */

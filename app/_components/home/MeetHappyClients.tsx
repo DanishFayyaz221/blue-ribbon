@@ -195,7 +195,14 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const initial = testimonial.name.trim().charAt(0).toUpperCase();
   return (
     <article className="flex w-full max-w-[440px] flex-col overflow-hidden rounded-[18px] bg-brand-navy shadow-[0px_4px_4px_0px_#00000040] transition-transform duration-300 hover:-translate-y-1">
-      <div className="scroll-scale-in relative aspect-[4/3] w-full overflow-hidden">
+      {/* No scroll-scale-in here. That class keeps a GPU layer promoted and
+          rewrites its transform on every scroll, and this wrapper sits inside
+          an <article> that is itself rounded, overflow-hidden and running its
+          own transform transition. Chrome leaves a stale painted layer behind
+          that combination — the card's text appeared twice on the live build
+          while the DOM held exactly one copy of it. The effect was barely
+          visible on a photo this size anyway. */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
         <Image
           src={testimonial.image}
           alt={testimonial.name}
