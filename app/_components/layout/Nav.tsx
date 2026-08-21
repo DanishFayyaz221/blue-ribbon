@@ -213,16 +213,22 @@ export function Nav() {
                 ))}
 
                 <div className="mt-[64px] flex items-center gap-[12px]">
-                  <SocialLink label="Facebook">
+                  <SocialLink label="Facebook" href="#">
                     <FacebookIcon />
                   </SocialLink>
-                  <SocialLink label="YouTube">
+                  <SocialLink label="YouTube" href="#">
                     <YouTubeIcon />
                   </SocialLink>
-                  <SocialLink label="TikTok">
+                  <SocialLink
+                    label="TikTok"
+                    href="https://www.tiktok.com/@blueribbonrealestate"
+                  >
                     <TikTokIcon />
                   </SocialLink>
-                  <SocialLink label="Instagram">
+                  <SocialLink
+                    label="Instagram"
+                    href="https://www.instagram.com/blueribbonrealestateagents"
+                  >
                     <InstagramIcon />
                   </SocialLink>
                 </div>
