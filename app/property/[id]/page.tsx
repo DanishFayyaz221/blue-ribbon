@@ -4,9 +4,8 @@ import { notFound } from "next/navigation";
 import { Nav } from "../../_components/layout/Nav";
 import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
-import { Button } from "../../_components/ui/Button";
 import { PropertyCard } from "../../_components/property/PropertyCard";
-import { PhotoGallery } from "../../_components/property/PhotoGallery";
+import { PropertyMedia } from "../../_components/property/PropertyMedia";
 import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
 import type { ModalAgent } from "../../_components/property/EnquiryModal";
@@ -101,8 +100,10 @@ export default async function PropertyViewPage({ params }: PageProps) {
         </div>
 
         <div className="hidden sm:block container-page">
-          <PhotoGallery
+          <PropertyMedia
             images={listing.images}
+            floorplans={listing.floorplans}
+            videoUrl={listing.videoUrl}
             address={listing.address}
             fallback={HERO_FALLBACK}
           />
@@ -152,51 +153,6 @@ export default async function PropertyViewPage({ params }: PageProps) {
               </div>
             )}
 
-            {listing.floorplans.length > 0 && (
-              <div className="mt-[clamp(28px,2.4vw,44px)]">
-                <h2 className="font-display text-[16px] font-semibold text-[#202020]">
-                  Floor plan
-                </h2>
-                <div className="mt-[12px] flex flex-col gap-[16px] max-w-[640px]">
-                  {listing.floorplans.map((fp) => (
-                    <a
-                      key={fp.src}
-                      href={fp.src}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative block w-full overflow-hidden rounded-[12px] border border-brand-silver/60 bg-white"
-                    >
-                      {/* Floor plans are wide and detail-dense, so they are
-                          contained rather than cropped, and open full size. */}
-                      <Image
-                        src={fp.src}
-                        alt={fp.alt}
-                        width={1200}
-                        height={900}
-                        sizes="(max-width: 1024px) 100vw, 640px"
-                        className="h-auto w-full object-contain"
-                      />
-                      <span className="absolute bottom-[10px] right-[10px] rounded-[6px] bg-black/60 px-[10px] py-[4px] font-display text-[12px] text-white opacity-0 transition group-hover:opacity-100">
-                        View full size
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {listing.videoUrl && (
-              <div className="mt-[clamp(24px,2vw,36px)]">
-                <Button
-                  href={listing.videoUrl}
-                  variant="outline-dark"
-                  size="md"
-                  className="!h-[58px] !px-[48px] !rounded-[16px] !text-[15px] !border-[#001F4D]"
-                >
-                  Watch video tour
-                </Button>
-              </div>
-            )}
 
             {listing.agents.length > 0 && (
               <div className="mt-[clamp(36px,3.15vw,64px)] grid grid-cols-2 gap-[clamp(14px,1.25vw,22px)] max-w-[440px]">
@@ -208,7 +164,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
           </div>
 
           <aside className="lg:sticky lg:top-[64px] lg:self-start">
-            <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] mt-[calc(-1*clamp(28px,2.7vw,50px))]">
+            <div className="flex items-stretch justify-end gap-0 pr-[clamp(24px,2.5vw,48px)] pt-[clamp(6px,0.6vw,12px)]">
               <Stat value={listing.beds} label="Beds" primary />
               <Divider />
               <Stat value={listing.baths} label="Baths" />
@@ -416,11 +372,13 @@ function MobilePropertyView({
   return (
     <div className="sm:hidden">
       <section className="container-page pt-[8px]">
-        <PhotoGallery
+        <PropertyMedia
           images={listing.images}
+          floorplans={listing.floorplans}
+          videoUrl={listing.videoUrl}
           address={listing.address}
-          variant="hero"
           fallback={HERO_FALLBACK}
+          variant="hero"
         />
       </section>
 

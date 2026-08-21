@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowInline } from "../ui/ArrowInline";
 
@@ -25,6 +26,14 @@ const aboutLinks = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Close the drawer only once the new route has actually rendered, so the
+  // drawer stays open (and covers the spinner-y interim) while Next.js is
+  // loading the next page.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (open) {
@@ -83,9 +92,15 @@ export function Nav() {
       </nav>
 
       {open && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-white">
+        <div
+          className="animate-drawer-overlay md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+        >
+          <div className="animate-drawer-in md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:shadow-none">
           <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
-            <Link href="/" onClick={() => setOpen(false)} className="block shrink-0">
+            <Link href="/" className="block shrink-0">
               <Image
                 src="/logo/LOGO.png"
                 alt="Blue Ribbon Real Estate"
@@ -116,7 +131,7 @@ export function Nav() {
           </div>
 
           {/* Mobile drawer */}
-          <div className="md:hidden container-page pt-[24px] pb-[36px]">
+          <div className="md:hidden container-page pt-[24px] pb-[36px] flex flex-1 flex-col">
             <ul className="flex flex-col gap-[20px]">
               {[
                 { label: "Buy", href: "/buy" },
@@ -126,12 +141,15 @@ export function Nav() {
                 { label: "About Us", href: "/about" },
                 { label: "Contact Us", href: "/contact" },
                 { label: "Property Estimate", href: "/property-report-digital-appraisal" },
-              ].map((link) => (
-                <li key={link.label}>
+              ].map((link, i) => (
+                <li
+                  key={link.label}
+                  className="drawer-item"
+                  style={{ ["--i" as string]: i }}
+                >
                   <Link
                     href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="font-display text-[18px] font-bold text-brand-bunker hover:text-brand-navy"
+                    className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy"
                   >
                     {link.label}
                   </Link>
@@ -139,29 +157,34 @@ export function Nav() {
               ))}
             </ul>
 
-            <div className="mt-[28px] flex items-center gap-[12px]">
-              <SocialLink label="Facebook">
-                <FacebookIcon />
-              </SocialLink>
-              <SocialLink label="YouTube">
-                <YouTubeIcon />
-              </SocialLink>
-              <SocialLink label="TikTok">
-                <TikTokIcon />
-              </SocialLink>
-              <SocialLink label="Instagram">
-                <InstagramIcon />
-              </SocialLink>
+            <div
+              className="drawer-item mt-auto pt-[32px]"
+              style={{ ["--i" as string]: 8 }}
+            >
+              <div className="flex items-center gap-[12px]">
+                <SocialLink label="Facebook">
+                  <FacebookIcon />
+                </SocialLink>
+                <SocialLink label="YouTube">
+                  <YouTubeIcon />
+                </SocialLink>
+                <SocialLink label="TikTok">
+                  <TikTokIcon />
+                </SocialLink>
+                <SocialLink label="Instagram">
+                  <InstagramIcon />
+                </SocialLink>
+              </div>
+              <Image
+                src="/images/footer%20image.png"
+                alt="Rate My Agent"
+                width={1076}
+                height={324}
+                quality={100}
+                sizes="180px"
+                className="mt-[16px] h-auto w-[180px]"
+              />
             </div>
-            <Image
-              src="/images/footer%20image.png"
-              alt="Rate My Agent"
-              width={1076}
-              height={324}
-              quality={100}
-              sizes="180px"
-              className="mt-[16px] h-auto w-[180px]"
-            />
           </div>
 
           {/* Tablet / desktop drawer */}
@@ -172,7 +195,6 @@ export function Nav() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    onClick={() => setOpen(false)}
                     className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
                   >
                     <span className="relative z-10">{link.label}</span>
@@ -207,14 +229,12 @@ export function Nav() {
               <DrawerColumn
                 title="Own your Australian Dream"
                 links={ownLinks}
-                onSelect={() => setOpen(false)}
                 className="lg:col-span-5 lg:col-start-4"
               />
 
               <DrawerColumn
                 title="About Us"
                 links={aboutLinks}
-                onSelect={() => setOpen(false)}
                 className="lg:col-span-3 lg:col-start-10"
               />
             </div>
@@ -228,6 +248,7 @@ export function Nav() {
             height={500}
             className="pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
           />
+          </div>
         </div>
       )}
     </>
@@ -237,12 +258,10 @@ export function Nav() {
 function DrawerColumn({
   title,
   links,
-  onSelect,
   className = "",
 }: {
   title: string;
   links: { label: string; href: string }[];
-  onSelect: () => void;
   className?: string;
 }) {
   return (
@@ -255,7 +274,6 @@ function DrawerColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              onClick={onSelect}
               className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
             >
               {link.label}
