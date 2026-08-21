@@ -213,8 +213,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         <Image
           src="/reviews/ban.png"
           alt=""
-          width={220}
-          height={80}
+          width={449}
+          height={220}
           className="pointer-events-none absolute right-0 top-0 h-auto w-[42%] select-none"
           aria-hidden
         />

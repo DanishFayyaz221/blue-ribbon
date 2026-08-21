@@ -57,12 +57,17 @@ export function Nav() {
     <>
       <nav className="nav-shrink sticky top-0 z-30 w-full bg-white overflow-visible">
         <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
-          <Link href="/" className="nav-logo block shrink-0">
+          <Link href="/" className="block shrink-0">
+            {/* The file's real pixels. They are what the browser reserves
+                space from before the image decodes: with the old 260x64 it
+                assumed a 4.06 aspect and, against a fixed height and w-auto,
+                laid the logo out 423px wide — wider than a phone, so the page
+                could be scrolled sideways until the image landed. */}
             <Image
               src="/logo/LOGO.png"
               alt="Blue Ribbon Real Estate"
-              width={260}
-              height={64}
+              width={1232}
+              height={821}
               priority
               className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
             />
@@ -104,8 +109,8 @@ export function Nav() {
               <Image
                 src="/logo/LOGO.png"
                 alt="Blue Ribbon Real Estate"
-                width={260}
-                height={64}
+                width={1232}
+                height={821}
                 className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
               />
             </Link>
@@ -244,8 +249,8 @@ export function Nav() {
             aria-hidden
             src="/logo/241.png"
             alt=""
-            width={1200}
-            height={500}
+            width={979}
+            height={744}
             className="pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
           />
           </div>
