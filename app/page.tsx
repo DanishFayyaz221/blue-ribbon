@@ -6,7 +6,7 @@ import { BridgeToHome } from "./_components/home/BridgeToHome";
 import { BestSuitedForYou } from "./_components/home/BestSuitedForYou";
 import { ParramattaCTA } from "./_components/home/ParramattaCTA";
 import { LatestProperties } from "./_components/home/LatestProperties";
-import { HappyClients } from "./_components/home/HappyClients";
+import { MeetHappyClients } from "./_components/home/MeetHappyClients";
 import { SellWithUs } from "./_components/home/SellWithUs";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
 import { SectionBoundary } from "./_components/SectionBoundary";
@@ -47,7 +47,7 @@ export default function Home() {
             <LatestProperties />
           </Suspense>
         </SectionBoundary>
-        <HappyClients />
+        <MeetHappyClients />
         <SellWithUs />
       </main>
       <Footer />

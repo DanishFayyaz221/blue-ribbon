@@ -72,7 +72,7 @@ const testimonials: Testimonial[] = [
     id: 6,
     image: "/reviews/6.png",
     quote:
-      "Outstanding experience with Blue Ribbon. Can\u2019t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
+      "Outstanding experience with Blue Ribbon. Can’t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
     name: "Timothy Lambert",
     title: "Local Guide",
     rating: 5,
@@ -80,14 +80,21 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-export function HappyClients() {
-  const [visible, setVisible] = useState(3);
+/** Cards per row at the widest breakpoint. */
+const COLUMNS = 3;
+
+export function MeetHappyClients() {
+  // Seeded with the desktop count, not the mobile one: the carousel is
+  // `hidden sm:block`, so a phone never sees these slides at all, and starting
+  // at 1 would make every desktop visitor watch the row re-lay itself the
+  // moment the effect runs.
+  const [visible, setVisible] = useState(COLUMNS);
   const [start, setStart] = useState(0);
 
   useEffect(() => {
     const onResize = () => {
       const w = window.innerWidth;
-      setVisible(w < 640 ? 1 : w < 1024 ? 2 : 3);
+      setVisible(w < 640 ? 1 : w < 1024 ? 2 : COLUMNS);
     };
     onResize();
     window.addEventListener("resize", onResize);
@@ -193,7 +200,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           src={testimonial.image}
           alt={testimonial.name}
           fill
-          sizes="(max-width: 768px) 72vw, 440px"
+          sizes="(max-width: 640px) 72vw, (max-width: 1024px) 45vw, 28vw"
           className="object-cover"
         />
         <Image

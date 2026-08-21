@@ -26,10 +26,13 @@ export default async function AgentsPage() {
   // Names on this page are statements about who works at the agency, so the
   // list is built strictly from agents the feed actually returns. Photos and
   // roles come from the local profile map; contact details come from Agentbox.
+  // The card links to the agent's own page, not `mailto:`. The card shows a
+  // listing count, and a visitor clicking that expects the listings — opening
+  // a mail client instead was the one thing it could not have meant.
   const team = feedAgents.map((agent) => ({
     ...agent,
     ...profileFor(agent.email),
-    href: agent.email ? `mailto:${agent.email}` : "/contact",
+    href: `/agents/${agent.slug}`,
   }));
 
   return (
@@ -68,15 +71,19 @@ export default async function AgentsPage() {
                     key={a.key}
                     className="overflow-hidden rounded-[14px] bg-[#F1F2F4] p-[10px]"
                   >
-                    <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px]">
-                      <AgentAvatar name={a.name} image={a.image} sizes="50vw" />
-                    </div>
-                    <p className="mt-[10px] text-center font-display text-[14px] font-bold text-brand-bunker">
-                      {a.name}
-                    </p>
-                    <p className="mt-[3px] text-center font-display text-[11.5px] text-brand-bunker/65">
-                      {a.role}
-                    </p>
+                    {/* Photo, name and role link through; the tel: link below
+                        stays outside so one anchor never nests in another. */}
+                    <Link href={a.href} className="block">
+                      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px]">
+                        <AgentAvatar name={a.name} image={a.image} sizes="50vw" />
+                      </div>
+                      <p className="mt-[10px] text-center font-display text-[14px] font-bold text-brand-bunker">
+                        {a.name}
+                      </p>
+                      <p className="mt-[3px] text-center font-display text-[11.5px] text-brand-bunker/65">
+                        {a.role}
+                      </p>
+                    </Link>
                     {(a.mobile ?? a.phone) && (
                       <a
                         href={`tel:${(a.mobile ?? a.phone ?? "").replace(/\s/g, "")}`}

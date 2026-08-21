@@ -56,6 +56,12 @@ export type ListingCard = {
   slug: string;
   href: string;
   image: string;
+  /**
+   * Photos for the card's inline carousel, `image` first. Named `gallery`
+   * rather than `images` because ListingDetail extends this type and already
+   * carries an `images` of a different shape.
+   */
+  gallery: string[];
   address: string;
   guide: string;
   beds?: number;
@@ -121,23 +127,39 @@ function formatGuide(doc: ListingDoc): string {
 }
 
 /**
- * Resolves the display image.
+ * How many photos a card's inline carousel offers.
+ *
+ * Capped rather than unbounded: a results grid renders up to a dozen cards at
+ * once, and a listing can carry thirty photos. Six is enough to browse from
+ * the card before clicking through, without shipping hundreds of URLs in the
+ * payload for images most visitors will never advance to.
+ */
+const CARD_GALLERY_LIMIT = 6;
+
+/**
+ * Resolves the card's photos, best first.
  *
  * Only locally downloaded files are ever used. Falling back to the Agentbox
  * CDN URL would be hotlinking, which Reapit disables the feed for.
  */
-function primaryImage(doc: ListingDoc): string {
-  const main = doc.images.find((i) => i.id === "m" && i.localPath);
-  const chosen = main?.localPath ?? doc.images.find((i) => i.localPath)?.localPath;
-  return chosen ? mediaUrl(chosen) : PLACEHOLDER_IMAGE;
+function galleryImages(doc: ListingDoc): string[] {
+  const local = doc.images.filter((i) => i.localPath);
+  // Agentbox marks the hero shot "m". It leads; the rest follow in feed order.
+  const main = local.find((i) => i.id === "m");
+  const ordered = main ? [main, ...local.filter((i) => i !== main)] : local;
+  return ordered
+    .slice(0, CARD_GALLERY_LIMIT)
+    .map((i) => mediaUrl(i.localPath as string));
 }
 
 function toCard(doc: ListingDoc): ListingCard {
+  const gallery = galleryImages(doc);
   return {
     id: doc._id,
     slug: doc.slug,
     href: `/property/${doc.slug}`,
-    image: primaryImage(doc),
+    image: gallery[0] ?? PLACEHOLDER_IMAGE,
+    gallery,
     address: doc.address.full,
     guide: formatGuide(doc),
     beds: doc.features.bedrooms,
@@ -591,6 +613,8 @@ export const getSuburbs = cache(async (categories?: ListingCategory[]): Promise<
 export type FeedAgent = {
   /** Lowercased email where present, else the name. Stable across deliveries. */
   key: string;
+  /** URL segment for /agents/[slug]. Unique across the returned list. */
+  slug: string;
   name: string;
   email?: string;
   phone?: string;
@@ -638,14 +662,66 @@ export const getAgents = cache(async (): Promise<FeedAgent[]> => {
     ])
     .toArray();
 
-  return rows.map((r) => ({
-    key: r._id,
-    name: r.name,
-    email: r.email,
-    phone: r.phone,
-    mobile: r.mobile,
-    listingCount: r.listingCount,
-  }));
+  // Slugs are counted before they are assigned so a shared name disambiguates
+  // both entries rather than whichever happened to sort second. Order here
+  // depends on listingCount, which moves — a slug that flipped between two
+  // people as listings changed would break their links.
+  const nameCounts = new Map<string, number>();
+  for (const r of rows) {
+    const base = agentSlug(r.name);
+    nameCounts.set(base, (nameCounts.get(base) ?? 0) + 1);
+  }
+
+  return rows.map((r) => {
+    const base = agentSlug(r.name);
+    return {
+      key: r._id,
+      slug:
+        (nameCounts.get(base) ?? 0) > 1
+          ? `${base}-${agentSlug(r._id.split("@")[0])}`
+          : base,
+      name: r.name,
+      email: r.email,
+      phone: r.phone,
+      mobile: r.mobile,
+      listingCount: r.listingCount,
+    };
+  });
+});
+
+/** Lowercase, hyphenated, ASCII-only. Falls back to "agent" for a name that
+ *  reduces to nothing (e.g. one written entirely in a non-Latin script). */
+function agentSlug(value: string): string {
+  return (
+    value
+      .normalize("NFKD")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "agent"
+  );
+}
+
+/**
+ * Published listings this agent appears on, newest first.
+ *
+ * Matched on the same key `getAgents` groups by — the lowercased email, or the
+ * name when the feed carries no email for them. Case-insensitive because the
+ * feed is inconsistent about capitalising addresses.
+ */
+export const getListingsByAgent = cache(async (key: string): Promise<ListingCard[]> => {
+  const col = await listings();
+  const exact = { $regex: `^${escapeRegex(key)}$`, $options: "i" };
+
+  const docs = await col
+    .find(
+      publicFilter({
+        $or: [{ "agents.email": exact }, { "agents.name": exact }],
+      }),
+    )
+    .sort({ modTime: -1 })
+    .toArray();
+
+  return docs.map(toCard);
 });
 
 /** All slugs, for `generateStaticParams` and the sitemap. */

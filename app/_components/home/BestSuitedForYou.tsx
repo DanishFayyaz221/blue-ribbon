@@ -27,14 +27,28 @@ export async function BestSuitedForYou() {
           Best Suited for You
         </h2>
 
-        <div className="focus-peers mt-[clamp(28px,2.7vw,52px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(20px,1.8vw,32px)]">
+        {/* Three up only from lg. At md a third column would leave each card
+            around 234px wide, and the 15/8 crop would collapse to a 125px
+            strip. */}
+        <div className="focus-peers mt-[clamp(28px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-3 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(16px,1.8vw,32px)]">
           {items.map((p, i) => (
             <div
               key={p.id}
               suppressHydrationWarning
-              className={`reveal reveal-delay-${(i % 4) + 1} hover-lift`}
+              className={`reveal reveal-delay-${(i % 3) + 1} hover-lift`}
             >
-              <PropertyCard {...p} variant="wide" />
+              {/* dense: two across a phone leaves ~166px per card, well under
+                  what the wide variant's default 16px padding and 16px address
+                  were sized for. */}
+              <PropertyCard
+                {...p}
+                variant="wide"
+                dense
+                // 15/8 across a 166px card is an 89px strip. A chunkier crop
+                // on the phone only; sm and up keeps the section's wide look.
+                aspect="aspect-[3/2] sm:aspect-[15/8]"
+                sizes="(max-width: 767px) 48vw, (max-width: 1023px) 47vw, 30vw"
+              />
             </div>
           ))}
         </div>

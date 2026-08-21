@@ -4,21 +4,67 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const tiles = [
-  { label: "Advanced Search", href: "/buy", src: "/images/latest-properties.png" },
-  { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
-  { label: "Find Your Desire", href: "/property-report-digital-appraisal", src: "/images/find-an-office.png" },
-  {
-    label: "The BlueRibbon Difference",
-    href: "/about",
-    src: "/images/the-mcgrath-difference.png",
-  },
-] as const;
-
 const tabs = ["Buying", "Selling", "Renting"] as const;
+type Tab = (typeof tabs)[number];
+
+type Tile = { label: string; href: string; src: string };
+
+/**
+ * One set of tiles per tab. Slots are positional and mean the same thing
+ * across tabs — 1 is the search entry point for that intent, 2 the people who
+ * handle it, 3 the next step, 4 the brand story. Keeping them aligned is why
+ * the grid below keys by index: switching tabs swaps each card's contents in
+ * place rather than tearing down and rebuilding the row, so the scroll-reveal
+ * state survives and the cards do not flash back to invisible.
+ */
+const tilesByTab: Record<Tab, readonly Tile[]> = {
+  Buying: [
+    { label: "Advanced Search", href: "/buy", src: "/images/latest-properties.png" },
+    { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
+    {
+      label: "Find Your Desire",
+      href: "/property-report-digital-appraisal",
+      src: "/images/find-an-office.png",
+    },
+    {
+      label: "The BlueRibbon Difference",
+      href: "/about",
+      src: "/images/the-mcgrath-difference.png",
+    },
+  ],
+  Selling: [
+    {
+      label: "Free Property Appraisal",
+      href: "/property-report-digital-appraisal",
+      src: "/images/home.png",
+    },
+    { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
+    { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
+    {
+      label: "The BlueRibbon Difference",
+      href: "/about",
+      src: "/images/the-mcgrath-difference.png",
+    },
+  ],
+  Renting: [
+    { label: "Search Rentals", href: "/rent", src: "/images/latest-properties.png" },
+    { label: "Find a Property Manager", href: "/agents", src: "/images/find-an-agent.png" },
+    {
+      label: "Rental Appraisal",
+      href: "/rental-report-digital-appraisal",
+      src: "/images/home.png",
+    },
+    {
+      label: "The BlueRibbon Difference",
+      href: "/about",
+      src: "/images/the-mcgrath-difference.png",
+    },
+  ],
+};
 
 export function BridgeToHome() {
-  const [active, setActive] = useState<(typeof tabs)[number]>("Buying");
+  const [active, setActive] = useState<Tab>("Buying");
+  const tiles = tilesByTab[active];
 
   return (
     <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
@@ -59,7 +105,8 @@ export function BridgeToHome() {
         <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
           {tiles.map((tile, i) => (
             <Link
-              key={tile.label}
+              // Index, deliberately — see tilesByTab.
+              key={i}
               href={tile.href}
               suppressHydrationWarning
               className={`group block reveal reveal-delay-${(i % 4) + 1} hover-lift`}

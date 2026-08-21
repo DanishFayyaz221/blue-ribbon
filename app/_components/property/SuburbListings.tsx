@@ -105,7 +105,7 @@ export async function SuburbListings({
 
           {items.length > 0 ? (
             <>
-              <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+              <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
                 {items.map((p) => (
                   <PropertyCard key={p.id} {...p} variant="tall" />
                 ))}

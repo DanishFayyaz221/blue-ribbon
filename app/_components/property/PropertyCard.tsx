@@ -1,9 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
+import { CardGallery } from "./CardGallery";
 
 export type PropertyCardData = {
   href?: string;
   image: string;
+  /** Extra photos for the in-card carousel. Falls back to `image` alone. */
+  gallery?: string[];
   address: string;
   guide?: string;
   beds?: number;
@@ -16,11 +18,25 @@ type PropertyCardProps = PropertyCardData & {
   variant?: "wide" | "tall" | "compact";
   /** Override the responsive `sizes` hint when the grid is not the variant's default width. */
   sizes?: string;
+  /**
+   * Override the variant's image crop, e.g. "aspect-[4/3]". Wanted where a
+   * grid runs fewer, wider columns than the variant assumes and the default
+   * portrait crop would make the card tower.
+   */
+  aspect?: string;
+  /**
+   * Tighten the phone-width padding and type. For grids that run two `wide`
+   * cards across a phone, where a card is ~166px and the default 16px padding
+   * plus 16px address leaves a full street address wrapping to five lines.
+   * Ignored from `sm` up, where the card is wide enough either way.
+   */
+  dense?: boolean;
 };
 
 export function PropertyCard({
   href = "/property/1",
   image,
+  gallery,
   address,
   guide,
   beds,
@@ -29,7 +45,10 @@ export function PropertyCard({
   type,
   variant = "tall",
   sizes,
+  aspect,
+  dense = false,
 }: PropertyCardProps) {
+  const frames = gallery && gallery.length > 0 ? gallery : [image];
   const metaStats: { key: string; label: string; value: number; icon: React.ReactNode }[] = [];
   if (beds != null) metaStats.push({ key: "bed", label: "Bed", value: beds, icon: <BedIcon /> });
   if (baths != null) metaStats.push({ key: "bath", label: "Bath", value: baths, icon: <BathIcon /> });
@@ -41,9 +60,9 @@ export function PropertyCard({
   const renderMeta = (tone: "onLight" | "onDark") =>
     metaStats.length > 0 || type ? (
       <p
-        className={`mt-[8px] flex flex-wrap items-center gap-x-[14px] gap-y-[4px] font-display text-[13px] font-semibold sm:mt-[10px] sm:gap-x-[16px] sm:text-[clamp(12px,0.82vw,15px)] ${
-          tone === "onDark" ? "text-white/80" : "text-brand-navy"
-        }`}
+        className={`mt-[8px] flex flex-wrap items-center gap-y-[4px] font-display font-semibold sm:mt-[10px] sm:gap-x-[16px] sm:text-[clamp(12px,0.82vw,15px)] ${
+          dense ? "gap-x-[9px] text-[11px]" : "gap-x-[14px] text-[13px]"
+        } ${tone === "onDark" ? "text-white/80" : "text-brand-navy"}`}
       >
         {metaStats.map((stat) => (
           <span key={stat.key} className="inline-flex items-center gap-[5px]">
@@ -58,71 +77,116 @@ export function PropertyCard({
       </p>
     ) : null;
 
-  if (variant === "wide") {
-    return (
+  /**
+   * The photo area, plus a link stretched over it.
+   *
+   * The card used to be one big <a>. It cannot be any more: the carousel
+   * arrows are buttons, and a button nested inside an anchor is invalid HTML
+   * that navigates on click instead of paging the photos. So the card root is
+   * a plain element, the photo gets its own overlay link at z-10, and the
+   * arrows sit above it at z-20 — clicking the photo still opens the listing,
+   * clicking an arrow does not.
+   */
+  const media = (imageClassName: string, defaultSizes: string) => (
+    <>
+      <CardGallery
+        images={frames}
+        alt={address}
+        sizes={sizes ?? defaultSizes}
+        imageClassName={imageClassName}
+      />
+      {/* Mouse-only twin of the text link below. Hidden from assistive tech
+          and skipped by tab so the card exposes one link, not two identical
+          ones — the text link already carries the address. */}
       <Link
         href={href}
-        className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.7vw,32px)] sm:border-0 sm:bg-transparent sm:overflow-visible"
-      >
-        <div className="relative aspect-[15/8] w-full overflow-hidden sm:rounded-[clamp(16px,1.7vw,32px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]">
-          <Image
-            src={image}
-            alt={address}
-            fill
-            sizes={sizes ?? "(max-width: 1024px) 100vw, 45vw"}
-            className="object-cover transition duration-500 group-hover:scale-[1.02]"
-          />
+        aria-hidden
+        tabIndex={-1}
+        className="absolute inset-0 z-10"
+      />
+    </>
+  );
+
+  if (variant === "wide") {
+    return (
+      <div className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.35vw,24px)] sm:border-0 sm:bg-transparent sm:overflow-visible">
+        <div
+          className={`relative ${aspect ?? "aspect-[15/8]"} w-full overflow-hidden sm:rounded-[clamp(16px,1.35vw,24px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]`}
+        >
+          {media(
+            "transition duration-500 group-hover:scale-[1.02]",
+            "(max-width: 1024px) 100vw, 45vw",
+          )}
         </div>
-        <div className="p-[16px] sm:p-0 sm:mt-[clamp(20px,2vw,40px)] font-display">
-          <p className="text-[clamp(16px,1.18vw,22px)] font-semibold sm:font-medium leading-[1.4] text-brand-navy">
+        <Link
+          href={href}
+          className={`block sm:p-0 sm:mt-[clamp(20px,2vw,40px)] font-display ${
+            dense ? "p-[10px]" : "p-[16px]"
+          }`}
+        >
+          <p
+            className={`font-semibold sm:font-medium leading-[1.4] text-brand-navy sm:line-clamp-none sm:text-[clamp(16px,1.18vw,22px)] ${
+              // Clamped rather than shrunk further: a card this narrow cannot
+              // show a full NSW street address without either three lines of
+              // 11px type or a truncation, and two readable lines beats both.
+              dense ? "line-clamp-2 text-[13px]" : "text-[clamp(16px,1.18vw,22px)]"
+            }`}
+          >
             {address}
           </p>
           {guide && (
-            <p className="text-[clamp(13px,0.95vw,18px)] leading-[1.5] text-brand-bunker/70 sm:text-black mt-[4px]">
+            <p
+              className={`mt-[4px] leading-[1.5] text-brand-bunker/70 sm:text-black sm:line-clamp-none sm:text-[clamp(13px,0.95vw,18px)] ${
+                dense ? "line-clamp-1 text-[11px]" : "text-[clamp(13px,0.95vw,18px)]"
+              }`}
+            >
               {guide}
             </p>
           )}
           {renderMeta("onLight")}
-        </div>
-      </Link>
+        </Link>
+      </div>
     );
   }
 
   if (variant === "compact") {
     return (
-      <Link href={href} className="group block w-full">
+      <div className="group block w-full">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[clamp(10px,1vw,16px)]">
-          <Image
-            src={image}
-            alt={address}
-            fill
-            sizes={sizes ?? "(max-width: 768px) 100vw, 33vw"}
-            className="object-cover transition duration-500 group-hover:scale-[1.02]"
-          />
+          {media(
+            "transition duration-500 group-hover:scale-[1.02]",
+            "(max-width: 768px) 100vw, 33vw",
+          )}
         </div>
-        <div className="mt-[clamp(14px,1.4vw,22px)] font-display">
+        <Link href={href} className="block mt-[clamp(14px,1.4vw,22px)] font-display">
           <p className="text-[clamp(14px,1.05vw,17px)] font-medium leading-[1.3] text-white">{address}</p>
           {guide && (
             <p className="text-[clamp(12px,0.85vw,14px)] leading-[1.4] text-white/80 mt-[4px]">{guide}</p>
           )}
           {renderMeta("onDark")}
-        </div>
-      </Link>
+        </Link>
+      </div>
     );
   }
 
   return (
-    <Link href={href} className="group flex h-full w-full flex-col">
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[clamp(20px,1.7vw,32px)]">
-        <Image
-          src={image}
-          alt={address}
-          fill
-          sizes={sizes ?? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"}
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
-        />
+    <div className="group flex h-full w-full flex-col">
+      <div
+        // Portrait while the card is narrow (one or two across), landscape at
+        // lg where the listing grids run three across and a card is ~427px —
+        // a 3/4 crop there stands 569px tall, past what the viewport leaves
+        // for it once the heading and the text block are counted.
+        className={`relative ${aspect ?? "aspect-[3/4] lg:aspect-[4/3]"} w-full overflow-hidden rounded-[clamp(16px,1.35vw,24px)]`}
+      >
+        {media(
+          "transition duration-500 group-hover:scale-[1.03]",
+          "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
+        )}
       </div>
-      <div className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]">
+      <Link
+        href={href}
+        className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]"
+      >
         <p className="line-clamp-3 text-[14px] font-semibold leading-[1.3] text-brand-navy sm:line-clamp-none sm:text-[clamp(16px,1.18vw,22px)] sm:font-medium sm:leading-[1.4]">
           {address}
         </p>
@@ -132,8 +196,8 @@ export function PropertyCard({
           </p>
         )}
         {renderMeta("onLight")}
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

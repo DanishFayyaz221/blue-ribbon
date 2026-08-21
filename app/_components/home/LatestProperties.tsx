@@ -63,7 +63,14 @@ export async function LatestProperties() {
               suppressHydrationWarning
               className={`reveal reveal-delay-${(i % 3) + 1} hover-lift flex`}
             >
-              <PropertyCard {...p} variant="tall" sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" />
+              {/* No aspect override: the variant now defaults to a landscape
+                  crop at lg for exactly this reason, so this grid and the
+                  listing pages stay in step. */}
+              <PropertyCard
+                {...p}
+                variant="tall"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+              />
             </div>
           ))}
         </div>

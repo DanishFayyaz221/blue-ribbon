@@ -16,7 +16,10 @@
 :root {
   /* Fluid horizontal page padding */
   --page-px: clamp(1rem, 3vw, 3rem);
-  --container-max: 1280px;
+  /* 1424 - 96 (the 48px gutters, which border-box folds into this cap) leaves
+     1328px of content — measured off mcgrath.com.au, which the client asked
+     this layout to match. Was 1280px, i.e. 1184px of content. */
+  --container-max: 1424px;
 }
 
 @media (min-width: 1280px) {
@@ -111,6 +114,19 @@ body {
   animation-delay: calc(140ms + var(--i, 0) * 55ms);
 }
 
+/* Popover entrance: drops from the control it belongs to rather than simply
+   appearing. Short and eased-out so it reads as responsive, not decorative. */
+@keyframes br-menu-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 .reveal {
   opacity: 0;
   transform: translate3d(0, 28px, 0);
@@ -184,6 +200,11 @@ body {
   animation: br-float 4s ease-in-out infinite;
 }
 
+.animate-menu-in {
+  animation: br-menu-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top left;
+}
+
 .hover-lift {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
@@ -230,6 +251,7 @@ body {
   .animate-fade-in,
   .animate-fade-up,
   .animate-float,
+  .animate-menu-in,
   .hover-lift,
   .parallax-media,
   .scroll-scale-in,

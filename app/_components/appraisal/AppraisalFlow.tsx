@@ -276,7 +276,7 @@ export function AppraisalFlow({
                     <ArrowInline />
                   </Link>
                 </div>
-                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(14px,1.5vw,28px)]">
+                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
                   {latest.map((p, i) => (
                     <PropertyCard key={p.href ?? i} {...p} variant="tall" />
                   ))}

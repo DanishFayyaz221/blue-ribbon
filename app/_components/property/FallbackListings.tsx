@@ -96,7 +96,7 @@ export function FallbackListings({ items, relaxed, q, noun, clearHref }: Props) 
           <h2 className="font-display font-bold text-brand-bunker text-[18px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
             You might also like
           </h2>
-          <div className="mt-[clamp(18px,2vw,32px)] grid grid-cols-2 gap-x-[12px] gap-y-[20px] lg:grid-cols-4 lg:gap-[clamp(12px,1.3vw,24px)]">
+          <div className="mt-[clamp(18px,2vw,32px)] grid grid-cols-2 gap-x-[12px] gap-y-[20px] lg:grid-cols-3 lg:gap-[clamp(12px,1.3vw,24px)]">
             {items.map((p) => (
               <PropertyCard key={p.id} {...p} variant="tall" />
             ))}

@@ -32,7 +32,7 @@ const aboutLinks = [
 ];
 
 const insightsLinks = [
-  { label: "Get your Property...", href: "/property-report-digital-appraisal" },
+  { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
 ];

@@ -47,7 +47,22 @@ export function Hero() {
         </div>
         <div className="absolute inset-0 bg-black/30" />
 
-        <div className="container-page absolute inset-x-0 top-[38%] -translate-y-1/2 sm:top-1/2">
+        {/*
+          Anchored from the bottom, not the top. Centring this block put the
+          search bar at a percentage that drifted with the hero's height
+          (aspect-video between the min/max clamps), so "how far up from the
+          bottom" changed with the window. Pinning the bottom edge — which is
+          the search bar's own bottom edge, since it is the last visible child
+          — holds it at a fixed 25% on every width.
+
+          The max() floor keeps it clear of the estimate CTA below, which sits
+          64px + 44px off the bottom on mobile: on a very short viewport a flat
+          25% would land underneath it.
+        */}
+        {/* z-20: the deal menu drops past the estimate CTA below, which would
+            otherwise paint over it — both blocks are absolute siblings, so
+            without this the later one in the DOM wins. */}
+        <div className="container-page absolute inset-x-0 bottom-[max(25%,132px)] z-20">
           <h1 className="animate-fade-up text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] sm:text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
             <span className="block sm:inline">Own Your</span>{" "}
             <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
@@ -80,6 +95,29 @@ function SearchBar() {
   const [dealOpen, setDealOpen] = useState(false);
   const [surroundings, setSurroundings] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dealButtonRef = useRef<HTMLButtonElement>(null);
+  const dealMenuRef = useRef<HTMLUListElement>(null);
+
+  // Dismiss on click-away and Escape. Toggle and menu are tested separately
+  // because the menu no longer sits inside the button's own cell.
+  useEffect(() => {
+    if (!dealOpen) return;
+    const onPointerDown = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (dealButtonRef.current?.contains(target)) return;
+      if (dealMenuRef.current?.contains(target)) return;
+      setDealOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDealOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [dealOpen]);
 
   useEffect(() => {
     const input = inputRef.current;
@@ -104,20 +142,26 @@ function SearchBar() {
     <form
       action={actionFor(deal)}
       method="get"
-      className="mx-auto flex w-full max-w-[1280px] flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0"
+      // No max-width of its own: the bar fills whatever container-page gives
+      // it. The old max-w-[1280px] never bound while the container held 1184px
+      // of content, but would clip the bar narrower than the rest of the page
+      // now that it holds 1328px.
+      className="relative mx-auto flex w-full flex-col gap-[12px] sm:flex-row sm:items-stretch sm:gap-0"
     >
       <div className="flex w-full flex-1 flex-col items-stretch overflow-hidden rounded-[16px] bg-white sm:flex-row sm:rounded-[20px]">
-        <div className="relative flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[170px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
+        <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] w-full sm:w-[160px] lg:w-[170px] items-center justify-center border-b sm:border-b-0 sm:border-r border-brand-silver">
           <button
+            ref={dealButtonRef}
             type="button"
             onClick={() => setDealOpen((v) => !v)}
             aria-expanded={dealOpen}
+            aria-haspopup="listbox"
             className="flex h-full w-full items-center justify-center gap-[8px] font-display text-[15px] lg:text-[17px] font-medium text-black"
           >
             {deal}
             <svg
               viewBox="0 0 24 24"
-              className="h-[18px] w-[18px] lg:h-[20px] lg:w-[20px]"
+              className={`h-[18px] w-[18px] transition-transform duration-200 lg:h-[20px] lg:w-[20px] ${dealOpen ? "rotate-180" : ""}`}
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -128,24 +172,6 @@ function SearchBar() {
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
-          {dealOpen && (
-            <ul className="absolute left-0 right-0 top-full z-20 border border-brand-silver bg-white shadow-lg">
-              {dealTypes.map((d) => (
-                <li key={d}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDeal(d);
-                      setDealOpen(false);
-                    }}
-                    className="flex w-full items-center justify-center py-[12px] font-display text-[16px] font-medium text-black hover:bg-brand-soft"
-                  >
-                    {d}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
 
         <div className="flex h-[52px] sm:h-[56px] lg:h-[60px] flex-1 items-center px-[16px] lg:px-[20px]">
@@ -206,6 +232,62 @@ function SearchBar() {
       >
         <span className="relative z-10">Search</span>
       </button>
+
+      {/*
+        Deliberately a child of the form rather than of the "Buy" cell. That
+        cell lives inside the pill's `overflow-hidden` wrapper — which is what
+        rounds the white bar — so a menu positioned at top-full was being
+        clipped away entirely: the toggle worked, nothing ever appeared.
+        Anchoring to the form instead puts it just below the bar, unclipped.
+        SearchBar only ever renders at sm and up (the hero swaps in
+        MobileSearch below that), so the form is always a single row here and
+        top-full lands directly under the Buy cell.
+      */}
+      {dealOpen && (
+        <ul
+          ref={dealMenuRef}
+          role="listbox"
+          className="animate-menu-in absolute left-0 top-full z-30 mt-[10px] w-full rounded-[18px] border border-black/[0.06] bg-white p-[6px] shadow-[0_20px_44px_-14px_rgba(0,31,77,0.30),0_2px_6px_rgba(0,0,0,0.05)] sm:w-[178px] lg:w-[196px]"
+        >
+          {dealTypes.map((d) => {
+            const isActive = d === deal;
+            return (
+              <li key={d}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={isActive}
+                  onClick={() => {
+                    setDeal(d);
+                    setDealOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-between gap-[10px] rounded-[12px] px-[14px] py-[11px] font-display text-[15px] lg:text-[16px] font-medium transition-colors duration-150 ${
+                    isActive
+                      ? "bg-brand-soft text-brand-navy"
+                      : "text-brand-bunker hover:bg-black/[0.045]"
+                  }`}
+                >
+                  {d}
+                  {isActive && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-[15px] w-[15px]"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </form>
   );
 }
