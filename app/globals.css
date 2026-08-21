@@ -46,6 +46,20 @@ body {
   color: #11181c;
 }
 
+/* Guard against horizontal overflow on mobile without breaking `position: sticky`
+   on descendants: `clip` prevents scroll and does not create a scroll container,
+   which `hidden` would (that in turn would neutralise the sticky nav).
+   `overscroll-behavior-x: none` blocks touch pan-x from bubbling out of the
+   in-page carousels (LatestProperties, MeetHappyClients) into the document. */
+html {
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+body {
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
 @keyframes br-fade-up {
   from {
     opacity: 0;

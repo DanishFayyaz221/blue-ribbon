@@ -167,16 +167,22 @@ export function Nav() {
               style={{ ["--i" as string]: 8 }}
             >
               <div className="flex items-center gap-[12px]">
-                <SocialLink label="Facebook">
+                <SocialLink label="Facebook" href="#">
                   <FacebookIcon />
                 </SocialLink>
-                <SocialLink label="YouTube">
+                <SocialLink label="YouTube" href="#">
                   <YouTubeIcon />
                 </SocialLink>
-                <SocialLink label="TikTok">
+                <SocialLink
+                  label="TikTok"
+                  href="https://www.tiktok.com/@blueribbonrealestate"
+                >
                   <TikTokIcon />
                 </SocialLink>
-                <SocialLink label="Instagram">
+                <SocialLink
+                  label="Instagram"
+                  href="https://www.instagram.com/blueribbonrealestateagents"
+                >
                   <InstagramIcon />
                 </SocialLink>
               </div>
@@ -293,15 +299,19 @@ function DrawerColumn({
 
 function SocialLink({
   label,
+  href,
   children,
 }: {
   label: string;
+  href: string;
   children: React.ReactNode;
 }) {
+  const external = href.startsWith("http");
   return (
     <a
-      href="#"
+      href={href}
       aria-label={label}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="inline-flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full bg-black text-white transition hover:opacity-80"
     >
       {children}

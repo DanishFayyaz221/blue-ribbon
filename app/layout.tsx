@@ -48,11 +48,17 @@ export default function RootLayout({
         suppressHydrationWarning
         className="bg-white text-brand-bunker"
       >
-        <ConstructionBanner />
         <SmoothScroll />
         <RevealOnScroll />
         <ScrollEffects />
-        {children}
+        {/* Bounded overflow container. `overflow-x: clip` on html/body was not
+            enough on Chromium's mobile emulator — a wrapper with an explicit
+            width and clip stops the horizontal drag reliably, without breaking
+            the sticky nav (which `overflow: hidden` would). */}
+        <div className="relative w-full max-w-[100vw] overflow-x-clip">
+          <ConstructionBanner />
+          {children}
+        </div>
       </body>
     </html>
   );

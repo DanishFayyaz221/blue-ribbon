@@ -23,6 +23,7 @@ export function DragScroll({
     <div
       ref={ref}
       className={className}
+      style={{ overscrollBehaviorX: "contain", touchAction: "pan-x pan-y" }}
       onPointerDown={(e) => {
         if (e.pointerType !== "mouse" || !ref.current) return;
         drag.current = {
