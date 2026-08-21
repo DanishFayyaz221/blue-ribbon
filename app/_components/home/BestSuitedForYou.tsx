@@ -17,13 +17,23 @@ export async function BestSuitedForYou() {
   return (
     <section className="w-full bg-white sm:bg-brand-soft py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
-        <h2 className="reveal font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]">
+        {/* suppressHydrationWarning: RevealOnScroll appends `reveal-in` from
+            outside React, so this element's class can legitimately differ from
+            the server HTML. React leaves the extra class alone either way. */}
+        <h2
+          suppressHydrationWarning
+          className="reveal font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
+        >
           Best Suited for You
         </h2>
 
-        <div className="mt-[clamp(28px,2.7vw,52px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(20px,1.8vw,32px)]">
+        <div className="focus-peers mt-[clamp(28px,2.7vw,52px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(20px,1.8vw,32px)]">
           {items.map((p, i) => (
-            <div key={p.id} className={`reveal reveal-delay-${(i % 4) + 1} hover-lift`}>
+            <div
+              key={p.id}
+              suppressHydrationWarning
+              className={`reveal reveal-delay-${(i % 4) + 1} hover-lift`}
+            >
               <PropertyCard {...p} variant="wide" />
             </div>
           ))}

@@ -116,7 +116,7 @@ function MobileLinkColumn({
 
 function DesktopFooter() {
   return (
-    <footer className="hidden lg:block w-full bg-white">
+    <footer className="hidden lg:block w-full border-t-2 border-brand-navy bg-white">
       <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)] xl:max-w-none">
         {/* Top row: buttons | About | Insights | Our Office | social+logo */}
         <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">

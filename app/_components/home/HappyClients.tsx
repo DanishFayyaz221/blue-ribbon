@@ -105,7 +105,10 @@ export function HappyClients() {
   return (
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
-        <h2 className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
+        <h2
+          suppressHydrationWarning
+          className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+        >
           Meet Our Happy Clients
         </h2>
       </div>

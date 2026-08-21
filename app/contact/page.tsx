@@ -66,19 +66,6 @@ export default function ContactPage() {
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} />
         </div>
 
-        <section className="hidden sm:block container-page">
-          <div className="relative aspect-[1771/780] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src="/hero-video/hero.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          </div>
-        </section>
-
         <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,76px)]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(28px,2.7vw,56px)] items-start">
             <div className="relative aspect-[860/520] w-full overflow-hidden rounded-[clamp(6px,0.5vw,10px)]">

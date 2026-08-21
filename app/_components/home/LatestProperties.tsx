@@ -14,7 +14,7 @@ export async function LatestProperties() {
   // Deliberately unfiltered by category: until Agentbox re-exports the full
   // book, the feed holds rentals only, and filtering to sales would leave the
   // home page blank.
-  const properties = await getLatestListings(undefined, 4);
+  const properties = await getLatestListings(undefined, 3);
 
   if (properties.length === 0) return null;
 
@@ -22,7 +22,13 @@ export async function LatestProperties() {
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]">
+          {/* suppressHydrationWarning: RevealOnScroll appends `reveal-in` from
+              outside React, so this element's class can legitimately differ
+              from the server HTML. */}
+          <h2
+            suppressHydrationWarning
+            className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+          >
             Our latest Properties
           </h2>
           <Link
@@ -49,11 +55,15 @@ export async function LatestProperties() {
           </DragScroll>
         </div>
 
-        {/* Tablet / desktop: grid (unchanged) */}
-        <div className="hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+        {/* Tablet / desktop: grid */}
+        <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
           {properties.map((p, i) => (
-            <div key={p.id} className={`reveal reveal-delay-${(i % 4) + 1} hover-lift flex`}>
-              <PropertyCard {...p} variant="tall" />
+            <div
+              key={p.id}
+              suppressHydrationWarning
+              className={`reveal reveal-delay-${(i % 3) + 1} hover-lift flex`}
+            >
+              <PropertyCard {...p} variant="tall" sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" />
             </div>
           ))}
         </div>

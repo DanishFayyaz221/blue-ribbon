@@ -22,6 +22,7 @@ export function RevealOnScroll() {
 
     let observer: IntersectionObserver | null = null;
     let mo: MutationObserver | null = null;
+    let scanFrame = 0;
 
     // If the browser restored us from bfcache, reveal everything so nothing
     // disappears when someone hits Back.
@@ -80,12 +81,31 @@ export function RevealOnScroll() {
       };
       scan();
 
-      mo = new MutationObserver(scan);
+      // Never scan straight off the mutation. A streamed <Suspense> boundary
+      // lands in the DOM one task before React hydrates it, and MutationObserver
+      // fires on the microtask in between — adding reveal-in there would leave
+      // the DOM ahead of the server HTML at the moment React checks it, which is
+      // exactly the hydration mismatch this defers past.
+      const queueScan = () => {
+        if (scanFrame) return;
+        // Reassigned rather than nested-and-forgotten so the id stays truthy
+        // across both frames — it doubles as the "already queued" guard and as
+        // the handle cleanup cancels.
+        scanFrame = requestAnimationFrame(() => {
+          scanFrame = requestAnimationFrame(() => {
+            scanFrame = 0;
+            scan();
+          });
+        });
+      };
+
+      mo = new MutationObserver(queueScan);
       mo.observe(document.body, { childList: true, subtree: true });
     }));
 
     return () => {
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(scanFrame);
       observer?.disconnect();
       mo?.disconnect();
       window.removeEventListener("pageshow", onPageShow);

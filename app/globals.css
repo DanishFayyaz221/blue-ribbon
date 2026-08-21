@@ -152,6 +152,34 @@ body {
   transform: translateY(-4px);
 }
 
+/* Hovering one card pulls every sibling card's image out of focus, so the
+   pointer target reads as the only sharp thing in the grid. Gated on a real
+   pointer: touch devices have no hover state to recover from, and the blur
+   would stick after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  .focus-peers > * img {
+    /* Replaces the card's own `transition` utility so the scale-on-hover keeps
+       animating alongside the blur instead of being dropped. */
+    transition-property: filter, opacity, transform;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .focus-peers:has(> *:hover) > *:not(:hover) img {
+    filter: blur(5px);
+    opacity: 0.72;
+    /* Overscan hides the soft edge blur leaves against the card's rounded clip. */
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .focus-peers:has(> *:hover) > *:not(:hover) img {
+    filter: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

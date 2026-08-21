@@ -18,7 +18,10 @@ export function OurValues() {
     <section className="relative w-full overflow-hidden bg-brand-navy pt-[clamp(32px,3vw,60px)] pb-[clamp(64px,6vw,120px)]">
 
       <div className="relative z-10 container-page">
-        <h2 className="reveal mx-auto max-w-[960px] text-center font-display font-bold text-white text-[20px] sm:text-[clamp(1.5rem,2.4vw,2.6rem)] leading-[1.25] sm:whitespace-nowrap sm:-translate-x-[clamp(12px,2vw,40px)]">
+        <h2
+          suppressHydrationWarning
+          className="reveal mx-auto max-w-[960px] text-center font-display font-bold text-white text-[20px] sm:text-[clamp(1.5rem,2.4vw,2.6rem)] leading-[1.25] sm:whitespace-nowrap sm:-translate-x-[clamp(12px,2vw,40px)]"
+        >
           <span className="sm:hidden">
             Through our local insight and commitment, we aim to deliver premium results that truly stand out.
           </span>
@@ -47,6 +50,7 @@ export function OurValues() {
           {values.map((v, i) => (
             <div
               key={v.title}
+              suppressHydrationWarning
               className={`reveal reveal-delay-${i + 1} hover-lift rounded-[16px] bg-white/[0.06] p-[20px] sm:p-[clamp(20px,1.8vw,32px)] transition-colors hover:bg-white/[0.09]`}
             >
               <h3 className="font-display text-[16px] sm:text-[17px] font-semibold text-white">

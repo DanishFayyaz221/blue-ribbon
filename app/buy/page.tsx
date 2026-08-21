@@ -186,7 +186,7 @@ export default async function BuyPage({
 
           {hasResults ? (
             <>
-              <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+              <div className="focus-peers mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
                 {items.map((p) => (
                   <PropertyCard key={p.id} {...p} variant="tall" />
                 ))}
@@ -277,7 +277,7 @@ export default async function BuyPage({
                 <ArrowInline />
               </Link>
             </div>
-            <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
+            <div className="focus-peers mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[clamp(12px,1.3vw,24px)]">
               {latest.map((p) => (
                 <PropertyCard key={p.id} {...p} variant="tall" />
               ))}
