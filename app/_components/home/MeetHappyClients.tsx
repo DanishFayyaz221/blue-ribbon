@@ -83,6 +83,9 @@ const testimonials: Testimonial[] = [
 /** Cards per row at the widest breakpoint. */
 const COLUMNS = 3;
 
+/** How long each slide rests before the row advances on its own. */
+const AUTOPLAY_MS = 4500;
+
 export function MeetHappyClients() {
   // Seeded with the desktop count, not the mobile one: the carousel is
   // `hidden sm:block`, so a phone never sees these slides at all, and starting
@@ -103,8 +106,53 @@ export function MeetHappyClients() {
 
   const maxStart = Math.max(0, testimonials.length - visible);
   const safeStart = Math.min(start, maxStart);
-  const handlePrev = () => setStart((s) => (s <= 0 ? maxStart : s - 1));
-  const handleNext = () => setStart((s) => (s >= maxStart ? 0 : s + 1));
+
+  const [paused, setPaused] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  // Bumped on every manual click so the autoplay timer restarts from zero.
+  // Without it the interval keeps its original schedule and can fire a moment
+  // after the visitor clicks, yanking the row out from under them.
+  const [nudge, setNudge] = useState(0);
+
+  const handlePrev = () => {
+    setStart((s) => (s <= 0 ? maxStart : s - 1));
+    setNudge((n) => n + 1);
+  };
+  const handleNext = () => {
+    setStart((s) => (s >= maxStart ? 0 : s + 1));
+    setNudge((n) => n + 1);
+  };
+
+  // Anyone who has asked for reduced motion gets no autoplay at all. WCAG
+  // 2.2.2 treats content that moves on its own as something the visitor must
+  // be able to stop, and a self-advancing carousel is a known trigger for
+  // vestibular disorders.
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduceMotion(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  // A background tab still runs timers. Without this the row would march on
+  // unseen and the visitor would return to a different slide than they left.
+  useEffect(() => {
+    const sync = () => setTabHidden(document.hidden);
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => document.removeEventListener("visibilitychange", sync);
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion || paused || tabHidden || maxStart === 0) return;
+    const id = window.setInterval(
+      () => setStart((s) => (s >= maxStart ? 0 : s + 1)),
+      AUTOPLAY_MS,
+    );
+    return () => window.clearInterval(id);
+  }, [reduceMotion, paused, tabHidden, maxStart, nudge]);
 
   const slideWidthPct = 100 / visible;
   const translatePct = -(safeStart * slideWidthPct);
@@ -131,7 +179,16 @@ export function MeetHappyClients() {
 
       {/* Tablet / desktop: slider carousel with images */}
       <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
-        <div className="relative px-[clamp(8px,1.2vw,20px)]">
+        {/* Pausing on focus as well as hover means a keyboard user tabbing to
+            the arrows gets the same reprieve a mouse user gets. */}
+        <div
+          className="relative px-[clamp(8px,1.2vw,20px)]"
+          aria-roledescription="carousel"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+        >
           <button
             type="button"
             onClick={handlePrev}
