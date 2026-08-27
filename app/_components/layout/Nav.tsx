@@ -146,20 +146,36 @@ export function Nav() {
                 { label: "About Us", href: "/about" },
                 { label: "Contact Us", href: "/contact" },
                 { label: "Property Estimate", href: "/property-report-digital-appraisal" },
-              ].map((link, i) => (
-                <li
-                  key={link.label}
-                  className="drawer-item"
-                  style={{ ["--i" as string]: i }}
-                >
-                  <Link
-                    href={link.href}
-                    className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy"
+              ].map((link, i) => {
+                const active = isActive(pathname, link.href);
+                return (
+                  <li
+                    key={link.label}
+                    className="drawer-item"
+                    style={{ ["--i" as string]: i }}
                   >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+                    {active ? (
+                      // Rendered as a plain span, not a Link — a route change
+                      // to the current page reloads it, which reads as a
+                      // broken click. Dimmed and marked as the current page
+                      // so the visitor can see where they are.
+                      <span
+                        aria-current="page"
+                        className="font-display text-[18px] font-bold text-brand-bunker/40 cursor-default"
+                      >
+                        {link.label}
+                      </span>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
             <div
@@ -202,15 +218,31 @@ export function Nav() {
           <div className="hidden md:block container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
             <div className="grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
               <div className="flex flex-col gap-[14px] lg:col-span-2">
-                {buyLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
-                  >
-                    <span className="relative z-10">{link.label}</span>
-                  </Link>
-                ))}
+                {buyLinks.map((link) => {
+                  const active = isActive(pathname, link.href);
+                  if (active) {
+                    // Dimmed, non-clickable copy of the pill so the visitor
+                    // can see they are already here.
+                    return (
+                      <span
+                        key={link.label}
+                        aria-current="page"
+                        className="relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy/40 font-display text-[15px] font-medium text-white cursor-default"
+                      >
+                        <span className="relative z-10">{link.label}</span>
+                      </span>
+                    );
+                  }
+                  return (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
+                    >
+                      <span className="relative z-10">{link.label}</span>
+                    </Link>
+                  );
+                })}
 
                 <div className="mt-[64px] flex items-center gap-[12px]">
                   <SocialLink label="Facebook" href="#">
@@ -246,12 +278,14 @@ export function Nav() {
               <DrawerColumn
                 title="Own your Australian Dream"
                 links={ownLinks}
+                pathname={pathname}
                 className="lg:col-span-5 lg:col-start-4"
               />
 
               <DrawerColumn
                 title="About Us"
                 links={aboutLinks}
+                pathname={pathname}
                 className="lg:col-span-3 lg:col-start-10"
               />
             </div>
@@ -275,10 +309,14 @@ export function Nav() {
 function DrawerColumn({
   title,
   links,
+  pathname,
   className = "",
 }: {
   title: string;
   links: { label: string; href: string }[];
+  /** Passed in so the column can highlight the link that matches the current
+   *  route. Nav owns the pathname; DrawerColumn only reads it. */
+  pathname: string;
   className?: string;
 }) {
   return (
@@ -287,20 +325,42 @@ function DrawerColumn({
         {title}
       </h3>
       <ul className="mt-[24px] flex flex-col gap-[14px]">
-        {links.map((link) => (
-          <li key={link.label}>
-            <Link
-              href={link.href}
-              className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
-            >
-              {link.label}
-              <ArrowInline />
-            </Link>
-          </li>
-        ))}
+        {links.map((link) => {
+          const active = isActive(pathname, link.href);
+          return (
+            <li key={link.label}>
+              {active ? (
+                <span
+                  aria-current="page"
+                  className="inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker/40 cursor-default"
+                >
+                  {link.label}
+                </span>
+              ) : (
+                <Link
+                  href={link.href}
+                  className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
+                >
+                  {link.label}
+                  <ArrowInline />
+                </Link>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
+}
+
+/**
+ * Returns true when a drawer link's href matches the current route. Root ("/")
+ * demands an exact match — every path starts with "/", so a prefix check
+ * against it would light up every link at once.
+ */
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 function SocialLink({

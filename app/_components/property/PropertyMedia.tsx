@@ -51,6 +51,8 @@ export function PropertyMedia({
           address={address}
           variant={variant}
           fallback={fallback}
+          videoUrl={videoUrl}
+          floorplans={floorplans}
         />
       )}
 

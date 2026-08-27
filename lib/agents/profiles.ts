@@ -32,13 +32,15 @@ export const FALLBACK_PROFILE: AgentProfile = {
 export const AGENT_PROFILES: Record<string, AgentProfile> = {
   "sales@blueribbonre.com.au": {
     role: "Managing Director",
-    // TODO(confirm): inherited from the previous hardcoded page, which
-    // labelled this photo "Ven Kan". Verify before launch.
-    image: "/our-team/our-team.png",
+    image: "/our-team/5.png",
   },
   "ritu@blueribbonre.com.au": {
     role: "Property Manager",
-    // No headshot supplied yet - renders initials.
+    image: "/our-team/8.png",
+  },
+  "neil@blueribbonre.com.au": {
+    role: "Sales Executive / L.R.E.A.",
+    image: "/our-team/7.png",
   },
 };
 

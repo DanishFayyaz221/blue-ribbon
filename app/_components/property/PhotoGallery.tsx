@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export type GalleryImage = { src: string; alt: string };
+export type GalleryFloorplan = { src: string; alt: string };
 
 type Props = {
   images: GalleryImage[];
@@ -17,15 +18,58 @@ type Props = {
   variant?: "collage" | "hero";
   /** Shown when the listing carries no downloaded images. */
   fallback?: string;
+  /**
+   * Optional media that continues the lightbox sequence after the photos.
+   * Passing them here (rather than living behind separate tabs) means a
+   * visitor can arrow from the last photo straight into the video, then
+   * into the floor plans, without leaving the viewer.
+   */
+  videoUrl?: string;
+  floorplans?: GalleryFloorplan[];
 };
 
-export function PhotoGallery({ images, address, variant = "collage", fallback }: Props) {
-  // Which photo the viewer is showing, or null when closed. Holding the index
+/** One slide in the lightbox — a photo, a video, or a floor plan. */
+type Slide =
+  | { kind: "photo"; src: string; alt: string }
+  | { kind: "video"; url: string }
+  | { kind: "floorplan"; src: string; alt: string };
+
+export function PhotoGallery({
+  images,
+  address,
+  variant = "collage",
+  fallback,
+  videoUrl,
+  floorplans = [],
+}: Props) {
+  // Which slide the viewer is showing, or null when closed. Holding the index
   // rather than a boolean lets a click open the viewer on the photo clicked.
   const [openAt, setOpenAt] = useState<number | null>(null);
   const close = useCallback(() => setOpenAt(null), []);
 
   const shown = images.length > 0 ? images : fallback ? [{ src: fallback, alt: address }] : [];
+
+  // Photos first, then the video, then floor plans — same order as the tab
+  // bar reads left-to-right, so "next" past the last photo lands on video and
+  // "next" past that lands on the floor plan.
+  const slides = useMemo<Slide[]>(() => {
+    const photoSlides: Slide[] = shown.map((img) => ({
+      kind: "photo",
+      src: img.src,
+      alt: img.alt,
+    }));
+    const videoSlides: Slide[] =
+      videoUrl && /^https?:\/\//i.test(videoUrl.trim())
+        ? [{ kind: "video", url: videoUrl }]
+        : [];
+    const floorplanSlides: Slide[] = floorplans.map((fp) => ({
+      kind: "floorplan",
+      src: fp.src,
+      alt: fp.alt,
+    }));
+    return [...photoSlides, ...videoSlides, ...floorplanSlides];
+  }, [shown, videoUrl, floorplans]);
+
   if (shown.length === 0) return null;
 
   return (
@@ -36,7 +80,7 @@ export function PhotoGallery({ images, address, variant = "collage", fallback }:
         <Collage images={shown} total={images.length} onOpen={setOpenAt} />
       )}
       {openAt !== null && (
-        <Lightbox images={shown} startAt={openAt} address={address} onClose={close} />
+        <Lightbox slides={slides} startAt={openAt} address={address} onClose={close} />
       )}
     </>
   );
@@ -197,19 +241,23 @@ function GridIcon() {
 }
 
 /**
- * Full-screen viewer: one photo at a time with a thumbnail rail.
+ * Full-screen viewer: one slide at a time with a thumbnail rail.
  *
- * Photos are shown with `object-contain` on a dark backdrop rather than cropped
- * to a tile. Listing photography is framed deliberately, and cropping it to fit
- * a grid hides exactly the parts of a room a renter is trying to judge.
+ * A slide is a photo, the video tour, or a floor plan — the sequence lets a
+ * visitor arrow through everything in one flow rather than switching tabs.
+ *
+ * Photos and floor plans are shown with `object-contain` on a dark backdrop
+ * rather than cropped to a tile. Listing photography is framed deliberately,
+ * and cropping it hides exactly the parts of a room a renter is trying to
+ * judge.
  */
 function Lightbox({
-  images,
+  slides,
   startAt,
   address,
   onClose,
 }: {
-  images: GalleryImage[];
+  slides: Slide[];
   startAt: number;
   address: string;
   onClose: () => void;
@@ -218,7 +266,7 @@ function Lightbox({
   const railRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
 
-  const count = images.length;
+  const count = slides.length;
   const go = useCallback((delta: number) => setIndex((i) => (i + delta + count) % count), [count]);
 
   useEffect(() => {
@@ -249,7 +297,7 @@ function Lightbox({
     });
   }, [index]);
 
-  const current = images[index];
+  const current = slides[index];
 
   const dialog = (
     <div
@@ -292,23 +340,13 @@ function Lightbox({
         onTouchEnd={(e) => {
           if (touchX.current === null) return;
           const dx = e.changedTouches[0].clientX - touchX.current;
-          // Only a deliberate horizontal drag should change photo — a short
+          // Only a deliberate horizontal drag should change slide — a short
           // movement is usually a tap or a vertical scroll.
           if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
           touchX.current = null;
         }}
       >
-        <div className="relative h-full w-full">
-          <Image
-            key={current.src}
-            src={current.src}
-            alt={current.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-contain"
-          />
-        </div>
+        <SlideView slide={current} address={address} />
 
         {count > 1 && (
           <>
@@ -323,18 +361,24 @@ function Lightbox({
           ref={railRef}
           className="no-scrollbar flex shrink-0 gap-[8px] overflow-x-auto px-[clamp(12px,2vw,28px)] py-[14px]"
         >
-          {images.map((img, i) => (
+          {slides.map((s, i) => (
             <button
-              key={img.src}
+              key={i}
               type="button"
               onClick={() => setIndex(i)}
-              aria-label={`View photo ${i + 1}`}
+              aria-label={
+                s.kind === "photo"
+                  ? `View photo ${i + 1}`
+                  : s.kind === "video"
+                    ? "View video tour"
+                    : "View floor plan"
+              }
               aria-current={i === index}
               className={`relative h-[54px] w-[80px] shrink-0 overflow-hidden rounded-[6px] transition ${
                 i === index ? "ring-2 ring-white" : "opacity-55 hover:opacity-100"
               }`}
             >
-              <Image src={img.src} alt="" fill sizes="80px" className="object-cover" />
+              <ThumbView slide={s} />
             </button>
           ))}
         </div>
@@ -345,6 +389,124 @@ function Lightbox({
   // No SSR guard needed: the viewer only mounts after a click, so `document`
   // exists by the time createPortal runs.
   return createPortal(dialog, document.body);
+}
+
+function SlideView({ slide, address }: { slide: Slide; address: string }) {
+  if (slide.kind === "photo") {
+    return (
+      <div className="relative h-full w-full">
+        <Image
+          key={slide.src}
+          src={slide.src}
+          alt={slide.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-contain"
+        />
+      </div>
+    );
+  }
+
+  if (slide.kind === "floorplan") {
+    return (
+      <div className="relative h-full w-full">
+        <Image
+          key={slide.src}
+          src={slide.src}
+          alt={slide.alt}
+          fill
+          sizes="100vw"
+          className="object-contain"
+        />
+      </div>
+    );
+  }
+
+  return <VideoSlide url={slide.url} title={address} />;
+}
+
+function VideoSlide({ url, title }: { url: string; title: string }) {
+  const embed = toEmbedUrl(url);
+  const isDirectFile = /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url);
+
+  return (
+    <div className="relative aspect-video h-full max-h-full w-full max-w-full">
+      {embed ? (
+        <iframe
+          src={embed}
+          title={`${title} — video tour`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 h-full w-full border-0"
+        />
+      ) : isDirectFile ? (
+        <video
+          src={url}
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+          className="h-full w-full object-contain"
+        />
+      ) : (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-[16px] p-[24px] text-center">
+          <p className="font-display text-[15px] text-white/85">
+            This video tour opens in a new tab.
+          </p>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-[44px] items-center justify-center rounded-full bg-white px-[24px] font-display text-[14px] font-semibold text-brand-navy transition hover:bg-brand-soft"
+          >
+            Watch video tour
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Kept in sync with PropertyMedia so both viewers accept the same URLs. */
+function toEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes("youtu.be")) {
+      const id = u.pathname.replace("/", "");
+      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&rel=0`;
+    }
+    if (u.hostname.includes("youtube.com")) {
+      const id =
+        u.searchParams.get("v") ||
+        u.pathname.match(/\/(?:shorts|embed)\/([^/?#]+)/)?.[1];
+      if (id) {
+        return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&rel=0`;
+      }
+    }
+    if (u.hostname.includes("vimeo.com")) {
+      const id = u.pathname.replace("/", "");
+      return `https://player.vimeo.com/video/${id}?autoplay=1&muted=1&loop=1&background=0`;
+    }
+  } catch {}
+  return null;
+}
+
+function ThumbView({ slide }: { slide: Slide }) {
+  if (slide.kind === "photo" || slide.kind === "floorplan") {
+    return <Image src={slide.src} alt="" fill sizes="80px" className="object-cover" />;
+  }
+  // Video thumb: neutral placeholder with a play glyph. Pulling a poster from
+  // YouTube/Vimeo would need per-provider URL parsing at thumbnail size, and
+  // this reads clearly enough for a rail element.
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-brand-navy/80 text-white">
+      <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden>
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </div>
+  );
 }
 
 function NavButton({ side, onClick }: { side: "left" | "right"; onClick: () => void }) {

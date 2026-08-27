@@ -6,7 +6,10 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="font-display text-[13px] sm:text-[14px] font-medium text-brand-bunker/70"
+      // Row-level padding gives every crumb the same vertical hit area. An
+      // inline <a>'s hover zone otherwise clings to the glyph line, so the
+      // link only registered once the pointer reached the underline row.
+      className="font-display text-[13px] sm:text-[14px] font-medium text-brand-bunker/70 py-[6px]"
     >
       <ol className="flex items-center gap-[6px]">
         {items.map((item, i) => {
@@ -14,7 +17,10 @@ export function Breadcrumb({ items }: { items: Crumb[] }) {
           return (
             <li key={`${item.label}-${i}`} className="flex items-center gap-[6px]">
               {item.href && !isLast ? (
-                <Link href={item.href} className="hover:underline">
+                <Link
+                  href={item.href}
+                  className="inline-flex items-center self-stretch hover:underline"
+                >
                   {item.label}
                 </Link>
               ) : (

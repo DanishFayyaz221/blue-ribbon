@@ -72,7 +72,7 @@ export default async function BuyPage({
         <section className="hidden sm:block container-page">
           <div className="relative aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
             <Image
-              src="/contact/contact-us.png"
+              src="/images/home.png"
               alt="Featured property"
               fill
               priority
