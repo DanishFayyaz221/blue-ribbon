@@ -6,13 +6,13 @@ import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
 import { PropertyCard } from "../../_components/property/PropertyCard";
 import { PropertyMedia } from "../../_components/property/PropertyMedia";
-import { ExpandableDescription } from "../../_components/property/ExpandableDescription";
 import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
 import type { ModalAgent } from "../../_components/property/EnquiryModal";
 import { AgentAvatar } from "../../_components/agents/AgentAvatar";
 import { profileFor } from "@/lib/agents/profiles";
 import { amenityLabel } from "@/lib/reaxml/amenities";
+import { ExpandableDescription } from "../../_components/property/ExpandableDescription";
 import {
   getListingBySlug,
   getSimilarListings,
@@ -124,8 +124,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
             <ExpandableDescription
               text={listing.description}
-              className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-[#202020] max-w-[640px]"
-              collapsedHeight={240}
+              className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.6] text-[#202020] max-w-[640px]"
             />
 
             {(listing.amenities.length > 0 || listing.otherFeatures.length > 0) && (
@@ -147,7 +146,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
                   {listing.otherFeatures.map((f) => (
                     <li
                       key={f}
-                      className="rounded-[16px] border border-brand-silver/60 px-[14px] py-[6px] font-display text-[13px] text-brand-bunker/80"
+                      className="rounded-[16px] bg-brand-soft px-[14px] py-[6px] font-display text-[13px] text-brand-bunker"
                     >
                       {f}
                     </li>
@@ -427,7 +426,6 @@ function MobilePropertyView({
         <ExpandableDescription
           text={listing.description}
           className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker/80"
-          collapsedHeight={180}
         />
 
         <div className="mt-[24px] flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
