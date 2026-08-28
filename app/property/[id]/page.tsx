@@ -6,6 +6,7 @@ import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
 import { PropertyCard } from "../../_components/property/PropertyCard";
 import { PropertyMedia } from "../../_components/property/PropertyMedia";
+import { ExpandableDescription } from "../../_components/property/ExpandableDescription";
 import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
 import type { ModalAgent } from "../../_components/property/EnquiryModal";
@@ -121,9 +122,11 @@ export default async function PropertyViewPage({ params }: PageProps) {
               </p>
             )}
 
-            <p className="mt-[clamp(18px,1.45vw,25px)] whitespace-pre-line font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-[#202020] max-w-[640px]">
-              {listing.description}
-            </p>
+            <ExpandableDescription
+              text={listing.description}
+              className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.7] text-[#202020] max-w-[640px]"
+              collapsedHeight={240}
+            />
 
             {(listing.amenities.length > 0 || listing.otherFeatures.length > 0) && (
               <div className="mt-[clamp(24px,2vw,36px)]">
@@ -421,9 +424,11 @@ function MobilePropertyView({
           />
         </div>
 
-        <p className="mt-[20px] whitespace-pre-line font-display text-[13px] leading-[1.6] text-brand-bunker/80">
-          {listing.description}
-        </p>
+        <ExpandableDescription
+          text={listing.description}
+          className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker/80"
+          collapsedHeight={180}
+        />
 
         <div className="mt-[24px] flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
           <span className="font-display text-[13px] text-brand-bunker/70">

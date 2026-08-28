@@ -68,22 +68,8 @@ export default async function BuyPage({
           <MobileFilters basePath="/buy" {...form} features={amenities} />
         </div>
 
-        {/* Desktop hero image */}
-        <section className="hidden sm:block container-page">
-          <div className="relative aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]">
-            <Image
-              src="/images/home.png"
-              alt="Featured property"
-              fill
-              priority
-              sizes="(max-width: 639px) 1px, 100vw"
-              className="object-cover"
-            />
-          </div>
-        </section>
-
         {/* Desktop search bar */}
-        <div className="hidden sm:block container-page mt-[clamp(36px,3.6vw,72px)]">
+        <div className="hidden sm:block container-page mt-0">
           <PropertySearchBar
             action="/buy"
             suburbs={suburbs.map((s) => s.name)}
