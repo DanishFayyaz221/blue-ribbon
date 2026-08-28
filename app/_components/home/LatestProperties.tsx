@@ -5,7 +5,7 @@ import { ArrowInline } from "../ui/ArrowInline";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
-export async function LatestProperties() {
+export async function LatestProperties({ excludeIds = [] }: { excludeIds?: string[] } = {}) {
   // Defer to request time. Without this the home page would try to reach
   // MongoDB during `next build`, and listings would be frozen at build output
   // rather than reflecting the feed.
@@ -14,7 +14,7 @@ export async function LatestProperties() {
   // Deliberately unfiltered by category: until Agentbox re-exports the full
   // book, the feed holds rentals only, and filtering to sales would leave the
   // home page blank.
-  const properties = await getLatestListings(undefined, 3);
+  const properties = await getLatestListings(undefined, 3, excludeIds);
 
   if (properties.length === 0) return null;
 

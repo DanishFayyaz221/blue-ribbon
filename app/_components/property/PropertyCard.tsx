@@ -57,12 +57,17 @@ export function PropertyCard({
   // No background colour: the card sits on white in most sections but on
   // brand-soft in "Best Suited for You", where a hard-coded white would read
   // as a band across the card.
+  // One consistent size for the meta row across every variant of the card.
+  // The row used to shrink to 11px in `dense` mode, sit at 13px in the
+  // default wide/tall cards, and stretch to a 15px clamp on sm+, which made
+  // the bed/bath/car numbers look different from one card to another and read
+  // as a bug. A single size (13px on mobile, 14px on sm+) removes that.
   const renderMeta = (tone: "onLight" | "onDark") =>
     metaStats.length > 0 || type ? (
       <p
-        className={`mt-[8px] flex flex-wrap items-center gap-y-[4px] font-display font-semibold sm:mt-[10px] sm:gap-x-[16px] sm:text-[clamp(12px,0.82vw,15px)] ${
-          dense ? "gap-x-[9px] text-[11px]" : "gap-x-[14px] text-[13px]"
-        } ${tone === "onDark" ? "text-white/80" : "text-brand-navy"}`}
+        className={`mt-[8px] flex flex-wrap items-center gap-x-[14px] gap-y-[4px] font-display text-[13px] font-semibold sm:mt-[10px] sm:gap-x-[16px] sm:text-[14px] ${
+          tone === "onDark" ? "text-white/80" : "text-brand-navy"
+        }`}
       >
         {metaStats.map((stat) => (
           <span key={stat.key} className="inline-flex items-center gap-[5px]">
@@ -124,25 +129,32 @@ export function PropertyCard({
             dense ? "p-[10px]" : "p-[16px]"
           }`}
         >
-          <p
-            className={`font-semibold sm:font-medium leading-[1.4] text-brand-navy sm:line-clamp-none sm:text-[clamp(16px,1.18vw,22px)] ${
-              // Clamped rather than shrunk further: a card this narrow cannot
-              // show a full NSW street address without either three lines of
-              // 11px type or a truncation, and two readable lines beats both.
-              dense ? "line-clamp-2 text-[13px]" : "text-[clamp(16px,1.18vw,22px)]"
-            }`}
-          >
-            {address}
-          </p>
+          {/* Price first, then address: buyers scan for price/status on the
+              portals they compare us against, so the address becomes the
+              secondary line here rather than the loudest element. */}
           {guide && (
             <p
-              className={`mt-[4px] leading-[1.5] text-brand-bunker/70 sm:text-black sm:line-clamp-none sm:text-[clamp(13px,0.95vw,18px)] ${
-                dense ? "line-clamp-1 text-[11px]" : "text-[clamp(13px,0.95vw,18px)]"
+              className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
+                dense
+                  ? "line-clamp-1 text-[15px]"
+                  : "text-[clamp(18px,1.35vw,24px)]"
               }`}
             >
               {guide}
             </p>
           )}
+          <p
+            className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
+              // Clamped rather than shrunk further: a card this narrow cannot
+              // show a full NSW street address without either three lines of
+              // 11px type or a truncation, and two readable lines beats both.
+              dense
+                ? "line-clamp-2 text-[12px]"
+                : "text-[clamp(13px,0.95vw,16px)]"
+            }`}
+          >
+            {address}
+          </p>
           {renderMeta("onLight")}
         </Link>
       </div>
@@ -159,10 +171,14 @@ export function PropertyCard({
           )}
         </div>
         <Link href={href} className="block mt-[clamp(14px,1.4vw,22px)] font-display">
-          <p className="text-[clamp(14px,1.05vw,17px)] font-medium leading-[1.3] text-white">{address}</p>
           {guide && (
-            <p className="text-[clamp(12px,0.85vw,14px)] leading-[1.4] text-white/80 mt-[4px]">{guide}</p>
+            <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
+              {guide}
+            </p>
           )}
+          <p className={`${guide ? "mt-[4px]" : ""} text-[clamp(12px,0.9vw,15px)] font-medium leading-[1.4] text-white/85`}>
+            {address}
+          </p>
           {renderMeta("onDark")}
         </Link>
       </div>
@@ -187,14 +203,14 @@ export function PropertyCard({
         href={href}
         className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]"
       >
-        <p className="line-clamp-3 text-[14px] font-semibold leading-[1.3] text-brand-navy sm:line-clamp-none sm:text-[clamp(16px,1.18vw,22px)] sm:font-medium sm:leading-[1.4]">
-          {address}
-        </p>
         {guide && (
-          <p className="mt-[6px] line-clamp-2 text-[12px] leading-[1.4] text-brand-bunker/70 sm:mt-[4px] sm:line-clamp-none sm:text-[clamp(13px,0.95vw,18px)] sm:leading-[1.5] sm:text-black">
+          <p className="line-clamp-1 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
             {guide}
           </p>
         )}
+        <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
+          {address}
+        </p>
         {renderMeta("onLight")}
       </Link>
     </div>
@@ -217,7 +233,7 @@ const iconProps = {
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "h-[16px] w-[16px] shrink-0 sm:h-[17px] sm:w-[17px]",
+  className: "h-[16px] w-[16px] shrink-0",
 } as const;
 
 function BedIcon() {

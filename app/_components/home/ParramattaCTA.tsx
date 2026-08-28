@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/Button";
+import { CardGallery } from "../property/CardGallery";
 import { getLatestListings } from "@/lib/db/queries";
 
 export async function ParramattaCTA() {
@@ -17,37 +18,35 @@ export async function ParramattaCTA() {
       {/* Mobile (<md): stacked image-on-top */}
       <div className="md:hidden">
         {featured ? (
-          <Link
-            href={featured.href}
-            className="relative block w-full aspect-[4/3] sm:aspect-[16/9]"
-          >
-            <Image
-              src={featured.image}
+          <div className="group relative w-full aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
+            <CardGallery
+              images={featured.gallery.length > 0 ? featured.gallery : [featured.image]}
               alt={featured.address}
-              fill
               sizes="100vw"
-              className="object-cover object-center"
             />
-            <span className="absolute left-[16px] top-[16px] rounded-[8px] bg-brand-navy/90 px-[12px] py-[6px] font-display text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
+            <span className="absolute left-[16px] top-[16px] z-30 rounded-[8px] bg-brand-navy/90 px-[12px] py-[6px] font-display text-[11px] font-semibold uppercase tracking-[0.08em] text-white pointer-events-none">
               Featured Property
             </span>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent px-[16px] pb-[16px] pt-[48px]">
-              <p className="font-display text-[15px] font-semibold leading-[1.3] text-white">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-black/80 via-black/50 to-transparent px-[16px] pb-[16px] pt-[64px]">
+              <p className="font-display text-[15px] font-semibold leading-[1.3] text-white mb-[10px]">
                 {featured.address}
               </p>
-              <span className="group/btn relative isolate mt-[10px] inline-flex h-[42px] items-center justify-center gap-[8px] overflow-hidden rounded-[16px] bg-white px-[22px] font-display text-[13px] font-medium text-black transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:bg-brand-navy hover:text-white hover:before:translate-y-0">
-                <span className="relative z-10 inline-flex items-center gap-[8px]">
-                  View Property
-                  <span aria-hidden className="relative inline-flex h-[12px] w-[12px] shrink-0 overflow-hidden">
-                    <svg viewBox="0 0 24 24" className="absolute inset-0 h-full w-full transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover/btn:rotate-45" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="9 7 17 7 17 15" />
-                    </svg>
-                  </span>
+              <span className="pointer-events-auto inline-flex h-[42px] items-center justify-center gap-[8px] overflow-hidden rounded-[16px] bg-white px-[22px] font-display text-[13px] font-medium text-black">
+                View Property
+                <span aria-hidden className="relative inline-flex h-[12px] w-[12px] shrink-0 overflow-hidden">
+                  <svg viewBox="0 0 24 24" className="absolute inset-0 h-full w-full" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="9 7 17 7 17 15" />
+                  </svg>
                 </span>
               </span>
             </div>
-          </Link>
+            <Link
+              href={featured.href}
+              aria-label={`View property: ${featured.address}`}
+              className="absolute inset-0 z-10"
+            />
+          </div>
         ) : (
           <div className="relative w-full aspect-[4/3] sm:aspect-[16/9]">
             <Image
@@ -109,18 +108,16 @@ export async function ParramattaCTA() {
 
         {/* Featured property (falls back to the stock photo) — right 50% */}
         {featured ? (
-          <Link href={featured.href} className="group absolute inset-y-0 right-0 z-20 block w-1/2 overflow-hidden">
-            <Image
-              src={featured.image}
+          <div className="group absolute inset-y-0 right-0 z-20 w-1/2 overflow-hidden">
+            <CardGallery
+              images={featured.gallery.length > 0 ? featured.gallery : [featured.image]}
               alt={featured.address}
-              fill
               sizes="50vw"
-              className="object-cover object-center transition duration-500 group-hover:scale-[1.02]"
             />
-            <span className="absolute left-[clamp(16px,1.6vw,28px)] top-[clamp(16px,1.6vw,28px)] rounded-[8px] bg-brand-navy/90 px-[14px] py-[7px] font-display text-[clamp(11px,0.8vw,13px)] font-semibold uppercase tracking-[0.08em] text-white">
+            <span className="pointer-events-none absolute left-[clamp(16px,1.6vw,28px)] top-[clamp(16px,1.6vw,28px)] z-30 rounded-[8px] bg-brand-navy/90 px-[14px] py-[7px] font-display text-[clamp(11px,0.8vw,13px)] font-semibold uppercase tracking-[0.08em] text-white">
               Featured Property
             </span>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent px-[clamp(16px,1.8vw,32px)] pb-[clamp(16px,1.8vw,28px)] pt-[clamp(48px,5vw,80px)]">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-black/75 via-black/40 to-transparent px-[clamp(16px,1.8vw,32px)] pb-[clamp(16px,1.8vw,28px)] pt-[clamp(48px,5vw,80px)]">
               <p className="font-display text-[clamp(15px,1.2vw,20px)] font-semibold leading-[1.3] text-white">
                 {featured.address}
               </p>
@@ -140,7 +137,12 @@ export async function ParramattaCTA() {
                 </span>
               </span>
             </div>
-          </Link>
+            <Link
+              href={featured.href}
+              aria-label={`View property: ${featured.address}`}
+              className="absolute inset-0 z-10"
+            />
+          </div>
         ) : (
           <div className="absolute inset-y-0 right-0 w-1/2">
             <Image

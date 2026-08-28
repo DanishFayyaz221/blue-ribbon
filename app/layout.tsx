@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
-import { ConstructionBanner } from "./_components/layout/ConstructionBanner";
 import { RevealOnScroll } from "./_components/ui/RevealOnScroll";
 import { ScrollEffects } from "./_components/ui/ScrollEffects";
 import { SmoothScroll } from "./_components/ui/SmoothScroll";
@@ -56,7 +55,6 @@ export default function RootLayout({
             width and clip stops the horizontal drag reliably, without breaking
             the sticky nav (which `overflow: hidden` would). */}
         <div className="relative w-full max-w-[100vw] overflow-x-clip">
-          <ConstructionBanner />
           {children}
         </div>
       </body>

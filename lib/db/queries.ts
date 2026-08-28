@@ -20,6 +20,35 @@ const AGENT_ID = process.env.REAPIT_AGENT_ID ?? "BRB04";
 const PLACEHOLDER_IMAGE = "/images/latest-properties.png";
 
 /**
+ * Strips agent-entered noise from display text.
+ *
+ * Agentbox lets agents free-type fields like headline and price view.
+ * Some write in ALL CAPS or pile on exclamation marks ("JUST LISTED!!!").
+ * This function cleans the output without touching the stored data.
+ *
+ * Rules applied in order:
+ *  1. Collapse runs of punctuation: "!!!" → "!"  "?!!" → "?"
+ *  2. Strip trailing exclamation marks entirely (a listing headline is not a
+ *     marketing shout on a premium site).
+ *  3. Convert ALL-CAPS strings to title case (leaves mixed-case alone so
+ *     intentional acronyms like "NSW" or "CBD" survive).
+ */
+function cleanText(text: string): string {
+  // 1. Collapse repeated punctuation  e.g. "!!!" → "!"
+  let s = text.replace(/([!?.]){2,}/g, "$1");
+  // 2. Drop trailing exclamation marks
+  s = s.replace(/!+\s*$/, "").trimEnd();
+  // 3. Title-case only if the whole string is uppercase (ignoring spaces/punctuation)
+  const letters = s.replace(/[^a-zA-Z]/g, "");
+  if (letters.length > 0 && letters === letters.toUpperCase()) {
+    s = s.replace(/\S+/g, (word) =>
+      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+  }
+  return s.trim();
+}
+
+/**
  * Absolute origin to serve listing photos from.
  *
  * Empty in production, where nginx serves `/media/` from the same origin. In
@@ -104,9 +133,9 @@ function formatGuide(doc: ListingDoc): string {
   const { price } = doc;
   const isRental = RENTAL_CATEGORIES.includes(doc.category);
 
-  if (!price.display) return price.view ?? "Contact agent";
+  if (!price.display) return price.view ? cleanText(price.view) : "Contact agent";
   // The agency's own wording wins when they have written one.
-  if (price.view) return price.view;
+  if (price.view) return cleanText(price.view);
   if (price.value === undefined) return "Contact agent";
 
   const amount = price.value.toLocaleString("en-AU", {
@@ -526,10 +555,11 @@ export const getListingsWithFallback = cache(
 );
 
 export const getLatestListings = cache(
-  async (categories?: ListingCategory[], limit = 4): Promise<ListingCard[]> => {
+  async (categories?: ListingCategory[], limit = 4, excludeIds: string[] = []): Promise<ListingCard[]> => {
     const col = await listings();
     const filter = publicFilter();
     if (categories?.length) filter.category = { $in: categories };
+    if (excludeIds.length) (filter as Record<string, unknown>)["_id"] = { $nin: excludeIds };
 
     const docs = await col.find(filter).sort({ modTime: -1 }).limit(limit).toArray();
     return docs.map(toCard);
@@ -548,8 +578,8 @@ export const getListingBySlug = cache(async (slug: string): Promise<ListingDetai
 
   return {
     ...toCard(doc),
-    headline: doc.headline ?? doc.address.full,
-    description: doc.description ?? "",
+    headline: cleanText(doc.headline ?? doc.address.full),
+    description: cleanText(doc.description ?? ""),
     suburb: doc.address.suburb,
     state: doc.address.state,
     postcode: doc.address.postcode,

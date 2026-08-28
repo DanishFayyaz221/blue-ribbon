@@ -74,7 +74,7 @@ export function BridgeToHome() {
             suppressHydrationWarning
             className="reveal font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
           >
-            Your bridge to home
+            Our Services
           </h2>
           <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
             {tabs.map((tab) => {

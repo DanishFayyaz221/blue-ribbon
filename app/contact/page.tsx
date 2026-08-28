@@ -49,14 +49,42 @@ export default function ContactPage() {
           <section className="container-page py-[24px]">
             <h2 className="font-display font-bold text-brand-bunker text-[20px]">Our Office</h2>
             <div className="mt-[12px] flex flex-col gap-[5px] font-display text-[12.5px] text-brand-bunker/85">
-              <p>11/76-80 Station Street</p>
-              <p>Wentworthville, NSW 2145</p>
+              <a
+                href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                11/76-80 Station Street, Wentworthville, NSW 2145
+              </a>
               <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
                 sales@blueribbonre.com.au
               </a>
               <a href="tel:1300579093" className="hover:underline">
                 1300 579 093
               </a>
+            </div>
+            <div className="mt-[16px] flex flex-col items-center gap-[3px] text-center">
+              <p className="font-display text-[16px] font-bold text-brand-navy leading-[1.2]">
+                Blue Ribbon Real Estate
+              </p>
+              <a
+                href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-display text-[11px] font-semibold text-blue-600 hover:underline"
+              >
+                Get directions ↗
+              </a>
+            </div>
+            <div className="relative mt-[10px] overflow-hidden rounded-[12px] bg-brand-soft-2" style={{aspectRatio:"16/9"}}>
+              <iframe
+                src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=17&output=embed&iwloc=near"
+                title="Blue Ribbon Real Estate office location"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 h-full w-full border-0"
+              />
             </div>
           </section>
         </div>
@@ -91,7 +119,14 @@ export default function ContactPage() {
                 and consistent excellence in everything that we do.
               </p>
               <div className="mt-[22px] flex flex-col gap-[5px] font-display text-[12.5px] sm:text-[13.5px] font-bold text-[#000000]">
-                <p>11/76-80 Station Street, Wentworthville, NSW 2145</p>
+                <a
+                  href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  11/76-80 Station Street, Wentworthville, NSW 2145
+                </a>
                 <a href="mailto:sales@blueribbonre.com.au" className="font-bold hover:underline">
                   sales@blueribbonre.com.au
                 </a>
@@ -104,9 +139,25 @@ export default function ContactPage() {
         </section>
 
         <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,64px)]">
-          <div className="relative aspect-[16/6] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
+          <div className="mb-[16px] flex flex-col items-center gap-[4px] text-center">
+            <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold text-brand-navy leading-[1.2]">
+              Blue Ribbon Real Estate
+            </p>
+            <p className="font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker/70">
+              11/76-80 Station Street, Wentworthville NSW 2145
+            </p>
+            <a
+              href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display text-[clamp(11px,0.8vw,13px)] font-semibold text-blue-600 hover:underline"
+            >
+              Get directions ↗
+            </a>
+          </div>
+          <div className="relative aspect-video w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
             <iframe
-              src="https://www.google.com/maps?q=11%2F76-80+Station+Street%2C+Wentworthville+NSW+2145&z=16&output=embed"
+              src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=17&output=embed&iwloc=near"
               title="Blue Ribbon Real Estate office location"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

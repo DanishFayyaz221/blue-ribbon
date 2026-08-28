@@ -24,7 +24,7 @@ export async function BestSuitedForYou() {
           suppressHydrationWarning
           className="reveal font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
         >
-          Best Suited for You
+          Explore Properties
         </h2>
 
         {/* Three up only from lg. At md a third column would leave each card

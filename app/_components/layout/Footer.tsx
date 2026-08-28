@@ -16,7 +16,7 @@ const mobileInsightsLinks = [
 const mobileOfficeLinks = [
   { label: "Office Location", href: "/contact" },
   { label: "Meet an Agent", href: "/agents" },
-  { label: "Find an Office", href: "/contact" },
+  { label: "Visit Us", href: "/contact" },
 ];
 
 const buyLinks = [
@@ -40,7 +40,7 @@ const insightsLinks = [
 const officeLinks = [
   { label: "Office Location", href: "/contact" },
   { label: "Find an Agent", href: "/agents" },
-  { label: "Find an Office", href: "/contact" },
+  { label: "Visit Us", href: "/contact" },
 ];
 
 export function Footer() {

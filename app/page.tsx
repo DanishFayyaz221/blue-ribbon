@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { Nav } from "./_components/layout/Nav";
 import { Footer } from "./_components/layout/Footer";
 import { Hero } from "./_components/home/Hero";
@@ -10,8 +11,16 @@ import { MeetHappyClients } from "./_components/home/MeetHappyClients";
 import { SellWithUs } from "./_components/home/SellWithUs";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
 import { SectionBoundary } from "./_components/SectionBoundary";
+import { getListings } from "@/lib/db/queries";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch explore-property IDs so LatestProperties can exclude them.
+  // getListings is cached — BestSuitedForYou calls it with the same args and
+  // hits the cache, so this costs no extra round-trip.
+  await connection();
+  const { items: exploreItems } = await getListings({ sort: "price-asc", perPage: 6 }).catch(() => ({ items: [] }));
+  const exploreIds = exploreItems.map((p) => p.id);
+
   return (
     <div className="min-h-screen bg-white">
       <Nav />
@@ -44,7 +53,7 @@ export default function Home() {
         </SectionBoundary>
         <SectionBoundary>
           <Suspense fallback={null}>
-            <LatestProperties />
+            <LatestProperties excludeIds={exploreIds} />
           </Suspense>
         </SectionBoundary>
         <MeetHappyClients />

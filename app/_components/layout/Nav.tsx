@@ -15,7 +15,7 @@ const buyLinks = [
 const ownLinks = [
   { label: "Find a Property Manager", href: "/agents" },
   { label: "Find an Agent", href: "/agents" },
-  { label: "Find an Office", href: "/contact" },
+  { label: "Visit Us", href: "/contact" },
 ];
 
 const aboutLinks = [

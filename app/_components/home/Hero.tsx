@@ -82,7 +82,7 @@ export function Hero() {
             href="/property-report-digital-appraisal"
             className="animate-fade-up [animation-delay:340ms] flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/40 hover:scale-[1.02]"
           >
-            Get your property estimate in just 9 seconds!
+            Get an instant property estimate
           </Link>
         </div>
       </div>
