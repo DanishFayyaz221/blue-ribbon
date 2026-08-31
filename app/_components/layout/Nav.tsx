@@ -186,7 +186,10 @@ export function Nav() {
                 <SocialLink label="Facebook" href="#">
                   <FacebookIcon />
                 </SocialLink>
-                <SocialLink label="YouTube" href="#">
+                <SocialLink
+                  label="YouTube"
+                  href="https://youtube.com/@blueribbonrealestate"
+                >
                   <YouTubeIcon />
                 </SocialLink>
                 <SocialLink
@@ -248,7 +251,10 @@ export function Nav() {
                   <SocialLink label="Facebook" href="#">
                     <FacebookIcon />
                   </SocialLink>
-                  <SocialLink label="YouTube" href="#">
+                  <SocialLink
+                    label="YouTube"
+                    href="https://youtube.com/@blueribbonrealestate"
+                  >
                     <YouTubeIcon />
                   </SocialLink>
                   <SocialLink

@@ -77,9 +77,9 @@ export default function ContactPage() {
                 Get directions ↗
               </a>
             </div>
-            <div className="relative mt-[10px] overflow-hidden rounded-[12px] bg-brand-soft-2" style={{aspectRatio:"16/9"}}>
+            <div className="relative mt-[10px] overflow-hidden rounded-[12px] bg-brand-soft-2" style={{aspectRatio:"4/3"}}>
               <iframe
-                src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=17&output=embed&iwloc=near"
+                src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=16&output=embed"
                 title="Blue Ribbon Real Estate office location"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

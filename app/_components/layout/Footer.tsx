@@ -8,14 +8,14 @@ const mobileAboutLinks = [
 ];
 
 const mobileInsightsLinks = [
-  { label: "Sell your Property", href: "/property-report-digital-appraisal" },
-  { label: "Market Updates", href: "/buy" },
-  { label: "Newsletter", href: "#newsletter" },
+  { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
+  { label: "Our Latest Properties", href: "/buy" },
+  { label: "BlueRibbon Search", href: "/buy" },
 ];
 
 const mobileOfficeLinks = [
   { label: "Office Location", href: "/contact" },
-  { label: "Meet an Agent", href: "/agents" },
+  { label: "Find an Agent", href: "/agents" },
   { label: "Visit Us", href: "/contact" },
 ];
 
@@ -141,7 +141,10 @@ function DesktopFooter() {
               <SocialLink label="Facebook" href="#">
                 <FacebookIcon />
               </SocialLink>
-              <SocialLink label="YouTube" href="#">
+              <SocialLink
+                label="YouTube"
+                href="https://youtube.com/@blueribbonrealestate"
+              >
                 <YouTubeIcon />
               </SocialLink>
               <SocialLink

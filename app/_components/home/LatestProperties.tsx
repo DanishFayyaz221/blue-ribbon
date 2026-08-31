@@ -43,13 +43,13 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
 
         {/* Mobile: horizontal-scroll carousel */}
         <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
-          <DragScroll className="no-scrollbar flex snap-x snap-mandatory gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
+          <DragScroll className="no-scrollbar flex snap-x snap-mandatory items-stretch gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
             {properties.map((p) => (
               <div
                 key={p.id}
-                className="flex snap-start shrink-0 basis-[78%]"
+                className="flex snap-start shrink-0 w-[78%]"
               >
-                <PropertyCard {...p} variant="wide" />
+                <PropertyCard {...p} variant="wide" dense />
               </div>
             ))}
           </DragScroll>

@@ -457,9 +457,9 @@ export function AppraisalFlow({
               </div>
 
               <section className="container-page pt-[clamp(32px,3.15vw,64px)] pb-[clamp(48px,4vw,80px)]">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-center">
+                <div className="flex flex-col items-stretch gap-[22px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
                   {/* LEFT COLUMN — Address + Property value range */}
-                  <div className="flex flex-col items-center pt-[clamp(32px,4vw,64px)] lg:pr-[clamp(8px,1vw,16px)]">
+                  <div className="mx-auto flex w-full max-w-[640px] flex-col items-center pt-[clamp(32px,4vw,64px)] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(108px,8vw,160px)]">
                     <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.4rem,1.95vw,2rem)] leading-[1.2] tracking-[-0.01em]">
                       Parade/43 Hopetoun Avenue,
                       <br />
@@ -511,7 +511,7 @@ export function AppraisalFlow({
                   </div>
 
                   {/* RIGHT COLUMN — "One last question!" card */}
-                  <aside className="w-full max-w-[clamp(350px,29vw,420px)] justify-self-start lg:ml-[clamp(8px,1vw,16px)] rounded-[clamp(18px,1.6vw,26px)] bg-white p-[clamp(22px,2.1vw,32px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
+                  <aside className="relative right-[clamp(10px,2vw,36px)] mx-auto w-full max-w-[420px] rounded-[clamp(18px,1.6vw,26px)] bg-white p-[clamp(22px,2.1vw,32px)] shadow-[16px_24px_50px_-12px_rgba(0,0,0,0.18)]">
                     <h2 className="mt-[clamp(18px,2vw,30px)] text-center font-display font-light text-[#000000] text-[clamp(20px,1.8vw,28px)] leading-[1.2]">
                       One last question!
                     </h2>

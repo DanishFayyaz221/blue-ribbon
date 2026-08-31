@@ -75,7 +75,7 @@ export function PhotoGallery({
   return (
     <>
       {variant === "hero" ? (
-        <HeroImage image={shown[0]} count={images.length} onOpen={() => setOpenAt(0)} />
+        <HeroImage images={shown} onOpen={setOpenAt} />
       ) : (
         <Collage images={shown} total={images.length} onOpen={setOpenAt} />
       )}
@@ -183,36 +183,90 @@ function Tile({
 }
 
 function HeroImage({
-  image,
-  count,
+  images,
   onOpen,
 }: {
-  image: GalleryImage;
-  count: number;
-  onOpen: () => void;
+  images: GalleryImage[];
+  onOpen: (index: number) => void;
 }) {
+  const [index, setIndex] = useState(0);
+  const count = images.length;
+  const current = images[index];
+
+  const go = (delta: number) =>
+    setIndex((i) => (i + delta + count) % count);
+
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      aria-label="Open photo gallery"
-      className="relative block aspect-[16/11] w-full overflow-hidden rounded-[14px]"
-    >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        priority
-        sizes="(max-width: 639px) 100vw, 1px"
-        className="object-cover"
-      />
+    <div className="relative aspect-[16/11] w-full overflow-hidden rounded-[14px]">
+      <button
+        type="button"
+        onClick={() => onOpen(index)}
+        aria-label="Open photo gallery"
+        className="absolute inset-0 block"
+      >
+        <Image
+          src={current.src}
+          alt={current.alt}
+          fill
+          priority
+          sizes="(max-width: 639px) 100vw, 1px"
+          className="object-cover"
+        />
+      </button>
+
       {count > 1 && (
-        <span className="absolute bottom-[12px] right-[12px] flex items-center gap-[6px] rounded-[8px] bg-black/60 px-[10px] py-[6px] font-display text-[12px] font-medium text-white">
-          <GridIcon />
-          {count}
-        </span>
+        <>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              go(-1);
+            }}
+            aria-label="Previous photo"
+            className="absolute left-[10px] top-1/2 flex h-[36px] w-[36px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-bunker shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition hover:bg-white"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-[18px] w-[18px]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              go(1);
+            }}
+            aria-label="Next photo"
+            className="absolute right-[10px] top-1/2 flex h-[36px] w-[36px] -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-brand-bunker shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition hover:bg-white"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-[18px] w-[18px]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+          <span className="pointer-events-none absolute bottom-[12px] right-[12px] flex items-center gap-[6px] rounded-[8px] bg-black/60 px-[10px] py-[6px] font-display text-[12px] font-medium text-white">
+            <GridIcon />
+            {index + 1} / {count}
+          </span>
+        </>
       )}
-    </button>
+    </div>
   );
 }
 

@@ -108,13 +108,14 @@ export function PropertyCard({
         aria-hidden
         tabIndex={-1}
         className="absolute inset-0 z-10"
+        style={{ touchAction: "pan-x pan-y" }}
       />
     </>
   );
 
   if (variant === "wide") {
     return (
-      <div className="group block w-full overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:rounded-[clamp(16px,1.35vw,24px)] sm:border-0 sm:bg-transparent sm:overflow-visible">
+      <div className="group flex h-full w-full flex-col overflow-hidden rounded-[16px] border border-brand-silver/60 bg-white sm:block sm:h-auto sm:rounded-[clamp(16px,1.35vw,24px)] sm:border-0 sm:bg-transparent sm:overflow-visible">
         <div
           className={`relative ${aspect ?? "aspect-[15/8]"} w-full overflow-hidden sm:rounded-[clamp(16px,1.35vw,24px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]`}
         >
