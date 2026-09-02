@@ -21,6 +21,9 @@ function actionFor(deal: DealType): string {
   return "/buy";
 }
 
+const bedOptions = ["Any", "1", "2", "3", "4", "5+"] as const;
+type BedOption = (typeof bedOptions)[number];
+
 export function Hero() {
   return (
     <section className="relative w-full overflow-hidden">
@@ -63,16 +66,11 @@ export function Hero() {
             otherwise paint over it — both blocks are absolute siblings, so
             without this the later one in the DOM wins. */}
         <div className="container-page absolute inset-x-0 bottom-[max(25%,132px)] z-20">
-          <h1 className="animate-fade-up text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] sm:text-[clamp(1.5rem,2vw,2.25rem)] leading-[1.1] tracking-[-0.01em]">
-            <span className="block sm:inline">Own Your</span>{" "}
-            <span className="block text-white sm:inline sm:text-brand-sky">Australian Dream</span>
-          </h1>
-
-          <div className="animate-fade-up [animation-delay:180ms] mt-[clamp(22px,2.5vw,42px)] hidden sm:block">
+          <div className="animate-fade-up [animation-delay:180ms] hidden sm:block">
             <SearchBar />
           </div>
 
-          <div className="animate-fade-up [animation-delay:180ms] mt-[24px] sm:hidden">
+          <div className="animate-fade-up [animation-delay:180ms] sm:hidden">
             <MobileSearch />
           </div>
         </div>
@@ -94,9 +92,15 @@ function SearchBar() {
   const [deal, setDeal] = useState<DealType>("Buy");
   const [dealOpen, setDealOpen] = useState(false);
   const [surroundings, setSurroundings] = useState(true);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
+  const [beds, setBeds] = useState<BedOption>("Any");
   const inputRef = useRef<HTMLInputElement>(null);
   const dealButtonRef = useRef<HTMLButtonElement>(null);
   const dealMenuRef = useRef<HTMLUListElement>(null);
+  const filtersButtonRef = useRef<HTMLButtonElement>(null);
+  const filtersMenuRef = useRef<HTMLDivElement>(null);
 
   // Dismiss on click-away and Escape. Toggle and menu are tested separately
   // because the menu no longer sits inside the button's own cell.
@@ -118,6 +122,25 @@ function SearchBar() {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [dealOpen]);
+
+  useEffect(() => {
+    if (!filtersOpen) return;
+    const onPointerDown = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (filtersButtonRef.current?.contains(target)) return;
+      if (filtersMenuRef.current?.contains(target)) return;
+      setFiltersOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFiltersOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [filtersOpen]);
 
   useEffect(() => {
     const input = inputRef.current;
@@ -201,7 +224,15 @@ function SearchBar() {
               Surrounding suburbs
             </span>
           </label>
-          <button type="button" aria-label="Filters" className="text-black hover:opacity-70">
+          <button
+            ref={filtersButtonRef}
+            type="button"
+            onClick={() => setFiltersOpen((v) => !v)}
+            aria-label="Filters"
+            aria-expanded={filtersOpen}
+            aria-haspopup="dialog"
+            className="text-black hover:opacity-70"
+          >
             <svg
               viewBox="0 0 24 24"
               className="h-[18px] w-[20px] lg:h-[20px] lg:w-[22px]"
@@ -243,6 +274,94 @@ function SearchBar() {
         MobileSearch below that), so the form is always a single row here and
         top-full lands directly under the Buy cell.
       */}
+      {min && <input type="hidden" name="min" value={min} />}
+      {max && <input type="hidden" name="max" value={max} />}
+      {beds !== "Any" && (
+        <input type="hidden" name="beds" value={beds === "5+" ? "5" : beds} />
+      )}
+
+      {filtersOpen && (
+        <div
+          ref={filtersMenuRef}
+          role="dialog"
+          aria-label="More filters"
+          className="animate-menu-in absolute right-0 top-full z-30 mt-[10px] w-[300px] rounded-[18px] border border-black/[0.06] bg-white p-[16px] shadow-[0_20px_44px_-14px_rgba(0,31,77,0.30),0_2px_6px_rgba(0,0,0,0.05)] lg:w-[340px]"
+        >
+          <p className="font-display text-[12px] font-semibold uppercase tracking-[0.08em] text-brand-bunker/70">
+            Price range
+          </p>
+          <div className="mt-[10px] flex items-center gap-[8px]">
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              value={min}
+              onChange={(e) => setMin(e.target.value)}
+              placeholder="Min"
+              className="h-[38px] w-full rounded-[10px] border border-brand-silver bg-white px-[12px] font-display text-[13px] text-black placeholder:text-brand-graychat focus:outline-none focus:border-brand-navy"
+            />
+            <span className="font-display text-[13px] text-brand-bunker/60">to</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              value={max}
+              onChange={(e) => setMax(e.target.value)}
+              placeholder="Max"
+              className="h-[38px] w-full rounded-[10px] border border-brand-silver bg-white px-[12px] font-display text-[13px] text-black placeholder:text-brand-graychat focus:outline-none focus:border-brand-navy"
+            />
+          </div>
+
+          <p className="mt-[16px] font-display text-[12px] font-semibold uppercase tracking-[0.08em] text-brand-bunker/70">
+            Bedrooms
+          </p>
+          <div className="mt-[10px] flex flex-wrap gap-[6px]">
+            {bedOptions.map((b) => {
+              const active = beds === b;
+              return (
+                <button
+                  key={b}
+                  type="button"
+                  onClick={() => setBeds(b)}
+                  className={`h-[34px] min-w-[42px] rounded-[8px] border px-[10px] font-display text-[13px] font-medium transition ${
+                    active
+                      ? "border-brand-navy bg-brand-navy text-white"
+                      : "border-brand-silver bg-white text-brand-bunker hover:border-brand-navy/60"
+                  }`}
+                >
+                  {b}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-[16px] flex items-center justify-between gap-[10px]">
+            <button
+              type="button"
+              onClick={() => {
+                setMin("");
+                setMax("");
+                setBeds("Any");
+              }}
+              className="font-display text-[13px] font-medium text-brand-bunker/70 underline underline-offset-4 hover:text-brand-navy"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                const form = e.currentTarget.closest("form");
+                setFiltersOpen(false);
+                form?.requestSubmit();
+              }}
+              className="h-[38px] rounded-[10px] bg-brand-navy px-[18px] font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      )}
+
       {dealOpen && (
         <ul
           ref={dealMenuRef}

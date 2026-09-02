@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowInline } from "../ui/ArrowInline";
 
@@ -13,8 +13,8 @@ const buyLinks = [
 ];
 
 const ownLinks = [
-  { label: "Find a Property Manager", href: "/agents" },
-  { label: "Find an Agent", href: "/agents" },
+  { label: "Get your property estimate within 9 seconds", href: "/property-report-digital-appraisal" },
+  { label: "Contact Your Agent", href: "/agents" },
   { label: "Visit Us", href: "/contact" },
 ];
 
@@ -26,14 +26,29 @@ const aboutLinks = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Close the drawer only once the new route has actually rendered, so the
   // drawer stays open (and covers the spinner-y interim) while Next.js is
   // loading the next page.
   useEffect(() => {
     setOpen(false);
+    setClosing(false);
   }, [pathname]);
+
+  /** Play the exit animation, THEN navigate. Otherwise Next swaps the page in
+      before the drawer has slid out and the transition reads as a hard cut. */
+  const closeAndNavigate = (href: string) => {
+    if (closing) return;
+    setClosing(true);
+    // Match the CSS animation duration (drawer-out is 400ms). Slight buffer so
+    // the frame lands on the fully-closed pose before nav commits.
+    window.setTimeout(() => {
+      router.push(href);
+    }, 380);
+  };
 
   useEffect(() => {
     if (open) {
@@ -56,7 +71,7 @@ export function Nav() {
   return (
     <>
       <nav className="nav-shrink sticky top-0 z-30 w-full bg-white overflow-visible">
-        <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
+        <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between gap-[16px]">
           <Link href="/" className="block shrink-0">
             {/* The file's real pixels. They are what the browser reserves
                 space from before the image decodes: with the old 260x64 it
@@ -72,6 +87,9 @@ export function Nav() {
               className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
             />
           </Link>
+          <h1 className="hidden sm:block flex-1 text-center font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.6vw,1.9rem)] leading-[1.15] tracking-[-0.01em]">
+            Own Your <span className="text-brand-sky">Australian Dream</span>
+          </h1>
           <button
             type="button"
             aria-label="Open menu"
@@ -98,14 +116,27 @@ export function Nav() {
 
       {open && (
         <div
-          className="animate-drawer-overlay md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto"
+          className={`${closing ? "animate-drawer-overlay-out" : "animate-drawer-overlay"} md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
           onClick={(e) => {
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
-          <div className="animate-drawer-in md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:shadow-none">
+          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:shadow-none`}>
           <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
-            <Link href="/" className="block shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                // Already on home — just close the drawer smoothly.
+                if (pathname === "/") {
+                  setClosing(true);
+                  window.setTimeout(() => setOpen(false), 380);
+                  return;
+                }
+                closeAndNavigate("/");
+              }}
+              aria-label="Go to home"
+              className="block shrink-0 cursor-pointer"
+            >
               <Image
                 src="/logo/LOGO.png"
                 alt="Blue Ribbon Real Estate"
@@ -113,7 +144,7 @@ export function Nav() {
                 height={821}
                 className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
               />
-            </Link>
+            </button>
             <button
               type="button"
               aria-label="Close menu"
@@ -166,12 +197,13 @@ export function Nav() {
                         {link.label}
                       </span>
                     ) : (
-                      <Link
-                        href={link.href}
-                        className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy"
+                      <button
+                        type="button"
+                        onClick={() => closeAndNavigate(link.href)}
+                        className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy text-left"
                       >
                         {link.label}
-                      </Link>
+                      </button>
                     )}
                   </li>
                 );
@@ -205,20 +237,27 @@ export function Nav() {
                   <InstagramIcon />
                 </SocialLink>
               </div>
-              <Image
-                src="/images/footer%20image.png"
-                alt="Rate My Agent"
-                width={1076}
-                height={324}
-                quality={100}
-                sizes="180px"
-                className="mt-[16px] h-auto w-[180px]"
-              />
+              <button
+                type="button"
+                onClick={() => closeAndNavigate("/agents")}
+                aria-label="Meet our team"
+                className="mt-[16px] block cursor-pointer transition hover:opacity-80"
+              >
+                <Image
+                  src="/images/footer%20image.png"
+                  alt="Rate My Agent"
+                  width={1076}
+                  height={324}
+                  quality={100}
+                  sizes="180px"
+                  className="h-auto w-[180px]"
+                />
+              </button>
             </div>
           </div>
 
           {/* Tablet / desktop drawer */}
-          <div className="hidden md:block container-page pb-[10rem] pt-[6vw] lg:pt-[10vw]">
+          <div className="hidden md:block container-page pb-[304px] pt-[6vw] lg:pt-[10vw]">
             <div className="grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
               <div className="flex flex-col gap-[14px] lg:col-span-2">
                 {buyLinks.map((link) => {
@@ -237,13 +276,14 @@ export function Nav() {
                     );
                   }
                   return (
-                    <Link
+                    <button
                       key={link.label}
-                      href={link.href}
+                      type="button"
+                      onClick={() => closeAndNavigate(link.href)}
                       className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
                     >
                       <span className="relative z-10">{link.label}</span>
-                    </Link>
+                    </button>
                   );
                 })}
 
@@ -270,21 +310,29 @@ export function Nav() {
                     <InstagramIcon />
                   </SocialLink>
                 </div>
-                <Image
-                  src="/images/footer%20image.png"
-                  alt="Rate My Agent"
-                  width={1076}
-                  height={324}
-                  quality={100}
-                  sizes="180px"
-                  className="mt-[16px] h-auto w-[180px]"
-                />
+                <button
+                  type="button"
+                  onClick={() => closeAndNavigate("/agents")}
+                  aria-label="Meet our team"
+                  className="mt-[16px] block cursor-pointer transition hover:opacity-80"
+                >
+                  <Image
+                    src="/images/footer%20image.png"
+                    alt="Rate My Agent"
+                    width={1076}
+                    height={324}
+                    quality={100}
+                    sizes="180px"
+                    className="h-auto w-[180px]"
+                  />
+                </button>
               </div>
 
               <DrawerColumn
                 title="Own your Australian Dream"
                 links={ownLinks}
                 pathname={pathname}
+                onNavigate={closeAndNavigate}
                 className="lg:col-span-5 lg:col-start-4"
               />
 
@@ -292,6 +340,7 @@ export function Nav() {
                 title="About Us"
                 links={aboutLinks}
                 pathname={pathname}
+                onNavigate={closeAndNavigate}
                 className="lg:col-span-3 lg:col-start-10"
               />
             </div>
@@ -316,6 +365,7 @@ function DrawerColumn({
   title,
   links,
   pathname,
+  onNavigate,
   className = "",
 }: {
   title: string;
@@ -323,6 +373,7 @@ function DrawerColumn({
   /** Passed in so the column can highlight the link that matches the current
    *  route. Nav owns the pathname; DrawerColumn only reads it. */
   pathname: string;
+  onNavigate: (href: string) => void;
   className?: string;
 }) {
   return (
@@ -331,29 +382,19 @@ function DrawerColumn({
         {title}
       </h3>
       <ul className="mt-[24px] flex flex-col gap-[14px]">
-        {links.map((link) => {
-          const active = isActive(pathname, link.href);
-          return (
-            <li key={link.label}>
-              {active ? (
-                <span
-                  aria-current="page"
-                  className="inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker/40 cursor-default"
-                >
-                  {link.label}
-                </span>
-              ) : (
-                <Link
-                  href={link.href}
-                  className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
-                >
-                  {link.label}
-                  <ArrowInline />
-                </Link>
-              )}
-            </li>
-          );
-        })}
+        {links.map((link) => (
+          <li key={link.label}>
+            <button
+              type="button"
+              onClick={() => onNavigate(link.href)}
+              aria-current={isActive(pathname, link.href) ? "page" : undefined}
+              className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy text-left"
+            >
+              {link.label}
+              <ArrowInline />
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   );

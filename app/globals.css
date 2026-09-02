@@ -98,9 +98,23 @@ body {
   }
 }
 
+@keyframes br-drawer-out {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
 @keyframes br-drawer-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes br-drawer-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 @keyframes br-drawer-item {
@@ -119,9 +133,37 @@ body {
   box-shadow: 24px 0 60px -12px rgba(0, 31, 77, 0.28);
 }
 
+.animate-drawer-out {
+  animation: br-drawer-out 0.4s cubic-bezier(0.4, 0, 1, 1) both;
+  box-shadow: 24px 0 60px -12px rgba(0, 31, 77, 0.28);
+}
+
 .animate-drawer-overlay {
   animation: br-drawer-fade 0.4s ease-out both;
 }
+
+.animate-drawer-overlay-out {
+  animation: br-drawer-fade-out 0.4s ease-out both;
+}
+
+/* Applied to <html> while a footer deal-button navigation is in flight. Fades
+   and lifts the current page slightly so the route change reads as a
+   deliberate transition, not a hard cut. */
+html.page-leaving body {
+  animation: br-page-leaving 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes br-page-leaving {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
 
 .drawer-item {
   animation: br-drawer-item 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -141,9 +183,15 @@ body {
   }
 }
 
-.reveal {
+/* The hidden state is gated on `html.reveal-armed`. That class is added by an
+   inline script during initial HTML parsing, and *removed* on the pageshow
+   event so back/forward navigations don't leave the page invisible when the
+   IntersectionObserver isn't re-run. */
+html.reveal-armed .reveal {
   opacity: 0;
   transform: translate3d(0, 28px, 0);
+}
+.reveal {
   transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
@@ -159,9 +207,11 @@ body {
 .reveal-delay-3 { transition-delay: 300ms; }
 .reveal-delay-4 { transition-delay: 400ms; }
 
-.reveal-scale {
+html.reveal-armed .reveal-scale {
   opacity: 0;
   transform: translate3d(0, 20px, 0) scale(0.985);
+}
+.reveal-scale {
   transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;

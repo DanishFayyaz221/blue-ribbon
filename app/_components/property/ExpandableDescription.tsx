@@ -144,7 +144,7 @@ export function ExpandableDescription({
 
           transition:
             fullHeight !== null
-              ? "height 0.4s cubic-bezier(0.4, 0, 0.2, 1)"
+              ? "height 0.6s cubic-bezier(0.22, 1, 0.36, 1)"
               : "none",
 
           /*
@@ -161,20 +161,25 @@ export function ExpandableDescription({
           </p>
         </div>
 
-        {needsCollapse && !expanded && (
-          <div
-            className="
-              pointer-events-none
-              absolute
-              inset-x-0
-              bottom-0
-              h-20
-              bg-linear-to-t
-              from-white
-              to-transparent
-            "
-          />
-        )}
+        <div
+          aria-hidden
+          className="
+            pointer-events-none
+            absolute
+            inset-x-0
+            bottom-0
+            h-20
+            bg-linear-to-t
+            from-white
+            to-transparent
+            transition-opacity
+            duration-500
+            ease-out
+          "
+          style={{
+            opacity: needsCollapse && !expanded ? 1 : 0,
+          }}
+        />
       </div>
 
       {needsCollapse && (
@@ -191,6 +196,7 @@ export function ExpandableDescription({
               h-[38px]
               items-center
               justify-center
+              gap-[6px]
               rounded-full
               border
               border-brand-navy/20
@@ -200,8 +206,10 @@ export function ExpandableDescription({
               text-[13px]
               font-semibold
               text-brand-navy
-              transition
+              transition-all
+              duration-300
               hover:bg-brand-soft
+              hover:border-brand-navy/40
             "
           >
             {expanded ? "View less" : "View more"}

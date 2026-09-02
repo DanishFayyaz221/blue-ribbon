@@ -333,14 +333,19 @@ type AgentProps = ListingDetail["agents"][number];
 
 function AgentMini({ name, email, mobile, phone }: AgentProps) {
   return (
-    <article className="overflow-hidden">
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[12px] bg-brand-bunker/80">
-        <AgentAvatar
-          name={name}
-          image={profileFor(email).image}
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-      </div>
+    <article className="group overflow-hidden">
+      <a
+        href={email ? `mailto:${email}` : undefined}
+        className="relative block aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-[12px] bg-brand-bunker/80 transition duration-500 group-hover:shadow-[0_12px_28px_-8px_rgba(0,31,77,0.35)]"
+      >
+        <div className="absolute inset-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
+          <AgentAvatar
+            name={name}
+            image={profileFor(email).image}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </a>
       <p className="mt-[12px] font-display text-[14px] font-semibold text-brand-bunker">{name}</p>
       {(mobile || phone) && (
         <a

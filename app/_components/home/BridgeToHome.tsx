@@ -84,11 +84,11 @@ export function BridgeToHome() {
                   key={tab}
                   type="button"
                   onClick={() => setActive(tab)}
-                  className="relative flex h-full min-w-[110px] sm:min-w-[180px] items-center justify-center px-[8px]"
+                  className="group relative flex h-full min-w-[110px] sm:min-w-[180px] cursor-pointer items-center justify-center px-[8px]"
                 >
                   <span
-                    className={`font-display text-[15px] sm:text-[18px] lg:text-[20px] font-medium tracking-[0.02em] ${
-                      isActive ? "text-brand-bunker" : "text-black/70"
+                    className={`relative z-10 font-display text-[15px] sm:text-[18px] lg:text-[20px] font-medium tracking-[0.02em] transition-transform duration-300 ease-out group-hover:-translate-y-[2px] group-active:translate-y-0 ${
+                      isActive ? "text-brand-bunker" : "text-black/70 group-hover:text-brand-bunker"
                     }`}
                   >
                     {tab}

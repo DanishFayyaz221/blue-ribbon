@@ -17,6 +17,27 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
+    id: 4,
+    image: "/reviews/4.png",
+    quote:
+      "Best real estate ever!! Fantastic experience with this real estate. They were so helpful and lovely and they got us a beautiful place to rent.",
+    name: "Mish C",
+    title: "Satisfied Client",
+    rating: 4.5,
+    avatarBg: "#EF5350",
+    avatarImage: "/reviews/mishi.png",
+  },
+  {
+    id: 6,
+    image: "/reviews/6.png",
+    quote:
+      "Outstanding experience with Blue Ribbon. Can’t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
+    name: "Timothy Lambert",
+    title: "Local Guide",
+    rating: 5,
+    avatarBg: "#EC407A",
+  },
+  {
     id: 1,
     image: "/reviews/1.png",
     quote:
@@ -47,17 +68,6 @@ const testimonials: Testimonial[] = [
     avatarBg: "#5C6BC0",
   },
   {
-    id: 4,
-    image: "/reviews/4.png",
-    quote:
-      "Best real estate ever!! Fantastic experience with this real estate. They were so helpful and lovely and they got us a beautiful place to rent.",
-    name: "Mish C",
-    title: "Satisfied Client",
-    rating: 4.5,
-    avatarBg: "#EF5350",
-    avatarImage: "/reviews/mishi.png",
-  },
-  {
     id: 5,
     image: "/reviews/5.png",
     quote:
@@ -67,16 +77,6 @@ const testimonials: Testimonial[] = [
     rating: 5,
     avatarBg: "#EC407A",
     avatarImage: "/reviews/55.png",
-  },
-  {
-    id: 6,
-    image: "/reviews/6.png",
-    quote:
-      "Outstanding experience with Blue Ribbon. Can’t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
-    name: "Timothy Lambert",
-    title: "Local Guide",
-    rating: 5,
-    avatarBg: "#EC407A",
   },
 ];
 

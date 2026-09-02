@@ -29,7 +29,7 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
             suppressHydrationWarning
             className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
           >
-            Our latest Properties
+            More Properties
           </h2>
           <Link
             href="/buy"

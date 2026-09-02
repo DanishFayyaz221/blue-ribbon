@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FooterDealButtons } from "./FooterDealButtons";
 
 const mobileAboutLinks = [
   { label: "Our Story", href: "/about" },
@@ -11,12 +12,6 @@ const mobileInsightsLinks = [
   { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
-];
-
-const mobileOfficeLinks = [
-  { label: "Office Location", href: "/contact" },
-  { label: "Find an Agent", href: "/agents" },
-  { label: "Visit Us", href: "/contact" },
 ];
 
 const buyLinks = [
@@ -35,12 +30,6 @@ const insightsLinks = [
   { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
-];
-
-const officeLinks = [
-  { label: "Office Location", href: "/contact" },
-  { label: "Find an Agent", href: "/agents" },
-  { label: "Visit Us", href: "/contact" },
 ];
 
 export function Footer() {
@@ -67,10 +56,9 @@ function MobileFooter() {
           className="h-[32px] w-auto"
         />
 
-        <div className="mt-[28px] grid grid-cols-2 gap-x-[16px] gap-y-[28px] sm:grid-cols-3">
+        <div className="mt-[28px] grid grid-cols-2 gap-x-[16px] gap-y-[28px]">
           <MobileLinkColumn title="About Us" links={mobileAboutLinks} />
           <MobileLinkColumn title="Insights" links={mobileInsightsLinks} />
-          <MobileLinkColumn title="Our Office" links={mobileOfficeLinks} />
         </div>
 
         <Link
@@ -118,23 +106,14 @@ function DesktopFooter() {
   return (
     <footer className="hidden lg:block w-full border-t-2 border-brand-navy bg-white">
       <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)] xl:max-w-none">
-        {/* Top row: buttons | About | Insights | Our Office | social+logo */}
+        {/* Top row: buttons | About | Insights | social+logo */}
         <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
           <div className="col-start-1 flex flex-col gap-[12px]">
-            {buyLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="flex h-[46px] w-[150px] items-center justify-center rounded-[10px] bg-brand-navy font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
-              >
-                {link.label}
-              </Link>
-            ))}
+            <FooterDealButtons links={buyLinks} />
           </div>
 
           <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} className="col-start-3" />
           <LinkColumn title="Insights" links={insightsLinks} className="col-start-4" />
-          <LinkColumn title="Our Office" links={officeLinks} className="col-start-5" />
 
           <div className="col-start-7 flex flex-col gap-[20px] justify-self-end">
             <div className="flex items-center gap-[14px]">
@@ -160,23 +139,36 @@ function DesktopFooter() {
                 <InstagramIcon />
               </SocialLink>
             </div>
-            <Image
-              src="/images/footer%20image.png"
-              alt="Rate My Agent"
-              width={1076}
-              height={324}
-              quality={100}
-              sizes="180px"
-              className="h-auto w-[180px]"
-            />
+            <Link
+              href="/agents"
+              aria-label="Meet our team"
+              className="block transition hover:opacity-80"
+            >
+              <Image
+                src="/images/footer%20image.png"
+                alt="Rate My Agent"
+                width={1076}
+                height={324}
+                quality={100}
+                sizes="180px"
+                className="h-auto w-[180px]"
+              />
+            </Link>
           </div>
         </div>
 
         {/* Address row: aligned under About Us / Insights columns */}
         <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
           <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
-            <p>11/76-80 Station Street,</p>
-            <p>Wentworthville, NSW 2145</p>
+            <a
+              href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              <p>11/76-80 Station Street,</p>
+              <p>Wentworthville, NSW 2145</p>
+            </a>
           </div>
           <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
             <p className="whitespace-nowrap">

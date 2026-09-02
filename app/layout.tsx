@@ -43,6 +43,16 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${playfair.variable} ${poppins.variable} antialiased`}
     >
+      <head>
+        {/* Arm the reveal animations on fresh loads, and disarm on back/forward
+            navigation so restored pages don't paint blank when the observer
+            isn't re-run. Inline so it executes before first paint. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add('reveal-armed');addEventListener('pageshow',function(){document.documentElement.classList.remove('reveal-armed')});`,
+          }}
+        />
+      </head>
       <body
         suppressHydrationWarning
         className="bg-white text-brand-bunker"

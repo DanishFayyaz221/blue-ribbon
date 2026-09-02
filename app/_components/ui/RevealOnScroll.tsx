@@ -24,15 +24,23 @@ export function RevealOnScroll() {
     let mo: MutationObserver | null = null;
     let scanFrame = 0;
 
-    // If the browser restored us from bfcache, reveal everything so nothing
-    // disappears when someone hits Back.
-    const onPageShow = (e: PageTransitionEvent) => {
-      if (!e.persisted) return;
+    // On any back/forward or bfcache restore, reveal EVERYTHING immediately.
+    // Losing the scroll-in animation on a back navigation is fine; leaving the
+    // page blank is not. Running at several delays covers the case where Next
+    // swaps in the RSC payload after the event has already fired.
+    const revealAll = () => {
       document
-        .querySelectorAll<HTMLElement>(".reveal, .reveal-scale")
+        .querySelectorAll<HTMLElement>(".reveal:not(.reveal-in), .reveal-scale:not(.reveal-in)")
         .forEach((el) => el.classList.add("reveal-in"));
     };
-    window.addEventListener("pageshow", onPageShow);
+    const onNavRestore = () => {
+      revealAll();
+      requestAnimationFrame(revealAll);
+      setTimeout(revealAll, 100);
+      setTimeout(revealAll, 400);
+    };
+    window.addEventListener("pageshow", onNavRestore);
+    window.addEventListener("popstate", onNavRestore);
 
     // Strip any reveal-in classes injected before hydration (bfcache, HMR,
     // browser extensions) so the DOM matches the server render.
@@ -69,8 +77,6 @@ export function RevealOnScroll() {
             ".reveal:not(.reveal-in), .reveal-scale:not(.reveal-in)",
           )
           .forEach((el) => {
-            // If we land on the page already scrolled past this element (bfcache /
-            // browser back), reveal it immediately instead of leaving it invisible.
             const rect = el.getBoundingClientRect();
             if (rect.top < vh && rect.bottom > 0) {
               el.classList.add("reveal-in");
@@ -108,7 +114,8 @@ export function RevealOnScroll() {
       cancelAnimationFrame(scanFrame);
       observer?.disconnect();
       mo?.disconnect();
-      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("pageshow", onNavRestore);
+      window.removeEventListener("popstate", onNavRestore);
     };
   }, []);
 
