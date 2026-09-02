@@ -66,11 +66,16 @@ export function Hero() {
             otherwise paint over it — both blocks are absolute siblings, so
             without this the later one in the DOM wins. */}
         <div className="container-page absolute inset-x-0 bottom-[max(25%,132px)] z-20">
+          <h1 className="sm:hidden animate-fade-up text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] leading-[1.1] tracking-[-0.01em]">
+            <span className="block">Own Your</span>
+            <span className="block">Australian Dream</span>
+          </h1>
+
           <div className="animate-fade-up [animation-delay:180ms] hidden sm:block">
             <SearchBar />
           </div>
 
-          <div className="animate-fade-up [animation-delay:180ms] sm:hidden">
+          <div className="animate-fade-up [animation-delay:180ms] mt-[24px] sm:hidden">
             <MobileSearch />
           </div>
         </div>
