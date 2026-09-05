@@ -228,6 +228,16 @@ html.reveal-armed .reveal-scale {
   will-change: transform;
 }
 
+/* Parramatta featured card: on hover, zoom only the photo — not the gallery
+   arrows or dots — so the slider controls stay pinned to the card edges
+   instead of scaling out of view. */
+.parramatta-featured img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.parramatta-featured:hover img {
+  transform: scale(1.06);
+}
+
 /* No will-change. It is meant to be set just before an animation and cleared
    after; left on a selector it promotes every match to its own GPU layer for
    the life of the page. Combined with a rounded, clipped ancestor that also

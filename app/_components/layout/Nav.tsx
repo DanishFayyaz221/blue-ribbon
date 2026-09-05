@@ -269,7 +269,7 @@ export function Nav() {
                       <span
                         key={link.label}
                         aria-current="page"
-                        className="relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy/40 font-display text-[15px] font-medium text-white cursor-default"
+                        className="relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] border border-brand-navy/40 bg-white font-display text-[15px] font-medium text-brand-navy/40 cursor-default"
                       >
                         <span className="relative z-10">{link.label}</span>
                       </span>
@@ -280,7 +280,7 @@ export function Nav() {
                       key={link.label}
                       type="button"
                       onClick={() => closeAndNavigate(link.href)}
-                      className="group relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
+                      className="group relative isolate flex h-[52px] w-full max-w-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-[16px] border border-brand-navy bg-white font-display text-[15px] font-medium text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
                     >
                       <span className="relative z-10">{link.label}</span>
                     </button>

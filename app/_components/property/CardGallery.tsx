@@ -132,7 +132,7 @@ function GalleryArrow({
       disabled={disabled}
       onClick={onClick}
       onPointerEnter={onPointerEnter}
-      className={`absolute top-1/2 z-20 flex h-[34px] w-[34px] -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-black/25 text-white backdrop-blur-[2px] transition duration-200 hover:bg-black/45 focus-visible:opacity-100 disabled:pointer-events-none disabled:opacity-30 ${
+      className={`absolute top-1/2 z-20 flex h-[34px] w-[34px] -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/70 bg-black/25 text-white backdrop-blur-[2px] transition duration-200 hover:bg-black/45 focus-visible:opacity-100 disabled:pointer-events-none disabled:opacity-30 ${
         side === "left" ? "left-[10px]" : "right-[10px]"
       } hidden sm:flex sm:opacity-0 sm:group-hover:opacity-100`}
     >
