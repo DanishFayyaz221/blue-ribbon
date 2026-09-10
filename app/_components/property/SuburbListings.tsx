@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Nav } from "../layout/Nav";
 import { Footer } from "../layout/Footer";
 import { Breadcrumb } from "../ui/Breadcrumb";
+import { LineReveal } from "../ui/LineReveal";
 import { PropertyCard } from "./PropertyCard";
 import { PropertySearchBar } from "./PropertySearchBar";
 import { EmptyListings } from "./EmptyListings";
@@ -85,9 +86,9 @@ export async function SuburbListings({
         </div>
 
         <div className="container-page">
-          <h1 className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-            Properties {intent} in {match.name}
-          </h1>
+          <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+            {`Properties ${intent} in ${match.name}`}
+          </LineReveal>
           <p className="mt-[6px] font-display text-[13px] sm:text-[15px] text-brand-bunker/70">
             {total} {total === 1 ? "property" : "properties"}
             {isFiltered ? " matching your search" : ` ${intent} in ${match.name}, NSW`}
@@ -142,9 +143,9 @@ export async function SuburbListings({
 
           {suburbs.length > 1 && (
             <nav className="mt-[clamp(36px,3vw,56px)]" aria-label="Other suburbs">
-              <h2 className="font-display text-[15px] font-semibold text-brand-bunker">
+              <LineReveal as="h2" className="font-display text-[15px] font-semibold text-brand-bunker">
                 Other areas we service
-              </h2>
+              </LineReveal>
               <ul className="mt-[12px] flex flex-wrap gap-[10px]">
                 {suburbs
                   .filter((s) => s.slug !== match.slug)

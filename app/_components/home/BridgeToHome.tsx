@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { LineReveal } from "../ui/LineReveal";
 
 const tabs = ["Buying", "Selling", "Renting"] as const;
 type Tab = (typeof tabs)[number];
@@ -70,12 +71,12 @@ export function BridgeToHome() {
     <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[20px] sm:flex-row sm:items-end sm:justify-between">
-          <h2
-            suppressHydrationWarning
-            className="reveal font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
+          <LineReveal
+            as="h2"
+            className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
           >
             Our Services
-          </h2>
+          </LineReveal>
           <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
             {tabs.map((tab) => {
               const isActive = active === tab;

@@ -9,9 +9,12 @@ import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
 import { ScrollToResults } from "../_components/property/ScrollToResults";
 import { ArrowInline } from "../_components/ui/ArrowInline";
+import { LineReveal } from "../_components/ui/LineReveal";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
-import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
+import { TeamCTA } from "../_components/sections/TeamCTA";
+import { ParramattaCTA } from "../_components/home/ParramattaCTA";
+import { YouMayAlsoLike } from "../_components/property/YouMayAlsoLike";
 import {
   SALE_CATEGORIES,
   getLatestListings,
@@ -38,9 +41,9 @@ export default async function BuyPage({
 
   const [results, latest, suburbs] = await Promise.all([
     getListings({ ...query, categories: SALE_CATEGORIES, perPage: 12 }),
-    // Scoped to sales: this page is for buyers, so the strip below the results
-    // should not be quietly padded out with rentals.
-    getLatestListings(SALE_CATEGORIES, 4),
+    // Scoped to sales: this page is for buyers, so "You may also like" should
+    // not be quietly padded out with rentals. Six fills two rows of three.
+    getLatestListings(SALE_CATEGORIES, 6),
     getSuburbsWithCounts(SALE_CATEGORIES),
   ]);
 
@@ -99,9 +102,9 @@ export default async function BuyPage({
         {/* Mobile: Buy Your Dream + cards */}
         <div className="sm:hidden container-page mt-[18px]">
           <div className="flex items-end justify-between">
-            <h1 className="font-display font-bold text-brand-bunker text-[22px] leading-[1.15]">
+            <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] leading-[1.15]">
               Buy Your Dream
-            </h1>
+            </LineReveal>
             <Link
               href="/property-report-digital-appraisal"
               className="font-display text-[13px] font-medium text-brand-bunker hover:text-brand-navy"
@@ -148,9 +151,9 @@ export default async function BuyPage({
         {/* Desktop: heading + grid */}
         <div id="results" className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)] scroll-mt-[80px]">
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+            <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
               Buy Your Dream
-            </h1>
+            </LineReveal>
             <div className="flex items-center gap-[20px]">
               {isFiltered && (
                 <Link
@@ -174,7 +177,7 @@ export default async function BuyPage({
             <>
               <div className="focus-peers mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
                 {items.map((p) => (
-                  <PropertyCard key={p.id} {...p} variant="tall" />
+                  <PropertyCard key={p.id} {...p} variant="tall" addressFirst />
                 ))}
               </div>
 
@@ -194,86 +197,15 @@ export default async function BuyPage({
           )}
         </div>
 
-        {/* Mobile: Our latest Properties (horizontal scroll). Hidden while the
-            fallback is showing — both pull from the same small pool, so they
-            would otherwise render the same cards twice on one screen. */}
-        {hasResults && latest.length > 0 && (
-          <div className="sm:hidden mt-[28px]">
-            <div className="container-page">
-              <h2 className="font-display font-bold text-brand-bunker text-[18px] leading-[1.15]">
-                Our latest Properties
-              </h2>
-            </div>
-            <div className="no-scrollbar mt-[16px] flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-              {latest.map((p) => (
-                <div key={p.id} className="snap-start shrink-0 basis-[60%]">
-                  <PropertyCard {...p} variant="wide" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Mobile: Want to get in touch CTA */}
-        <section className="sm:hidden w-full bg-white mt-[28px]">
-          <div className="w-full">
-            <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
-              <Image
-                src="/images/handshake-house.png"
-                alt=""
-                fill
-                sizes="(max-width: 639px) 100vw, 1px"
-                className="absolute inset-0 z-0 object-cover"
-              />
-              <div className="absolute inset-0 z-10 bg-brand-navy/85" />
-              <div className="relative z-20">
-                <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                  Want to get in touch
-                  <br />
-                  with us?
-                </h2>
-                <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
-                  We&rsquo;re all about offering supportive, expert advice every step of
-                  the way.
-                </p>
-                <Link
-                  href="/contact"
-                  className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
-                >
-                  Contact our Agent
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Desktop: Our latest Properties (grid). Hidden alongside the fallback
-            for the same reason as the mobile strip above. */}
-        {hasResults && latest.length > 0 && (
-          <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
-            <div className="flex items-end justify-between">
-              <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                Our latest Properties
-              </h2>
-              <Link
-                href="/rent"
-                className="group inline-flex items-center font-display text-[clamp(13px,0.95vw,15px)] font-medium text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
-              >
-                Explore more Properties
-                <ArrowInline />
-              </Link>
-            </div>
-            <div className="focus-peers mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
-              {latest.map((p) => (
-                <PropertyCard key={p.id} {...p} variant="tall" />
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
-          <GetInTouchCTA />
+        {/* Closing sequence, per the comp: the featured property card (the same
+            one the home page shows), then "You may also like", then the team
+            CTA. The card strip stays hidden while the fallback is showing —
+            both pull from the same small pool and would repeat the same cards. */}
+        <div className="mt-[clamp(28px,3vw,56px)]">
+          <ParramattaCTA />
         </div>
+        {hasResults && latest.length > 0 && <YouMayAlsoLike properties={latest} />}
+        <TeamCTA />
       </main>
       <Footer />
     </div>

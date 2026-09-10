@@ -1,5 +1,6 @@
 import { connection } from "next/server";
 import { PropertyCard } from "../property/PropertyCard";
+import { LineReveal } from "../ui/LineReveal";
 import { getListings } from "@/lib/db/queries";
 
 export async function BestSuitedForYou() {
@@ -17,15 +18,12 @@ export async function BestSuitedForYou() {
   return (
     <section className="w-full bg-white sm:bg-brand-soft py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
-        {/* suppressHydrationWarning: RevealOnScroll appends `reveal-in` from
-            outside React, so this element's class can legitimately differ from
-            the server HTML. React leaves the extra class alone either way. */}
-        <h2
-          suppressHydrationWarning
-          className="reveal font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
+        <LineReveal
+          as="h2"
+          className="font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
         >
           Explore Properties
-        </h2>
+        </LineReveal>
 
         {/* Three up only from lg. At md a third column would leave each card
             around 234px wide, and the 15/8 crop would collapse to a 125px
@@ -44,6 +42,7 @@ export async function BestSuitedForYou() {
                 {...p}
                 variant="wide"
                 dense
+                addressFirst
                 // 15/8 across a 166px card is an 89px strip. A chunkier crop
                 // on the phone only; sm and up keeps the section's wide look.
                 aspect="aspect-[3/2] sm:aspect-[15/8]"

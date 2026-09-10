@@ -1,9 +1,9 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
 import { Button } from "../ui/Button";
+import { LineReveal } from "../ui/LineReveal";
 
 type Props = {
-  title?: ReactNode;
+  title?: string;
   body?: string;
   buttonLabel?: string;
   buttonHref?: string;
@@ -11,13 +11,7 @@ type Props = {
 };
 
 export function GetInTouchCTA({
-  title = (
-    <>
-      Want to get in touch
-      <br />
-      with us?
-    </>
-  ),
+  title = "Want to get in touch\nwith us?",
   body = "We're all about offering supportive, expert advice every step of the way, making your property buying experience as seamless and enjoyable as possible.",
   buttonLabel = "Contact our Agent",
   buttonHref = "/contact",
@@ -40,12 +34,18 @@ export function GetInTouchCTA({
       <div className="relative z-10 mx-auto w-full max-w-[1920px] grid grid-cols-1 lg:grid-cols-2 lg:aspect-[1920/560] 2xl:max-h-[560px]">
         <div className="flex items-center px-[clamp(22px,4.5vw,86px)] py-[clamp(28px,2.7vw,50px)] lg:py-0">
           <div className="w-full max-w-[520px]">
-            <h2 className="font-display font-bold text-white text-[clamp(2rem,3vw,3.25rem)] leading-[1.1] whitespace-nowrap">
+            <LineReveal
+              as="h2"
+              className="font-display font-bold text-white text-[clamp(2rem,3vw,3.25rem)] leading-[1.1] whitespace-nowrap"
+            >
               {title}
-            </h2>
-            <p className="mt-[clamp(24px,2.2vw,40px)] font-display font-normal text-white/90 text-[15px] sm:text-[17px] leading-[1.6] tracking-[0.01em]">
+            </LineReveal>
+            <LineReveal
+              as="p"
+              className="mt-[clamp(24px,2.2vw,40px)] font-display font-normal text-white/90 text-[15px] sm:text-[17px] leading-[1.6] tracking-[0.01em]"
+            >
               {body}
-            </p>
+            </LineReveal>
             <div className="mt-[clamp(28px,2.6vw,44px)]">
               <Button
                 href={buttonHref}

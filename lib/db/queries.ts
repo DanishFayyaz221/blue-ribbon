@@ -566,6 +566,23 @@ export const getLatestListings = cache(
   },
 );
 
+/**
+ * Fetch a single listing card by (partial) address match — case-insensitive.
+ * Used by the home page's Parramatta feature to pin a specific listing rather
+ * than showing whatever happens to be the most recent one.
+ */
+export const getListingByAddress = cache(
+  async (addressFragment: string): Promise<ListingCard | null> => {
+    const col = await listings();
+    const doc = await col.findOne(
+      publicFilter({
+        "address.full": { $regex: addressFragment, $options: "i" },
+      }),
+    );
+    return doc ? toCard(doc) : null;
+  },
+);
+
 export const getListingBySlug = cache(async (slug: string): Promise<ListingDetail | null> => {
   const col = await listings();
 

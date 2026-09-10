@@ -1,6 +1,7 @@
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
+import { LineReveal } from "../_components/ui/LineReveal";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
 import { FallbackListings } from "../_components/property/FallbackListings";
@@ -53,9 +54,9 @@ export default async function RentPage({
         <div className="container-page">
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+              <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
                 Properties for Rent
-              </h1>
+              </LineReveal>
               {total > 0 && (
                 <p className="mt-[6px] font-display text-[13px] sm:text-[15px] text-brand-bunker/70">
                   {total} {total === 1 ? "property" : "properties"}

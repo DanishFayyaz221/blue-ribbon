@@ -5,6 +5,9 @@ import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { AboutHero } from "../_components/AboutHero";
 import { AboutContent } from "../_components/AboutContent";
+import { KnowUsBetter } from "../_components/KnowUsBetter";
+import { FounderQuote } from "../_components/FounderQuote";
+import { LineReveal } from "../_components/ui/LineReveal";
 
 export const metadata = {
   title: "About Us | Blue Ribbon Real Estate",
@@ -36,15 +39,20 @@ export default function AboutPage() {
               />
               <div className="absolute inset-0 bg-brand-navy/75" />
               <div className="absolute inset-0 flex flex-col justify-center px-[22px]">
-                <h1 className="font-display font-bold text-white text-[30px] leading-[1.05]">
-                  About
-                  <br />
-                  Blue Ribbon
-                </h1>
-                <p className="mt-[14px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]">
-                  With a legacy of trust and excellence, Blue Ribbon Real Estate has been
-                  connecting families with their dream homes across Western Sydney.
-                </p>
+                <LineReveal
+                  as="h1"
+                  trigger={false}
+                  className="font-display font-bold text-white text-[30px] leading-[1.05]"
+                >
+                  {"About\nBlue Ribbon"}
+                </LineReveal>
+                <LineReveal
+                  as="p"
+                  trigger={false}
+                  className="mt-[14px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]"
+                >
+                  With a legacy of trust and excellence, Blue Ribbon Real Estate has been connecting families with their dream homes across Western Sydney.
+                </LineReveal>
               </div>
             </div>
           </section>
@@ -62,15 +70,18 @@ export default function AboutPage() {
           </section>
 
           <section className="container-page pb-[22px]">
-            <h2 className="font-display font-bold text-brand-bunker text-[20px] leading-[1.2]">
+            <LineReveal
+              as="h2"
+              className="font-display font-bold text-brand-bunker text-[20px] leading-[1.2]"
+            >
               Our Story
-            </h2>
-            <p className="mt-[12px] font-display text-[12.5px] leading-[1.65] text-brand-bunker/80">
-              Founded with a vision to redefine real estate in Western Sydney, our team
-              brings together decades of local expertise, market knowledge, and genuine
-              passion for helping people find their perfect home. Every property we
-              represent receives our full dedication and attention.
-            </p>
+            </LineReveal>
+            <LineReveal
+              as="p"
+              className="mt-[12px] font-display text-[12.5px] leading-[1.65] text-brand-bunker"
+            >
+              Founded with a vision to redefine real estate in Western Sydney, our team brings together decades of local expertise, market knowledge, and genuine passion for helping people find their perfect home. Every property we represent receives our full dedication and attention.
+            </LineReveal>
           </section>
 
           <section className="container-page pb-[24px]">
@@ -102,15 +113,18 @@ export default function AboutPage() {
                 />
                 <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                 <div className="relative z-20">
-                  <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                    Want to get in touch
-                    <br />
-                    with us?
-                  </h2>
-                  <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
-                    We&rsquo;re all about offering supportive, expert advice every step of
-                    the way.
-                  </p>
+                  <LineReveal
+                    as="h2"
+                    className="font-display font-bold text-white text-[25px] leading-[1.1]"
+                  >
+                    {"Want to get in touch\nwith us?"}
+                  </LineReveal>
+                  <LineReveal
+                    as="p"
+                    className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]"
+                  >
+                    We’re all about offering supportive, expert advice every step of the way.
+                  </LineReveal>
                   <Link
                     href="/contact"
                     className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
@@ -129,7 +143,9 @@ export default function AboutPage() {
             <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
           </div>
           <AboutHero />
+          <KnowUsBetter />
           <AboutContent />
+          <FounderQuote />
         </div>
       </main>
       <Footer />

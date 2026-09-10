@@ -12,6 +12,7 @@ const mobileInsightsLinks = [
   { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
+  { label: "Market Insights", href: "/market-insights" },
 ];
 
 const buyLinks = [
@@ -30,6 +31,7 @@ const insightsLinks = [
   { label: "Get your Property Estimate", href: "/property-report-digital-appraisal" },
   { label: "Our Latest Properties", href: "/buy" },
   { label: "BlueRibbon Search", href: "/buy" },
+  { label: "Market Insights", href: "/market-insights" },
 ];
 
 export function Footer() {
@@ -41,10 +43,31 @@ export function Footer() {
   );
 }
 
+/**
+ * Navy satin backdrop shared by both footers. `footer.png` is the designer's
+ * fabric texture, painted with object-cover so it fills whatever height the
+ * footer takes. The footer's own navy-deep background sits behind it as the
+ * colour shown while the image is still loading (and behind the one-pixel
+ * transparent column the export carries on its right edge).
+ */
+function FooterBackdrop() {
+  return (
+    <Image
+      src="/images/footer.png"
+      alt=""
+      fill
+      quality={90}
+      sizes="100vw"
+      className="pointer-events-none object-cover object-center"
+    />
+  );
+}
+
 function MobileFooter() {
   return (
-    <footer className="lg:hidden w-full bg-[#0a0a0a] text-white">
-      <div className="container-page pt-[28px] pb-[24px]">
+    <footer className="relative lg:hidden w-full overflow-hidden bg-brand-navy-deep text-white">
+      <FooterBackdrop />
+      <div className="relative z-10 container-page pt-[28px] pb-[24px]">
         <Image
           src="/logo/mobile%20footer.png"
           alt="Blue Ribbon Real Estate"
@@ -63,7 +86,7 @@ function MobileFooter() {
 
         <Link
           href="#refer"
-          className="mt-[28px] inline-flex h-[42px] items-center justify-center rounded-[20px] bg-brand-navy px-[22px] font-display text-[13px] font-medium text-white transition hover:bg-brand-navy-deep"
+          className="mt-[28px] inline-flex h-[42px] items-center justify-center rounded-[20px] bg-white px-[22px] font-display text-[13px] font-medium text-brand-navy transition hover:bg-brand-soft"
         >
           Refer a Friend
         </Link>
@@ -104,8 +127,9 @@ function MobileLinkColumn({
 
 function DesktopFooter() {
   return (
-    <footer className="hidden lg:block w-full border-t-2 border-brand-navy bg-white">
-      <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)] xl:max-w-none">
+    <footer className="relative hidden lg:block w-full overflow-hidden bg-brand-navy-deep text-white">
+      <FooterBackdrop />
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-[var(--page-px)] pt-[clamp(38px,4.35vw,76px)] pb-[clamp(28px,2.4vw,44px)] xl:max-w-none">
         {/* Top row: buttons | About | Insights | social+logo */}
         <div className="grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
           <div className="col-start-1 flex flex-col gap-[12px]">
@@ -144,8 +168,11 @@ function DesktopFooter() {
               aria-label="Meet our team"
               className="block transition hover:opacity-80"
             >
+              {/* Transparent cut of the Rate My Agent badge: the original
+                  (still used in the nav drawer) carries an opaque white slab
+                  that read as a white block on the navy fabric. */}
               <Image
-                src="/images/footer%20image.png"
+                src="/images/rate-my-agent-dark.png"
                 alt="Rate My Agent"
                 width={1076}
                 height={324}
@@ -159,7 +186,7 @@ function DesktopFooter() {
 
         {/* Address row: aligned under About Us / Insights columns */}
         <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
-          <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+          <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <a
               href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
               target="_blank"
@@ -170,7 +197,7 @@ function DesktopFooter() {
               <p>Wentworthville, NSW 2145</p>
             </a>
           </div>
-          <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-brand-bunker">
+          <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <p className="whitespace-nowrap">
               <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
                 sales@blueribbonre.com.au
@@ -185,7 +212,7 @@ function DesktopFooter() {
         </div>
       </div>
 
-      <div className="bg-black text-white">
+      <div className="relative z-10 bg-black text-white">
         <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] flex flex-col gap-[6px] py-[14px] text-center sm:flex-row sm:items-center sm:justify-between sm:text-left xl:max-w-none">
           <p className="font-display text-[13px] sm:text-[15px] font-medium leading-[1.4]">
             ©2026 Blue Ribbon Real Estate. All Rights Reserved.
@@ -216,7 +243,7 @@ function LinkColumn({
   className?: string;
 }) {
   const headingClass =
-    "mb-[14px] font-display text-[18px] sm:text-[20px] font-bold leading-tight text-brand-bunker";
+    "mb-[14px] font-display text-[18px] sm:text-[20px] font-bold leading-tight text-white";
   return (
     <div className={className}>
       {titleHref ? (
@@ -231,7 +258,7 @@ function LinkColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="font-display text-[13px] sm:text-[14px] font-medium tracking-[0.02em] text-brand-bunker hover:underline"
+              className="font-display text-[13px] sm:text-[14px] font-medium tracking-[0.02em] text-white/80 hover:text-white hover:underline"
             >
               {link.label}
             </Link>
@@ -257,7 +284,7 @@ function SocialLink({
       href={href}
       aria-label={label}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="inline-flex h-[36px] w-[36px] items-center justify-center rounded-full bg-black text-white transition hover:opacity-80"
+      className="inline-flex h-[36px] w-[36px] items-center justify-center rounded-full border border-white bg-transparent text-white transition hover:bg-white hover:text-brand-navy"
     >
       {children}
     </a>

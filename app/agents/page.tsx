@@ -4,8 +4,10 @@ import { connection } from "next/server";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
-import { Button } from "../_components/ui/Button";
+import { LineReveal } from "../_components/ui/LineReveal";
 import { AgentCard } from "../_components/agents/AgentCard";
+import { TeamIntro } from "../_components/agents/TeamIntro";
+import { ContactForm } from "../_components/contact/ContactForm";
 import { AgentAvatar } from "../_components/agents/AgentAvatar";
 import { getAgents } from "@/lib/db/queries";
 import { profileFor } from "@/lib/agents/profiles";
@@ -53,12 +55,20 @@ export default async function AgentsPage() {
               />
               <div className="absolute inset-0 bg-brand-navy/60" />
               <div className="absolute inset-0 flex flex-col justify-end px-[22px] pb-[24px]">
-                <h1 className="font-display font-bold text-white text-[32px] leading-[1.05]">
+                <LineReveal
+                  as="h1"
+                  trigger={false}
+                  className="font-display font-bold text-white text-[32px] leading-[1.05]"
+                >
                   Our Team
-                </h1>
-                <p className="mt-[10px] font-display text-white/85 text-[13px] leading-[1.5] max-w-[320px]">
+                </LineReveal>
+                <LineReveal
+                  as="p"
+                  trigger={false}
+                  className="mt-[10px] font-display text-white/85 text-[13px] leading-[1.5] max-w-[320px]"
+                >
                   Meet the dedicated professionals behind Blue Ribbon Real Estate.
-                </p>
+                </LineReveal>
               </div>
             </div>
           </section>
@@ -110,15 +120,18 @@ export default async function AgentsPage() {
                 />
                 <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                 <div className="relative z-20">
-                  <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                    Want to get in touch
-                    <br />
-                    with us?
-                  </h2>
-                  <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
-                    We&rsquo;re all about offering supportive, expert advice every step of
-                    the way.
-                  </p>
+                  <LineReveal
+                    as="h2"
+                    className="font-display font-bold text-white text-[25px] leading-[1.1]"
+                  >
+                    {"Want to get in touch\nwith us?"}
+                  </LineReveal>
+                  <LineReveal
+                    as="p"
+                    className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]"
+                  >
+                    We’re all about offering supportive, expert advice every step of the way.
+                  </LineReveal>
                   <Link
                     href="/contact"
                     className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
@@ -137,83 +150,49 @@ export default async function AgentsPage() {
             <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Our Team" }]} />
           </div>
 
-          <section className="container-page">
-            <div className="relative aspect-[1771/780] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft">
-              <Image
-                src="/our-team/hero.png"
-                alt="Blue Ribbon team"
-                fill
-                priority
-                sizes="(max-width: 639px) 1px, 100vw"
-                className="object-cover"
-              />
-            </div>
-          </section>
+          <TeamIntro />
 
           {team.length > 0 && (
-            <section className="container-page mt-[clamp(38px,3.15vw,64px)]">
-              <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                Meet our Team
-              </h2>
-              <div className="mt-[clamp(28px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(18px,1.6vw,28px)]">
-                {team.map((a) => (
-                  <AgentCard
+            <section className="container-page mt-[clamp(60px,11vw,160px)]">
+              {/* Staircase grid, per the comp: three columns, with the second
+                  and third columns stepped down. The offsets sit on the cards
+                  themselves, so every row of the grid repeats the same step. */}
+              <div className="mx-auto grid max-w-[1030px] grid-cols-2 gap-[clamp(16px,1.7vw,24px)] md:grid-cols-3">
+                {team.map((a, i) => (
+                  <div
                     key={a.key}
-                    name={a.name}
-                    role={a.role}
-                    image={a.image}
-                    email={a.email}
-                    phone={a.mobile ?? a.phone}
-                    listingCount={a.listingCount}
-                    href={a.href}
-                  />
+                    className={
+                      i % 3 === 1
+                        ? "md:mt-[clamp(40px,6.4vw,92px)]"
+                        : i % 3 === 2
+                          ? "md:mt-[clamp(80px,12.8vw,184px)]"
+                          : ""
+                    }
+                  >
+                    <AgentCard
+                      name={a.name}
+                      role={a.role}
+                      image={a.image}
+                      email={a.email}
+                      phone={a.mobile ?? a.phone}
+                      listingCount={a.listingCount}
+                      href={a.href}
+                    />
+                  </div>
                 ))}
               </div>
             </section>
           )}
 
-          <section className="relative w-full mt-[clamp(44px,4vw,76px)] overflow-hidden">
-            <Image
-              src="/images/bg.png"
-              alt=""
-              fill
-              quality={90}
-              sizes="(min-width: 1280px) 1280px, 100vw"
-              className="object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
-              <div className="flex items-center px-[clamp(22px,9vw,180px)] py-[clamp(38px,3.15vw,56px)]">
-                <div className="w-full max-w-[520px]">
-                  <h2 className="font-display font-semibold text-white text-[clamp(1.9rem,2.6vw,3rem)] leading-[1.05]">
-                    Ready to start?
-                  </h2>
-                  <p className="mt-[clamp(12px,1vw,18px)] font-display font-[300] text-white text-[clamp(1.9rem,3vw,3.25rem)] leading-[1.07]">
-                    Connect with a Blueribbon specialist in Parramatta
-                  </p>
-                  <p className="mt-[clamp(20px,1.6vw,30px)] font-display text-white/90 text-[13px] sm:text-[15px] font-normal leading-[1.55] tracking-[0.02em]">
-                    We provide the local expertise and supportive advice needed to navigate
-                    the Western Sydney market with confidence. From your first inquiry to the
-                    final signature, we ensure your property journey is seamless, transparent,
-                    and rewarding.
-                  </p>
-                  <div className="mt-[clamp(20px,1.6vw,32px)]">
-                    <Button href="/contact" variant="white" size="md">
-                      Contact our Agent
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              <div className="relative h-[240px] sm:h-[325px] lg:h-auto lg:min-h-[380px] overflow-hidden">
-                <Image
-                  src="/our-team/team-s.png"
-                  alt=""
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
+          <section className="container-page mt-[clamp(60px,8vw,120px)] mb-[clamp(44px,4vw,76px)]">
+            <LineReveal
+              as="h2"
+              className="text-center font-display font-bold text-brand-navy text-[clamp(1.5rem,2.6vw,2.4rem)] leading-[1.15]"
+            >
+              Get In Touch
+            </LineReveal>
+            <div className="mx-auto mt-[clamp(24px,2.25vw,42px)] w-full max-w-[680px]">
+              <ContactForm variant="team" />
             </div>
           </section>
         </div>

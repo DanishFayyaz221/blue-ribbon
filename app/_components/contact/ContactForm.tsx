@@ -3,13 +3,20 @@
 import { useState } from "react";
 import { STUDIO_EMAIL, sendAdminNotification, sendVisitorAutoReply } from "@/lib/email/send";
 
-type Variant = "card" | "pill";
+type Variant = "card" | "pill" | "team";
 
 const cardFields = [
   { name: "name", label: "Name", type: "text" },
   { name: "email", label: "Email", type: "email" },
   { name: "phone", label: "Phone", type: "tel" },
   { name: "subject", label: "Subject (optional)", type: "text" },
+];
+
+/** The Our Team page's form: the card layout, asking for a property address
+ *  instead of a subject. Optional, like the subject it replaces. */
+const teamFields = [
+  ...cardFields.slice(0, 3),
+  { name: "address", label: "Property Address", type: "text" },
 ];
 
 const pillFields = [
@@ -20,12 +27,13 @@ const pillFields = [
 
 /**
  * The "reach out" form on the contact page. `card` is the bordered desktop
- * version; `pill` matches the rounded grey styling of the mobile layout.
- * Both send the same notification to the studio via EmailJS.
+ * version; `pill` matches the rounded grey styling of the mobile layout;
+ * `team` is the card layout with a property-address field, for the Our Team
+ * page. All send the same notification to the studio via EmailJS.
  */
 export function ContactForm({ variant = "card" }: { variant?: Variant }) {
   const pill = variant === "pill";
-  const fields = pill ? pillFields : cardFields;
+  const fields = pill ? pillFields : variant === "team" ? teamFields : cardFields;
 
   const [values, setValues] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
@@ -48,6 +56,7 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
       `Email: ${email}`,
       values.phone ? `Phone: ${values.phone}` : null,
       values.subject ? `Subject: ${values.subject}` : null,
+      values.address ? `Property Address: ${values.address}` : null,
     ].filter(Boolean);
     try {
       await sendAdminNotification({
@@ -99,7 +108,7 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
         }
       >
         <p className="font-display text-[16px] font-bold text-brand-navy">Message sent ✓</p>
-        <p className="mt-[8px] font-display text-[13px] leading-[1.6] text-brand-bunker/80">
+        <p className="mt-[8px] font-display text-[13px] leading-[1.6] text-brand-bunker">
           Thanks{values.name ? `, ${values.name}` : ""} — we&rsquo;ve received your message
           and will be in touch soon.
         </p>
@@ -116,7 +125,7 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
           placeholder={f.label}
           value={values[f.name] ?? ""}
           onChange={update(f.name)}
-          required={f.name !== "subject"}
+          required={f.name !== "subject" && f.name !== "address"}
           className={inputClass}
         />
       ))}

@@ -38,7 +38,7 @@ export default function ErrorPage({
             <h1 className="font-display text-[clamp(18px,1.6vw,26px)] font-semibold text-brand-bunker">
               We couldn&rsquo;t load our listings
             </h1>
-            <p className="mt-[10px] max-w-[460px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker/70">
+            <p className="mt-[10px] max-w-[460px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker">
               This is a problem on our end, not with your search. It is usually
               brief — try again in a moment.
             </p>

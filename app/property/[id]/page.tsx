@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Nav } from "../../_components/layout/Nav";
 import { Footer } from "../../_components/layout/Footer";
 import { Breadcrumb } from "../../_components/ui/Breadcrumb";
-import { PropertyCard } from "../../_components/property/PropertyCard";
+import { LineReveal } from "../../_components/ui/LineReveal";
+import { YouMayAlsoLike } from "@/app/_components/property/YouMayAlsoLike";
 import { PropertyMedia } from "../../_components/property/PropertyMedia";
 import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
@@ -16,6 +17,7 @@ import { ExpandableDescription } from "../../_components/property/ExpandableDesc
 import {
   getListingBySlug,
   getSimilarListings,
+  RENTAL_CATEGORIES,
   type ListingDetail,
 } from "@/lib/db/queries";
 
@@ -52,7 +54,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
     listing.slug,
     listing.suburb,
     listing.category,
-    3,
+    6,
   );
 
   const backHref = listing.isRental ? "/rent" : "/buy";
@@ -112,14 +114,20 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
         <div className="hidden sm:grid container-page mt-[clamp(28px,2.7vw,50px)] grid-cols-1 lg:grid-cols-[1fr_clamp(360px,30vw,460px)] gap-x-[clamp(24px,2.7vw,56px)] gap-y-[clamp(24px,2.25vw,42px)]">
           <div>
-            <h1 className="font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.1vw,2.4rem)] leading-[1.1]">
+            <LineReveal
+              as="h1"
+              className="font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.1vw,2.4rem)] leading-[1.1]"
+            >
               {listing.address}
-            </h1>
+            </LineReveal>
 
             {listing.headline && (
-              <p className="mt-[clamp(10px,0.9vw,16px)] font-display font-semibold text-[clamp(15px,1.1vw,19px)] leading-[1.4] text-brand-navy">
+              <LineReveal
+                as="p"
+                className="mt-[clamp(10px,0.9vw,16px)] font-display font-semibold text-[clamp(15px,1.1vw,19px)] leading-[1.4] text-brand-navy"
+              >
                 {listing.headline}
-              </p>
+              </LineReveal>
             )}
 
             <ExpandableDescription
@@ -129,9 +137,9 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
             {(listing.amenities.length > 0 || listing.otherFeatures.length > 0) && (
               <div className="mt-[clamp(24px,2vw,36px)]">
-                <h2 className="font-display text-[16px] font-semibold text-[#202020]">
+                <LineReveal as="h2" className="font-display text-[16px] font-semibold text-[#202020]">
                   Features
-                </h2>
+                </LineReveal>
                 <ul className="mt-[12px] flex flex-wrap gap-[8px] max-w-[640px]">
                   {/* Structured flags from the feed first, then the agency's
                       free-text extras. */}
@@ -203,9 +211,9 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
             {info.length > 0 && (
               <div className="mt-[16px] pt-[4px]">
-                <h3 className="font-display text-[16px] font-semibold text-[#202020]">
+                <LineReveal as="h3" className="font-display text-[16px] font-semibold text-[#202020]">
                   Property information
-                </h3>
+                </LineReveal>
                 <dl className="mt-[8px]">
                   {info.map((d) => (
                     <div key={d.label} className="flex items-center justify-between py-[10px]">
@@ -223,9 +231,9 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
             {!listing.isRental && (
               <div className="mt-[12px] border-t border-brand-silver/40 pt-[14px]">
-                <h3 className="font-display text-[16px] font-semibold text-[#202020]">
+                <LineReveal as="h3" className="font-display text-[16px] font-semibold text-[#202020]">
                   Resource
-                </h3>
+                </LineReveal>
                 <div className="mt-[6px] flex items-center justify-between py-[10px]">
                   <span className="font-display font-medium text-[15px] text-[#202020]">
                     Home loan calculator
@@ -258,29 +266,28 @@ export default async function PropertyViewPage({ params }: PageProps) {
         )}
 
         {similar.length > 0 && (
-          <div className="hidden sm:block container-page mt-[clamp(44px,4vw,76px)]">
-            <section className="relative w-full overflow-hidden py-[clamp(40px,4vw,80px)] px-[clamp(24px,2.8vw,56px)] rounded-b-[clamp(8px,1vw,16px)]">
+          <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
+            {/* Full-bleed satin band; only the content sits in the page container. */}
+            <section className="relative w-full overflow-hidden py-[clamp(40px,4vw,80px)]">
               <Image
                 src="/images/bg.png"
                 alt=""
                 fill
                 quality={90}
-                sizes="(min-width: 1280px) 1280px, 100vw"
+                sizes="100vw"
                 className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-[#001F4D1F] pointer-events-none" />
 
-              <div className="relative z-10">
-                <h2 className="font-display font-bold text-white text-[clamp(1.4rem,1.9vw,2.2rem)] leading-[1.1]">
-                  Others also
-                  <br />
-                  viewed
-                </h2>
-                <div className="mt-[clamp(28px,3vw,56px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(16px,1.8vw,32px)]">
-                  {similar.map((p) => (
-                    <PropertyCard key={p.id} {...p} variant="compact" />
-                  ))}
-                </div>
+              <div className="container-page relative z-10">
+                {/* Same strip as the Buy page, in its dark tone for the satin panel.
+                    "Keep Exploring" goes to the listings page for this listing's
+                    side of the market. */}
+                <YouMayAlsoLike
+                  properties={similar}
+                  tone="dark"
+                  exploreHref={RENTAL_CATEGORIES.includes(listing.category) ? "/rent" : "/buy"}
+                />
               </div>
             </section>
           </div>
@@ -390,9 +397,9 @@ function MobilePropertyView({
       </section>
 
       <section className="container-page mt-[20px]">
-        <h1 className="font-display font-bold text-brand-bunker text-[24px] leading-[1.2]">
+        <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[24px] leading-[1.2]">
           {listing.address}
-        </h1>
+        </LineReveal>
 
         <div className="mt-[20px] flex items-center justify-start gap-[clamp(16px,5vw,24px)]">
           <MobileStat value={listing.beds} label="Beds" size="text-[44px]" />
@@ -430,7 +437,7 @@ function MobilePropertyView({
 
         <ExpandableDescription
           text={listing.description}
-          className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker/80"
+          className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker"
         />
 
         <div className="mt-[24px] flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
@@ -445,7 +452,9 @@ function MobilePropertyView({
 
       {listing.agents.length > 0 && (
         <section className="container-page mt-[20px]">
-          <h2 className="font-display text-[18px] font-bold text-brand-bunker">Your Agents</h2>
+          <LineReveal as="h2" className="font-display text-[18px] font-bold text-brand-bunker">
+            Your Agents
+          </LineReveal>
           <div className="mt-[14px] grid grid-cols-2 gap-[12px]">
             {listing.agents.map((a) => (
               <article
@@ -479,9 +488,9 @@ function MobilePropertyView({
 
       {info.length > 0 && (
         <section className="container-page mt-[28px] pb-[40px]">
-          <h2 className="font-display text-[18px] font-bold text-brand-bunker">
+          <LineReveal as="h2" className="font-display text-[18px] font-bold text-brand-bunker">
             Property Information
-          </h2>
+          </LineReveal>
           <dl className="mt-[12px]">
             {info.map((d) => (
               <div

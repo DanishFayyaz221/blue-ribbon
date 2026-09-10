@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type Ref } from "react";
 
 type Props = {
   images: string[];
@@ -9,6 +9,19 @@ type Props = {
   sizes: string;
   /** Applied to every frame — the card's own hover zoom lives here. */
   imageClassName?: string;
+  /**
+   * Ref to the layer that holds the photo track (not the arrows or dots).
+   * A caller can transform this layer — the featured card's 3D tilt writes
+   * to it every frame — while the controls stay put and clickable.
+   */
+  mediaRef?: Ref<HTMLDivElement>;
+  /**
+   * Marks the lead frame as `priority` for next/image. Set this when the
+   * gallery is placed above the fold (e.g. the Parramatta featured hero) so
+   * Next preloads it and stops warning that the LCP image lacks priority.
+   * Default false because most callers render below the fold.
+   */
+  priority?: boolean;
 };
 
 /**
@@ -27,7 +40,14 @@ type Props = {
  * card, and the next frame is fetched on hover, before the arrows it belongs
  * to have even been clicked.
  */
-export function CardGallery({ images, alt, sizes, imageClassName = "" }: Props) {
+export function CardGallery({
+  images,
+  alt,
+  sizes,
+  imageClassName = "",
+  mediaRef,
+  priority = false,
+}: Props) {
   const [index, setIndex] = useState(0);
   /** Highest frame index mounted so far. */
   const [warm, setWarm] = useState(0);
@@ -45,6 +65,9 @@ export function CardGallery({ images, alt, sizes, imageClassName = "" }: Props) 
 
   return (
     <>
+      {/* Media layer: the sliding track lives inside it, so a caller's
+          transform on this layer (see mediaRef) composes with the slide. */}
+      <div ref={mediaRef} className="absolute inset-0">
       <div
         className="absolute inset-0 flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
         style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
@@ -63,15 +86,19 @@ export function CardGallery({ images, alt, sizes, imageClassName = "" }: Props) 
               alt={i === 0 ? alt : ""}
               aria-hidden={i !== 0}
               fill
-              // The lead frame stays lazy so below-the-fold cards cost nothing.
-              // Later frames are mounted deliberately and sit clipped outside
-              // the container, where lazy loading would never fetch them.
+              // The lead frame stays lazy by default so below-the-fold cards
+              // cost nothing. Callers above the fold pass `priority` so Next
+              // preloads the LCP image instead of warning about it. Later
+              // frames are mounted deliberately and sit clipped outside the
+              // container, where lazy loading would never fetch them.
+              priority={i === 0 && priority}
               loading={i === 0 ? undefined : "eager"}
               sizes={sizes}
               className={`object-cover ${imageClassName}`}
             />
           </div>
         ))}
+      </div>
       </div>
 
       {images.length > 1 && (

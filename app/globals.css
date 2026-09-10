@@ -16,10 +16,11 @@
 :root {
   /* Fluid horizontal page padding */
   --page-px: clamp(1rem, 3vw, 3rem);
-  /* 1424 - 96 (the 48px gutters, which border-box folds into this cap) leaves
-     1328px of content — measured off mcgrath.com.au, which the client asked
-     this layout to match. Was 1280px, i.e. 1184px of content. */
-  --container-max: 1424px;
+  /* 1728 - 96 (the 48px gutters, which border-box folds into this cap) leaves
+     1632px of content. Widened from 1424px (1328px of content) at the client's
+     request so the nav, hero search bar and sections run closer to the
+     viewport edges on large screens. */
+  --container-max: 1728px;
 }
 
 @media (min-width: 1280px) {
@@ -186,20 +187,26 @@ html.page-leaving body {
 /* The hidden state is gated on `html.reveal-armed`. That class is added by an
    inline script during initial HTML parsing, and *removed* on the pageshow
    event so back/forward navigations don't leave the page invisible when the
-   IntersectionObserver isn't re-run. */
+   IntersectionObserver isn't re-run.
+
+   Cloth-unfurl motion — text rises with a slight forward tilt, then settles
+   as though a banner is unrolling. The skew unwinds simultaneously with the
+   translate so the eye reads it as one gentle lift, not two effects. */
 html.reveal-armed .reveal {
   opacity: 0;
-  transform: translate3d(0, 28px, 0);
+  transform: translate3d(0, 40px, 0) skewY(3deg);
+  transform-origin: left top;
 }
 .reveal {
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
 .reveal.reveal-in {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) skewY(0deg);
 }
 
 .reveal-delay-1 { transition-delay: 100ms; }
@@ -226,16 +233,6 @@ html.reveal-armed .reveal-scale {
   transform: translate3d(0, var(--parallax-y, 0px), 0) scale(var(--parallax-scale, 1));
   transition: transform 0.15s linear;
   will-change: transform;
-}
-
-/* Parramatta featured card: on hover, zoom only the photo — not the gallery
-   arrows or dots — so the slider controls stay pinned to the card edges
-   instead of scaling out of view. */
-.parramatta-featured img {
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.parramatta-featured:hover img {
-  transform: scale(1.06);
 }
 
 /* No will-change. It is meant to be set just before an animation and cleared
@@ -277,12 +274,163 @@ html.reveal-armed .reveal-scale {
   transform-origin: top left;
 }
 
+/* Full-bleed text marquee (<ValuesShowcase>). The track holds two identical
+   runs and slides by half its own width, so the loop point lands exactly
+   where the second run starts and the seam never shows. */
+@keyframes br-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.animate-marquee {
+  animation: br-marquee 45s linear infinite;
+  will-change: transform;
+}
+
 .hover-lift {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .hover-lift:hover {
   transform: translateY(-4px);
 }
+
+/* Tilted, scroll-linked slider (<TiltSlider>), after realevate.agency's
+   projects slider. The track leans by --tilt and every item leans back by
+   the same angle, so the cards stay upright while the row runs along a
+   diagonal. The component writes only a translate3d to the track each frame,
+   which composes with the `rotate` property set here. Smaller lean and a
+   near-full-width slide on phones, as in the reference. */
+.tilt-slider {
+  --tilt: 8deg;
+  --slide-w: var(--slide-w-desktop);
+  overflow-x: clip;
+}
+@media (max-width: 639px) {
+  .tilt-slider {
+    --tilt: 4deg;
+    --slide-w: var(--slide-w-mobile, 78vw);
+  }
+}
+.tilt-slider__viewport {
+  position: relative;
+  width: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.tilt-slider__viewport.is-dragging {
+  cursor: grabbing;
+  touch-action: none;
+}
+.tilt-slider__track {
+  display: flex;
+  align-items: center;
+  gap: var(--slide-gap, 24px);
+  will-change: transform;
+  rotate: calc(var(--tilt) * -1);
+}
+.tilt-slider__item {
+  flex: 0 0 var(--slide-w);
+  width: var(--slide-w);
+  min-width: var(--slide-w);
+  rotate: var(--tilt);
+}
+.tilt-slider__item img {
+  pointer-events: none;
+}
+
+/* Parramatta featured card: the gallery arrows come from the shared
+   CardGallery, whose 34px chevrons suit a listing card but read tiny on a
+   full-bleed hero. Scoped here (class + attribute beats the utility classes)
+   so only this card gets the larger, inset, outlined ring — the property
+   grids keep their small arrows. Hover reveal is left to CardGallery. */
+.parramatta-featured button[aria-label="Previous photo"],
+.parramatta-featured button[aria-label="Next photo"] {
+  width: clamp(48px, 3.4vw, 60px);
+  height: clamp(48px, 3.4vw, 60px);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: none;
+}
+.parramatta-featured button[aria-label="Previous photo"]:hover,
+.parramatta-featured button[aria-label="Next photo"]:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.parramatta-featured button[aria-label="Previous photo"] {
+  left: clamp(24px, 4vw, 80px);
+}
+.parramatta-featured button[aria-label="Next photo"] {
+  right: clamp(24px, 4vw, 80px);
+}
+.parramatta-featured button[aria-label="Previous photo"] svg,
+.parramatta-featured button[aria-label="Next photo"] svg {
+  width: clamp(18px, 1.3vw, 24px);
+  height: clamp(18px, 1.3vw, 24px);
+}
+
+/* Line-mask text reveal (<LineReveal>), after kononenkogroup.com.
+
+   Each measured line sits inside an overflow-hidden mask, starts translated
+   just past the mask's bottom edge, and slides up to rest. Timing is the
+   reference site's: 1.109s per line on cubic-bezier(0.17, 0.84, 0.44, 1),
+   0.1s stagger between lines (set inline per line by the component).
+
+   The mask carries a little vertical padding, cancelled by an equal negative
+   margin, so ascenders and descenders have room inside the clip without the
+   heading's box growing. The start offset adds that padding back
+   (calc(101% + 0.2em)) so no glyph peeks through the padding before it moves.
+
+   Hidden under html.reveal-armed until the component has measured its lines —
+   the same gate the rest of the site's scroll reveals use — so nothing
+   flashes unmasked between first paint and the first frame. */
+html.reveal-armed .lr:not(.lr-ready) {
+  visibility: hidden;
+}
+.lr-w {
+  display: inline-block;
+  /* An inline-block is a block container, so an inherited text-indent would
+     indent the first line INSIDE every word box — each word measures wider
+     by the indent and the lines come out with half the words they can hold.
+     The element's own first line still gets its indent; the words don't. */
+  text-indent: 0;
+}
+.lr-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.12em 0 0.2em;
+  margin: -0.12em 0 -0.2em;
+}
+/* text-indent is inherited, and each mask is its own block — without this a
+   first-line indent on the element would repeat on every line. */
+.lr-mask ~ .lr-mask {
+  text-indent: 0;
+}
+/* Justified copy: each mask holds one line, and a block's last line is never
+   stretched by text-align: justify — so every line would fall back to
+   ragged-left. Ask for the stretch explicitly on all but the final line. */
+.lr.text-justify .lr-mask:not(:last-child) .lr-line {
+  text-align-last: justify;
+}
+.lr-line {
+  display: block;
+  transform: translate3d(0, calc(101% + 0.2em), 0);
+  will-change: transform;
+  transition: transform var(--lr-dur, 1.109s) cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+.lr.lr-in .lr-line {
+  transform: translate3d(0, 0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.reveal-armed .lr:not(.lr-ready) {
+    visibility: visible;
+  }
+  .lr-line {
+    transform: none;
+    transition: none;
+  }
+}
+
+
 
 /* Hovering one card pulls every sibling card's image out of focus, so the
    pointer target reads as the only sharp thing in the grid. Gated on a real
@@ -324,6 +472,7 @@ html.reveal-armed .reveal-scale {
   .animate-fade-up,
   .animate-float,
   .animate-menu-in,
+  .animate-marquee,
   .hover-lift,
   .parallax-media,
   .scroll-scale-in,

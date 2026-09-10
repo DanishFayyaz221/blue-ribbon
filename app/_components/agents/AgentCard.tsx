@@ -25,7 +25,7 @@ export function AgentCard({
 }: AgentCardData & { compact?: boolean }) {
   return (
     <Link href={href} className="group block w-full">
-      <div className="relative aspect-[37/50] w-full overflow-hidden rounded-[32px]">
+      <div className="relative aspect-[37/50] w-full overflow-hidden rounded-[clamp(12px,1vw,16px)]">
         <AgentAvatar
           name={name}
           image={image}
@@ -34,7 +34,7 @@ export function AgentCard({
         />
       </div>
       <div className={`mt-[clamp(14px,1.2vw,20px)] font-display ${compact ? "" : ""}`}>
-        <p className="text-[clamp(14px,0.95vw,17px)] font-medium tracking-[0.02em] text-black leading-[1.3]">
+        <p className="text-[clamp(14px,0.95vw,17px)] font-semibold tracking-[0.02em] text-black leading-[1.3]">
           {name}
         </p>
         <p className="mt-[6px] text-[clamp(12px,0.85vw,15px)] font-medium tracking-[0.02em] text-brand-mineshaft leading-[1.45]">

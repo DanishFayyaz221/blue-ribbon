@@ -20,7 +20,7 @@ export function EmptyListings({ title, message, ctaLabel, ctaHref }: Props) {
       <h3 className="font-display text-[clamp(16px,1.3vw,22px)] font-semibold text-brand-bunker">
         {title}
       </h3>
-      <p className="mt-[10px] max-w-[460px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker/70">
+      <p className="mt-[10px] max-w-[460px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker">
         {message}
       </p>
       {ctaLabel && ctaHref && (

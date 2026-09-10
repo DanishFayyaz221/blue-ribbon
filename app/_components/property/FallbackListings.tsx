@@ -84,7 +84,7 @@ export function FallbackListings({ items, relaxed, q, noun, clearHref }: Props) 
           <h3 className="font-display text-[clamp(15px,1.3vw,20px)] font-semibold text-brand-bunker">
             {title}
           </h3>
-          <p className="mt-[6px] max-w-[560px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker/70">
+          <p className="mt-[6px] max-w-[560px] font-display text-[clamp(13px,0.95vw,15px)] leading-[1.6] text-brand-bunker">
             {message}
           </p>
         </div>

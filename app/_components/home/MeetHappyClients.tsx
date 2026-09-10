@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { DragScroll } from "../ui/DragScroll";
+import { LineReveal } from "../ui/LineReveal";
+import { TiltSlider } from "./TiltSlider";
 
 type Testimonial = {
   id: number;
@@ -80,170 +80,46 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-/** Cards per row at the widest breakpoint. */
-const COLUMNS = 3;
-
-/** How long each slide rests before the row advances on its own. */
-const AUTOPLAY_MS = 4500;
-
+/**
+ * Testimonials: centred header, then the six client cards on a tilted,
+ * scroll-linked, infinitely looping row (see TiltSlider). The row's vertical
+ * padding leaves room for the lean — at 8° a viewport-wide track rises and
+ * falls by roughly 7vw at either end — and for the arrows at bottom right.
+ */
 export function MeetHappyClients() {
-  // Seeded with the desktop count, not the mobile one: the carousel is
-  // `hidden sm:block`, so a phone never sees these slides at all, and starting
-  // at 1 would make every desktop visitor watch the row re-lay itself the
-  // moment the effect runs.
-  const [visible, setVisible] = useState(COLUMNS);
-  const [start, setStart] = useState(0);
-
-  useEffect(() => {
-    const onResize = () => {
-      const w = window.innerWidth;
-      setVisible(w < 640 ? 1 : w < 1024 ? 2 : COLUMNS);
-    };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const maxStart = Math.max(0, testimonials.length - visible);
-  const safeStart = Math.min(start, maxStart);
-
-  const [paused, setPaused] = useState(false);
-  const [tabHidden, setTabHidden] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-  // Bumped on every manual click so the autoplay timer restarts from zero.
-  // Without it the interval keeps its original schedule and can fire a moment
-  // after the visitor clicks, yanking the row out from under them.
-  const [nudge, setNudge] = useState(0);
-
-  const handlePrev = () => {
-    setStart((s) => (s <= 0 ? maxStart : s - 1));
-    setNudge((n) => n + 1);
-  };
-  const handleNext = () => {
-    setStart((s) => (s >= maxStart ? 0 : s + 1));
-    setNudge((n) => n + 1);
-  };
-
-  // Anyone who has asked for reduced motion gets no autoplay at all. WCAG
-  // 2.2.2 treats content that moves on its own as something the visitor must
-  // be able to stop, and a self-advancing carousel is a known trigger for
-  // vestibular disorders.
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduceMotion(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  // A background tab still runs timers. Without this the row would march on
-  // unseen and the visitor would return to a different slide than they left.
-  useEffect(() => {
-    const sync = () => setTabHidden(document.hidden);
-    sync();
-    document.addEventListener("visibilitychange", sync);
-    return () => document.removeEventListener("visibilitychange", sync);
-  }, []);
-
-  useEffect(() => {
-    if (reduceMotion || paused || tabHidden || maxStart === 0) return;
-    const id = window.setInterval(
-      () => setStart((s) => (s >= maxStart ? 0 : s + 1)),
-      AUTOPLAY_MS,
-    );
-    return () => window.clearInterval(id);
-  }, [reduceMotion, paused, tabHidden, maxStart, nudge]);
-
-  const slideWidthPct = 100 / visible;
-  const translatePct = -(safeStart * slideWidthPct);
-
   return (
-    <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
-      <div className="container-page">
-        <h2
-          suppressHydrationWarning
-          className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+    <section className="w-full overflow-x-clip bg-white py-[clamp(40px,4.5vw,84px)]">
+      {/* Header — pill badge, centred heading, description paragraph. */}
+      <div className="container-page flex flex-col items-center text-center">
+        <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
+          Testimonials
+        </span>
+        <LineReveal
+          as="h2"
+          className="mt-[clamp(18px,1.8vw,32px)] max-w-[720px] font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.4vw,2.5rem)] leading-[1.15]"
         >
-          Meet Our Happy Clients
-        </h2>
+          Don’t take Our word, Ask our respectful Clients.
+        </LineReveal>
+        <LineReveal
+          as="p"
+          className="mt-[clamp(14px,1.4vw,22px)] max-w-[540px] font-display text-[clamp(13px,1vw,15px)] leading-[1.6] text-brand-bunker"
+        >
+          We bring genuine care, deep market expertise, and a strategy made for
+          you, all focused on achieving the best possible value at every stage
+          of your journey. See what our customers have to say about us.
+        </LineReveal>
       </div>
 
-      {/* Mobile: horizontal-scroll cards */}
-      <DragScroll className="sm:hidden mt-[20px] no-scrollbar flex snap-x snap-mandatory gap-[14px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-        {testimonials.map((t) => (
-          <div key={t.id} className="flex snap-start shrink-0 basis-[72%]">
-            <TestimonialCard testimonial={t} />
-          </div>
+      <TiltSlider
+        ariaLabel="Client testimonials"
+        slideWidth="clamp(300px, 28vw, 440px)"
+        slideWidthMobile="78vw"
+        gap="clamp(18px, 2.6vw, 50px)"
+        className="mt-[clamp(20px,2vw,36px)] pt-[clamp(24px,7vw,150px)] pb-[clamp(72px,8vw,160px)]"
+        items={testimonials.map((t) => (
+          <TestimonialCard key={t.id} testimonial={t} />
         ))}
-      </DragScroll>
-
-      {/* Tablet / desktop: slider carousel with images */}
-      <div className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)]">
-        {/* Pausing on focus as well as hover means a keyboard user tabbing to
-            the arrows gets the same reprieve a mouse user gets. */}
-        <div
-          className="relative px-[clamp(8px,1.2vw,20px)]"
-          aria-roledescription="carousel"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocus={() => setPaused(true)}
-          onBlur={() => setPaused(false)}
-        >
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous testimonial"
-            className="absolute left-0 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-[20px] w-[20px]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              aria-hidden
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-
-          {/* px -> mx: 4th card peek nahi karega */}
-          <div className="overflow-hidden mx-[clamp(56px,5vw,80px)] py-[28px]">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(${translatePct}%)` }}
-            >
-              {testimonials.map((t) => (
-                <div
-                  key={t.id}
-                  className="flex shrink-0 justify-center px-[clamp(8px,0.9vw,16px)]"
-                  style={{ width: `${slideWidthPct}%` }}
-                >
-                  <TestimonialCard testimonial={t} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next testimonial"
-            className="absolute right-0 top-1/2 z-10 flex h-[52px] w-[52px] -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#251F20] shadow-[0_4px_4px_rgba(0,0,0,0.25)] transition hover:bg-white"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-[20px] w-[20px]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              aria-hidden
-            >
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </div>
-      </div>
+      />
     </section>
   );
 }
@@ -264,7 +140,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           src={testimonial.image}
           alt={testimonial.name}
           fill
-          sizes="(max-width: 640px) 72vw, (max-width: 1024px) 45vw, 28vw"
+          sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 28vw"
           className="object-cover"
         />
         <Image

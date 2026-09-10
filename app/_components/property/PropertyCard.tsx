@@ -31,6 +31,14 @@ type PropertyCardProps = PropertyCardData & {
    * Ignored from `sm` up, where the card is wide enough either way.
    */
   dense?: boolean;
+  /**
+   * Hide the price/guide and lead with the address instead. The address takes
+   * the bold blue slot, the property type sits under it in the muted grey slot,
+   * and the bed/bath/car row appears beneath in the same muted grey — used by
+   * "Explore Properties" on the home page where the price is deliberately
+   * omitted from the card.
+   */
+  addressFirst?: boolean;
 };
 
 export function PropertyCard({
@@ -47,6 +55,7 @@ export function PropertyCard({
   sizes,
   aspect,
   dense = false,
+  addressFirst = true,
 }: PropertyCardProps) {
   const frames = gallery && gallery.length > 0 ? gallery : [image];
   const metaStats: { key: string; label: string; value: number; icon: React.ReactNode }[] = [];
@@ -62,11 +71,21 @@ export function PropertyCard({
   // default wide/tall cards, and stretch to a 15px clamp on sm+, which made
   // the bed/bath/car numbers look different from one card to another and read
   // as a bug. A single size (13px on mobile, 14px on sm+) removes that.
-  const renderMeta = (tone: "onLight" | "onDark") =>
-    metaStats.length > 0 || type ? (
+  const renderMeta = (
+    tone: "onLight" | "onDark" | "muted",
+    includeType = true,
+    larger = false,
+  ) =>
+    metaStats.length > 0 || (includeType && type) ? (
       <p
-        className={`mt-[8px] flex flex-wrap items-center gap-x-[14px] gap-y-[4px] font-display text-[13px] font-semibold sm:mt-[10px] sm:gap-x-[16px] sm:text-[14px] ${
-          tone === "onDark" ? "text-white/80" : "text-brand-navy"
+        className={`mt-[8px] flex flex-wrap items-center gap-x-[14px] gap-y-[4px] font-display font-semibold sm:mt-[10px] sm:gap-x-[16px] ${
+          larger ? "text-[15px] sm:text-[16px]" : "text-[13px] sm:text-[14px]"
+        } ${
+          tone === "onDark"
+            ? "text-white/80"
+            : tone === "muted"
+              ? "text-brand-bunker/70"
+              : "text-brand-navy"
         }`}
       >
         {metaStats.map((stat) => (
@@ -78,7 +97,7 @@ export function PropertyCard({
             <span className="sr-only">{stat.label}</span>
           </span>
         ))}
-        {type && <span>{type}</span>}
+        {includeType && type && <span>{type}</span>}
       </p>
     ) : null;
 
@@ -130,33 +149,67 @@ export function PropertyCard({
             dense ? "p-[10px]" : "p-[16px]"
           }`}
         >
-          {/* Price first, then address: buyers scan for price/status on the
-              portals they compare us against, so the address becomes the
-              secondary line here rather than the loudest element. */}
-          {guide && (
-            <p
-              className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
-                dense
-                  ? "line-clamp-1 text-[15px]"
-                  : "text-[clamp(18px,1.35vw,24px)]"
-              }`}
-            >
-              {guide}
-            </p>
+          {addressFirst ? (
+            <>
+              {/* Address leads (blue bold), then type in muted grey, then the
+                  bed/bath/car row underneath — also in muted grey and without
+                  the type text (it already appears on the line above). */}
+              {/* `dense` only tightens the phone sizes; from sm up both
+                  branches land on the same clamp as the tall variant, so
+                  Explore Properties and More Properties read identically. */}
+              <p
+                className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
+                  dense
+                    ? "line-clamp-2 text-[15px] sm:text-[clamp(18px,1.35vw,24px)]"
+                    : "text-[clamp(18px,1.35vw,24px)]"
+                }`}
+              >
+                {address}
+              </p>
+              {type && (
+                <p
+                  className={`mt-[6px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none ${
+                    dense
+                      ? "line-clamp-1 text-[14px] sm:text-[clamp(15px,1.05vw,18px)]"
+                      : "text-[clamp(15px,1.05vw,18px)]"
+                  }`}
+                >
+                  {type}
+                </p>
+              )}
+              {renderMeta("muted", false, true)}
+            </>
+          ) : (
+            <>
+              {/* Price first, then address: buyers scan for price/status on the
+                  portals they compare us against, so the address becomes the
+                  secondary line here rather than the loudest element. */}
+              {guide && (
+                <p
+                  className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
+                    dense
+                      ? "line-clamp-1 text-[15px]"
+                      : "text-[clamp(18px,1.35vw,24px)]"
+                  }`}
+                >
+                  {guide}
+                </p>
+              )}
+              <p
+                className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
+                  // Clamped rather than shrunk further: a card this narrow cannot
+                  // show a full NSW street address without either three lines of
+                  // 11px type or a truncation, and two readable lines beats both.
+                  dense
+                    ? "line-clamp-2 text-[12px]"
+                    : "text-[clamp(13px,0.95vw,16px)]"
+                }`}
+              >
+                {address}
+              </p>
+              {renderMeta("onLight")}
+            </>
           )}
-          <p
-            className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
-              // Clamped rather than shrunk further: a card this narrow cannot
-              // show a full NSW street address without either three lines of
-              // 11px type or a truncation, and two readable lines beats both.
-              dense
-                ? "line-clamp-2 text-[12px]"
-                : "text-[clamp(13px,0.95vw,16px)]"
-            }`}
-          >
-            {address}
-          </p>
-          {renderMeta("onLight")}
         </Link>
       </div>
     );
@@ -172,15 +225,31 @@ export function PropertyCard({
           )}
         </div>
         <Link href={href} className="block mt-[clamp(14px,1.4vw,22px)] font-display">
-          {guide && (
-            <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
-              {guide}
-            </p>
+          {addressFirst ? (
+            <>
+              <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
+                {address}
+              </p>
+              {type && (
+                <p className="mt-[4px] text-[clamp(13px,0.95vw,16px)] font-medium leading-[1.4] text-white/70">
+                  {type}
+                </p>
+              )}
+              {renderMeta("onDark", false, true)}
+            </>
+          ) : (
+            <>
+              {guide && (
+                <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
+                  {guide}
+                </p>
+              )}
+              <p className={`${guide ? "mt-[4px]" : ""} text-[clamp(12px,0.9vw,15px)] font-medium leading-[1.4] text-white/85`}>
+                {address}
+              </p>
+              {renderMeta("onDark")}
+            </>
           )}
-          <p className={`${guide ? "mt-[4px]" : ""} text-[clamp(12px,0.9vw,15px)] font-medium leading-[1.4] text-white/85`}>
-            {address}
-          </p>
-          {renderMeta("onDark")}
         </Link>
       </div>
     );
@@ -204,15 +273,31 @@ export function PropertyCard({
         href={href}
         className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]"
       >
-        {guide && (
-          <p className="line-clamp-1 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
-            {guide}
-          </p>
+        {addressFirst ? (
+          <>
+            <p className="line-clamp-2 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
+              {address}
+            </p>
+            {type && (
+              <p className="mt-[6px] line-clamp-1 text-[14px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none sm:text-[clamp(15px,1.05vw,18px)] sm:leading-[1.5]">
+                {type}
+              </p>
+            )}
+            {renderMeta("muted", false, true)}
+          </>
+        ) : (
+          <>
+            {guide && (
+              <p className="line-clamp-1 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
+                {guide}
+              </p>
+            )}
+            <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
+              {address}
+            </p>
+            {renderMeta("onLight")}
+          </>
         )}
-        <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
-          {address}
-        </p>
-        {renderMeta("onLight")}
       </Link>
     </div>
   );
@@ -234,7 +319,7 @@ const iconProps = {
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "h-[16px] w-[16px] shrink-0",
+  className: "h-[1.2em] w-[1.2em] shrink-0",
 } as const;
 
 function BedIcon() {

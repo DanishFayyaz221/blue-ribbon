@@ -25,18 +25,23 @@ const aboutLinks = [
 ];
 
 export function Nav() {
-  const [open, setOpen] = useState(false);
-  const [closing, setClosing] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // Close the drawer only once the new route has actually rendered, so the
-  // drawer stays open (and covers the spinner-y interim) while Next.js is
-  // loading the next page.
-  useEffect(() => {
-    setOpen(false);
-    setClosing(false);
-  }, [pathname]);
+  // The drawer's open/closing flags are keyed to the pathname they were set
+  // on, so they read as false the moment a new route renders — the drawer
+  // stays up (covering the loading interim) until then, and no effect is
+  // needed to reset it. `setOpen`/`setClosing` keep the boolean shape the
+  // handlers below already use.
+  const [openedAt, setOpenedAt] = useState<string | null>(null);
+  const [closingAt, setClosingAt] = useState<string | null>(null);
+  const open = openedAt === pathname;
+  const closing = closingAt === pathname;
+  const setOpen = (v: boolean) => {
+    setOpenedAt(v ? pathname : null);
+    if (!v) setClosingAt(null);
+  };
+  const setClosing = (v: boolean) => setClosingAt(v ? pathname : null);
 
   /** Play the exit animation, THEN navigate. Otherwise Next swaps the page in
       before the drawer has slid out and the transition reads as a hard cut. */
@@ -61,8 +66,13 @@ export function Nav() {
   }, [open]);
 
   useEffect(() => {
+    // Raw setters here, not setOpen(): they are stable, so the listener can
+    // be registered once without the effect depending on the wrapper.
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpenedAt(null);
+        setClosingAt(null);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -70,7 +80,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className="nav-shrink sticky top-0 z-30 w-full bg-white overflow-visible">
+      <nav className="nav-shrink sticky top-0 z-40 w-full bg-white overflow-visible">
         <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between gap-[16px]">
           <Link href="/" className="block shrink-0">
             {/* The file's real pixels. They are what the browser reserves
@@ -87,9 +97,6 @@ export function Nav() {
               className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
             />
           </Link>
-          <h1 className="hidden sm:block flex-1 text-center font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.6vw,1.9rem)] leading-[1.15] tracking-[-0.01em]">
-            Own Your <span className="text-brand-sky">Australian Dream</span>
-          </h1>
           <button
             type="button"
             aria-label="Open menu"

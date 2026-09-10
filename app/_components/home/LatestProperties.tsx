@@ -2,6 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { DragScroll } from "../ui/DragScroll";
 import { ArrowInline } from "../ui/ArrowInline";
+import { LineReveal } from "../ui/LineReveal";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -22,15 +23,12 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-          {/* suppressHydrationWarning: RevealOnScroll appends `reveal-in` from
-              outside React, so this element's class can legitimately differ
-              from the server HTML. */}
-          <h2
-            suppressHydrationWarning
-            className="reveal font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+          <LineReveal
+            as="h2"
+            className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
           >
             More Properties
-          </h2>
+          </LineReveal>
           <Link
             href="/buy"
             className="group inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker/70 sm:text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
@@ -49,7 +47,7 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
                 key={p.id}
                 className="flex snap-start shrink-0 w-[78%]"
               >
-                <PropertyCard {...p} variant="wide" dense />
+                <PropertyCard {...p} variant="wide" dense addressFirst />
               </div>
             ))}
           </DragScroll>
@@ -69,6 +67,7 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
               <PropertyCard
                 {...p}
                 variant="tall"
+                addressFirst
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               />
             </div>

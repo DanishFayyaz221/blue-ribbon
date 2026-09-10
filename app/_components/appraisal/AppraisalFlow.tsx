@@ -7,10 +7,11 @@ import Link from "next/link";
 import { Nav } from "../layout/Nav";
 import { Footer } from "../layout/Footer";
 import { Breadcrumb } from "../ui/Breadcrumb";
-import { GetInTouchCTA } from "../sections/GetInTouchCTA";
+import { TeamCTA } from "../sections/TeamCTA";
 import { OurValues } from "../home/OurValues";
-import { PropertyCard, type PropertyCardData } from "../property/PropertyCard";
-import { ArrowInline } from "../ui/ArrowInline";
+import type { PropertyCardData } from "../property/PropertyCard";
+import { MoreProperties } from "../property/MoreProperties";
+import { LineReveal } from "../ui/LineReveal";
 
 export type Step = "address" | "details" | "result";
 
@@ -32,15 +33,16 @@ const intentOptions = [
 export function AppraisalFlow({
   initialStep = "address",
   previewHref,
-  samples = [],
   latest = [],
 }: {
   initialStep?: Step;
   // When set, the details-step "NEXT" navigates here instead of showing the
   // result inline (used by the rental flow → /rental-report-preview).
   previewHref?: string;
-  // Listings for the two card strips. Fetched by the page rather than here,
-  // because this is a client component and cannot reach the database itself.
+  // Listings for the "More Properties" strip. Fetched by the page rather than
+  // here, because this is a client component and cannot reach the database.
+  // `samples` is still passed by every appraisal route but no longer shown:
+  // the comp runs straight from the values band into "More Properties".
   samples?: PropertyCardData[];
   latest?: PropertyCardData[];
 }) {
@@ -116,11 +118,15 @@ export function AppraisalFlow({
                         <br />
                         <span className="text-brand-sky">9 Seconds!</span>
                       </h1>
-                      <p className="mx-auto mt-[16px] max-w-[320px] text-center font-display text-white/85 text-[12.5px] font-medium leading-[1.5]">
+                      <LineReveal
+                        as="p"
+                        className="mx-auto mt-[16px] max-w-[320px] text-center font-display text-white/85 text-[12.5px] font-medium leading-[1.5]"
+                        trigger={false}
+                      >
                         Search the address below for a Digital Property Report that
                         highlights market value including recent sales, rental history and
                         more.
-                      </p>
+                      </LineReveal>
 
                       <div className="mt-[20px]">
                         <div className="flex items-center justify-center gap-[8px]">
@@ -187,11 +193,15 @@ export function AppraisalFlow({
                       Get Your Property Estimate in just{" "}
                       <span className="text-brand-sky">9 Seconds!</span>
                     </h1>
-                    <p className="mx-auto mt-[clamp(10px,0.9vw,16px)] max-w-[760px] text-center font-display text-white text-[clamp(12px,0.85vw,15px)] font-medium leading-[1.5] tracking-[0.01em]">
+                    <LineReveal
+                      as="p"
+                      className="mx-auto mt-[clamp(10px,0.9vw,16px)] max-w-[760px] text-center font-display text-white text-[clamp(12px,0.85vw,15px)] font-medium leading-[1.5] tracking-[0.01em]"
+                      trigger={false}
+                    >
                       Looking to buy or sell a property? Search the address below for a
                       Digital Property Report that highlights the market value including
                       recent sales, rental history, suburb report and more.
-                    </p>
+                    </LineReveal>
                   </div>
 
                   <div className="container-page relative mt-auto w-full">
@@ -247,42 +257,20 @@ export function AppraisalFlow({
 
             <OurValues />
 
-            {samples.length > 0 && (
-              <section className="hidden sm:block w-full bg-brand-soft py-[clamp(38px,3.15vw,64px)]">
-                <div className="container-page">
-                  <h2 className="font-display font-bold text-brand-navy text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                    Best Suited for You
-                  </h2>
-                  <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 md:grid-cols-2 gap-x-[clamp(18px,1.5vw,28px)] gap-y-[clamp(24px,2.15vw,40px)]">
-                    {samples.map((p, i) => (
-                      <PropertyCard key={p.href ?? i} {...p} variant="wide" />
-                    ))}
-                  </div>
-                </div>
-              </section>
-            )}
+            {/* "More Properties" strip, then the full-bleed photo beneath it —
+                the order the comp shows under the values band. The photo keeps
+                its natural 1920x1027 aspect, capped only on very wide screens. */}
+            {latest.length > 0 && <MoreProperties properties={latest.slice(0, 3)} />}
 
-            {latest.length > 0 && (
-              <section className="hidden sm:block container-page py-[clamp(38px,3.15vw,64px)]">
-                <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
-                  <h2 className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                    Our latest Properties
-                  </h2>
-                  <Link
-                    href="/buy"
-                    className="group inline-flex items-center font-display text-[14px] lg:text-[16px] font-medium tracking-[0.02em] text-brand-bunker underline underline-offset-4 hover:text-brand-navy"
-                  >
-                    Explore more Properties
-                    <ArrowInline />
-                  </Link>
-                </div>
-                <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(14px,1.5vw,28px)]">
-                  {latest.map((p, i) => (
-                    <PropertyCard key={p.href ?? i} {...p} variant="tall" />
-                  ))}
-                </div>
-              </section>
-            )}
+            <div className="relative aspect-[1920/1027] max-h-[1027px] w-full">
+              <Image
+                src="/images/frame3.png"
+                alt="A Blue Ribbon agent going through property listings with a family"
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
 
             <section className="sm:hidden w-full bg-white">
               <div className="w-full">
@@ -296,16 +284,14 @@ export function AppraisalFlow({
                   />
                   <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                   <div className="relative z-20">
-                    <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                      Want to get in touch
-                      <br />
-                      with us?
-                    </h2>
-                    <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.4]">
-                      We&rsquo;re all about offering supportive, expert advice every step of
+                    <LineReveal as="h2" className="font-display font-bold text-white text-[25px] leading-[1.1]">
+                      {"Want to get in touch\nwith us?"}
+                    </LineReveal>
+                    <LineReveal as="p" className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.4]">
+                      We’re all about offering supportive, expert advice every step of
                       the way, making your property buying experience as seamless and
                       enjoyable as possible.
-                    </p>
+                    </LineReveal>
                     <Link
                       href="/contact"
                       className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
@@ -318,7 +304,7 @@ export function AppraisalFlow({
             </section>
 
             <div className="hidden sm:block">
-              <GetInTouchCTA />
+              <TeamCTA />
             </div>
           </>
         )}
@@ -338,11 +324,9 @@ export function AppraisalFlow({
               </div>
               <section className="w-full bg-brand-navy">
                 <div className="px-[24px] py-[36px]">
-                  <h1 className="text-center font-display font-bold text-white text-[22px] leading-[1.25]">
-                    Parade/43 Hopetoun Avenue,
-                    <br />
-                    Vaucluse 2030
-                  </h1>
+                  <LineReveal as="h1" className="text-center font-display font-bold text-white text-[22px] leading-[1.25]">
+                    {"Parade/43 Hopetoun Avenue,\nVaucluse 2030"}
+                  </LineReveal>
                   <p className="mt-[10px] text-center font-display text-[13px] font-medium text-white/85">
                     5 Bed | 5 Bath | 4 Car | House
                   </p>
@@ -429,15 +413,13 @@ export function AppraisalFlow({
                     />
                     <div className="absolute inset-0 z-10 bg-brand-navy/85" />
                     <div className="relative z-20">
-                      <h2 className="font-display font-bold text-white text-[28px] leading-[1.1]">
-                        Want to get in touch
-                        <br />
-                        with us?
-                      </h2>
-                      <p className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
-                        We&rsquo;re all about offering supportive, expert advice every
+                      <LineReveal as="h2" className="font-display font-bold text-white text-[28px] leading-[1.1]">
+                        {"Want to get in touch\nwith us?"}
+                      </LineReveal>
+                      <LineReveal as="p" className="mt-[18px] font-display font-light text-white text-[15px] leading-[1.5]">
+                        We’re all about offering supportive, expert advice every
                         step of the way.
-                      </p>
+                      </LineReveal>
                       <Link
                         href="/contact"
                         className="mt-[24px] inline-flex h-[48px] items-center justify-center rounded-[24px] bg-white px-[28px] font-display text-[14px] font-medium text-black transition hover:bg-white/90"
@@ -460,11 +442,9 @@ export function AppraisalFlow({
                 <div className="flex flex-col items-stretch gap-[22px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
                   {/* LEFT COLUMN — Address + Property value range */}
                   <div className="mx-auto flex w-full max-w-[640px] flex-col items-center pt-[clamp(32px,4vw,64px)] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(108px,8vw,160px)]">
-                    <h1 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.4rem,1.95vw,2rem)] leading-[1.2] tracking-[-0.01em]">
-                      Parade/43 Hopetoun Avenue,
-                      <br />
-                      Vaucluse 2030
-                    </h1>
+                    <LineReveal as="h1" className="text-center font-display font-bold text-brand-bunker text-[clamp(1.4rem,1.95vw,2rem)] leading-[1.2] tracking-[-0.01em]">
+                      {"Parade/43 Hopetoun Avenue,\nVaucluse 2030"}
+                    </LineReveal>
                     <p className="mt-[clamp(10px,0.9vw,16px)] text-center font-display text-[clamp(12px,0.9vw,14px)] font-medium text-brand-bunker/70">
                       5 Bed&nbsp;&nbsp;|&nbsp;&nbsp;5 Bath&nbsp;&nbsp;|&nbsp;&nbsp;4 Car&nbsp;&nbsp;|&nbsp;&nbsp;House
                     </p>
@@ -607,7 +587,7 @@ export function AppraisalFlow({
                 </div>
               </section>
 
-              <GetInTouchCTA />
+              <TeamCTA />
             </div>
           </>
         )}
@@ -646,9 +626,9 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy", href: "/buy" }]} />
         </div>
         <section className="container-page pb-[36px]">
-          <h2 className="text-center font-display font-bold text-brand-bunker text-[23px] leading-[1.15]">
+          <LineReveal as="h2" className="text-center font-display font-bold text-brand-bunker text-[23px] leading-[1.15]">
             Vaucluse Stats
-          </h2>
+          </LineReveal>
           <div className="mt-[22px] grid grid-cols-2 gap-[12px]">
             {suburbStats.map((s) => (
               <div
@@ -731,15 +711,13 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
               />
               <div className="absolute inset-0 z-10 bg-brand-navy/85" />
               <div className="relative z-20">
-                <h2 className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                  Want to get in touch
-                  <br />
-                  with us?
-                </h2>
-                <p className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
-                  We&rsquo;re all about offering supportive, expert advice every step of
+                <LineReveal as="h2" className="font-display font-bold text-white text-[25px] leading-[1.1]">
+                  {"Want to get in touch\nwith us?"}
+                </LineReveal>
+                <LineReveal as="p" className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]">
+                  We’re all about offering supportive, expert advice every step of
                   the way.
-                </p>
+                </LineReveal>
                 <Link
                   href="/contact"
                   className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
@@ -756,9 +734,9 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
       <section className="hidden sm:block container-page py-[clamp(32px,3.15vw,64px)]">
         <div className="flex flex-col items-stretch gap-[22px] lg:flex-row lg:items-center lg:justify-center lg:gap-0">
           <div className="mx-auto w-full max-w-[640px] lg:mx-0 lg:flex-shrink-0 lg:pl-[clamp(108px,8vw,160px)]">
-            <h2 className="text-center font-display font-bold text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
+            <LineReveal as="h2" className="text-center font-display font-bold text-brand-bunker text-[clamp(1.2rem,1.45vw,1.6rem)] leading-[1.15]">
               Vaucluse Stats
-            </h2>
+            </LineReveal>
             <div className="mt-[clamp(24px,2.25vw,42px)] grid grid-cols-2 sm:grid-cols-3 gap-y-[clamp(24px,2.15vw,36px)] gap-x-[clamp(14px,1.4vw,25px)]">
               {suburbStats.map((s) => (
                 <div key={s.label} className="flex flex-col items-center text-center">
@@ -826,7 +804,7 @@ function DetailsStep({ onContinue }: { onContinue: () => void }) {
       </section>
 
       <div className="hidden sm:block mt-[clamp(44px,4vw,76px)]">
-        <GetInTouchCTA />
+        <TeamCTA />
       </div>
     </>
   );
