@@ -218,10 +218,10 @@ function DesktopFooter() {
             ©2026 Blue Ribbon Real Estate. All Rights Reserved.
           </p>
           <div className="flex items-center justify-center gap-[20px]">
-            <Link href="#" className="font-display text-[13px] sm:text-[14px] font-medium hover:underline">
+            <Link href="/terms" className="font-display text-[13px] sm:text-[14px] font-medium hover:underline">
               Terms &amp; Conditions
             </Link>
-            <Link href="#" className="font-display text-[13px] sm:text-[14px] font-medium hover:underline">
+            <Link href="/privacy" className="font-display text-[13px] sm:text-[14px] font-medium hover:underline">
               Privacy Policy
             </Link>
           </div>

@@ -16,6 +16,8 @@ const STATIC_ROUTES = [
   { path: "/about", priority: 0.5 },
   { path: "/contact", priority: 0.5 },
   { path: "/property-report-digital-appraisal", priority: 0.6 },
+  { path: "/terms", priority: 0.3 },
+  { path: "/privacy", priority: 0.3 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
