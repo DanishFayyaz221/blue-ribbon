@@ -3,8 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowInline } from "../ui/ArrowInline";
+
+/**
+ * How long the close animation runs before the drawer unmounts or the route
+ * changes. The longest of the exits: the phone drawer slides out in 400ms,
+ * the desktop sheet wipes up in 480ms (globals.css). Navigating any earlier
+ * swaps the page in under a half-closed menu.
+ */
+const DRAWER_CLOSE_MS = 480;
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
@@ -48,12 +56,26 @@ export function Nav() {
   const closeAndNavigate = (href: string) => {
     if (closing) return;
     setClosing(true);
-    // Match the CSS animation duration (drawer-out is 400ms). Slight buffer so
-    // the frame lands on the fully-closed pose before nav commits.
     window.setTimeout(() => {
       router.push(href);
-    }, 380);
+    }, DRAWER_CLOSE_MS);
   };
+
+  /** Play the exit animation, then unmount — for the close button, the
+      backdrop, Escape and the logo when already on home. Unmounting straight
+      away would cut the menu off mid-frame. */
+  const closeSmoothly = () => {
+    if (!open || closing) return;
+    setClosing(true);
+    window.setTimeout(() => setOpen(false), DRAWER_CLOSE_MS);
+  };
+  // Escape's listener is registered once; the ref hands it the current
+  // closure without re-registering on every render. Updated in an effect,
+  // not during render, as the compiler's ref rule requires.
+  const closeRef = useRef(closeSmoothly);
+  useEffect(() => {
+    closeRef.current = closeSmoothly;
+  });
 
   useEffect(() => {
     if (open) {
@@ -66,13 +88,9 @@ export function Nav() {
   }, [open]);
 
   useEffect(() => {
-    // Raw setters here, not setOpen(): they are stable, so the listener can
-    // be registered once without the effect depending on the wrapper.
+    // Registered once; closeRef carries the current closure (see above).
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpenedAt(null);
-        setClosingAt(null);
-      }
+      if (e.key === "Escape") closeRef.current();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -123,9 +141,12 @@ export function Nav() {
 
       {open && (
         <div
-          className={`${closing ? "animate-drawer-overlay-out" : "animate-drawer-overlay"} md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
+          // Phone: dimmed backdrop that fades. md and up: `menu-sheet` turns
+          // this same element into the white sheet that wipes down/up — see
+          // globals.css, which also overrides the animate-* classes there.
+          className={`menu-sheet ${closing ? "is-closing animate-drawer-overlay-out" : "is-opening animate-drawer-overlay"} md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
           onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
+            if (e.target === e.currentTarget) closeSmoothly();
           }}
         >
           <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:shadow-none`}>
@@ -133,10 +154,9 @@ export function Nav() {
             <button
               type="button"
               onClick={() => {
-                // Already on home — just close the drawer smoothly.
+                // Already on home — just close the drawer.
                 if (pathname === "/") {
-                  setClosing(true);
-                  window.setTimeout(() => setOpen(false), 380);
+                  closeSmoothly();
                   return;
                 }
                 closeAndNavigate("/");
@@ -155,7 +175,7 @@ export function Nav() {
             <button
               type="button"
               aria-label="Close menu"
-              onClick={() => setOpen(false)}
+              onClick={closeSmoothly}
               className="flex h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] items-center justify-center text-brand-navy transition hover:opacity-70"
             >
               <svg
@@ -265,7 +285,9 @@ export function Nav() {
 
           {/* Tablet / desktop drawer */}
           <div className="hidden md:block container-page pb-[304px] pt-[6vw] lg:pt-[10vw]">
-            <div className="grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
+            {/* `menu-grid`: each direct child is one column of the sheet's
+                staggered entrance, in DOM order. */}
+            <div className="menu-grid grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
               <div className="flex flex-col gap-[14px] lg:col-span-2">
                 {buyLinks.map((link) => {
                   const active = isActive(pathname, link.href);
@@ -359,7 +381,7 @@ export function Nav() {
             alt=""
             width={979}
             height={744}
-            className="pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
+            className="menu-ribbon pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
           />
           </div>
         </div>
