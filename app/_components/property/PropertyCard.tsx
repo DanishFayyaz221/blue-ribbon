@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { CardGallery } from "./CardGallery";
+import { ParallaxMedia } from "./ParallaxMedia";
+import { MaskReveal } from "../ui/MaskReveal";
 
 export type PropertyCardData = {
   href?: string;
@@ -39,6 +41,13 @@ type PropertyCardProps = PropertyCardData & {
    * omitted from the card.
    */
   addressFirst?: boolean;
+  /**
+   * Drift the photo layer against the scroll. Opt-in rather than default:
+   * the effect earns its keep in a browsable strip like "You may also like",
+   * but on a results grid of a dozen cards it would mean a dozen more
+   * ScrollTriggers for motion nobody is scrolling slowly enough to read.
+   */
+  parallax?: boolean;
 };
 
 export function PropertyCard({
@@ -56,6 +65,7 @@ export function PropertyCard({
   aspect,
   dense = false,
   addressFirst = true,
+  parallax = false,
 }: PropertyCardProps) {
   const frames = gallery && gallery.length > 0 ? gallery : [image];
   const metaStats: { key: string; label: string; value: number; icon: React.ReactNode }[] = [];
@@ -113,20 +123,35 @@ export function PropertyCard({
    */
   const media = (imageClassName: string, defaultSizes: string) => (
     <>
-      <CardGallery
-        images={frames}
-        alt={address}
-        sizes={sizes ?? defaultSizes}
-        imageClassName={imageClassName}
-      />
+      {parallax ? (
+        // Renders the gallery itself, driving its media layer so the arrows
+        // and dots stay put while only the photos drift.
+        <ParallaxMedia
+          images={frames}
+          alt={address}
+          sizes={sizes ?? defaultSizes}
+          imageClassName={imageClassName}
+        />
+      ) : (
+        <CardGallery
+          images={frames}
+          alt={address}
+          sizes={sizes ?? defaultSizes}
+          imageClassName={imageClassName}
+        />
+      )}
       {/* Mouse-only twin of the text link below. Hidden from assistive tech
           and skipped by tab so the card exposes one link, not two identical
-          ones — the text link already carries the address. */}
+          ones — the text link already carries the address.
+
+          It doubles as the `.focus-peers` veil: when a sibling card is
+          hovered, globals.css puts a backdrop blur on this overlay, which
+          already covers the photo and sits under the arrows and dots. */}
       <Link
         href={href}
         aria-hidden
         tabIndex={-1}
-        className="absolute inset-0 z-10"
+        className="focus-veil absolute inset-0 z-10"
         style={{ touchAction: "pan-x pan-y" }}
       />
     </>
@@ -139,7 +164,7 @@ export function PropertyCard({
           className={`relative ${aspect ?? "aspect-[15/8]"} w-full overflow-hidden sm:rounded-[clamp(16px,1.35vw,24px)] sm:shadow-[0_4px_4px_0_rgba(0,0,0,0.18)]`}
         >
           {media(
-            "transition duration-500 group-hover:scale-[1.02]",
+            "transition duration-[900ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.05]",
             "(max-width: 1024px) 100vw, 45vw",
           )}
         </div>
@@ -149,67 +174,69 @@ export function PropertyCard({
             dense ? "p-[10px]" : "p-[16px]"
           }`}
         >
-          {addressFirst ? (
-            <>
-              {/* Address leads (blue bold), then type in muted grey, then the
-                  bed/bath/car row underneath — also in muted grey and without
-                  the type text (it already appears on the line above). */}
-              {/* `dense` only tightens the phone sizes; from sm up both
-                  branches land on the same clamp as the tall variant, so
-                  Explore Properties and More Properties read identically. */}
-              <p
-                className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
-                  dense
-                    ? "line-clamp-2 text-[15px] sm:text-[clamp(18px,1.35vw,24px)]"
-                    : "text-[clamp(18px,1.35vw,24px)]"
-                }`}
-              >
-                {address}
-              </p>
-              {type && (
-                <p
-                  className={`mt-[6px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none ${
-                    dense
-                      ? "line-clamp-1 text-[14px] sm:text-[clamp(15px,1.05vw,18px)]"
-                      : "text-[clamp(15px,1.05vw,18px)]"
-                  }`}
-                >
-                  {type}
-                </p>
-              )}
-              {renderMeta("muted", false, true)}
-            </>
-          ) : (
-            <>
-              {/* Price first, then address: buyers scan for price/status on the
-                  portals they compare us against, so the address becomes the
-                  secondary line here rather than the loudest element. */}
-              {guide && (
+          <MaskReveal>
+            {addressFirst ? (
+              <>
+                {/* Address leads (blue bold), then type in muted grey, then the
+                    bed/bath/car row underneath — also in muted grey and without
+                    the type text (it already appears on the line above). */}
+                {/* `dense` only tightens the phone sizes; from sm up both
+                    branches land on the same clamp as the tall variant, so
+                    Explore Properties and More Properties read identically. */}
                 <p
                   className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
                     dense
-                      ? "line-clamp-1 text-[15px]"
+                      ? "line-clamp-2 text-[15px] sm:text-[clamp(18px,1.35vw,24px)]"
                       : "text-[clamp(18px,1.35vw,24px)]"
                   }`}
                 >
-                  {guide}
+                  {address}
                 </p>
-              )}
-              <p
-                className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
-                  // Clamped rather than shrunk further: a card this narrow cannot
-                  // show a full NSW street address without either three lines of
-                  // 11px type or a truncation, and two readable lines beats both.
-                  dense
-                    ? "line-clamp-2 text-[12px]"
-                    : "text-[clamp(13px,0.95vw,16px)]"
-                }`}
-              >
-                {address}
-              </p>
-              {renderMeta("onLight")}
-            </>
-          )}
+                {type && (
+                  <p
+                    className={`mt-[6px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none ${
+                      dense
+                        ? "line-clamp-1 text-[14px] sm:text-[clamp(15px,1.05vw,18px)]"
+                        : "text-[clamp(15px,1.05vw,18px)]"
+                    }`}
+                  >
+                    {type}
+                  </p>
+                )}
+                {renderMeta("muted", false, true)}
+              </>
+            ) : (
+              <>
+                {/* Price first, then address: buyers scan for price/status on the
+                    portals they compare us against, so the address becomes the
+                    secondary line here rather than the loudest element. */}
+                {guide && (
+                  <p
+                    className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
+                      dense
+                        ? "line-clamp-1 text-[15px]"
+                        : "text-[clamp(18px,1.35vw,24px)]"
+                    }`}
+                  >
+                    {guide}
+                  </p>
+                )}
+                <p
+                  className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
+                    // Clamped rather than shrunk further: a card this narrow cannot
+                    // show a full NSW street address without either three lines of
+                    // 11px type or a truncation, and two readable lines beats both.
+                    dense
+                      ? "line-clamp-2 text-[12px]"
+                      : "text-[clamp(13px,0.95vw,16px)]"
+                  }`}
+                >
+                  {address}
+                </p>
+                {renderMeta("onLight")}
+              </>
+            )}
+          </MaskReveal>
         </Link>
       </div>
     );
@@ -220,36 +247,38 @@ export function PropertyCard({
       <div className="group block w-full">
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[clamp(10px,1vw,16px)]">
           {media(
-            "transition duration-500 group-hover:scale-[1.02]",
+            "transition duration-[900ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.05]",
             "(max-width: 768px) 100vw, 33vw",
           )}
         </div>
         <Link href={href} className="block mt-[clamp(14px,1.4vw,22px)] font-display">
-          {addressFirst ? (
-            <>
-              <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
-                {address}
-              </p>
-              {type && (
-                <p className="mt-[4px] text-[clamp(13px,0.95vw,16px)] font-medium leading-[1.4] text-white/70">
-                  {type}
-                </p>
-              )}
-              {renderMeta("onDark", false, true)}
-            </>
-          ) : (
-            <>
-              {guide && (
+          <MaskReveal>
+            {addressFirst ? (
+              <>
                 <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
-                  {guide}
+                  {address}
                 </p>
-              )}
-              <p className={`${guide ? "mt-[4px]" : ""} text-[clamp(12px,0.9vw,15px)] font-medium leading-[1.4] text-white/85`}>
-                {address}
-              </p>
-              {renderMeta("onDark")}
-            </>
-          )}
+                {type && (
+                  <p className="mt-[4px] text-[clamp(13px,0.95vw,16px)] font-medium leading-[1.4] text-white/70">
+                    {type}
+                  </p>
+                )}
+                {renderMeta("onDark", false, true)}
+              </>
+            ) : (
+              <>
+                {guide && (
+                  <p className="text-[clamp(16px,1.2vw,20px)] font-bold leading-[1.2] text-white">
+                    {guide}
+                  </p>
+                )}
+                <p className={`${guide ? "mt-[4px]" : ""} text-[clamp(12px,0.9vw,15px)] font-medium leading-[1.4] text-white/85`}>
+                  {address}
+                </p>
+                {renderMeta("onDark")}
+              </>
+            )}
+          </MaskReveal>
         </Link>
       </div>
     );
@@ -265,7 +294,7 @@ export function PropertyCard({
         className={`relative ${aspect ?? "aspect-[3/4] lg:aspect-[4/3]"} w-full overflow-hidden rounded-[clamp(16px,1.35vw,24px)]`}
       >
         {media(
-          "transition duration-500 group-hover:scale-[1.03]",
+          "transition duration-[900ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.05]",
           "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
         )}
       </div>
@@ -273,31 +302,33 @@ export function PropertyCard({
         href={href}
         className="mt-[12px] flex flex-1 flex-col font-display sm:mt-[clamp(16px,2vw,42px)]"
       >
-        {addressFirst ? (
-          <>
-            <p className="line-clamp-2 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
-              {address}
-            </p>
-            {type && (
-              <p className="mt-[6px] line-clamp-1 text-[14px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none sm:text-[clamp(15px,1.05vw,18px)] sm:leading-[1.5]">
-                {type}
+        <MaskReveal>
+          {addressFirst ? (
+            <>
+              <p className="line-clamp-2 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
+                {address}
               </p>
-            )}
-            {renderMeta("muted", false, true)}
-          </>
-        ) : (
-          <>
-            {guide && (
-              <p className="line-clamp-1 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
-                {guide}
+              {type && (
+                <p className="mt-[6px] line-clamp-1 text-[14px] font-medium leading-[1.4] text-brand-bunker/70 sm:line-clamp-none sm:text-[clamp(15px,1.05vw,18px)] sm:leading-[1.5]">
+                  {type}
+                </p>
+              )}
+              {renderMeta("muted", false, true)}
+            </>
+          ) : (
+            <>
+              {guide && (
+                <p className="line-clamp-1 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
+                  {guide}
+                </p>
+              )}
+              <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
+                {address}
               </p>
-            )}
-            <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
-              {address}
-            </p>
-            {renderMeta("onLight")}
-          </>
-        )}
+              {renderMeta("onLight")}
+            </>
+          )}
+        </MaskReveal>
       </Link>
     </div>
   );

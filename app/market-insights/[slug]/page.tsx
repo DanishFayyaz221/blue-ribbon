@@ -91,7 +91,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
 
               <ExpandableDescription
                 text={article.body}
-                className="mt-[clamp(12px,1.1vw,18px)] max-w-[640px] font-display text-[14px] leading-[1.7] text-brand-bunker sm:text-[clamp(14px,1vw,16px)]"
+                className="mt-[clamp(12px,1.1vw,18px)] max-w-[880px] font-display text-[14px] leading-[1.7] text-brand-bunker sm:text-[clamp(14px,1vw,16px)]"
               />
 
               {article.tags.length > 0 && (
@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                   <h2 className="font-display text-[clamp(13px,0.95vw,15px)] font-semibold text-brand-bunker">
                     Tags
                   </h2>
-                  <ul className="mt-[12px] flex max-w-[640px] flex-wrap gap-[8px]">
+                  <ul className="mt-[12px] flex max-w-[880px] flex-wrap gap-[8px]">
                     {article.tags.map((tag) => (
                       <li
                         key={tag}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
 import { STUDIO_EMAIL, sendAdminNotification, sendVisitorAutoReply } from "@/lib/email/send";
+import { useInViewOnce } from "../ui/MaskReveal";
 
 type Variant = "card" | "pill" | "team";
 
@@ -38,6 +39,14 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  // The field labels play the site's line reveal as the form scrolls in, on
+  // one trigger for the whole form so they stagger down the column.
+  const formRef = useRef<HTMLFormElement>(null);
+  const inView = useInViewOnce(formRef);
+  // The contact page renders two of these forms (pill and card), so the
+  // label-to-field ids must be unique per instance.
+  const uid = useId();
 
   const update = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setValues((v) => ({ ...v, [name]: e.target.value }));
@@ -92,11 +101,51 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
   }
 
   const inputClass = pill
-    ? "h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-    : "h-[52px] w-full rounded-[26px] border border-brand-silver bg-white px-[22px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
+    ? "peer h-[44px] w-full rounded-[22px] bg-[#F1F2F4] px-[18px] font-display text-[13px] text-brand-bunker focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+    : "peer h-[52px] w-full rounded-[26px] border border-brand-silver bg-white px-[22px] font-display text-[14px] text-brand-bunker focus:border-brand-navy focus:outline-none";
   const textareaClass = pill
-    ? "w-full resize-none rounded-[18px] bg-[#F1F2F4] px-[18px] py-[12px] font-display text-[13px] text-brand-bunker placeholder:text-brand-bunker/50 focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
-    : "w-full resize-none rounded-[24px] border border-brand-silver bg-white px-[22px] py-[16px] font-display text-[14px] text-brand-bunker placeholder:text-brand-bunker/40 focus:border-brand-navy focus:outline-none";
+    ? "peer w-full resize-none rounded-[18px] bg-[#F1F2F4] px-[18px] py-[12px] font-display text-[13px] text-brand-bunker focus:outline-none focus:ring-2 focus:ring-brand-navy/30"
+    : "peer w-full resize-none rounded-[24px] border border-brand-silver bg-white px-[22px] py-[16px] font-display text-[14px] text-brand-bunker focus:border-brand-navy focus:outline-none";
+
+  /**
+   * The "placeholder": a <label> laid over the field where the placeholder
+   * text would sit, styled to match it. Not the native attribute, because a
+   * browser paints that itself and `::placeholder` takes colour and font
+   * only — no transform, no clip — so it cannot slide up behind a line mask.
+   *
+   * It behaves like a placeholder all the same: visible while the field is
+   * empty (focused or not), gone the moment there is a value. Gone by
+   * opacity, not display, so the input keeps the label as its accessible
+   * name after it is filled in; the `peer-autofill` case covers a browser
+   * autofill that lands without firing onChange. Clicks fall through to the
+   * field underneath.
+   */
+  const ghostClass = pill
+    ? "font-display text-[13px] text-brand-bunker/50"
+    : "font-display text-[14px] text-brand-bunker/40";
+  const ghost = (htmlFor: string, text: string, empty: boolean, i: number, place: string) => (
+    <span
+      className={`lr lr-ready${inView ? " lr-in" : ""} pointer-events-none absolute ${place} peer-autofill:opacity-0 ${
+        empty ? "" : "opacity-0"
+      }`}
+    >
+      <span className="lr-mask">
+        <label
+          htmlFor={htmlFor}
+          className={`lr-line ${ghostClass}`}
+          style={{ transitionDelay: `${i * 100}ms` }}
+        >
+          {text}
+        </label>
+      </span>
+    </span>
+  );
+  // Where the native placeholder sat: vertically centred in an input, on the
+  // first line of a textarea. Offsets mirror the fields' own padding.
+  const inputPlace = pill
+    ? "inset-y-0 left-[18px] flex items-center"
+    : "inset-y-0 left-[22px] flex items-center";
+  const textareaPlace = pill ? "top-[12px] left-[18px]" : "top-[16px] left-[22px]";
 
   if (status === "sent") {
     return (
@@ -117,26 +166,46 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`flex w-full flex-col ${pill ? "gap-[10px]" : "gap-[16px]"}`}>
-      {fields.map((f) => (
-        <input
-          key={f.name}
-          type={f.type}
-          placeholder={f.label}
-          value={values[f.name] ?? ""}
-          onChange={update(f.name)}
-          required={f.name !== "subject" && f.name !== "address"}
-          className={inputClass}
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      className={`flex w-full flex-col ${pill ? "gap-[10px]" : "gap-[16px]"}`}
+    >
+      {fields.map((f, i) => {
+        const id = `${uid}-${f.name}`;
+        return (
+          // flex, so the field is blockified and the wrapper hugs it exactly —
+          // an inline-level field would leave descender space below itself.
+          <div key={f.name} className="relative flex">
+            <input
+              id={id}
+              type={f.type}
+              value={values[f.name] ?? ""}
+              onChange={update(f.name)}
+              required={f.name !== "subject" && f.name !== "address"}
+              className={inputClass}
+            />
+            {ghost(id, f.label, !values[f.name], i, inputPlace)}
+          </div>
+        );
+      })}
+      <div className="relative flex">
+        <textarea
+          id={`${uid}-message`}
+          rows={pill ? 4 : 5}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+          className={textareaClass}
         />
-      ))}
-      <textarea
-        placeholder={pill ? "Your Message" : "Message"}
-        rows={pill ? 4 : 5}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        required
-        className={textareaClass}
-      />
+        {ghost(
+          `${uid}-message`,
+          pill ? "Your Message" : "Message",
+          !message,
+          fields.length,
+          textareaPlace,
+        )}
+      </div>
 
       {!pill && (
         <div className="flex w-[304px] items-center justify-between rounded-[6px] border border-[#d3d3d3] bg-[#f9f9f9] px-[14px] py-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.08)]">

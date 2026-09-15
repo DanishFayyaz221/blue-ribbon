@@ -69,6 +69,17 @@ export default async function PropertyViewPage({ params }: PageProps) {
     email: a.email ?? "",
     image: profileFor(a.email).image,
   }));
+  // Echoed into the enquiry emails. Built once: the Enquire button and the
+  // price row's "Contact Agent" link open the same modal about the same home.
+  const enquiryListing = {
+    address: listing.address,
+    guide: listing.guide,
+    type: listing.type,
+    beds: listing.beds,
+    baths: listing.baths,
+    cars: listing.cars,
+    image: listing.image,
+  };
   const backLabel = listing.isRental ? "Rent" : "Buy";
 
   const info: { label: string; value: string }[] = [];
@@ -133,7 +144,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
             <ExpandableDescription
               text={listing.description}
-              className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.6] text-[#202020] max-w-[640px]"
+              className="mt-[clamp(18px,1.45vw,25px)] font-display font-medium text-[15px] sm:text-[clamp(15px,1.05vw,17px)] leading-[1.6] text-[#202020] max-w-[880px]"
             />
 
             {(listing.amenities.length > 0 || listing.otherFeatures.length > 0) && (
@@ -141,7 +152,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
                 <LineReveal as="h2" className="font-display text-[16px] font-semibold text-[#202020]">
                   Features
                 </LineReveal>
-                <ul className="mt-[12px] flex flex-wrap gap-[8px] max-w-[640px]">
+                <ul className="mt-[12px] flex flex-wrap gap-[8px] max-w-[880px]">
                   {/* Structured flags from the feed first, then the agency's
                       free-text extras. */}
                   {listing.amenities.map((a) => (
@@ -186,15 +197,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
             <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(48px,4.5vw,72px)]">
               <EnquireTrigger
                 agents={enquiryAgents}
-                listing={{
-                  address: listing.address,
-                  guide: listing.guide,
-                  type: listing.type,
-                  beds: listing.beds,
-                  baths: listing.baths,
-                  cars: listing.cars,
-                  image: listing.image,
-                }}
+                listing={enquiryListing}
                 className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
               />
               <ShareTrigger
@@ -207,7 +210,24 @@ export default async function PropertyViewPage({ params }: PageProps) {
               />
             </div>
 
-            <DetailRow label={listing.isRental ? "Rent" : "Price"} value={listing.guide} topSpace />
+            <DetailRow
+              label={listing.isRental ? "Rent" : "Price"}
+              value={
+                hasPublishedPrice(listing.guide) ? (
+                  listing.guide
+                ) : (
+                  <EnquireTrigger
+                    variant="link"
+                    label="Contact Agent"
+                    initialHelp="Price Guide"
+                    agents={enquiryAgents}
+                    listing={enquiryListing}
+                    className="text-[15px] font-semibold text-brand-navy"
+                  />
+                )
+              }
+              topSpace
+            />
             {listing.type && <DetailRow label="Property type" value={listing.type} />}
 
             {info.length > 0 && (
@@ -324,7 +344,27 @@ function Stat({ value, label, primary = false }: { value?: number; label: string
   );
 }
 
-function DetailRow({ label, value, topSpace = false }: { label: string; value: string; topSpace?: boolean }) {
+/**
+ * Whether the price line carries an actual figure. The feed's price text is
+ * free-form: alongside "Guide $850,000" it sends the agency's own wording for
+ * listings with nothing published — "Price Dropped", "Contact agent",
+ * "Auction". None of those tell a buyer what the home costs, so the price row
+ * shows a "Contact Agent" link in their place, which opens the enquiry modal
+ * with the price guide already asked for.
+ */
+function hasPublishedPrice(guide: string): boolean {
+  return /\d/.test(guide);
+}
+
+function DetailRow({
+  label,
+  value,
+  topSpace = false,
+}: {
+  label: string;
+  value: React.ReactNode;
+  topSpace?: boolean;
+}) {
   return (
     <div
       className={`flex items-center justify-between border-b border-brand-silver/40 py-[14px] ${
@@ -390,6 +430,18 @@ function MobilePropertyView({
   info: { label: string; value: string }[];
   agents: ModalAgent[];
 }) {
+  // As on desktop: one listing object for the Enquire button and the price
+  // row's "Contact Agent" link.
+  const enquiryListing = {
+    address: listing.address,
+    guide: listing.guide,
+    type: listing.type,
+    beds: listing.beds,
+    baths: listing.baths,
+    cars: listing.cars,
+    image: listing.image,
+  };
+
   return (
     <div className="sm:hidden">
       <section className="container-page pt-[8px]">
@@ -420,15 +472,7 @@ function MobilePropertyView({
           <EnquireTrigger
             variant="navy-pill"
             agents={agents}
-            listing={{
-              address: listing.address,
-              guide: listing.guide,
-              type: listing.type,
-              beds: listing.beds,
-              baths: listing.baths,
-              cars: listing.cars,
-              image: listing.image,
-            }}
+            listing={enquiryListing}
             className="flex-1"
           />
           <ShareTrigger
@@ -452,7 +496,18 @@ function MobilePropertyView({
             {listing.isRental ? "Rent" : "Price"}
           </span>
           <span className="font-display text-[13px] font-semibold text-brand-bunker">
-            {listing.guide}
+            {hasPublishedPrice(listing.guide) ? (
+              listing.guide
+            ) : (
+              <EnquireTrigger
+                variant="link"
+                label="Contact Agent"
+                initialHelp="Price Guide"
+                agents={agents}
+                listing={enquiryListing}
+                className="text-[13px] font-semibold text-brand-navy"
+              />
+            )}
           </span>
         </div>
       </section>

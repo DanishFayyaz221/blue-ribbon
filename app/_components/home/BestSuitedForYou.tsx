@@ -47,6 +47,7 @@ export async function BestSuitedForYou() {
                 // on the phone only; sm and up keeps the section's wide look.
                 aspect="aspect-[3/2] sm:aspect-[15/8]"
                 sizes="(max-width: 767px) 48vw, (max-width: 1023px) 47vw, 30vw"
+                parallax
               />
             </div>
           ))}

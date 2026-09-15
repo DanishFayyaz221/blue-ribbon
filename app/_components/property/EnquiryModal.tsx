@@ -40,13 +40,26 @@ type EnquiryModalProps = {
   agents?: ModalAgent[];
   /** Absent when the enquiry is not about a specific listing. */
   listing?: EnquiryListing;
+  /**
+   * A "How can we help?" chip to start with selected. The price row of a
+   * listing with no published price opens this modal from a "Contact Agent"
+   * link, and a visitor who clicked that is asking for the price guide.
+   */
+  initialHelp?: HelpOption;
 };
 
 const helpOptions = ["Price Guide", "Book an inspection", "Similar Properties"] as const;
+export type HelpOption = (typeof helpOptions)[number];
 
-export function EnquiryModal({ open, onClose, agents = [], listing }: EnquiryModalProps) {
+export function EnquiryModal({
+  open,
+  onClose,
+  agents = [],
+  listing,
+  initialHelp,
+}: EnquiryModalProps) {
   const [mounted, setMounted] = useState(false);
-  const [help, setHelp] = useState<(typeof helpOptions)[number] | null>(null);
+  const [help, setHelp] = useState<HelpOption | null>(initialHelp ?? null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

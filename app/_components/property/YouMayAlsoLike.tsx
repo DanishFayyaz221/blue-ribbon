@@ -79,6 +79,10 @@ export function YouMayAlsoLike({
                 {...p}
                 variant={dark ? "compact" : "tall"}
                 addressFirst={false}
+                // Grid only. The phone rendering above is a horizontal
+                // carousel, where a vertical scroll-drift reads as drag
+                // against the swipe rather than as depth.
+                parallax
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               />
             </div>

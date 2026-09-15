@@ -16,6 +16,12 @@ type Props = {
    */
   mediaRef?: Ref<HTMLDivElement>;
   /**
+   * Extra classes for that same layer. ParallaxMedia marks it so the
+   * `.focus-peers` hover rule can blur the layer itself rather than the veil
+   * over it — see the note there.
+   */
+  mediaClassName?: string;
+  /**
    * Marks the lead frame as `priority` for next/image. Set this when the
    * gallery is placed above the fold (e.g. the Parramatta featured hero) so
    * Next preloads it and stops warning that the LCP image lacks priority.
@@ -46,6 +52,7 @@ export function CardGallery({
   sizes,
   imageClassName = "",
   mediaRef,
+  mediaClassName = "",
   priority = false,
 }: Props) {
   const [index, setIndex] = useState(0);
@@ -67,7 +74,7 @@ export function CardGallery({
     <>
       {/* Media layer: the sliding track lives inside it, so a caller's
           transform on this layer (see mediaRef) composes with the slide. */}
-      <div ref={mediaRef} className="absolute inset-0">
+      <div ref={mediaRef} className={`absolute inset-0 ${mediaClassName}`.trim()}>
       <div
         className="absolute inset-0 flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
         style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}

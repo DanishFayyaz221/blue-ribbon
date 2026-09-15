@@ -1,9 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { EnquiryModal, type EnquiryListing, type ModalAgent } from "./EnquiryModal";
+import {
+  EnquiryModal,
+  type EnquiryListing,
+  type HelpOption,
+  type ModalAgent,
+} from "./EnquiryModal";
 
-type Variant = "primary" | "navy-pill";
+/**
+ * `primary` and `navy-pill` are the outlined buttons. `link` is underlined
+ * text with no box — the "Contact Agent" that stands in for the price of a
+ * listing with none published. It carries no size, weight or colour of its
+ * own so the caller can match it to the row it sits in.
+ */
+type Variant = "primary" | "navy-pill" | "link";
 
 type Props = {
   variant?: Variant;
@@ -13,6 +24,8 @@ type Props = {
   agents?: ModalAgent[];
   /** The listing the enquiry is about, echoed into the notification email. */
   listing?: EnquiryListing;
+  /** A "How can we help?" chip to open with already selected. */
+  initialHelp?: HelpOption;
 };
 
 export function EnquireTrigger({
@@ -21,20 +34,29 @@ export function EnquireTrigger({
   label = "Enquire",
   agents,
   listing,
+  initialHelp,
 }: Props) {
   const [open, setOpen] = useState(false);
 
   const base =
-    variant === "navy-pill"
-      ? "group relative isolate flex h-[48px] items-center justify-center overflow-hidden rounded-[24px] border border-brand-navy bg-white font-display text-[14px] font-semibold text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
-      : "group relative isolate inline-flex h-[42px] items-center justify-center overflow-hidden rounded-full border border-brand-navy bg-white px-[24px] font-display text-[14px] font-medium text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky";
+    variant === "link"
+      ? "cursor-pointer font-display underline underline-offset-4 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky"
+      : variant === "navy-pill"
+        ? "group relative isolate flex h-[48px] items-center justify-center overflow-hidden rounded-[24px] border border-brand-navy bg-white font-display text-[14px] font-semibold text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
+        : "group relative isolate inline-flex h-[42px] items-center justify-center overflow-hidden rounded-full border border-brand-navy bg-white px-[24px] font-display text-[14px] font-medium text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky";
 
   return (
     <>
       <button type="button" onClick={() => setOpen(true)} className={`${base} ${className}`}>
-        <span className="relative z-10">{label}</span>
+        {variant === "link" ? label : <span className="relative z-10">{label}</span>}
       </button>
-      <EnquiryModal open={open} onClose={() => setOpen(false)} agents={agents} listing={listing} />
+      <EnquiryModal
+        open={open}
+        onClose={() => setOpen(false)}
+        agents={agents}
+        listing={listing}
+        initialHelp={initialHelp}
+      />
     </>
   );
 }
