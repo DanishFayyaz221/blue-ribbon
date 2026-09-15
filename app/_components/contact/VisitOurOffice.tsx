@@ -1,14 +1,16 @@
 import { LineReveal } from "../ui/LineReveal";
+import { RollLink } from "../ui/RollLink";
 
 /**
  * "Visit Our Office" band on the Contact page, directly above the enquiry
  * form: a centred Testimonials pill, heading, two paragraphs, then the
- * office's address, email and phone as bold underlined links. Same pill,
- * heading and paragraph treatment as the About page's "Know Us better!" band
- * so the two read as one system.
+ * office's address, email and phone as bold text-roll links: on hover the
+ * characters roll up and a hairline draws in beneath, after the reference
+ * site's footer contact links (see RollLink). Same pill, heading and
+ * paragraph treatment as the About page's "Know Us better!" band so the two
+ * read as one system.
  */
 export function VisitOurOffice() {
-  const linkClass = "underline underline-offset-[3px] transition hover:text-brand-navy";
   return (
     <section className="w-full bg-white pt-[clamp(44px,6vw,90px)]">
       <div className="container-page flex flex-col items-center text-center">
@@ -41,20 +43,17 @@ export function VisitOurOffice() {
           professional hands.
         </LineReveal>
         <address className="mt-[clamp(24px,3.6vw,52px)] flex flex-col items-center gap-[8px] font-display text-[clamp(13px,1.05vw,16px)] font-bold not-italic leading-[1.4] text-brand-bunker">
-          <a
+          {/* The address is two masks so it can wrap after the street on a
+              phone; on wider screens they sit on one line. */}
+          <RollLink
             href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
             target="_blank"
             rel="noopener noreferrer"
-            className={linkClass}
           >
-            11/76-80 Station Street, Wentworthville, NSW 2145
-          </a>
-          <a href="mailto:sales@blueribbonre.com.au" className={linkClass}>
-            sales@blueribbonre.com.au
-          </a>
-          <a href="tel:1300579093" className={linkClass}>
-            1300 579 093
-          </a>
+            {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
+          </RollLink>
+          <RollLink href="mailto:sales@blueribbonre.com.au">sales@blueribbonre.com.au</RollLink>
+          <RollLink href="tel:1300579093">1300 579 093</RollLink>
         </address>
       </div>
     </section>

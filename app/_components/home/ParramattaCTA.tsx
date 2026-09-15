@@ -17,7 +17,7 @@ export async function ParramattaCTA() {
   } catch {}
 
   return (
-    <section className="relative w-full bg-white py-[clamp(20px,2.4vw,40px)]">
+    <section className="relative w-full bg-white pt-[clamp(20px,2.4vw,40px)]">
       {/* Featured Property badge, centred above the card. */}
       <div className="flex justify-center mb-[clamp(14px,1.4vw,24px)]">
         <span className="rounded-[8px] bg-brand-navy px-[18px] py-[8px] font-display text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.14em] text-white">

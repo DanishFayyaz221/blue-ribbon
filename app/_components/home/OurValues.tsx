@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { LineReveal } from "../ui/LineReveal";
 import { ValuesShowcase } from "./ValuesShowcase";
+import { ScrollZoomFigure } from "../ui/ScrollZoomFigure";
 
 /**
  * "Our values" band on the appraisal page: the navy satin backdrop the rest of
@@ -67,18 +68,51 @@ export function OurValues() {
         </LineReveal>
       </div>
 
-      {/* Full-bleed photo between the intro and the values showcase, as in
-          the comp. Kept at its natural 1920x1182 aspect so nothing is cropped,
-          capped only on very wide screens where that would outgrow a viewport. */}
-      <div className="relative z-10 mt-[clamp(32px,4.5vw,72px)] aspect-[1920/1182] max-h-[1182px] w-full">
+      {/* Photo between the intro and the values showcase: full width, whole
+          frame, and never taller than the screen.
+
+          The box takes the image's own 1920x1182 shape, so at full width the
+          image fills it exactly — edge to edge with nothing cropped. `max-h`
+          then stops it running past the fold on a wide monitor, where that
+          shape would be taller than the viewport.
+
+          `object-cover` so the photo always reaches both side edges. It only
+          has anything to trim in the capped case: on a 16:9 monitor the cap
+          shortens the box below the image's shape, costing ~9% off the top
+          and bottom — the subjects sit centrally, so that takes ceiling and
+          floor rather than faces. On a 16:10 screen (1440x900) the cap never
+          engages, the box matches the image exactly, and nothing is lost.
+
+          `svh` rather than `vh`: on mobile browsers `vh` measures the
+          viewport with the toolbars hidden, so the cap would sit lower than
+          the visible area until the user scrolled.
+
+          `svh` rather than `vh`: on mobile browsers `vh` measures the
+          viewport with the toolbars hidden, so the banner would overflow by
+          the height of the address bar until the user scrolled.
+
+          It grows into place as it scrolls in (see ScrollZoomFigure). The
+          frame is the thing that scales, so nothing beside it shifts —
+          `origin-center` keeps the growth symmetrical on a full-bleed
+          element, and the clip stops the drifting photo overhanging while the
+          frame is still below full size. */}
+      <ScrollZoomFigure
+        zoom={1}
+        // 0.9 rather than the reference default of 0.8. The growth here runs
+        // over a full viewport of scroll so it can be watched, and across that
+        // distance a 20% jump reads as a heavy pop; 10% is a slow, continuous
+        // settle.
+        from={0.9}
+        className="relative z-10 mt-[clamp(32px,4.5vw,72px)] aspect-[1920/1182] max-h-[100svh] w-full origin-center overflow-hidden"
+      >
         <Image
           src="/images/frame1.png"
           alt="A Blue Ribbon agent in conversation with a client"
           fill
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
-      </div>
+      </ScrollZoomFigure>
 
       <div className="relative z-10">
         <ValuesShowcase />

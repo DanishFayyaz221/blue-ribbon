@@ -9,6 +9,7 @@ import { AgentCard } from "../_components/agents/AgentCard";
 import { TeamIntro } from "../_components/agents/TeamIntro";
 import { ContactForm } from "../_components/contact/ContactForm";
 import { AgentAvatar } from "../_components/agents/AgentAvatar";
+import { ParallaxFigure } from "../_components/ui/ParallaxFigure";
 import { getAgents } from "@/lib/db/queries";
 import { profileFor } from "@/lib/agents/profiles";
 
@@ -84,8 +85,11 @@ export default async function AgentsPage() {
                     {/* Photo, name and role link through; the tel: link below
                         stays outside so one anchor never nests in another. */}
                     <Link href={a.href} className="block">
+                      {/* Same scroll parallax as the desktop cards below. */}
                       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[10px]">
-                        <AgentAvatar name={a.name} image={a.image} sizes="50vw" />
+                        <ParallaxFigure anchor="top" className="absolute inset-0">
+                          <AgentAvatar name={a.name} image={a.image} sizes="50vw" />
+                        </ParallaxFigure>
                       </div>
                       <p className="mt-[10px] text-center font-display text-[14px] font-bold text-brand-bunker">
                         {a.name}

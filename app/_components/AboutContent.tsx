@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { LineReveal } from "./ui/LineReveal";
+import { ParallaxFigure } from "./ui/ParallaxFigure";
 
 const rows = [
   {
@@ -27,6 +28,10 @@ const rows = [
  *
  * Light-theme sibling of the appraisal page's ValuesShowcase — kept separate
  * because the proportions differ (smaller photos, wider copy, tighter rows).
+ *
+ * Each photo drifts inside its frame as the row passes (see ParallaxFigure).
+ * The frame keeps its own entry reveal; the drift runs on a layer inside it,
+ * so the two transforms compose rather than fight.
  */
 export function AboutContent() {
   return (
@@ -39,7 +44,7 @@ export function AboutContent() {
               i > 0 ? "mt-[40px] sm:mt-[clamp(40px,6.5vw,94px)]" : ""
             } ${i % 2 === 1 ? "md:ml-[27%]" : ""}`}
           >
-            <div
+            <ParallaxFigure
               suppressHydrationWarning
               className="reveal-scale relative aspect-square w-full max-w-[440px] shrink-0 overflow-hidden rounded-[10px] sm:w-[clamp(200px,23vw,440px)]"
             >
@@ -50,7 +55,7 @@ export function AboutContent() {
                 sizes="(max-width: 640px) 100vw, 23vw"
                 className="object-cover"
               />
-            </div>
+            </ParallaxFigure>
             <div className="w-full sm:w-[clamp(280px,31vw,600px)] sm:pt-[clamp(0px,3vw,48px)]">
               <LineReveal
                 as="h2"

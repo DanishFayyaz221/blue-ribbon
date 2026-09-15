@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { TextMarquee } from "../ui/TextMarquee";
 import { LineReveal } from "../ui/LineReveal";
+import { ParallaxFigure } from "../ui/ParallaxFigure";
 
 const values = [
   {
@@ -48,9 +49,10 @@ export function ValuesShowcase() {
               i > 0 ? "mt-[40px] sm:mt-[clamp(40px,12vw,190px)]" : ""
             } ${i % 2 === 1 ? "md:ml-auto md:mr-[5%] md:w-fit" : ""}`}
           >
-            {/* The photo keeps the block fade-up; the title and copy play the
-                line-mask reveal instead, so the text isn't animated twice. */}
-            <div
+            {/* The photo keeps the block fade-up and drifts inside its frame
+                as the row passes; the title and copy play the line-mask
+                reveal instead, so the text isn't animated twice. */}
+            <ParallaxFigure
               suppressHydrationWarning
               className="reveal relative aspect-square w-full max-w-[330px] shrink-0 overflow-hidden rounded-[14px] sm:w-[clamp(200px,21.7vw,330px)]"
             >
@@ -61,7 +63,7 @@ export function ValuesShowcase() {
                 sizes="(max-width: 640px) 100vw, 22vw"
                 className="object-cover"
               />
-            </div>
+            </ParallaxFigure>
             <div className="w-full max-w-[430px] sm:pt-[clamp(16px,5vw,80px)]">
               <LineReveal
                 as="h3"

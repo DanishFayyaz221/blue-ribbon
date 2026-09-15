@@ -11,6 +11,7 @@ import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
 import type { ModalAgent } from "../../_components/property/EnquiryModal";
 import { AgentAvatar } from "../../_components/agents/AgentAvatar";
+import { ParallaxFigure } from "../../_components/ui/ParallaxFigure";
 import { profileFor } from "@/lib/agents/profiles";
 import { amenityLabel } from "@/lib/reaxml/amenities";
 import { ExpandableDescription } from "../../_components/property/ExpandableDescription";
@@ -345,13 +346,19 @@ function AgentMini({ name, email, mobile, phone }: AgentProps) {
         href={email ? `mailto:${email}` : undefined}
         className="relative block aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-[12px] bg-brand-bunker/80 transition duration-500 group-hover:shadow-[0_12px_28px_-8px_rgba(0,31,77,0.35)]"
       >
-        <div className="absolute inset-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
+        {/* Anchored to the top: the headshots have only a few percent of room
+            above the hair, so the slide is front-loaded into the card's entry
+            and the head is fully in frame once the card is up the screen. */}
+        <ParallaxFigure
+          anchor="top"
+          className="absolute inset-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+        >
           <AgentAvatar
             name={name}
             image={profileFor(email).image}
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-        </div>
+        </ParallaxFigure>
       </a>
       <p className="mt-[12px] font-display text-[14px] font-semibold text-brand-bunker">{name}</p>
       {(mobile || phone) && (

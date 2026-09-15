@@ -8,6 +8,7 @@ import { Nav } from "../layout/Nav";
 import { Footer } from "../layout/Footer";
 import { Breadcrumb } from "../ui/Breadcrumb";
 import { TeamCTA } from "../sections/TeamCTA";
+import { ScrollZoomFigure } from "../ui/ScrollZoomFigure";
 import { OurValues } from "../home/OurValues";
 import type { PropertyCardData } from "../property/PropertyCard";
 import { MoreProperties } from "../property/MoreProperties";
@@ -262,15 +263,27 @@ export function AppraisalFlow({
                 its natural 1920x1027 aspect, capped only on very wide screens. */}
             {latest.length > 0 && <MoreProperties properties={latest.slice(0, 3)} />}
 
-            <div className="relative aspect-[1920/1027] max-h-[1027px] w-full">
+            {/* Grows into place as it scrolls in, matching the banner above
+                the values band. At 1920x1027 this one is wider than that
+                banner, so its height at full width stays inside the viewport
+                on every common screen and `max-h` never has to trim it.
+
+                `zoom={1}` disables the inner drift: the frame is already the
+                image's own shape, so there is no overhang to drift within and
+                any zoom would only crop it. */}
+            <ScrollZoomFigure
+              zoom={1}
+              from={0.9}
+              className="relative aspect-[1920/1027] max-h-[100svh] w-full origin-center overflow-hidden"
+            >
               <Image
                 src="/images/frame3.png"
                 alt="A Blue Ribbon agent going through property listings with a family"
                 fill
                 sizes="100vw"
-                className="object-cover"
+                className="object-cover object-center"
               />
-            </div>
+            </ScrollZoomFigure>
 
             <section className="sm:hidden w-full bg-white">
               <div className="w-full">

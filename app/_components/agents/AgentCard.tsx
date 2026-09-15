@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AgentAvatar } from "./AgentAvatar";
+import { ParallaxFigure } from "../ui/ParallaxFigure";
 
 export type AgentCardData = {
   name: string;
@@ -25,13 +26,25 @@ export function AgentCard({
 }: AgentCardData & { compact?: boolean }) {
   return (
     <Link href={href} className="group block w-full">
+      {/* The photo slides down into place and eases out of a slight zoom as
+          the card enters, and lifts on hover — the same treatment as the
+          agent cards on a property page. Anchored to the top: the headshots
+          have only a few percent of room above the hair, so the slide is
+          front-loaded into the entry and the head is fully in frame once
+          the card is up the screen. The hover scale sits on the figure's
+          frame, not the image, so it does not fight the scroll transform on
+          the layer inside. */}
       <div className="relative aspect-[37/50] w-full overflow-hidden rounded-[clamp(12px,1vw,16px)]">
-        <AgentAvatar
-          name={name}
-          image={image}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="transition duration-500 group-hover:scale-[1.02]"
-        />
+        <ParallaxFigure
+          anchor="top"
+          className="absolute inset-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
+        >
+          <AgentAvatar
+            name={name}
+            image={image}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        </ParallaxFigure>
       </div>
       <div className={`mt-[clamp(14px,1.2vw,20px)] font-display ${compact ? "" : ""}`}>
         <p className="text-[clamp(14px,0.95vw,17px)] font-semibold tracking-[0.02em] text-black leading-[1.3]">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CardGallery } from "../property/CardGallery";
 import type { ListingCard } from "@/lib/db/queries";
@@ -106,6 +106,76 @@ export function ParramattaFeaturedCard({ featured }: Props) {
     return () => img.removeEventListener("load", apply);
   }, [featured.image]);
 
+  // Corner plaques come in when they scroll into view, each on its own: the
+  // stats sit at the top of the card and lead, the address at the bottom
+  // follows as the card rises. On a fast scroll that lands both at once the
+  // address's CSS delay staggers them instead. Plays once.
+  //
+  // `armed` goes on after mount so the hidden start state outlives the
+  // page-level `reveal-armed` gate, which drops on pageshow — before the
+  // visitor has scrolled this far (see globals.css).
+  const statsRef = useRef<HTMLDivElement>(null);
+  const addressRef = useRef<HTMLDivElement>(null);
+  const [armed, setArmed] = useState(false);
+  const [plaquesIn, setPlaquesIn] = useState({ stats: false, address: false });
+  useEffect(() => {
+    // Reduced motion: the stylesheet shows the plaques as they are, so there
+    // is nothing to arm or observe.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Armed a frame later rather than synchronously. The start state is
+    // already painted by the page-level gate, so nothing is lost, and it
+    // keeps this effect from re-rendering the card inside its own commit.
+    const arm = requestAnimationFrame(() => setArmed(true));
+    const targets: [HTMLElement | null, "stats" | "address"][] = [
+      [statsRef.current, "stats"],
+      [addressRef.current, "address"],
+    ];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const key = targets.find(([el]) => el === entry.target)?.[1];
+          if (key) setPlaquesIn((cur) => (cur[key] ? cur : { ...cur, [key]: true }));
+          io.unobserve(entry.target);
+        }
+      },
+      // Fires once half the plaque is above the bottom tenth of the screen,
+      // so it is properly on screen before it moves rather than animating
+      // while still clipped by the viewport edge.
+      { threshold: 0.5, rootMargin: "0px 0px -10% 0px" },
+    );
+    for (const [el] of targets) if (el) io.observe(el);
+    return () => {
+      cancelAnimationFrame(arm);
+      io.disconnect();
+    };
+  }, []);
+
+  const plaqueState = (key: "stats" | "address") =>
+    `${armed ? " plaque-armed" : ""}${plaquesIn[key] ? " plaque-in" : ""}`;
+  // Offset from the panel's own start, so a delayed panel delays its details
+  // with it.
+  const detailDelay = (seconds: number) => ({
+    transitionDelay: `calc(var(--plaque-delay) + ${seconds.toFixed(3)}s)`,
+  });
+
+  // The stats row in display order, as a list so each item can be staggered
+  // by its index. Beds leads at the larger size, as in the comp.
+  const stats: { label: string; value: number; lead?: boolean }[] = [];
+  if (featured.beds != null) stats.push({ label: "Beds", value: featured.beds, lead: true });
+  if (featured.baths != null) stats.push({ label: "Baths", value: featured.baths });
+  if (featured.cars != null) stats.push({ label: "Cars", value: featured.cars });
+
+  // Break the address after the first comma so "street" and "suburb, state,
+  // postcode" sit on their own lines — matches the design comp where the
+  // plaque is two lines tall. Each line gets its own mask.
+  const commaAt = featured.address.indexOf(",");
+  const addressLines = (
+    commaAt >= 0
+      ? [`${featured.address.slice(0, commaAt)},`, featured.address.slice(commaAt + 1).trim()]
+      : [featured.address]
+  ).filter(Boolean);
+
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "touch") return;
     const card = cardRef.current;
@@ -159,7 +229,21 @@ export function ParramattaFeaturedCard({ featured }: Props) {
         setTiltTarget(0, 0, 1);
       }}
       onPointerMove={onMove}
-      className="parramatta-featured group relative w-full overflow-hidden"
+      // Sized so the badge above it and the card together occupy one screen,
+      // which is what makes the whole feature land in view as you scroll to
+      // it. `svh` rather than `vh`: on mobile browsers `vh` measures the
+      // viewport with the toolbars hidden, so the card would overflow by the
+      // height of the address bar.
+      // Sized so the sticky nav, the badge and the card together come to one
+      // screen — the whole feature lands in view as you scroll to it, rather
+      // than the nav pushing its bottom edge off.
+      //
+      // The subtraction tracks the nav's own responsive height (56/64/72px at
+      // the same breakpoints Nav uses) plus this section's padding, the badge
+      // and its gap. `svh` rather than `vh`: on mobile browsers `vh` measures
+      // the viewport with the toolbars hidden, so the card would overflow by
+      // the height of the address bar.
+      className="parramatta-featured group relative h-[calc(100svh-152px)] w-full overflow-hidden rounded-[clamp(14px,1.4vw,22px)] sm:h-[calc(100svh-160px)] lg:h-[calc(100svh-165px)]"
       style={{ aspectRatio: ratio ?? 3 / 2 }}
     >
       <CardGallery
@@ -175,81 +259,75 @@ export function ParramattaFeaturedCard({ featured }: Props) {
           plaques. Sit under the plaques so the plaques stay crisp, not tinted
           by the haze, and pointer-events off so cursor tracking and gallery
           arrows still work through them. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] h-[clamp(110px,12vw,190px)] bg-gradient-to-b from-white/80 via-white/25 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[clamp(110px,12vw,190px)] bg-gradient-to-t from-white/80 via-white/25 to-transparent" />
+      {/* Top and bottom haze: just under a third of the card at each edge,
+          solid white where it meets the page. The middle stays clear because
+          the ramp is front-loaded — past the halfway point of each band the
+          white is under 20%, and the centre ~40% of the card carries none.
+          The gradient itself (globals.css) is eased so that depth reads as a
+          soft dissolve rather than fog — see the note there.
+
+          `z-[15]` keeps them under the plaques at z-30, so those stay crisp
+          rather than being tinted. */}
+      <div className="featured-haze-top pointer-events-none absolute inset-x-0 top-0 z-[15] h-[clamp(130px,16vw,260px)]" />
+      <div className="featured-haze-bottom pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[clamp(130px,16vw,260px)]" />
 
       {/* Beds / Baths / Cars stats — corner-anchored plaque with a scooped
-          bottom-left, casting a soft shadow onto the photo. */}
-      <div
-        className="pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[clamp(18px,2vw,36px)] py-[clamp(14px,1.4vw,24px)] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)]"
-        style={{ borderBottomLeftRadius: "clamp(32px, 3.4vw, 54px)" }}
-      >
-        {featured.beds != null && (
-          <>
-            <div className="flex flex-col items-center px-[clamp(10px,1.2vw,20px)]">
-              <span className="font-display text-[clamp(30px,2.8vw,44px)] font-bold text-brand-bunker leading-none">
-                {featured.beds}
-              </span>
-              <span className="mt-[8px] font-display text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
-                Beds
-              </span>
-            </div>
-            {(featured.baths != null || featured.cars != null) && (
-              <div className="h-[clamp(30px,3vw,48px)] w-px bg-brand-bunker/15" />
-            )}
-          </>
-        )}
-        {featured.baths != null && (
-          <>
-            <div className="flex flex-col items-center px-[clamp(10px,1.2vw,20px)]">
-              <span className="font-display text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none">
-                {featured.baths}
-              </span>
-              <span className="mt-[8px] font-display text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
-                Baths
-              </span>
-            </div>
-            {featured.cars != null && (
-              <div className="h-[clamp(30px,3vw,48px)] w-px bg-brand-bunker/15" />
-            )}
-          </>
-        )}
-        {featured.cars != null && (
-          <div className="flex flex-col items-center px-[clamp(10px,1.2vw,20px)]">
-            <span className="font-display text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none">
-              {featured.cars}
-            </span>
-            <span className="mt-[8px] font-display text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
-              Cars
-            </span>
-          </div>
-        )}
-      </div>
+          bottom-left, casting a soft shadow onto the photo. Scales from its
+          anchored corner (origin-top-right) so it unfolds out of the corner
+          rather than swelling from its centre. */}
+      {stats.length > 0 && (
+        <div
+          ref={statsRef}
+          className={`plaque plaque-tr origin-top-right pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[clamp(18px,2vw,36px)] py-[clamp(14px,1.4vw,24px)] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)]${plaqueState("stats")}`}
+          style={{ borderBottomLeftRadius: "clamp(32px, 3.4vw, 54px)" }}
+        >
+          {stats.map((stat, i) => (
+            <Fragment key={stat.label}>
+              {i > 0 && (
+                <div
+                  className="plaque-rule h-[clamp(30px,3vw,48px)] w-px bg-brand-bunker/15"
+                  style={detailDelay(0.2 + (i - 0.5) * 0.09)}
+                />
+              )}
+              <div className="plaque-mask">
+                <div
+                  className="plaque-line flex flex-col items-center px-[clamp(10px,1.2vw,20px)]"
+                  style={detailDelay(0.2 + i * 0.09)}
+                >
+                  <span
+                    className={
+                      stat.lead
+                        ? "font-display text-[clamp(30px,2.8vw,44px)] font-bold text-brand-bunker leading-none"
+                        : "font-display text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none"
+                    }
+                  >
+                    {stat.value}
+                  </span>
+                  <span className="mt-[8px] font-display text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
+                    {stat.label}
+                  </span>
+                </div>
+              </div>
+            </Fragment>
+          ))}
+        </div>
+      )}
 
       {/* Address plaque — mirror of the stats card in the opposite corner. */}
       <div
-        className="pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[clamp(20px,2.4vw,44px)] py-[clamp(16px,1.6vw,26px)] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)]"
+        ref={addressRef}
+        className={`plaque plaque-bl origin-bottom-left pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[clamp(20px,2.4vw,44px)] py-[clamp(16px,1.6vw,26px)] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)]${plaqueState("address")}`}
         style={{ borderTopRightRadius: "clamp(32px, 3.4vw, 54px)" }}
       >
-        {(() => {
-          // Break the address after the first comma so "street" and
-          // "suburb, state, postcode" sit on their own lines — matches the
-          // design comp where the plaque is two lines tall.
-          const commaAt = featured.address.indexOf(",");
-          const line1 = commaAt >= 0 ? `${featured.address.slice(0, commaAt)},` : featured.address;
-          const line2 = commaAt >= 0 ? featured.address.slice(commaAt + 1).trim() : "";
-          return (
-            <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold leading-[1.25] text-brand-navy">
-              {line1}
-              {line2 && (
-                <>
-                  <br />
-                  {line2}
-                </>
-              )}
-            </p>
-          );
-        })()}
+        <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold leading-[1.25] text-brand-navy">
+          {addressLines.map((line, i) => (
+            <span key={i} className="plaque-mask">
+              <span className="plaque-line block" style={detailDelay(0.2 + i * 0.1)}>
+                {line}
+              </span>
+            </span>
+          ))}
+        </p>
       </div>
 
       {/* Cursor-tracking "View Property" pill. Positioned absolutely at the

@@ -281,6 +281,131 @@ html.reveal-armed .reveal-scale {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
 }
+/* Featured-property edge haze. The photo dissolves into the page at its top
+   and bottom rather than stopping on a line, as the Figma comp shows.
+
+   The ramp is EASED, not linear: solid white at the very edge, then it sheds
+   most of that within the first third of the band and tails off gently. A
+   linear ramp of the same depth held around half its white a long way in,
+   which fogged the middle of the photo; a shallow band cleared the middle
+   but left a visible seam. Front-loading the white gives the seamless edge
+   of the deep version with the clear centre of the shallow one. */
+.featured-haze-top {
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 1) 0%,
+    rgb(255 255 255 / 0.7) 15%,
+    rgb(255 255 255 / 0.4) 35%,
+    rgb(255 255 255 / 0.18) 60%,
+    rgb(255 255 255 / 0.06) 85%,
+    rgb(255 255 255 / 0) 100%
+  );
+}
+.featured-haze-bottom {
+  background: linear-gradient(
+    to top,
+    rgb(255 255 255 / 1) 0%,
+    rgb(255 255 255 / 0.7) 15%,
+    rgb(255 255 255 / 0.4) 35%,
+    rgb(255 255 255 / 0.18) 60%,
+    rgb(255 255 255 / 0.06) 85%,
+    rgb(255 255 255 / 0) 100%
+  );
+}
+
+/* Featured-property plaques (<ParramattaFeaturedCard>).
+
+   Each panel unfolds out of the corner it is anchored to — tucked into that
+   corner at 80% size, then growing into place — while its details slide up
+   one after another behind a line mask, the same treatment the site's
+   headings get. Both play when the panel scrolls into view, not on page
+   load: the section sits a screen or more below the hero, so a load-time
+   animation had always finished before anyone reached it.
+
+   Two gates hold the start state. `html.reveal-armed` covers the first
+   paint, before hydration, like every other reveal here — and drops on
+   pageshow so a visitor without JS still sees the panels. `plaque-armed` is
+   added by the component once mounted and holds the state from there until
+   its own observer fires, so the panels do not depend on the page-level
+   gate surviving until the visitor scrolls down to them. */
+.plaque {
+  --plaque-delay: 0s;
+  will-change: opacity, transform;
+  transition:
+    opacity 0.7s ease-out var(--plaque-delay),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1) var(--plaque-delay);
+}
+/* Staggers the address behind the stats when both land in view at once. */
+.plaque-bl {
+  --plaque-delay: 0.15s;
+}
+html.reveal-armed .plaque:not(.plaque-in),
+.plaque.plaque-armed:not(.plaque-in) {
+  opacity: 0;
+}
+html.reveal-armed .plaque-tr:not(.plaque-in),
+.plaque-tr.plaque-armed:not(.plaque-in) {
+  transform: translate3d(28px, -28px, 0) scale(0.8);
+}
+html.reveal-armed .plaque-bl:not(.plaque-in),
+.plaque-bl.plaque-armed:not(.plaque-in) {
+  transform: translate3d(-28px, 28px, 0) scale(0.8);
+}
+
+/* The details. Each sits in an overflow-hidden mask and rises from just
+   below its bottom edge; the mask's padding, cancelled by an equal negative
+   margin, keeps descenders inside the clip. The rules between the stats grow
+   out from their middle. Per-item delays are set inline by the component,
+   on top of the panel's own delay. */
+.plaque-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.15em 0 0.25em;
+  margin: -0.15em 0 -0.25em;
+}
+.plaque-line {
+  will-change: transform;
+  transition: transform 0.9s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+.plaque-rule {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.reveal-armed .plaque:not(.plaque-in) .plaque-line,
+.plaque.plaque-armed:not(.plaque-in) .plaque-line {
+  transform: translate3d(0, calc(100% + 0.3em), 0);
+}
+html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
+.plaque.plaque-armed:not(.plaque-in) .plaque-rule {
+  transform: scaleY(0);
+}
+
+/* Text-roll hover link (<RollLink>), after studio-foundry.sujen.co's
+   footer contact links. The duplicate copy waits one line below its mask
+   until GSAP takes over the transform; without JS it simply never rolls.
+   The hairline draws in from the left on hover, on the reference's own
+   curve and timing, sitting a little below the text as theirs does. */
+.roll-link {
+  position: relative;
+}
+.roll-link [data-bottom] [data-char] {
+  transform: translate3d(0, 100%, 0);
+}
+.roll-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15em;
+  width: 100%;
+  height: 1px;
+  background: var(--color-brand-navy);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0, 1);
+}
+.roll-link:hover::after {
+  transform: scaleX(1);
+}
+
 .animate-marquee {
   animation: br-marquee 45s linear infinite;
   will-change: transform;
@@ -481,6 +606,17 @@ html.reveal-armed .lr:not(.lr-ready) {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  html.reveal-armed .plaque:not(.plaque-in),
+  .plaque.plaque-armed:not(.plaque-in),
+  .plaque-line,
+  .plaque-rule {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .roll-link::after {
+    transition: none !important;
   }
 }
 

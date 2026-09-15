@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "../ui/Button";
 import { LineReveal } from "../ui/LineReveal";
+import { ScrollZoomFigure } from "../ui/ScrollZoomFigure";
 
 /**
  * "Get in touch with our specialised team" call to action, per the appraisal
@@ -52,7 +53,17 @@ export function TeamCTA() {
           </div>
         </div>
 
-        <div className="relative aspect-square w-full max-h-[720px] overflow-hidden rounded-tl-[14px] sm:rounded-tl-[clamp(12px,1.2vw,20px)]">
+        {/* `scaleInner`: this photo is flush to the right and bottom edges
+            and carries a rounded top-left corner, so the frame has to stay
+            exactly where it is. Growing the frame would pull it off those
+            edges and show the page behind; growing the image inside it keeps
+            the block anchored and clips the overspill. */}
+        <ScrollZoomFigure
+          zoom={1}
+          from={0.92}
+          scaleInner
+          className="relative aspect-square w-full max-h-[720px] overflow-hidden rounded-tl-[14px] sm:rounded-tl-[clamp(12px,1.2vw,20px)]"
+        >
           <Image
             src="/images/humility.png"
             alt="A Blue Ribbon agent presenting a property brochure to a client"
@@ -60,7 +71,7 @@ export function TeamCTA() {
             sizes="(max-width: 640px) 100vw, 48vw"
             className="object-cover"
           />
-        </div>
+        </ScrollZoomFigure>
       </div>
     </section>
   );

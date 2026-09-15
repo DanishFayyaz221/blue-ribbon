@@ -9,6 +9,11 @@ type Props = {
   className?: string;
   /** Viewport heights of scrolling over which the video grows to full width. */
   grow?: number;
+  /** Seconds the growth takes to catch up with the scroll position.
+   *  Tracking the wheel rigidly lands every notch as a visible step; a short
+   *  lag runs the steps together into one continuous motion. The growth is
+   *  still a function of scroll position — it just arrives a beat later. */
+  lag?: number;
   /** Viewport heights the full-width video stays pinned before it releases.
    *  0 = release the moment it reaches full width and scroll on with the page. */
   hold?: number;
@@ -38,8 +43,9 @@ type Props = {
 export function ScrollGrowVideo({
   src,
   className = "",
-  grow = 0.6,
+  grow = 1,
   hold = 0,
+  lag = 0.18,
   radius = 10,
   maxHeight = 0.86,
 }: Props) {
@@ -104,7 +110,13 @@ export function ScrollGrowVideo({
     const ease = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-    const frame = () => {
+    // Eased progress currently on screen. Seeded from the first frame's
+    // target so a page that loads already scrolled past the video does not
+    // play the growth on arrival.
+    let shown: number | null = null;
+    let lastTime = 0;
+
+    const frame = (now: number) => {
       if (!alive) return;
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -112,7 +124,19 @@ export function ScrollGrowVideo({
       // 0 until the cell sticks, 1 once `grow` viewport-heights have gone by.
       const t = track.getBoundingClientRect();
       const p = Math.min(1, Math.max(0, (pinTop - t.top) / growPx));
-      const e = ease(p);
+      const target = ease(p);
+      // Exponential approach to the target: frame-rate independent, and it
+      // can only ever close the gap, never overshoot. Frame gaps are capped
+      // so a tab returning from the background does not jump.
+      const dt = lastTime ? Math.min(0.1, (now - lastTime) / 1000) : 0;
+      lastTime = now;
+      if (shown === null || lag <= 0) {
+        shown = target;
+      } else {
+        shown += (target - shown) * (1 - Math.exp(-dt / lag));
+        if (Math.abs(target - shown) < 0.0005) shown = target;
+      }
+      const e = shown;
       // The cell is never transformed, so its rect is the true resting box.
       const r = cell.getBoundingClientRect();
       if (r.width > 0) {
@@ -162,7 +186,7 @@ export function ScrollGrowVideo({
       window.removeEventListener("resize", layout);
       video.pause();
     };
-  }, [grow, hold, radius, maxHeight]);
+  }, [grow, hold, lag, radius, maxHeight]);
 
   return (
     <div
@@ -172,9 +196,9 @@ export function ScrollGrowVideo({
       // where the effect returns early and these are the final values. Same
       // arithmetic as layout(): the box is 9/16 of the caller's
       // clamp(200px, 24vw, 360px), i.e. clamp(112.5px, 13.5vw, 202.5px) tall,
-      // the growth is 60vh, and the overhang is half the difference between
+      // the growth is 100vh, and the overhang is half the difference between
       // the capped full-width height (min(56.25vw, 86vh)) and the box.
-      className={`min-h-[calc(60vh+56vw)] sm:min-h-[calc(60vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
+      className={`min-h-[calc(100vh+56vw)] sm:min-h-[calc(100vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
     >
       <div
         ref={cellRef}
