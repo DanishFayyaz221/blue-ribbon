@@ -15,7 +15,11 @@ export type InsightArticle = {
   readMinutes: number;
   /** Card image on the listing page. */
   image: string;
-  /** Wide banner at the top of the article page. */
+  /**
+   * Wide banner at the top of the article page. A shared placeholder for
+   * now — the per-article banner assets are still to come; swap each one
+   * here when they do.
+   */
   heroImage: string;
   /** Portrait/square image beside the body copy on the article page. */
   sideImage: string;
@@ -45,7 +49,7 @@ const drafts: Draft[] = [
     title: "Wentworthville Property Market Spring 2026 Update",
     shortTitle: "Spring 2026 Update",
     image: "/images/blog3.png",
-    heroImage: "/images/blog1.png",
+    heroImage: "/images/home.png",
     sideImage: "/images/blog2.png",
     subtitle:
       "Forget the median for a moment. What matters to anyone buying or selling in Wentworthville this spring is what a buyer will actually pay on Saturday.",
@@ -75,9 +79,9 @@ const drafts: Draft[] = [
     slug: "why-wentworthville-duplex-sites-now-matter",
     title: "Why Wentworthville Duplex Sites Now Matter",
     shortTitle: "Duplex Sites",
-    image: "/images/blog3.png",
-    heroImage: "/images/dynamic.png",
-    sideImage: "/images/property-hero.png",
+    image: "/images/2.png",
+    heroImage: "/images/home.png",
+    sideImage: "/images/blog2.png",
     subtitle:
       "The Budget changes created a clear winner, and it happens to be the kind of land our suburb has plenty of.",
     body: paragraphs(
@@ -106,9 +110,9 @@ const drafts: Draft[] = [
     slug: "first-home-buyer-guide-wentworthville-2026",
     title: "First Home Buyer Guide: Wentworthville 2026",
     shortTitle: "First Home Buyer Guide",
-    image: "/images/blog3.png",
+    image: "/images/3.png",
     heroImage: "/images/home.png",
-    sideImage: "/images/latest-properties.png",
+    sideImage: "/images/blog2.png",
     subtitle: "If you've been saving and waiting for your chance, this is it.",
     body: paragraphs(
       "For most of the last decade, first home buyers in Western Sydney have been turning up to open homes and getting outbid by investors with bigger deposits. That's changed this year. Investors have stepped back since the May Budget, prices are lower than they were six months ago, and the crowds at Wentworthville unit inspections have thinned out noticeably. If you've been saving and waiting for your chance, this is it.",
@@ -135,9 +139,9 @@ const drafts: Draft[] = [
     slug: "living-in-wentworthville-an-honest-guide",
     title: "Living in Wentworthville: An Honest Guide",
     shortTitle: "Living in Wentworthville",
-    image: "/images/blog3.png",
-    heroImage: "/images/dynamic.png",
-    sideImage: "/images/find-an-office.png",
+    image: "/images/4.png",
+    heroImage: "/images/home.png",
+    sideImage: "/images/blog2.png",
     subtitle:
       "It's one of those suburbs people move to for practical reasons and end up staying in for years.",
     body: paragraphs(

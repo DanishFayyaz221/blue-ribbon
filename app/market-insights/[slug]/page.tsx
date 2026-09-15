@@ -120,7 +120,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                   path={articleHref(article.slug)}
                   address={article.title}
                   guide={article.subtitle}
-                  image={article.heroImage}
+                  image={article.image}
                   type="Article"
                 />
               </div>
