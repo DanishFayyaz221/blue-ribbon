@@ -68,6 +68,11 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
                 {...p}
                 variant="tall"
                 addressFirst
+                // Grid only, as in Explore Properties above: the same parallax
+                // layer, so the hover blur of both grids runs on the same
+                // rule and reads identically. The phone carousel stays plain,
+                // where a vertical drift reads as drag against the swipe.
+                parallax
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               />
             </div>
