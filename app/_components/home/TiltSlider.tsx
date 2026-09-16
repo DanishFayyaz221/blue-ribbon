@@ -29,6 +29,12 @@ type Props = {
   autoplay?: number;
   /** Show the prev/next arrows. Off where the row glides by itself. */
   arrows?: boolean;
+  /**
+   * Glide the row sideways with the page scroll while it is on screen (the
+   * reference behaviour). Off, the row moves only by the glide, a drag, the
+   * wheel or the arrows.
+   */
+  scrollLink?: boolean;
 };
 
 // Motion constants, lifted from realevate.agency's projects slider so the
@@ -82,12 +88,15 @@ export function TiltSlider({
   className = "",
   autoplay = 0,
   arrows = true,
+  scrollLink = true,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
-  // Read by the frame loop through a ref, so the loop is wired once.
+  // Read by the frame loop through refs, so the loop is wired once.
   const autoplayRef = useRef(autoplay);
+  const scrollLinkRef = useRef(scrollLink);
   useEffect(() => {
     autoplayRef.current = autoplay;
+    scrollLinkRef.current = scrollLink;
   });
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -184,7 +193,8 @@ export function TiltSlider({
       }
     };
     const scrollLinked = () =>
-      anchorOffset - (scrollY() - anchorScroll) * SCROLL_RATIO;
+      anchorOffset -
+      (scrollY() - anchorScroll) * (scrollLinkRef.current ? SCROLL_RATIO : 0);
     const linked = () => (inView() ? scrollLinked() : anchorOffset);
     const followScroll = () => {
       target = linked() + base;

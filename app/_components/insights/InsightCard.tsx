@@ -41,11 +41,9 @@ export function InsightCard({
           />
         </ParallaxFigure>
       </div>
-      <h3
-        className={`mt-[clamp(12px,1.1vw,18px)] font-display font-medium leading-[1.4] text-brand-bunker ${
-          feature ? "text-[18px] sm:text-[clamp(12px,0.9vw,14px)]" : "text-[clamp(12px,0.9vw,14px)]"
-        }`}
-      >
+      {/* The same size and weight as a listing card's address, so the article
+          grid and the property grids read as one system. */}
+      <h3 className="mt-[clamp(12px,1.1vw,18px)] font-display text-[clamp(18px,1.35vw,24px)] font-bold leading-[1.25] text-brand-bunker">
         {article.title}
       </h3>
       <p

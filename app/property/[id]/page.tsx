@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Nav } from "../../_components/layout/Nav";
 import { Footer } from "../../_components/layout/Footer";
@@ -254,25 +253,6 @@ export default async function PropertyViewPage({ params }: PageProps) {
                     </div>
                   ))}
                 </dl>
-              </div>
-            )}
-
-            {!listing.isRental && (
-              <div className="mt-[12px] border-t border-brand-silver/40 pt-[14px]">
-                <LineReveal as="h3" className="font-display text-[16px] font-semibold text-[#202020]">
-                  Resource
-                </LineReveal>
-                <div className="mt-[6px] flex items-center justify-between py-[10px]">
-                  <span className="font-display font-medium text-[15px] text-[#202020]">
-                    Home loan calculator
-                  </span>
-                  <Link
-                    href="#calculator"
-                    className="font-display text-[15px] font-medium text-[#202020] underline underline-offset-4 hover:opacity-80"
-                  >
-                    View
-                  </Link>
-                </div>
               </div>
             )}
           </aside>
@@ -556,25 +536,6 @@ function MobilePropertyView({
                   </div>
                 ))}
               </dl>
-            </div>
-          )}
-
-          {!listing.isRental && (
-            <div className="mt-[6px] border-t border-brand-silver/40 pt-[14px]">
-              <LineReveal as="h3" className="font-display text-[14px] font-semibold text-[#202020]">
-                Resource
-              </LineReveal>
-              <div className="mt-[4px] flex items-center justify-between py-[8px]">
-                <span className="font-display text-[13px] font-medium text-[#202020]">
-                  Home loan calculator
-                </span>
-                <Link
-                  href="#calculator"
-                  className="font-display text-[13px] font-medium text-[#202020] underline underline-offset-4 hover:opacity-80"
-                >
-                  View
-                </Link>
-              </div>
             </div>
           )}
         </div>
