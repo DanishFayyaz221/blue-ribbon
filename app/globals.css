@@ -602,6 +602,13 @@ html.reveal-armed .lr:not(.lr-ready) {
 .lr.text-justify .lr-mask:not(:last-child) .lr-line {
   text-align-last: justify;
 }
+/* Same, for copy justified on phones only (Tailwind's `max-sm:text-justify`
+   on the element) — the About page's founder quote. */
+@media (width < 40rem) {
+  .lr.max-sm\:text-justify .lr-mask:not(:last-child) .lr-line {
+    text-align-last: justify;
+  }
+}
 .lr-line {
   display: block;
   transform: translate3d(0, calc(101% + 0.2em), 0);

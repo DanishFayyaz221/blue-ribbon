@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { LineReveal } from "../ui/LineReveal";
+import { FindPropertySheet } from "./FindPropertySheet";
 
 const dealTypes = ["Buy", "Sell", "Rent"] as const;
 type DealType = (typeof dealTypes)[number];
@@ -36,7 +36,7 @@ export function Hero() {
         a slightly taller min-height range fixes the crop while still filling
         the hero nicely on all screen sizes.
       */}
-      <div className="relative aspect-[3/4] sm:aspect-video min-h-[calc(100svh-104px)] sm:min-h-[680px] sm:max-h-[920px] w-full">
+      <div className="relative aspect-[4/5] sm:aspect-video min-h-0 sm:min-h-[680px] sm:max-h-[920px] w-full">
         <div className="parallax-media absolute inset-0">
           <video
             className="h-full w-full object-cover object-top"
@@ -66,25 +66,32 @@ export function Hero() {
         {/* z-20: the deal menu drops past the estimate CTA below, which would
             otherwise paint over it — both blocks are absolute siblings, so
             without this the later one in the DOM wins. */}
-        <div className="container-page absolute inset-x-0 bottom-[max(25%,132px)] z-20">
-          <LineReveal
-            as="h1"
-            trigger={false}
-            className="sm:hidden text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[32px] leading-[1.1] tracking-[-0.01em]"
-          >
-            {"Own Your\nAustralian Dream"}
-          </LineReveal>
+        <div className="container-page absolute inset-x-0 bottom-[28px] sm:bottom-[max(25%,132px)] z-20">
+          {/* Neither comp shows a heading over the video — the search bar and
+              the estimate CTA sit on it alone. Kept for assistive tech and
+              search engines only, so the page still has an h1. */}
+          <h1 className="sr-only">Own Your Australian Dream</h1>
 
           <div className="animate-fade-up [animation-delay:180ms] hidden sm:block">
             <SearchBar />
           </div>
 
-          <div className="animate-fade-up [animation-delay:180ms] mt-[24px] sm:hidden">
-            <MobileSearch />
+          <div className="animate-fade-up [animation-delay:180ms] mt-[20px] sm:hidden">
+            <div className="flex justify-center">
+              <Link
+                href="/property-report-digital-appraisal"
+                className="inline-flex h-[30px] items-center justify-center rounded-full bg-black/40 px-[18px] font-display text-[11px] font-medium text-white/90 backdrop-blur-sm transition hover:bg-black/50"
+              >
+                Get an instant property estimate
+              </Link>
+            </div>
+            <div className="mt-[12px]">
+              <MobileSearch />
+            </div>
           </div>
         </div>
 
-        <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] flex justify-center">
+        <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] hidden sm:flex justify-center">
           <Link
             href="/property-report-digital-appraisal"
             className="animate-fade-up [animation-delay:340ms] flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/40 hover:scale-[1.02]"
@@ -421,6 +428,12 @@ function SearchBar() {
 }
 
 function MobileSearch() {
+  const [deal, setDeal] = useState<DealType>("Buy");
+  const [surroundings, setSurroundings] = useState(true);
+  // Tapping the address cell opens the full-screen Find Property sheet (the
+  // mobile comp); the sheet does the searching from there. The pill's own
+  // Search button still submits the form as before.
+  const [sheetOpen, setSheetOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -443,24 +456,88 @@ function MobileSearch() {
   }, []);
 
   return (
-    <form action={actionFor("Buy")} method="get" className="mx-auto w-full max-w-[420px]">
-      <div className="flex h-[52px] w-full items-stretch rounded-[16px] bg-white p-[6px]">
+    <>
+    <form action={actionFor(deal)} method="get" className="mx-auto w-full">
+      {/* One pill, three cells, as the mobile comp lays it out. The deal
+          picker is a native select so the phone shows its own picker. */}
+      <div className="flex h-[44px] w-full items-stretch overflow-hidden rounded-full bg-white">
+        <label className="relative flex shrink-0 items-center border-r border-brand-silver pl-[16px] pr-[8px]">
+          <span className="sr-only">Looking to</span>
+          <select
+            value={deal}
+            onChange={(e) => setDeal(e.target.value as DealType)}
+            className="appearance-none bg-transparent pr-[18px] font-display text-[12px] font-semibold text-black focus:outline-none"
+          >
+            {dealTypes.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+          <svg
+            viewBox="0 0 24 24"
+            className="pointer-events-none absolute right-[8px] h-[14px] w-[14px] text-black"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </label>
+
+        {/* readOnly: the cell is the sheet's trigger, so the phone must not
+            raise its keyboard here — the sheet's own field takes focus. */}
         <input
           ref={inputRef}
           type="text"
           name="q"
           list={SUBURB_LIST_ID}
-          aria-label="Suburb or postcode"
-          placeholder="Enter suburb, postcode..."
-          className="min-w-0 flex-1 bg-transparent px-[12px] font-display text-[14px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+          readOnly
+          onClick={() => setSheetOpen(true)}
+          onFocus={() => setSheetOpen(true)}
+          aria-label="Suburb, postcode, region or address"
+          aria-haspopup="dialog"
+          placeholder="Enter suburb, postcode, region..."
+          className="min-w-0 flex-1 cursor-pointer bg-transparent px-[12px] font-display text-[11px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
         />
+
+        <label className="flex shrink-0 cursor-pointer items-center gap-[6px] border-l border-brand-silver pl-[10px] pr-[14px]">
+          <input
+            type="checkbox"
+            className="sr-only"
+            checked={surroundings}
+            onChange={(e) => setSurroundings(e.target.checked)}
+          />
+          <span className="relative flex h-[14px] w-[14px] items-center justify-center rounded-full border border-black">
+            {surroundings && <span className="h-[7px] w-[7px] rounded-full bg-black" />}
+          </span>
+          <span className="whitespace-nowrap font-display text-[10px] font-medium text-black">
+            Surrounding suburbs
+          </span>
+        </label>
+      </div>
+
+      <div className="mt-[14px] flex justify-center">
         <button
           type="submit"
-          className="group relative isolate flex h-full shrink-0 items-center justify-center overflow-hidden rounded-[8px] bg-brand-navy px-[20px] font-display text-[14px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
+          className="group relative isolate flex h-[38px] w-[124px] items-center justify-center overflow-hidden rounded-[10px] bg-brand-navy font-display text-[12px] font-medium text-white transition-colors duration-300 before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy-deep before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
         >
           <span className="relative z-10">Search</span>
         </button>
       </div>
     </form>
+
+    {/* Mounted only while open, so it starts fresh each time; it follows the
+        pill's Buy/Rent choice (Sell is the appraisal flow, not a search). */}
+    {sheetOpen && (
+      <FindPropertySheet
+        onClose={() => setSheetOpen(false)}
+        initialWantTo={deal === "Rent" ? "Rent" : "Buy"}
+      />
+    )}
+    </>
   );
 }

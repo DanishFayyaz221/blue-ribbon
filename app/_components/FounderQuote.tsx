@@ -24,15 +24,21 @@ export function FounderQuote() {
       <section className="w-full bg-white pt-[clamp(48px,7vw,135px)]">
         <div className="container-page">
           <figure className="mx-auto w-full sm:w-[85%]">
+            {/* Phone (the mobile comp): larger than the desktop clamp gives a
+                narrow screen, justified, and indented like the desktop.
+                `max-sm:text-justify` is also the hook globals.css uses to
+                stretch every line but the last on phones only. */}
             <LineReveal
               as="blockquote"
-              className="font-[Helvetica_Neue,Helvetica,Arial,sans-serif] text-[clamp(20px,2.45vw,36px)] leading-[1.28] text-brand-bunker sm:indent-[2.7em]"
+              className="font-[Helvetica_Neue,Helvetica,Arial,sans-serif] text-[24px] sm:text-[clamp(20px,2.45vw,36px)] leading-[1.28] text-brand-bunker indent-[2.7em] max-sm:text-justify"
             >
               {QUOTE}
             </LineReveal>
+            {/* The mobile comp runs the quote straight into the banner, with
+                no attribution. */}
             <figcaption
               suppressHydrationWarning
-              className="reveal mt-[clamp(24px,3.7vw,54px)] font-display text-[clamp(12px,1vw,15px)] font-semibold leading-[1.4] text-brand-silver"
+              className="reveal hidden sm:block mt-[clamp(24px,3.7vw,54px)] font-display text-[clamp(12px,1vw,15px)] font-semibold leading-[1.4] text-brand-silver"
             >
               Ven Kan
               <br />
@@ -49,7 +55,9 @@ export function FounderQuote() {
       <ScrollZoomFigure
         zoom={1}
         from={0.9}
-        className="relative mt-[clamp(12px,1.4vw,20px)] aspect-[1920/984] max-h-[984px] w-full origin-center overflow-hidden"
+        // Phone: a square crop, as the mobile comp draws it — object-cover
+        // trims the sides and keeps the asset's white top edge.
+        className="relative mt-[40px] aspect-square max-h-[984px] w-full origin-center overflow-hidden sm:mt-[clamp(12px,1.4vw,20px)] sm:aspect-[1920/984]"
       >
         <Image
           src="/images/banner2.png"

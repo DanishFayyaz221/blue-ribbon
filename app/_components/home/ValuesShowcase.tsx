@@ -45,7 +45,9 @@ export function ValuesShowcase() {
         {values.map((v, i) => (
           <div
             key={v.title}
-            className={`flex flex-col gap-[20px] sm:flex-row sm:items-start sm:gap-[clamp(24px,4.5vw,66px)] ${
+            // Phones read title and copy first, then the photo (the mobile
+            // comp's order); from sm the row is photo-left, text-right.
+            className={`flex flex-col-reverse gap-[20px] sm:flex-row sm:items-start sm:gap-[clamp(24px,4.5vw,66px)] ${
               i > 0 ? "mt-[40px] sm:mt-[clamp(40px,12vw,190px)]" : ""
             } ${i % 2 === 1 ? "md:ml-auto md:mr-[5%] md:w-fit" : ""}`}
           >
@@ -54,7 +56,7 @@ export function ValuesShowcase() {
                 reveal instead, so the text isn't animated twice. */}
             <ParallaxFigure
               suppressHydrationWarning
-              className="reveal relative aspect-square w-full max-w-[330px] shrink-0 overflow-hidden rounded-[14px] sm:w-[clamp(200px,21.7vw,330px)]"
+              className="reveal relative aspect-square w-full shrink-0 overflow-hidden rounded-[14px] sm:w-[clamp(200px,21.7vw,330px)] sm:max-w-[330px]"
             >
               <Image
                 src={v.image}
@@ -67,7 +69,7 @@ export function ValuesShowcase() {
             <div className="w-full max-w-[430px] sm:pt-[clamp(16px,5vw,80px)]">
               <LineReveal
                 as="h3"
-                className="border-b border-white/60 pb-[10px] font-display text-[18px] font-medium text-white sm:text-[clamp(17px,1.65vw,24px)]"
+                className="border-b border-white/60 pb-[10px] font-display text-[22px] font-bold text-white sm:text-[clamp(17px,1.65vw,24px)] sm:font-medium"
               >
                 {v.title}
               </LineReveal>

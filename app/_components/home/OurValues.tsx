@@ -30,8 +30,13 @@ export function OurValues() {
       <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
 
       <div className="container-page relative z-10 flex flex-col items-center text-center">
-        <span className="rounded-[6px] bg-white px-[16px] py-[7px] font-display text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-bunker">
+        <span className="hidden sm:inline-flex rounded-[6px] bg-white px-[16px] py-[7px] font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-bunker">
           Get in touch
+        </span>
+        {/* The mobile comp labels this band "Testimonials", on a translucent
+            navy pill rather than the desktop's white one. */}
+        <span className="sm:hidden rounded-[6px] border border-white/30 bg-white/10 px-[16px] py-[7px] font-display text-[10px] font-semibold uppercase tracking-[0.22em] text-white">
+          Testimonials
         </span>
 
         <LineReveal
@@ -44,7 +49,7 @@ export function OurValues() {
         </LineReveal>
         <LineReveal
           as="h2"
-          className="sm:hidden mt-[18px] font-display font-bold text-white text-[20px] leading-[1.25]"
+          className="sm:hidden mt-[18px] font-display font-bold text-white text-[26px] leading-[1.25]"
         >
           Through our local insight and commitment, we aim to deliver premium
           results that truly stand out.
@@ -62,9 +67,9 @@ export function OurValues() {
           as="p"
           className="sm:hidden mt-[18px] max-w-[600px] font-display font-normal text-white/90 text-[13px] leading-[1.6] tracking-[0.01em]"
         >
-          Our passion for quality service, extensive market expertise, and
-          bespoke strategy are all focused on securing the highest potential
-          value throughout your property journey.
+          We bring genuine care, deep market expertise, and a strategy made for
+          you, all focused on achieving the best possible value at every stage
+          of your journey. See what our customers have to say about us.
         </LineReveal>
       </div>
 

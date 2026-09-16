@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
@@ -7,146 +5,31 @@ import { AboutHero } from "../_components/AboutHero";
 import { AboutContent } from "../_components/AboutContent";
 import { KnowUsBetter } from "../_components/KnowUsBetter";
 import { FounderQuote } from "../_components/FounderQuote";
-import { LineReveal } from "../_components/ui/LineReveal";
 
 export const metadata = {
   title: "About Us | Blue Ribbon Real Estate",
   description: "Your Home, Our Priority. Meet the Blue Ribbon Realtors team.",
 };
 
-const mobileStats = [
-  { value: "500+", label: "Properties Sold" },
-  { value: "15+", label: "Years Experience" },
-  { value: "98%", label: "Client Satisfaction" },
-];
-
+/**
+ * One set of sections at every size. The mobile comp is the desktop page
+ * stacked — video hero, Know Us better, the three content rows, the founder's
+ * quote — so each section carries its own phone treatment rather than the
+ * page swapping in a different layout below sm, as it used to. The breadcrumb
+ * is desktop-only: the phone comp runs the hero straight under the nav.
+ */
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        {/* Mobile layout */}
-        <div className="sm:hidden">
-          <section className="relative w-full overflow-hidden">
-            <div className="relative aspect-[4/3] w-full">
-              <Image
-                src="/about-us-images/image 5.png"
-                alt="Blue Ribbon team"
-                fill
-                priority
-                sizes="(max-width: 639px) 100vw, 1px"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-brand-navy/75" />
-              <div className="absolute inset-0 flex flex-col justify-center px-[22px]">
-                <LineReveal
-                  as="h1"
-                  trigger={false}
-                  className="font-display font-bold text-white text-[30px] leading-[1.05]"
-                >
-                  {"About\nBlue Ribbon"}
-                </LineReveal>
-                <LineReveal
-                  as="p"
-                  trigger={false}
-                  className="mt-[14px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]"
-                >
-                  With a legacy of trust and excellence, Blue Ribbon Real Estate has been connecting families with their dream homes across Western Sydney.
-                </LineReveal>
-              </div>
-            </div>
-          </section>
-
-          <section className="container-page py-[20px]">
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[14px]">
-              <Image
-                src="/about-us-images/image 6.png"
-                alt="Blue Ribbon team meeting"
-                fill
-                sizes="(max-width: 639px) 100vw, 1px"
-                className="object-cover"
-              />
-            </div>
-          </section>
-
-          <section className="container-page pb-[22px]">
-            <LineReveal
-              as="h2"
-              className="font-display font-bold text-brand-bunker text-[20px] leading-[1.2]"
-            >
-              Our Story
-            </LineReveal>
-            <LineReveal
-              as="p"
-              className="mt-[12px] font-display text-[12.5px] leading-[1.65] text-brand-bunker"
-            >
-              Founded with a vision to redefine real estate in Western Sydney, our team brings together decades of local expertise, market knowledge, and genuine passion for helping people find their perfect home. Every property we represent receives our full dedication and attention.
-            </LineReveal>
-          </section>
-
-          <section className="container-page pb-[24px]">
-            <div className="rounded-[14px] bg-[#F1F2F4] p-[18px]">
-              <div className="grid grid-cols-3 gap-[6px]">
-                {mobileStats.map((s) => (
-                  <div key={s.label} className="text-center">
-                    <p className="font-display text-[23px] font-bold leading-none text-brand-navy">
-                      {s.value}
-                    </p>
-                    <p className="mt-[6px] font-display text-[10.5px] text-brand-bunker/70 leading-[1.3]">
-                      {s.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="w-full bg-white">
-            <div className="w-full">
-              <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
-                <Image
-                  src="/images/handshake-house.png"
-                  alt=""
-                  fill
-                  sizes="(max-width: 639px) 100vw, 1px"
-                  className="absolute inset-0 z-0 object-cover"
-                />
-                <div className="absolute inset-0 z-10 bg-brand-navy/85" />
-                <div className="relative z-20">
-                  <LineReveal
-                    as="h2"
-                    className="font-display font-bold text-white text-[25px] leading-[1.1]"
-                  >
-                    {"Want to get in touch\nwith us?"}
-                  </LineReveal>
-                  <LineReveal
-                    as="p"
-                    className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.5]"
-                  >
-                    We’re all about offering supportive, expert advice every step of the way.
-                  </LineReveal>
-                  <Link
-                    href="/contact"
-                    className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
-                  >
-                    Contact our Agent
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
+        <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
         </div>
-
-        {/* Desktop layout (unchanged) */}
-        <div className="hidden sm:block">
-          <div className="container-page pt-[16px] pb-[16px]">
-            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
-          </div>
-          <AboutHero />
-          <KnowUsBetter />
-          <AboutContent />
-          <FounderQuote />
-        </div>
+        <AboutHero />
+        <KnowUsBetter />
+        <AboutContent />
+        <FounderQuote />
       </main>
       <Footer />
     </div>

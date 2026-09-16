@@ -46,7 +46,7 @@ export function AboutContent() {
           >
             <ParallaxFigure
               suppressHydrationWarning
-              className="reveal-scale relative aspect-square w-full max-w-[440px] shrink-0 overflow-hidden rounded-[10px] sm:w-[clamp(200px,23vw,440px)]"
+              className="reveal-scale relative aspect-square w-full shrink-0 overflow-hidden rounded-[10px] sm:w-[clamp(200px,23vw,440px)] sm:max-w-[440px]"
             >
               <Image
                 src={r.image}
@@ -59,7 +59,7 @@ export function AboutContent() {
             <div className="w-full sm:w-[clamp(280px,31vw,600px)] sm:pt-[clamp(0px,3vw,48px)]">
               <LineReveal
                 as="h2"
-                className="border-b border-brand-bunker/70 pb-[14px] font-display text-[18px] font-bold leading-[1.15] text-brand-bunker sm:text-[clamp(17px,1.5vw,22px)]"
+                className="border-b border-brand-bunker/70 pb-[14px] font-display text-[24px] font-bold leading-[1.15] text-brand-bunker sm:text-[clamp(17px,1.5vw,22px)]"
               >
                 {r.title}
               </LineReveal>

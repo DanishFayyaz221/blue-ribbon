@@ -15,6 +15,7 @@ import { ParallaxFigure } from "../../_components/ui/ParallaxFigure";
 import { profileFor } from "@/lib/agents/profiles";
 import { amenityLabel } from "@/lib/reaxml/amenities";
 import { ExpandableDescription } from "../../_components/property/ExpandableDescription";
+import { ContactForm } from "../../_components/contact/ContactForm";
 import {
   getListingBySlug,
   getSimilarListings,
@@ -102,7 +103,13 @@ export default async function PropertyViewPage({ params }: PageProps) {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        <MobilePropertyView listing={listing} info={info} agents={enquiryAgents} />
+        <MobilePropertyView
+          listing={listing}
+          info={info}
+          agents={enquiryAgents}
+          similar={similar}
+          backHref={backHref}
+        />
 
         <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
           <Breadcrumb
@@ -421,14 +428,25 @@ function AgentMini({ name, email, mobile, phone }: AgentProps) {
   );
 }
 
+/**
+ * The phone page, in the mobile comp's order: breadcrumb, the hero with its
+ * Photos / Video tabs, address and stats, the headline and a clamped
+ * description, the agents two across, the fact rows, Enquire beside a solid
+ * Share, the map, the similar-listings strip on white, and a contact form.
+ */
 function MobilePropertyView({
   listing,
   info,
   agents,
+  similar,
+  backHref,
 }: {
   listing: ListingDetail;
   info: { label: string; value: string }[];
   agents: ModalAgent[];
+  similar: Awaited<ReturnType<typeof getSimilarListings>>;
+  /** The listings page for this listing's side of the market. */
+  backHref: string;
 }) {
   // As on desktop: one listing object for the Enquire button and the price
   // row's "Contact Agent" link.
@@ -444,7 +462,16 @@ function MobilePropertyView({
 
   return (
     <div className="sm:hidden">
-      <section className="container-page pt-[8px]">
+      <div className="container-page pt-[12px] pb-[12px]">
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Property", href: backHref },
+            { label: listing.address },
+          ]}
+        />
+      </div>
+      <section className="container-page">
         <PropertyMedia
           images={listing.images}
           floorplans={listing.floorplans}
@@ -455,25 +482,109 @@ function MobilePropertyView({
         />
       </section>
 
-      <section className="container-page mt-[20px]">
-        <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[24px] leading-[1.2]">
+      <section className="container-page mt-[24px]">
+        <LineReveal
+          as="h1"
+          className="font-display font-normal text-brand-bunker text-[26px] leading-[1.2]"
+        >
           {listing.address}
         </LineReveal>
 
-        <div className="mt-[20px] flex items-center justify-start gap-[clamp(16px,5vw,24px)]">
-          <MobileStat value={listing.beds} label="Beds" size="text-[44px]" />
-          <div className="w-px h-8 bg-gray-400" />
-          <MobileStat value={listing.baths} label="Baths" size="text-[28px]" />
-          <div className="w-px h-8 bg-gray-400" />
-          <MobileStat value={listing.cars} label="Cars" size="text-[28px]" />
+        {/* Number over label, the lead figure larger; aligned at the bottom so
+            the three labels share a baseline while the numbers rise to their
+            own heights. */}
+        <div className="mt-[20px] flex items-end">
+          <MobileStat value={listing.beds} label="Beds" primary />
+          <MobileDivider />
+          <MobileStat value={listing.baths} label="Baths" />
+          <MobileDivider />
+          <MobileStat value={listing.cars} label="Cars" />
         </div>
 
-        <div className="mt-[24px] flex gap-[12px]">
+        {listing.headline && (
+          <LineReveal
+            as="p"
+            className="mt-[24px] font-display font-semibold text-[16px] leading-[1.4] text-brand-navy"
+          >
+            {listing.headline}
+          </LineReveal>
+        )}
+
+        <ExpandableDescription
+          text={listing.description}
+          className="mt-[16px] font-display text-[15px] leading-[1.5] text-brand-bunker"
+        />
+
+        {listing.agents.length > 0 && (
+          <div className="mt-[28px] grid grid-cols-2 gap-[14px]">
+            {listing.agents.map((a) => (
+              <AgentMini key={a.name} {...a} />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-[28px]">
+          <MobileRow
+            label={listing.isRental ? "Rent" : "Price"}
+            value={
+              hasPublishedPrice(listing.guide) ? (
+                listing.guide
+              ) : (
+                <EnquireTrigger
+                  variant="link"
+                  label="Contact Agent"
+                  initialHelp="Price Guide"
+                  agents={agents}
+                  listing={enquiryListing}
+                  className="text-[13px] font-semibold text-brand-navy"
+                />
+              )
+            }
+          />
+          {listing.type && <MobileRow label="Property type" value={listing.type} />}
+
+          {info.length > 0 && (
+            <div className="pt-[14px]">
+              <LineReveal as="h3" className="font-display text-[14px] font-semibold text-[#202020]">
+                Property information
+              </LineReveal>
+              <dl className="mt-[4px]">
+                {info.map((d) => (
+                  <div key={d.label} className="flex items-center justify-between py-[8px]">
+                    <dt className="font-display text-[13px] font-medium text-[#202020]">{d.label}</dt>
+                    <dd className="font-display text-[13px] font-medium text-[#202020]">{d.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
+
+          {!listing.isRental && (
+            <div className="mt-[6px] border-t border-brand-silver/40 pt-[14px]">
+              <LineReveal as="h3" className="font-display text-[14px] font-semibold text-[#202020]">
+                Resource
+              </LineReveal>
+              <div className="mt-[4px] flex items-center justify-between py-[8px]">
+                <span className="font-display text-[13px] font-medium text-[#202020]">
+                  Home loan calculator
+                </span>
+                <Link
+                  href="#calculator"
+                  className="font-display text-[13px] font-medium text-[#202020] underline underline-offset-4 hover:opacity-80"
+                >
+                  View
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-[20px] flex gap-[12px]">
           <EnquireTrigger
             variant="navy-pill"
             agents={agents}
             listing={enquiryListing}
-            className="flex-1"
+            className="flex-1 !h-[44px]"
           />
           <ShareTrigger
             path={`/property/${listing.slug}`}
@@ -481,104 +592,78 @@ function MobilePropertyView({
             guide={listing.guide}
             image={listing.image}
             type={listing.type}
-            variant="outline-pill"
-            className="flex-1"
+            variant="navy-pill"
+            className="flex-1 !h-[44px]"
           />
-        </div>
-
-        <ExpandableDescription
-          text={listing.description}
-          className="mt-[20px] font-display text-[13px] leading-[1.6] text-brand-bunker"
-        />
-
-        <div className="mt-[24px] flex items-center justify-between border-t border-brand-silver/40 py-[14px]">
-          <span className="font-display text-[13px] text-brand-bunker/70">
-            {listing.isRental ? "Rent" : "Price"}
-          </span>
-          <span className="font-display text-[13px] font-semibold text-brand-bunker">
-            {hasPublishedPrice(listing.guide) ? (
-              listing.guide
-            ) : (
-              <EnquireTrigger
-                variant="link"
-                label="Contact Agent"
-                initialHelp="Price Guide"
-                agents={agents}
-                listing={enquiryListing}
-                className="text-[13px] font-semibold text-brand-navy"
-              />
-            )}
-          </span>
         </div>
       </section>
 
-      {listing.agents.length > 0 && (
-        <section className="container-page mt-[20px]">
-          <LineReveal as="h2" className="font-display text-[18px] font-bold text-brand-bunker">
-            Your Agents
-          </LineReveal>
-          <div className="mt-[14px] grid grid-cols-2 gap-[12px]">
-            {listing.agents.map((a) => (
-              <article
-                key={a.name}
-                className="flex flex-col items-center rounded-[14px] bg-[#F1F2F4] p-[16px] text-center"
-              >
-                <div className="relative h-[68px] w-[68px] overflow-hidden rounded-full bg-white">
-                  <AgentAvatar name={a.name} image={profileFor(a.email).image} sizes="68px" />
-                </div>
-                <p className="mt-[10px] font-display text-[14px] font-semibold text-brand-bunker">
-                  {a.name}
-                </p>
-                {(a.mobile ?? a.phone) && (
-                  <p className="mt-[2px] font-display text-[11px] text-brand-bunker/70">
-                    {a.mobile ?? a.phone}
-                  </p>
-                )}
-                {a.email && (
-                  <a
-                    href={`mailto:${a.email}`}
-                    className="mt-[6px] font-display text-[12px] font-semibold text-brand-navy underline underline-offset-4"
-                  >
-                    Email
-                  </a>
-                )}
-              </article>
-            ))}
+      {listing.lat !== undefined && listing.lng !== undefined && (
+        <div className="mt-[24px]">
+          <div className="relative aspect-[15/16] w-full overflow-hidden bg-brand-soft-2">
+            <iframe
+              title={listing.address}
+              src={`https://www.google.com/maps?q=${listing.lat},${listing.lng}&output=embed&z=15`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
           </div>
-        </section>
+        </div>
       )}
 
-      {info.length > 0 && (
-        <section className="container-page mt-[28px] pb-[40px]">
-          <LineReveal as="h2" className="font-display text-[18px] font-bold text-brand-bunker">
-            Property Information
-          </LineReveal>
-          <dl className="mt-[12px]">
-            {info.map((d) => (
-              <div
-                key={d.label}
-                className="flex items-center justify-between border-t border-brand-silver/40 py-[12px]"
-              >
-                <dt className="font-display text-[13px] text-brand-bunker/70">{d.label}</dt>
-                <dd className="font-display text-[13px] font-semibold text-brand-bunker">
-                  {d.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+      {similar.length > 0 && (
+        <YouMayAlsoLike properties={similar} heading="You May Also Like" exploreHref={backHref} />
       )}
+
+      <section className="container-page pt-[8px] pb-[40px]">
+        <LineReveal
+          as="h2"
+          className="text-center font-display font-bold text-brand-bunker text-[26px] leading-[1.15]"
+        >
+          Get in Touch
+        </LineReveal>
+        <div className="mt-[20px]">
+          <ContactForm variant="team" />
+        </div>
+      </section>
     </div>
   );
 }
 
-function MobileStat({ value, label, size }: { value?: number; label: string; size: string }) {
+function MobileDivider() {
+  return <div className="mx-[16px] h-[40px] w-px self-end bg-gray-300" />;
+}
+
+function MobileStat({
+  value,
+  label,
+  primary = false,
+}: {
+  value?: number;
+  label: string;
+  primary?: boolean;
+}) {
   return (
-    <div className="flex items-baseline gap-[6px]">
-      <span className={`font-display font-medium leading-none text-brand-navy ${size}`}>
+    <div className="flex flex-col items-start">
+      <span
+        className={`font-display font-medium leading-none text-brand-bunker ${
+          primary ? "text-[38px]" : "text-[24px]"
+        }`}
+      >
         {value ?? "–"}
       </span>
-      <span className="font-display text-[13px] text-brand-bunker/70">{label}</span>
+      <span className="mt-[8px] font-display text-[11px] text-brand-bunker/60">{label}</span>
+    </div>
+  );
+}
+
+function MobileRow({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex items-center justify-between border-b border-brand-silver/40 py-[12px]">
+      <span className="font-display text-[13px] font-medium text-[#202020]">{label}</span>
+      <span className="font-display text-[13px] font-semibold text-[#202020]">{value}</span>
     </div>
   );
 }

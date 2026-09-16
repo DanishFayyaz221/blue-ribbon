@@ -1,7 +1,10 @@
 export function AboutHero() {
   return (
     <section className="container-page">
-      <div className="relative aspect-[1770/620] min-h-[clamp(420px,42vw,720px)] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-navy-deep">
+      {/* Phone (the mobile comp): full-bleed and portrait, no corner radius —
+          the negative margins cancel the container's gutters. From sm, the
+          rounded letterbox inside the container. */}
+      <div className="relative -mx-[var(--page-px)] aspect-[2/3] overflow-hidden bg-brand-navy-deep sm:mx-0 sm:aspect-[1770/620] sm:min-h-[clamp(420px,42vw,720px)] sm:w-full sm:rounded-[clamp(8px,1vw,16px)]">
         {/* Ambient autoplay, matching the home and contact heroes. Muted is not
             a style choice: browsers refuse to autoplay a video with sound.
             No poster — the supplied one has a YouTube play button burned into

@@ -56,9 +56,6 @@ export function AppraisalFlow({
 
   const [step, setStep] = useState<Step>(initialStep);
   const [address, setAddress] = useState("");
-  // Mobile only needs to distinguish residential vs commercial; "rental" is
-  // driven by the URL (isRental), like the desktop radios.
-  const [mobileType, setMobileType] = useState<"residential" | "commercial">("residential");
   const [intent, setIntent] = useState<(typeof intents)[number] | null>(null);
   const [agree, setAgree] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -69,14 +66,6 @@ export function AppraisalFlow({
     window.history.replaceState(null, "", "/property-report-digital-appraisal");
   const selectRental = () =>
     window.history.replaceState(null, "", "/rental-report-digital-appraisal");
-  const selectMobileType = (opt: "residential" | "rental" | "commercial") => {
-    if (opt === "rental") {
-      selectRental();
-    } else {
-      setMobileType(opt);
-      selectSales();
-    }
-  };
 
   // Searching moves on to the report — each path has its own page.
   const handleSearch = () => {
@@ -89,89 +78,88 @@ export function AppraisalFlow({
       <main>
         {step === "address" && (
           <>
-            {/* Mobile hero */}
+            {/* Mobile hero, per the mobile comp: the desktop copy, the two
+                report radios stacked in a translucent panel low in the frame,
+                and the address field with its own Search button beside it. */}
             <div className="sm:hidden">
               <div className="container-page pt-[12px] pb-[16px]">
                 <Breadcrumb
                   items={[
                     { label: "Home", href: "/" },
-                    { label: "Buy", href: "/buy" },
-                    { label: "Property Estimate" },
+                    { label: "Sell Property" },
                   ]}
                 />
               </div>
               <section className="w-full">
                 <div className="relative overflow-hidden">
-                    <Image
-                      src="/images/property-hero.png"
-                      alt=""
-                      fill
-                      priority
-                      sizes="(max-width: 639px) 100vw, 1px"
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-brand-navy/55" />
-                    <div className="relative flex min-h-[100vw] flex-col px-[20px] pt-[clamp(40px,12vw,60px)] pb-[32px]">
-                      <h1 className="text-center font-display font-bold text-white text-[28px] leading-[1.1] tracking-[-0.01em]">
-                        Get Your Property
-                        <br />
-                        Estimate in just
-                        <br />
-                        <span className="text-brand-sky">9 Seconds!</span>
-                      </h1>
-                      <LineReveal
-                        as="p"
-                        className="mx-auto mt-[16px] max-w-[320px] text-center font-display text-white/85 text-[12.5px] font-medium leading-[1.5]"
-                        trigger={false}
-                      >
-                        Search the address below for a Digital Property Report that
-                        highlights market value including recent sales, rental history and
-                        more.
-                      </LineReveal>
+                  <Image
+                    src="/images/property-hero.png"
+                    alt=""
+                    fill
+                    priority
+                    sizes="(max-width: 639px) 100vw, 1px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/45" />
+                  <div className="relative flex min-h-[150vw] flex-col px-[24px] pt-[22vw] pb-[36px]">
+                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[27px] leading-[1.15] tracking-[-0.01em]">
+                      Get Your Property Estimate in just{" "}
+                      <span className="text-brand-sky">9 Seconds!</span>
+                    </h1>
+                    <LineReveal
+                      as="p"
+                      className="mx-auto mt-[16px] max-w-[330px] text-center font-display text-white text-[12.5px] font-medium leading-[1.55]"
+                      trigger={false}
+                    >
+                      Looking to buy or sell a property? Search the address below for a
+                      Digital Property Report that highlights the market value including
+                      recent sales, rental history, suburb report and more.
+                    </LineReveal>
 
-                      <div className="mt-[20px]">
-                        <div className="flex items-center justify-center gap-[8px]">
-                          {(["residential", "rental", "commercial"] as const).map((opt) => {
-                            const active =
-                              opt === "rental" ? isRental : !isRental && mobileType === opt;
-                            return (
-                              <button
-                                key={opt}
-                                type="button"
-                                onClick={() => selectMobileType(opt)}
-                                className={`h-[34px] rounded-full px-[14px] font-display text-[12px] font-medium transition ${
-                                  active
-                                    ? "bg-brand-sky text-white"
-                                    : "border border-white/70 text-white hover:bg-white/10"
-                                }`}
-                              >
-                                {opt === "residential"
-                                  ? "Residential"
-                                  : opt === "rental"
-                                  ? "Rental"
-                                  : "Commercial"}
-                              </button>
-                            );
-                          })}
-                        </div>
-                        <div className="mt-[16px] flex h-[48px] w-full items-stretch overflow-hidden rounded-[12px] bg-white py-[6px] pl-[16px] pr-[6px]">
-                          <input
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Start typing in the street address..."
-                            className="flex-1 bg-transparent pr-[12px] font-display text-[13px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleSearch()}
-                            className="flex w-[96px] items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-medium text-white transition hover:bg-brand-navy-deep"
-                          >
-                            Search
-                          </button>
-                        </div>
+                    <div className="mt-auto rounded-[14px] bg-black/30 px-[16px] pt-[18px] pb-[16px] backdrop-blur-[2px]">
+                      <div className="flex flex-col gap-[10px]">
+                        {(["sales", "rental"] as const).map((opt) => {
+                          const active = opt === "rental" ? isRental : !isRental;
+                          return (
+                            <label key={opt} className="flex cursor-pointer items-center gap-[10px]">
+                              {/* Its own group name: the desktop radios share
+                                  the document, and with one name the two
+                                  sets would be a single group. */}
+                              <input
+                                type="radio"
+                                name="reportTypeMobile"
+                                checked={active}
+                                onChange={() => (opt === "rental" ? selectRental() : selectSales())}
+                                className="sr-only"
+                              />
+                              <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-white">
+                                {active && <span className="h-[9px] w-[9px] rounded-full bg-brand-sky" />}
+                              </span>
+                              <span className="font-display text-[13px] font-medium text-white">
+                                I&rsquo;m interested in a {opt === "sales" ? "Sales" : "Rental"} report
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-[14px] flex items-stretch gap-[8px]">
+                        <input
+                          type="text"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          placeholder="Start typing to find your address..."
+                          className="h-[44px] min-w-0 flex-1 rounded-[8px] bg-white px-[14px] font-display text-[12px] font-medium text-black placeholder:text-brand-graychat focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleSearch()}
+                          className="flex h-[44px] w-[88px] shrink-0 items-center justify-center rounded-[8px] bg-brand-navy font-display text-[12px] font-medium text-white transition hover:bg-brand-navy-deep"
+                        >
+                          Search
+                        </button>
                       </div>
                     </div>
+                  </div>
                 </div>
               </section>
             </div>
@@ -285,40 +273,10 @@ export function AppraisalFlow({
               />
             </ScrollZoomFigure>
 
-            <section className="sm:hidden w-full bg-white">
-              <div className="w-full">
-                <div className="relative isolate overflow-hidden px-[24px] py-[32px]">
-                  <Image
-                    src="/images/handshake-house.png"
-                    alt=""
-                    fill
-                    sizes="(max-width: 639px) 100vw, 1px"
-                    className="absolute inset-0 z-0 object-cover"
-                  />
-                  <div className="absolute inset-0 z-10 bg-brand-navy/85" />
-                  <div className="relative z-20">
-                    <LineReveal as="h2" className="font-display font-bold text-white text-[25px] leading-[1.1]">
-                      {"Want to get in touch\nwith us?"}
-                    </LineReveal>
-                    <LineReveal as="p" className="mt-[16px] font-display font-light text-white text-[14px] leading-[1.4]">
-                      We’re all about offering supportive, expert advice every step of
-                      the way, making your property buying experience as seamless and
-                      enjoyable as possible.
-                    </LineReveal>
-                    <Link
-                      href="/contact"
-                      className="mt-[20px] inline-flex h-[44px] items-center justify-center rounded-[22px] bg-white px-[24px] font-display text-[13px] font-medium text-black transition hover:bg-white/90"
-                    >
-                      Contact our Agent
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <div className="hidden sm:block">
-              <TeamCTA />
-            </div>
+            {/* Every size ends on the team call to action, as the mobile comp
+                does; the phone used to swap in a navy "get in touch" block
+                here instead. */}
+            <TeamCTA />
           </>
         )}
 

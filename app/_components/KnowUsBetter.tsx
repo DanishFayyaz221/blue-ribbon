@@ -11,20 +11,23 @@ import { TiltImage } from "./ui/TiltImage";
  */
 export function KnowUsBetter() {
   return (
-    <section className="w-full bg-white pt-[clamp(44px,6vw,90px)]">
+    <section className="w-full bg-white pt-[32px] sm:pt-[clamp(44px,6vw,90px)]">
       <div className="container-page flex flex-col items-center text-center">
+        {/* The mobile comp labels this band "Our Team"; the desktop comp,
+            "Testimonials". Same pill either way. */}
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-          Testimonials
+          <span className="sm:hidden">Our Team</span>
+          <span className="hidden sm:inline">Testimonials</span>
         </span>
         <LineReveal
           as="h2"
-          className="mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
+          className="mt-[16px] sm:mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[28px] sm:text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
         >
           Know Us better!
         </LineReveal>
         <LineReveal
           as="p"
-          className="mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
+          className="mt-[16px] sm:mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
           At Blue Ribbon, most of our clients have only sold a home once or twice
           in their lives. Every time, it&rsquo;s the biggest cheque they&rsquo;ll
@@ -36,7 +39,7 @@ export function KnowUsBetter() {
         </LineReveal>
         <LineReveal
           as="p"
-          className="mt-[clamp(16px,1.6vw,26px)] max-w-[960px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
+          className="mt-[14px] sm:mt-[clamp(16px,1.6vw,26px)] max-w-[960px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
           We tell you what your property is worth, not what you want to hear. We
           pick up the phone. And we turn the parts that usually stress people out

@@ -16,9 +16,15 @@ import { ScrollZoomFigure } from "../ui/ScrollZoomFigure";
 export function TeamCTA() {
   return (
     <section className="relative w-full overflow-hidden bg-white pt-[clamp(40px,6.7vw,110px)]">
-      <div className="grid grid-cols-1 sm:grid-cols-[52%_48%] sm:items-start">
-        <div className="pl-[var(--page-px)] pr-[var(--page-px)] pb-[clamp(32px,4vw,64px)] sm:pl-[clamp(24px,10.8vw,208px)] sm:pr-[clamp(24px,5vw,80px)]">
-          <span className="inline-flex rounded-[6px] bg-brand-navy px-[16px] py-[7px] font-display text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-white">
+      {/* Phone (the mobile comp): everything centred, and the photo sits
+          between the heading and the copy. Below sm the copy column
+          dissolves into the grid (`contents`) so `order` can slot the photo
+          in after the heading; from sm it is a block again and the grid is
+          the comp's two columns. `order` and `justify-self` only act on grid
+          items, so none of them touch the desktop layout. */}
+      <div className="grid grid-cols-1 px-[var(--page-px)] sm:grid-cols-[52%_48%] sm:items-start sm:px-0">
+        <div className="contents sm:block sm:pl-[clamp(24px,10.8vw,208px)] sm:pr-[clamp(24px,5vw,80px)] sm:pb-[clamp(32px,4vw,64px)]">
+          <span className="order-1 inline-flex justify-self-center rounded-[6px] bg-brand-navy px-[16px] py-[7px] font-display text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-white">
             Our Agents
           </span>
 
@@ -30,14 +36,14 @@ export function TeamCTA() {
           </LineReveal>
           <LineReveal
             as="h2"
-            className="sm:hidden mt-[16px] font-display font-bold text-brand-bunker text-[1.6rem] leading-[1.2]"
+            className="order-2 sm:hidden mt-[16px] text-center font-display font-bold text-brand-bunker text-[26px] leading-[1.2]"
           >
             Get in touch with Our specialized Team!
           </LineReveal>
 
           <LineReveal
             as="p"
-            className="mt-[clamp(14px,1.4vw,24px)] max-w-[470px] font-display text-[clamp(13px,1vw,15px)] leading-[1.6] text-brand-bunker"
+            className="order-4 mx-auto mt-[24px] max-w-[470px] text-center font-display text-[clamp(13px,1vw,15px)] leading-[1.6] text-brand-bunker sm:mx-0 sm:mt-[clamp(14px,1.4vw,24px)] sm:text-left"
           >
             Ready to make your next move? Our specialised team is here to guide
             you with honest advice and local expertise you can count on. Whether
@@ -46,7 +52,9 @@ export function TeamCTA() {
             conversation.
           </LineReveal>
 
-          <div className="mt-[clamp(20px,2.2vw,40px)]">
+          {/* Last in the phone stack, so it carries the gap to the footer that
+              the column's own bottom padding gives the desktop. */}
+          <div className="order-5 mt-[24px] mb-[40px] justify-self-center sm:mt-[clamp(20px,2.2vw,40px)] sm:mb-0">
             <Button href="/contact" variant="primary" size="sm">
               Contact Us
             </Button>
@@ -62,7 +70,9 @@ export function TeamCTA() {
           zoom={1}
           from={0.92}
           scaleInner
-          className="relative aspect-square w-full max-h-[720px] overflow-hidden rounded-tl-[14px] sm:rounded-tl-[clamp(12px,1.2vw,20px)]"
+          // Phone: third in the stack and bled to the screen edges past the
+          // grid's padding; from sm, the comp's right-hand column.
+          className="order-3 relative -mx-[var(--page-px)] mt-[24px] aspect-square w-auto max-h-[720px] overflow-hidden rounded-tl-[14px] sm:order-none sm:mx-0 sm:mt-0 sm:w-full sm:rounded-tl-[clamp(12px,1.2vw,20px)]"
         >
           <Image
             src="/images/humility.png"

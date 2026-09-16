@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "../ui/Button";
 import { LineReveal } from "../ui/LineReveal";
+import { TeamCTA } from "./TeamCTA";
 
 type Props = {
   title?: string;
@@ -18,14 +19,23 @@ export function GetInTouchCTA({
   imageSrc = "/images/get-in.png",
 }: Props) {
   return (
-    <section className="relative w-full overflow-hidden">
-      {/* Navy fabric background */}
+    <>
+      {/* Phone: the mobile comp closes these pages on the "Our Agents" call
+          to action, the same block the appraisal and Buy pages end on, not
+          on this navy panel. From sm the navy panel is the comp's own. */}
+      <div className="sm:hidden">
+        <TeamCTA />
+      </div>
+
+    <section className="relative hidden w-full overflow-hidden sm:block">
+      {/* Navy fabric background. 1px on phones: the panel is hidden there,
+          but a display:none image is still fetched. */}
       <Image
         src="/images/bg.png"
         alt=""
         fill
         quality={90}
-        sizes="(min-width: 1280px) 1280px, 100vw"
+        sizes="(max-width: 639px) 1px, (min-width: 1280px) 1280px, 100vw"
         className="object-cover object-center"
       />
       {/* Navy overlay (#001F4D @ ~12%) */}
@@ -63,11 +73,12 @@ export function GetInTouchCTA({
             src={imageSrc}
             alt=""
             fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
+            sizes="(max-width: 639px) 1px, (max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
         </div>
       </div>
     </section>
+    </>
   );
 }

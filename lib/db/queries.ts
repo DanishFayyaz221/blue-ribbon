@@ -1,7 +1,7 @@
 import { cache } from "react";
 import type { Filter } from "mongodb";
 import { listings } from "./collections";
-import { FILTERABLE_AMENITIES } from "@/lib/reaxml/amenities";
+import { AMENITY_LABELS, FILTERABLE_AMENITIES } from "@/lib/reaxml/amenities";
 import type { ListingCategory, ListingDoc } from "@/lib/reaxml/schema";
 
 /**
@@ -256,9 +256,15 @@ export function parseListingSearchParams(sp: ListingSearchParams) {
 
   const sort: SortKey = isSortKey(sp.sort) ? sp.sort : "recent";
 
-  // Only accept amenity keys we actually offer, so a hand-crafted URL cannot
-  // inject arbitrary field names into the query.
-  const allowed = new Set<string>([...FILTERABLE_AMENITIES, "petFriendly"]);
+  // Only accept amenity keys the feed is known to carry, so a hand-crafted URL
+  // cannot inject arbitrary values into the query. Wider than the desktop
+  // checkbox list: the phone's Find Property sheet offers chips for flags
+  // such as dishwasher and floorboards that the short list leaves out.
+  const allowed = new Set<string>([
+    ...Object.keys(AMENITY_LABELS),
+    ...FILTERABLE_AMENITIES,
+    "petFriendly",
+  ]);
   const amenities = (Array.isArray(sp.feature) ? sp.feature : sp.feature ? [sp.feature] : [])
     .filter((f) => allowed.has(f));
 

@@ -5,6 +5,7 @@ import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { LineReveal } from "../_components/ui/LineReveal";
 import { InsightCard } from "../_components/insights/InsightCard";
+import { MobileCarousel } from "../_components/ui/MobileCarousel";
 import { YouMayAlsoLike } from "../_components/property/YouMayAlsoLike";
 import { TeamCTA } from "../_components/sections/TeamCTA";
 import { INSIGHT_ARTICLES } from "@/lib/insights/articles";
@@ -34,24 +35,33 @@ export default async function MarketInsightsPage() {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
+        {/* The mobile comp names the page by its heading in the trail. */}
         <div className="container-page pt-[16px] pb-[16px]">
-          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market Insights" }]} />
+          <div className="sm:hidden">
+            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Our Latest Insights" }]} />
+          </div>
+          <div className="hidden sm:block">
+            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market Insights" }]} />
+          </div>
         </div>
 
         <section className="w-full bg-white pt-[clamp(28px,3.5vw,60px)]">
           <div className="container-page flex flex-col items-center text-center">
+            {/* The mobile comp labels the pill "Our Team"; the desktop comp,
+                "Market Insights". */}
             <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-              Market Insights
+              <span className="sm:hidden">Our Team</span>
+              <span className="hidden sm:inline">Market Insights</span>
             </span>
             <LineReveal
               as="h1"
-              className="mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
+              className="mt-[16px] sm:mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[28px] sm:text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
             >
               Our Latest Insights
             </LineReveal>
             <LineReveal
               as="p"
-              className="mt-[clamp(18px,2vw,34px)] max-w-[1040px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
+              className="mt-[16px] sm:mt-[clamp(18px,2vw,34px)] max-w-[1040px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
             >
               Stay in the know with the latest from Blue Ribbon. Our insights bring you
               honest takes on the local market, practical tips for buyers and sellers,
@@ -64,7 +74,17 @@ export default async function MarketInsightsPage() {
           </div>
 
           <div className="container-page mt-[clamp(32px,3.5vw,60px)] pb-[clamp(44px,5vw,90px)]">
-            <div className="grid grid-cols-2 gap-[clamp(12px,1.2vw,18px)] md:grid-cols-4">
+            {/* Phone: one article at a time under the round arrows, as the
+                mobile comp draws it — the same carousel as the card strips. */}
+            <MobileCarousel
+              ariaLabel="Latest insights"
+              className="sm:hidden"
+              items={INSIGHT_ARTICLES.map((article) => (
+                <InsightCard key={article.slug} article={article} feature />
+              ))}
+            />
+
+            <div className="hidden sm:grid grid-cols-2 gap-[clamp(12px,1.2vw,18px)] md:grid-cols-4">
               {INSIGHT_ARTICLES.map((article) => (
                 <InsightCard key={article.slug} article={article} />
               ))}

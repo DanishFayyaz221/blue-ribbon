@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { DragScroll } from "../ui/DragScroll";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
+import { MobileCarousel } from "../ui/MobileCarousel";
 import { PropertyCard, type PropertyCardData } from "./PropertyCard";
 
 /**
@@ -10,10 +10,12 @@ import { PropertyCard, type PropertyCardData } from "./PropertyCard";
  * caller passes the listings — because the appraisal flow is a client
  * component and cannot fetch them itself (see getAppraisalListings).
  *
- * Same responsive shape as the home page's LatestProperties: a swipeable
- * carousel on phones, a three-up grid from sm. Kept separate rather than
- * reusing that component because this one leads with the price, as the
- * appraisal comp does, where the home page leads with the address.
+ * Same responsive shape as the home page's LatestProperties: one card at a
+ * time under round arrows on phones, a three-up grid from sm. Kept separate
+ * rather than reusing that component because the grid here leads with the
+ * price, as the appraisal comp does, where the home page leads with the
+ * address. (The phone card is address-first on both: that is how the mobile
+ * comp draws it.)
  */
 export function MoreProperties({ properties }: { properties: PropertyCardData[] }) {
   if (properties.length === 0) return null;
@@ -21,32 +23,45 @@ export function MoreProperties({ properties }: { properties: PropertyCardData[] 
   return (
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
-        <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
+          {/* Phone: the heading breaks after "More", as in the mobile comp. */}
           <LineReveal
             as="h2"
-            className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+            className="sm:hidden font-display font-bold text-brand-bunker text-[26px] leading-[1.1]"
+          >
+            {"More\nProperties"}
+          </LineReveal>
+          <LineReveal
+            as="h2"
+            className="hidden sm:block font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
           >
             More Properties
           </LineReveal>
           <Link
             href="/buy"
-            className="group inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker/70 sm:text-brand-bunker hover:text-brand-navy"
+            className="group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker hover:text-brand-navy"
           >
             Explore more
             <ArrowInline />
           </Link>
         </div>
 
-        {/* Phones: horizontal-scroll carousel */}
-        <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
-          <DragScroll className="no-scrollbar flex snap-x snap-mandatory items-stretch gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-            {properties.map((p, i) => (
-              <div key={p.href ?? i} className="flex snap-start shrink-0 w-[78%]">
-                <PropertyCard {...p} variant="wide" dense addressFirst={false} />
-              </div>
-            ))}
-          </DragScroll>
-        </div>
+        {/* Phone: one full-width card at a time under the round arrows — the
+            same carousel as the home page's LatestProperties. */}
+        <MobileCarousel
+          ariaLabel="More properties"
+          className="mt-[20px] sm:hidden"
+          items={properties.map((p, i) => (
+            <PropertyCard
+              key={p.href ?? i}
+              {...p}
+              variant="tall"
+              addressFirst
+              aspect="aspect-[3/2]"
+              sizes="100vw"
+            />
+          ))}
+        />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
