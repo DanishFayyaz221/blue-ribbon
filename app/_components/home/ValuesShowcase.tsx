@@ -11,7 +11,7 @@ const values = [
   },
   {
     title: "Humility",
-    image: "/images/humility.png",
+    image: "/images/real.png",
     body: "We place the needs of others above our own and think of others before ourselves. Acknowledging excellence while humbly understanding everyone has knowledge to add to any situation is how we strive to carry ourselves with each other and our clients.",
   },
   {

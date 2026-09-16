@@ -55,6 +55,12 @@ body {
 html {
   overflow-x: clip;
   overscroll-behavior-x: none;
+  /* Keep the scrollbar's column reserved even while the menu locks the page
+     (overflow: hidden). Without it the bar vanishes on open and returns on
+     close, and the whole page — the nav bar with it — jumps sideways by the
+     bar's width each time, right in the middle of the sheet's wipe. Phones
+     use overlay scrollbars and are unaffected. */
+  scrollbar-gutter: stable;
 }
 body {
   overflow-x: clip;
@@ -471,6 +477,21 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
 .roll-link:hover::after {
   transform: scaleX(1);
 }
+/* On the navy footer the navy hairline would vanish; draw it in white. */
+.roll-link.roll-link-white::after {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Page-open entrance (<PageTransition>): the whole page fades in and settles
+   up as it opens. Short and gentle, on the site's settle curve, so it reads
+   as the page arriving rather than as a slide. The transform ends at none. */
+@keyframes br-page-enter {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.page-enter {
+  animation: br-page-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 
 .animate-marquee {
   animation: br-marquee 45s linear infinite;
@@ -721,6 +742,7 @@ html.reveal-armed .lr:not(.lr-ready) {
   .animate-float,
   .animate-menu-in,
   .animate-marquee,
+  .page-enter,
   .hover-lift,
   .parallax-media,
   .scroll-scale-in,

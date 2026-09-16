@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { SearchForm, SearchLink } from "./SearchTransition";
 import { useState } from "react";
 import type { SortKey } from "@/lib/db/queries";
 import { FILTERABLE_AMENITIES, amenityLabel } from "@/lib/reaxml/amenities";
@@ -129,19 +129,18 @@ export function MobileFilters({
 
       {open === "deal" && (
         <div className="mt-[10px] flex gap-[10px] rounded-[12px] border border-brand-silver bg-white p-[14px]">
-          <Link href={href("/buy")} className={optionPill(basePath === "/buy")}>
+          <SearchLink href={href("/buy")} className={optionPill(basePath === "/buy")}>
             Buy
-          </Link>
-          <Link href={href("/rent")} className={optionPill(basePath === "/rent")}>
+          </SearchLink>
+          <SearchLink href={href("/rent")} className={optionPill(basePath === "/rent")}>
             Rent
-          </Link>
+          </SearchLink>
         </div>
       )}
 
       {open === "price" && (
-        <form
+        <SearchForm
           action={basePath}
-          method="get"
           className="mt-[10px] rounded-[12px] border border-brand-silver bg-white p-[14px]"
         >
           {hidden(["min", "max"])}
@@ -169,33 +168,32 @@ export function MobileFilters({
             />
           </div>
           <div className="mt-[12px] flex items-center justify-between">
-            <Link href={href(basePath, { min: "", max: "" })} className="font-display text-[13px] font-medium text-brand-bunker/60">
+            <SearchLink href={href(basePath, { min: "", max: "" })} className="font-display text-[13px] font-medium text-brand-bunker/60">
               Clear
-            </Link>
+            </SearchLink>
             <button type="submit" className={applyClass}>
               Apply
             </button>
           </div>
-        </form>
+        </SearchForm>
       )}
 
       {open === "beds" && (
         <div className="no-scrollbar mt-[10px] flex gap-[8px] overflow-x-auto rounded-[12px] border border-brand-silver bg-white p-[14px]">
-          <Link href={href(basePath, { beds: "" })} className={`${optionPill(!beds)} shrink-0`}>
+          <SearchLink href={href(basePath, { beds: "" })} className={`${optionPill(!beds)} shrink-0`}>
             Any
-          </Link>
+          </SearchLink>
           {BED_OPTIONS.map((b) => (
-            <Link key={b} href={href(basePath, { beds: b })} className={`${optionPill(beds === b)} shrink-0`}>
+            <SearchLink key={b} href={href(basePath, { beds: b })} className={`${optionPill(beds === b)} shrink-0`}>
               {b}+
-            </Link>
+            </SearchLink>
           ))}
         </div>
       )}
 
       {open === "more" && (
-        <form
+        <SearchForm
           action={basePath}
-          method="get"
           className="mt-[10px] rounded-[12px] border border-brand-silver bg-white p-[14px]"
         >
           {hidden(["feature"])}
@@ -217,14 +215,14 @@ export function MobileFilters({
             ))}
           </div>
           <div className="mt-[14px] flex items-center justify-between">
-            <Link href={clearFeaturesHref(basePath, { q, min, max, beds, sort })} className="font-display text-[13px] font-medium text-brand-bunker/60">
+            <SearchLink href={clearFeaturesHref(basePath, { q, min, max, beds, sort })} className="font-display text-[13px] font-medium text-brand-bunker/60">
               Clear
-            </Link>
+            </SearchLink>
             <button type="submit" className={applyClass}>
               Apply
             </button>
           </div>
-        </form>
+        </SearchForm>
       )}
     </div>
   );

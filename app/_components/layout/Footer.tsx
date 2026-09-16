@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FooterDealButtons } from "./FooterDealButtons";
+import { RollLink } from "../ui/RollLink";
 
 /** Buy / Rent / Sell in the comp's order for the phone footer. */
 const mobileDealLinks = [
@@ -204,7 +205,7 @@ function DesktopFooter() {
             <FooterDealButtons links={buyLinks} />
           </div>
 
-          <LinkColumn title="About Us" titleHref="/about" links={aboutLinks} className="col-start-3" />
+          <LinkColumn title="About Us" links={aboutLinks} className="col-start-3" />
           <LinkColumn title="Insights" links={insightsLinks} className="col-start-4" />
 
           <div className="col-start-7 flex flex-col gap-[20px] justify-self-end">
@@ -254,27 +255,29 @@ function DesktopFooter() {
 
         {/* Address row: aligned under About Us / Insights columns */}
         <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
+          {/* The same roll-on-hover links as the contact page's Visit Our
+              Office block, with the hairline in white for the navy ground. */}
           <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
-            <a
+            <RollLink
               href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline"
+              lines
+              className="roll-link-white"
             >
-              <p>11/76-80 Station Street,</p>
-              <p>Wentworthville, NSW 2145</p>
-            </a>
+              {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
+            </RollLink>
           </div>
           <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <p className="whitespace-nowrap">
-              <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
+              <RollLink href="mailto:sales@blueribbonre.com.au" className="roll-link-white">
                 sales@blueribbonre.com.au
-              </a>
+              </RollLink>
             </p>
             <p>
-              <a href="tel:1300579093" className="hover:underline">
+              <RollLink href="tel:1300579093" className="roll-link-white">
                 1300 579 093
-              </a>
+              </RollLink>
             </p>
           </div>
         </div>
@@ -315,7 +318,7 @@ function LinkColumn({
   return (
     <div className={className}>
       {titleHref ? (
-        <Link href={titleHref} className={`${headingClass} block hover:underline`}>
+        <Link href={titleHref} className={`${headingClass} block`}>
           {title}
         </Link>
       ) : (

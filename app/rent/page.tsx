@@ -8,6 +8,10 @@ import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
+import {
+  ResultsRegion,
+  SearchTransitionProvider,
+} from "../_components/property/SearchTransition";
 import Link from "next/link";
 import {
   RENTAL_CATEGORIES,
@@ -47,6 +51,10 @@ export default async function RentPage({
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
+        {/* Searches, filters and paging update in place inside this provider:
+            no page reload, the scroll stays put, and only the results area
+            changes — dimmed while the new results are on their way. */}
+        <SearchTransitionProvider>
         <div className="container-page pt-[16px] pb-[16px] sm:pb-[24px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Rent" }]} />
         </div>
@@ -94,6 +102,7 @@ export default async function RentPage({
             </nav>
           )}
 
+          <ResultsRegion>
           {items.length > 0 ? (
             <>
               <div className="mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
@@ -140,11 +149,13 @@ export default async function RentPage({
               )}
             </div>
           )}
+          </ResultsRegion>
         </div>
 
         <div className="mt-[clamp(44px,4vw,76px)]">
           <GetInTouchCTA />
         </div>
+        </SearchTransitionProvider>
       </main>
       <Footer />
     </div>

@@ -80,7 +80,7 @@ const drafts: Draft[] = [
     title: "Why Wentworthville Duplex Sites Now Matter",
     shortTitle: "Duplex Sites",
     image: "/images/2.png",
-    heroImage: "/images/home.png",
+    heroImage: "/images/22.png",
     sideImage: "/images/blog2.png",
     subtitle:
       "The Budget changes created a clear winner, and it happens to be the kind of land our suburb has plenty of.",
@@ -111,7 +111,7 @@ const drafts: Draft[] = [
     title: "First Home Buyer Guide: Wentworthville 2026",
     shortTitle: "First Home Buyer Guide",
     image: "/images/3.png",
-    heroImage: "/images/home.png",
+    heroImage: "/images/33.png",
     sideImage: "/images/blog2.png",
     subtitle: "If you've been saving and waiting for your chance, this is it.",
     body: paragraphs(
@@ -140,7 +140,7 @@ const drafts: Draft[] = [
     title: "Living in Wentworthville: An Honest Guide",
     shortTitle: "Living in Wentworthville",
     image: "/images/4.png",
-    heroImage: "/images/home.png",
+    heroImage: "/images/44.png",
     sideImage: "/images/blog2.png",
     subtitle:
       "It's one of those suburbs people move to for practical reasons and end up staying in for years.",

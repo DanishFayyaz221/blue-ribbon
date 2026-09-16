@@ -147,8 +147,8 @@ export function HoverAction({ children, label = "View photos", className = "" }:
   return (
     <div ref={frameRef} className={`relative overflow-hidden bg-brand-bunker ${className}`.trim()}>
       <div ref={followerRef} className="pointer-events-none absolute left-0 top-0 z-10">
-        <div ref={pillRef} className="w-fit bg-white opacity-0">
-          <div className="flex items-center justify-between gap-[2.5vw] px-[0.5vw] py-[0.4vw]">
+        <div ref={pillRef} className="w-fit rounded-full bg-white opacity-0">
+          <div className="flex items-center justify-between gap-[2.5vw] px-[1vw] py-[0.4vw]">
             <span className="whitespace-nowrap font-display text-[13px] font-medium text-brand-bunker">
               {label}
             </span>

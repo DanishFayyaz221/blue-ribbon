@@ -9,7 +9,8 @@ import {
 } from "./EnquiryModal";
 
 /**
- * `primary` and `navy-pill` are the outlined buttons. `link` is underlined
+ * `primary` and `navy-pill` are filled navy, and a white fill slides up on
+ * hover — the mirror of the outlined Share beside them. `link` is underlined
  * text with no box — the "Contact Agent" that stands in for the price of a
  * listing with none published. It carries no size, weight or colour of its
  * own so the caller can match it to the row it sits in.
@@ -42,8 +43,8 @@ export function EnquireTrigger({
     variant === "link"
       ? "cursor-pointer font-display underline underline-offset-4 transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky"
       : variant === "navy-pill"
-        ? "group relative isolate flex h-[48px] items-center justify-center overflow-hidden rounded-[24px] border border-brand-navy bg-white font-display text-[14px] font-semibold text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
-        : "group relative isolate inline-flex h-[42px] items-center justify-center overflow-hidden rounded-full border border-brand-navy bg-white px-[24px] font-display text-[14px] font-medium text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky";
+        ? "group relative isolate flex h-[48px] items-center justify-center overflow-hidden rounded-[24px] border border-brand-navy bg-brand-navy font-display text-[14px] font-semibold text-white transition-colors duration-300 hover:text-brand-navy before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-white before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
+        : "group relative isolate inline-flex h-[42px] items-center justify-center overflow-hidden rounded-full border border-brand-navy bg-brand-navy px-[24px] font-display text-[14px] font-medium text-white transition-colors duration-300 hover:text-brand-navy before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-white before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sky";
 
   return (
     <>

@@ -118,6 +118,8 @@ export function MeetHappyClients() {
         slideWidth="clamp(300px, 28vw, 440px)"
         slideWidthMobile="56vw"
         gap="clamp(12px, 2.6vw, 50px)"
+        autoplay={80}
+        arrows={false}
         className="mt-[clamp(20px,2vw,36px)] pt-[clamp(24px,7vw,150px)] pb-[clamp(72px,8vw,160px)]"
         items={testimonials.map((t) => (
           <TestimonialCard key={t.id} testimonial={t} />

@@ -102,9 +102,11 @@ function Collage({
   total: number;
   onOpen: (index: number) => void;
 }) {
-  // The mosaic needs five images to read as intended. Below that it would leave
-  // visible holes in the grid, so a single image is shown instead.
-  if (images.length < 5) {
+  // With one photo there is nothing to arrange, so it fills the frame alone.
+  // From two up the mosaic adapts: the lead photo always takes the left
+  // half, and the rest share the right half without leaving holes — one
+  // tall panel, two stacked, two over one wide, or the full two-by-two.
+  if (images.length < 2) {
     return (
       <div className="relative">
         <button
@@ -141,18 +143,27 @@ function Collage({
           sizes="(max-width: 639px) 1px, 50vw"
           className="col-span-2 row-span-2"
         />
-        {images.slice(1, 5).map((img, i) => (
+        {images.slice(1, 5).map((img, i, side) => (
           <Tile
             key={img.src}
             image={img}
             onClick={() => onOpen(i + 1)}
             sizes="(max-width: 639px) 1px, 25vw"
+            className={sideSpan(i, side.length)}
           />
         ))}
       </div>
       <ShowAllButton total={total} onClick={() => onOpen(0)} />
     </div>
   );
+}
+
+/** Grid spans for the right-hand photos, by how many there are (1–4). */
+function sideSpan(index: number, count: number): string {
+  if (count === 1) return "col-span-2 row-span-2";
+  if (count === 2) return "col-span-2";
+  if (count === 3) return index === 2 ? "col-span-2" : "";
+  return "";
 }
 
 function Tile({

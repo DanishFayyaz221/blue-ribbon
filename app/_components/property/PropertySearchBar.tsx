@@ -1,5 +1,6 @@
 import { SORT_OPTIONS, type SortKey } from "@/lib/db/queries";
 import { FILTERABLE_AMENITIES, amenityLabel } from "@/lib/reaxml/amenities";
+import { SearchForm } from "./SearchTransition";
 
 type Props = {
   /** Route the form submits to, e.g. "/rent". */
@@ -25,7 +26,8 @@ const FIELD =
  *
  * Submitting navigates to `?q=…&min=…`, which means the server does the
  * filtering, results are shareable and crawlable URLs, and the whole thing
- * works with JavaScript disabled.
+ * works with JavaScript disabled. With JavaScript the navigation happens in
+ * place (SearchForm): no reload, the scroll stays, only the results change.
  */
 export function PropertySearchBar({
   action = "/buy",
@@ -44,7 +46,7 @@ export function PropertySearchBar({
   ];
 
   return (
-    <form action={`${action}#results`} method="get" className="w-full">
+    <SearchForm action={action} className="w-full">
       <div className="flex w-full flex-col gap-[12px] sm:flex-row sm:items-center">
       <input
         type="text"
@@ -157,6 +159,6 @@ export function PropertySearchBar({
           ))}
         </fieldset>
       )}
-    </form>
+    </SearchForm>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import { RevealOnScroll } from "./_components/ui/RevealOnScroll";
 import { ScrollEffects } from "./_components/ui/ScrollEffects";
 import { SmoothScroll } from "./_components/ui/SmoothScroll";
+import { PageTransition } from "./_components/ui/PageTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,7 +66,7 @@ export default function RootLayout({
             width and clip stops the horizontal drag reliably, without breaking
             the sticky nav (which `overflow: hidden` would). */}
         <div className="relative w-full max-w-[100vw] overflow-x-clip">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </div>
       </body>
     </html>

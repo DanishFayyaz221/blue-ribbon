@@ -5,6 +5,12 @@ import { Fragment, useEffect, useRef, type AnchorHTMLAttributes } from "react";
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   /** Plain text. A "\n" starts a new mask that can wrap onto its own line. */
   children: string;
+  /**
+   * Put every newline-separated segment on its own line rather than letting
+   * them sit inline and wrap as units — for a link that is laid out as
+   * lines, like the footer's two-line address.
+   */
+  lines?: boolean;
 };
 
 /**
@@ -32,7 +38,7 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
  * GSAP loads on demand, and not at all for visitors who prefer reduced motion
  * or whose device has no hover to speak of.
  */
-export function RollLink({ children, className = "", ...rest }: Props) {
+export function RollLink({ children, className = "", lines = false, ...rest }: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -102,10 +108,12 @@ export function RollLink({ children, className = "", ...rest }: Props) {
     >
       {segments.map((segment, s) => (
         <Fragment key={s}>
-          {s > 0 && " "}
+          {s > 0 && !lines && " "}
           <span
             aria-hidden
-            className="relative inline-block overflow-hidden align-top whitespace-nowrap"
+            className={`relative overflow-hidden whitespace-nowrap ${
+              lines ? "block" : "inline-block align-top"
+            }`}
           >
             <span className="relative block" data-roll="">
               <span className="block" data-top="">

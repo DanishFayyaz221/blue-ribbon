@@ -624,12 +624,20 @@ export const getListingBySlug = cache(async (slug: string): Promise<ListingDetai
     videoUrl: doc.videoUrl,
     lat: doc.location?.coordinates[1],
     lng: doc.location?.coordinates[0],
-    agents: doc.agents.map((a) => ({
-      name: a.name,
-      email: a.email,
-      phone: a.phone,
-      mobile: a.mobile,
-    })),
+    // The feed can list the same agent twice on one listing (under two
+    // roles, say). One card per person: first appearance wins, matched on
+    // email, or on name where there is none.
+    agents: doc.agents
+      .filter((a, i, all) => {
+        const id = (a.email ?? a.name).toLowerCase();
+        return all.findIndex((b) => (b.email ?? b.name).toLowerCase() === id) === i;
+      })
+      .map((a) => ({
+        name: a.name,
+        email: a.email,
+        phone: a.phone,
+        mobile: a.mobile,
+      })),
   };
 });
 

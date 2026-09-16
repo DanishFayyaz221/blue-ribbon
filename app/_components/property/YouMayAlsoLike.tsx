@@ -132,7 +132,7 @@ export function YouMayAlsoLike({
               <PropertyCard
                 {...p}
                 variant={dark ? "compact" : "tall"}
-                addressFirst={false}
+                addressFirst
                 // Grid only. The phone rendering above is a horizontal
                 // carousel, where a vertical scroll-drift reads as drag
                 // against the swipe rather than as depth.

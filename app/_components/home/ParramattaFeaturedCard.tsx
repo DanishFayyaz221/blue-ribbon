@@ -20,11 +20,15 @@ type Props = {
 // 3D tilt of the photo inside its frame. Small angles on a frame this wide
 // already move the far edge tens of pixels in depth; the slight scale keeps
 // the edge that recedes from opening a gap against the white behind it.
-const TILT_Y = 4; // deg, left/right
-const TILT_X = 2.5; // deg, up/down
-const TILT_SCALE = 1.04;
+const TILT_Y = 2.5; // deg, left/right
+const TILT_X = 1.6; // deg, up/down
+const TILT_SCALE = 1.025;
 const TILT_PERSPECTIVE = 2000; // px
 const TILT_LERP = 0.12;
+// How much the photo zooms in as the card travels up the screen: 1 as its top
+// enters at the bottom, 1 + SCROLL_ZOOM as its bottom leaves at the top. It
+// rides in the same transform as the hover tilt, eased by the same loop.
+const SCROLL_ZOOM = 0.12;
 
 export function ParramattaFeaturedCard({ featured }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -37,15 +41,37 @@ export function ParramattaFeaturedCard({ featured }: Props) {
   // on its own.
   const mediaRef = useRef<HTMLDivElement>(null);
   const tilt = useRef({
-    rx: 0, ry: 0, s: 1, // rendered
-    tx: 0, ty: 0, ts: 1, // targets
+    rx: 0, ry: 0, s: 1, z: 1, // rendered (z: scroll zoom)
+    tx: 0, ty: 0, ts: 1, tz: 1, // targets
     raf: 0,
     enabled: true,
   });
+  // The scroll handler below kicks the loop through a ref, so the listener
+  // is wired once while the loop keeps its per-render closure.
+  const runTiltRef = useRef<() => void>(() => {});
   useEffect(() => {
     const t = tilt.current;
     t.enabled = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!t.enabled) return;
+
+    // Scroll zoom: the target follows how far the card has travelled up the
+    // screen, and the loop eases the photo toward it. Lenis drives the
+    // native scroll, so a plain scroll listener sees every step.
+    const card = cardRef.current;
+    const onScroll = () => {
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
+      t.tz = 1 + SCROLL_ZOOM * p;
+      runTiltRef.current();
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       if (t.raf) cancelAnimationFrame(t.raf);
       t.raf = 0;
     };
@@ -58,25 +84,33 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       t.rx += (t.tx - t.rx) * TILT_LERP;
       t.ry += (t.ty - t.ry) * TILT_LERP;
       t.s += (t.ts - t.s) * TILT_LERP;
+      t.z += (t.tz - t.z) * TILT_LERP;
       const settled =
         Math.abs(t.tx - t.rx) < 0.005 &&
         Math.abs(t.ty - t.ry) < 0.005 &&
-        Math.abs(t.ts - t.s) < 0.0005;
+        Math.abs(t.ts - t.s) < 0.0005 &&
+        Math.abs(t.tz - t.z) < 0.0005;
       if (settled) {
         t.rx = t.tx;
         t.ry = t.ty;
         t.s = t.ts;
+        t.z = t.tz;
       }
       if (el) {
+        // The hover zoom and the scroll zoom multiply into one scale.
+        const scale = (t.s * t.z).toFixed(4);
         el.style.transform =
-          t.rx === 0 && t.ry === 0 && t.s === 1
+          t.rx === 0 && t.ry === 0 && t.s === 1 && t.z === 1
             ? ""
-            : `perspective(${TILT_PERSPECTIVE}px) rotateX(${t.rx.toFixed(3)}deg) rotateY(${t.ry.toFixed(3)}deg) scale3d(${t.s.toFixed(4)}, ${t.s.toFixed(4)}, 1)`;
+            : `perspective(${TILT_PERSPECTIVE}px) rotateX(${t.rx.toFixed(3)}deg) rotateY(${t.ry.toFixed(3)}deg) scale3d(${scale}, ${scale}, 1)`;
       }
       t.raf = settled ? 0 : requestAnimationFrame(step);
     };
     t.raf = requestAnimationFrame(step);
   };
+  useEffect(() => {
+    runTiltRef.current = runTilt;
+  });
   const setTiltTarget = (rx: number, ry: number, s: number) => {
     const t = tilt.current;
     t.tx = rx;

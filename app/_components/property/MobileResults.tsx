@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type ReactNode } from "react";
+import { SearchForm, SearchLink } from "./SearchTransition";
 import type { SortKey } from "@/lib/db/queries";
 
 type View = "list" | "grid";
@@ -94,7 +94,7 @@ export function MobileResults({
           {chevron}
         </label>
 
-        <form action={basePath} method="get" className="relative flex items-center">
+        <SearchForm action={basePath} className="relative flex items-center">
           {params.q && <input type="hidden" name="q" value={params.q} />}
           {params.min && <input type="hidden" name="min" value={params.min} />}
           {params.max && <input type="hidden" name="max" value={params.max} />}
@@ -116,7 +116,7 @@ export function MobileResults({
             ))}
           </select>
           {chevron}
-        </form>
+        </SearchForm>
       </div>
 
       <div
@@ -132,9 +132,9 @@ export function MobileResults({
       {(!allShown || nextHref) && (
         <div className="mt-[28px] flex justify-center">
           {allShown && nextHref ? (
-            <Link href={nextHref} className={loadMoreClass}>
+            <SearchLink href={nextHref} className={loadMoreClass}>
               Load More
-            </Link>
+            </SearchLink>
           ) : (
             <button
               type="button"

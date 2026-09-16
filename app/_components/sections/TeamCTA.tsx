@@ -75,7 +75,7 @@ export function TeamCTA() {
           className="order-3 relative -mx-[var(--page-px)] mt-[24px] aspect-square w-auto max-h-[720px] overflow-hidden rounded-tl-[14px] sm:order-none sm:mx-0 sm:mt-0 sm:w-full sm:rounded-tl-[clamp(12px,1.2vw,20px)]"
         >
           <Image
-            src="/images/humility.png"
+            src="/images/real.png"
             alt="A Blue Ribbon agent presenting a property brochure to a client"
             fill
             sizes="(max-width: 640px) 100vw, 48vw"

@@ -29,7 +29,7 @@ const ownLinks = [
 const aboutLinks = [
   { label: "Our Story", href: "/about" },
   { label: "Leadership", href: "/agents" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Nav() {
@@ -79,10 +79,20 @@ export function Nav() {
 
   useEffect(() => {
     if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+      // Lock the ROOT, and only the root. The root carries its own overflow
+      // setting (overflow-x: clip, globals.css), so the body's overflow never
+      // reaches the viewport — a body-only lock left the page scrollbar
+      // showing. Worse, overflow: hidden on the body makes the body a scroll
+      // container of its own, and the sticky nav then sticks to that instead
+      // of the viewport: on a scrolled page it leapt back to the top of the
+      // document the moment the sheet opened, and dropped down again on
+      // close. With the root locked the viewport stays the scroll container,
+      // the nav stays put, and scrollbar-gutter keeps the width steady.
+      const root = document.documentElement;
+      const prev = root.style.overflow;
+      root.style.overflow = "hidden";
       return () => {
-        document.body.style.overflow = prev;
+        root.style.overflow = prev;
       };
     }
   }, [open]);
@@ -144,12 +154,13 @@ export function Nav() {
           // Phone: dimmed backdrop that fades. md and up: `menu-sheet` turns
           // this same element into the white sheet that wipes down/up — see
           // globals.css, which also overrides the animate-* classes there.
-          className={`menu-sheet ${closing ? "is-closing animate-drawer-overlay-out" : "is-opening animate-drawer-overlay"} md:animate-none fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
+          data-lenis-prevent
+          className={`menu-sheet ${closing ? "is-closing animate-drawer-overlay-out" : "is-opening animate-drawer-overlay"} md:animate-none no-scrollbar fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
           onClick={(e) => {
             if (e.target === e.currentTarget) closeSmoothly();
           }}
         >
-          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:shadow-none`}>
+          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:overflow-visible md:shadow-none`}>
           <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
             <button
               type="button"
@@ -202,7 +213,7 @@ export function Nav() {
                 { label: "Rent", href: "/rent" },
                 { label: "Our Team", href: "/agents" },
                 { label: "About Us", href: "/about" },
-                { label: "Contact Us", href: "/contact" },
+                { label: "Contact", href: "/contact" },
                 { label: "Property Estimate", href: "/property-report-digital-appraisal" },
               ].map((link, i) => {
                 const active = isActive(pathname, link.href);

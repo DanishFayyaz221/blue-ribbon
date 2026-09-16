@@ -14,7 +14,7 @@ const rows = [
     body: "Blue Ribbon is driven by a team of dynamic professionals united by a singular passion to secure the absolute best results for every Australian homeowner. Blending modern innovation with traditional integrity, our steadfast commitment to these core principles distinguishes us within the competitive retail market. By constantly evolving and refining our expertise, we provide an elevated standard of service designed to exceed your property goals.",
   },
   {
-    title: "A Standard\nBeyond Expectation",
+    title: "A Standard\nBeyond Expectations",
     image: "/images/beyond.png",
     body: "At Blue Ribbon, excellence is never left to chance. Every appraisal, every campaign, and every negotiation is guided by a simple belief that our clients deserve more than the ordinary. Our team blends sharp market insight with a genuine commitment to doing right by the people we serve. We take the time to understand what matters most to you, then build a strategy designed to protect it and grow it. From the first conversation to the moment the deal is done, we hold ourselves to a higher mark, because your trust is something we intend to earn every single day.",
   },

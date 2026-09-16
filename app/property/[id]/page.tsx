@@ -592,7 +592,7 @@ function MobilePropertyView({
             guide={listing.guide}
             image={listing.image}
             type={listing.type}
-            variant="navy-pill"
+            variant="outline-pill"
             className="flex-1 !h-[44px]"
           />
         </div>

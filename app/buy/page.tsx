@@ -8,6 +8,11 @@ import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
 import { ScrollToResults } from "../_components/property/ScrollToResults";
+import {
+  ResultsRegion,
+  SearchLink,
+  SearchTransitionProvider,
+} from "../_components/property/SearchTransition";
 import { ArrowInline } from "../_components/ui/ArrowInline";
 import { LineReveal } from "../_components/ui/LineReveal";
 import { FallbackListings } from "../_components/property/FallbackListings";
@@ -57,11 +62,17 @@ export default async function BuyPage({
       ? await getListingsWithFallback({ ...query, categories: SALE_CATEGORIES }, 4)
       : null;
 
+  const searchKey = JSON.stringify({ ...form, page: query.page });
+
   return (
     <div className="min-h-screen bg-white">
-      {isFiltered && <ScrollToResults />}
+      {isFiltered && <ScrollToResults key={searchKey} />}
       <Nav />
       <main>
+        {/* Searches, filters and paging update in place inside this provider:
+            no page reload, the scroll stays put, and only the results area
+            below changes — dimmed while the new results are on their way. */}
+        <SearchTransitionProvider>
         <div className="container-page pt-[16px] pb-[16px] sm:pb-[24px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy" }]} />
         </div>
@@ -99,6 +110,7 @@ export default async function BuyPage({
           )}
         </div>
 
+        <ResultsRegion>
         {/* Mobile: Buy Your Dream + cards */}
         <div className="sm:hidden container-page mt-[18px]">
           <div className="flex items-end justify-between">
@@ -147,12 +159,12 @@ export default async function BuyPage({
             </LineReveal>
             <div className="flex items-center gap-[20px]">
               {isFiltered && (
-                <Link
-                  href="/buy#results"
+                <SearchLink
+                  href="/buy"
                   className="font-display text-[clamp(13px,0.95vw,15px)] font-semibold text-brand-navy underline underline-offset-4 hover:text-brand-navy-deep"
                 >
                   Clear filters
-                </Link>
+                </SearchLink>
               )}
               <Link
                 href="/property-report-digital-appraisal"
@@ -187,6 +199,7 @@ export default async function BuyPage({
             </div>
           )}
         </div>
+        </ResultsRegion>
 
         {/* Closing sequence, per the comp: the featured property card (the same
             one the home page shows), then "You may also like", then the team
@@ -199,6 +212,7 @@ export default async function BuyPage({
           <YouMayAlsoLike properties={latest} exploreHref="/buy" phoneTone="dark" />
         )}
         <TeamCTA />
+        </SearchTransitionProvider>
       </main>
       <Footer />
     </div>

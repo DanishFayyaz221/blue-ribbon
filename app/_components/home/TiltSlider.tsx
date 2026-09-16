@@ -20,6 +20,15 @@ type Props = {
   gap?: string;
   ariaLabel?: string;
   className?: string;
+  /**
+   * Pixels per second the row glides on its own while it is on screen and
+   * the pointer is not over it. 0 leaves it to scroll, drag and the arrows.
+   * The glide runs in the same direction as the "next" arrow, pauses while
+   * the visitor hovers, drags or steps, and picks up again afterwards.
+   */
+  autoplay?: number;
+  /** Show the prev/next arrows. Off where the row glides by itself. */
+  arrows?: boolean;
 };
 
 // Motion constants, lifted from realevate.agency's projects slider so the
@@ -71,8 +80,15 @@ export function TiltSlider({
   gap = "clamp(18px, 1.6vw, 32px)",
   ariaLabel,
   className = "",
+  autoplay = 0,
+  arrows = true,
 }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
+  // Read by the frame loop through a ref, so the loop is wired once.
+  const autoplayRef = useRef(autoplay);
+  useEffect(() => {
+    autoplayRef.current = autoplay;
+  });
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const api = useRef<{ step: (dir: 1 | -1) => void } | null>(null);
@@ -105,6 +121,8 @@ export function TiltSlider({
     let horizontal = false;
     let animating = false; // arrow step in flight
     let wasInView = false;
+    let hovered = false; // pointer over the row → the glide pauses
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let animToken = 0;
     let startX = 0;
     let startY = 0;
@@ -389,6 +407,10 @@ export function TiltSlider({
             anchorScroll = scrollY();
           }
           wasInView = iv;
+          // The glide: the visitor's own offset creeps forward each frame,
+          // and followScroll folds it into the position like any drag would.
+          const glide = autoplayRef.current;
+          if (glide > 0 && iv && !hovered && !reduced) base += glide * dt;
           followScroll();
         }
       }
@@ -396,7 +418,18 @@ export function TiltSlider({
       requestAnimationFrame(loop);
     };
 
+    // mouseenter/leave, not pointer events: a tap on a touch screen would
+    // otherwise count as hovering and stall the glide until the next tap.
+    const onHoverStart = () => {
+      hovered = true;
+    };
+    const onHoverEnd = () => {
+      hovered = false;
+    };
+
     viewport.addEventListener("pointerdown", onDown);
+    viewport.addEventListener("mouseenter", onHoverStart);
+    viewport.addEventListener("mouseleave", onHoverEnd);
     window.addEventListener("pointermove", onMove, { capture: true, passive: false });
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onUp);
@@ -417,6 +450,8 @@ export function TiltSlider({
       alive = false;
       api.current = null;
       viewport.removeEventListener("pointerdown", onDown);
+      viewport.removeEventListener("mouseenter", onHoverStart);
+      viewport.removeEventListener("mouseleave", onHoverEnd);
       window.removeEventListener("pointermove", onMove, { capture: true });
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
@@ -461,6 +496,7 @@ export function TiltSlider({
 
       {/* Arrows sit on the slider's bottom edge like the reference: 12.5vw
           from the right from `sm` up, centred beneath the row on phones. */}
+      {arrows && (
       <div className="absolute bottom-0 left-1/2 z-20 flex -translate-x-1/2 items-center gap-[clamp(8px,0.5vw,14px)] sm:left-auto sm:right-[12.5vw] sm:translate-x-0">
         <button
           type="button"
@@ -497,6 +533,7 @@ export function TiltSlider({
           </svg>
         </button>
       </div>
+      )}
     </div>
   );
 }
