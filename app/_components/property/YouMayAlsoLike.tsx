@@ -1,7 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import { DragScroll } from "../ui/DragScroll";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
+import { MobileCarousel } from "../ui/MobileCarousel";
 import { PropertyCard, type PropertyCardData } from "./PropertyCard";
 
 /**
@@ -19,53 +20,106 @@ export function YouMayAlsoLike({
   properties,
   exploreHref = "/rent",
   tone = "light",
+  phoneTone,
   heading = "You may also like",
 }: {
   properties: PropertyCardData[];
   exploreHref?: string;
   tone?: "light" | "dark";
+  /**
+   * Tone on phones, when it differs from `tone`. The mobile comp puts the
+   * listing pages' strip on the navy satin while their desktop keeps it on
+   * white; a light strip with `phoneTone="dark"` paints the satin and white
+   * copy below sm only.
+   */
+  phoneTone?: "light" | "dark";
   /** The strip's title — "Explore Properties" on the Market Insights page. */
   heading?: string;
 }) {
   if (properties.length === 0) return null;
   const dark = tone === "dark";
+  const phoneDark = (phoneTone ?? tone) === "dark";
+  // Satin backdrop of its own only when the phone is dark and desktop is not;
+  // a dark strip proper sits inside the caller's panel.
+  const phoneSatin = phoneDark && !dark;
   const Wrapper = dark ? "div" : "section";
 
+  // The phone comp breaks the heading onto two lines — "You may / also like",
+  // "Explore / Properties" — so the first half of the words takes line one.
+  const words = heading.split(/\s+/);
+  const phoneHeading =
+    words.length > 1
+      ? `${words.slice(0, Math.ceil(words.length / 2)).join(" ")}\n${words.slice(Math.ceil(words.length / 2)).join(" ")}`
+      : heading;
+
+  const headingTone = dark
+    ? "text-white"
+    : phoneDark
+      ? "text-white sm:text-brand-bunker"
+      : "text-brand-bunker";
+  const linkTone = dark
+    ? "text-white/80 hover:text-white"
+    : phoneDark
+      ? "text-white sm:text-brand-bunker hover:text-brand-navy"
+      : "text-brand-bunker/70 sm:text-brand-bunker hover:text-brand-navy";
+
   return (
-    <Wrapper className={dark ? "w-full" : "w-full bg-white py-[clamp(28px,3.2vw,60px)]"}>
-      <div className={dark ? undefined : "container-page"}>
-        <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
+    <Wrapper
+      className={
+        dark
+          ? "w-full"
+          : phoneSatin
+            ? "relative w-full overflow-hidden py-[clamp(28px,3.2vw,60px)] sm:bg-white"
+            : "w-full bg-white py-[clamp(28px,3.2vw,60px)]"
+      }
+    >
+      {phoneSatin && (
+        <div className="absolute inset-0 sm:hidden" aria-hidden>
+          <Image src="/images/bg.png" alt="" fill sizes="100vw" className="object-cover object-center" />
+          <div className="absolute inset-0 bg-[#001F4D1F]" />
+        </div>
+      )}
+      <div className={dark ? undefined : "container-page relative z-10"}>
+        <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
           <LineReveal
             as="h2"
-            className={`font-display font-bold text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1] ${
-              dark ? "text-white" : "text-brand-bunker"
-            }`}
+            className={`sm:hidden font-display font-bold text-[26px] leading-[1.1] ${headingTone}`}
+          >
+            {phoneHeading}
+          </LineReveal>
+          <LineReveal
+            as="h2"
+            className={`hidden sm:block font-display font-bold text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1] ${headingTone}`}
           >
             {heading}
           </LineReveal>
           <Link
             href={exploreHref}
-            className={`group inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] ${
-              dark
-                ? "text-white/80 hover:text-white"
-                : "text-brand-bunker/70 sm:text-brand-bunker hover:text-brand-navy"
-            }`}
+            className={`group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] ${linkTone}`}
           >
-            Keep Exploring
+            <span className="sm:hidden">Explore more</span>
+            <span className="hidden sm:inline">Keep Exploring</span>
             <ArrowInline />
           </Link>
         </div>
 
-        {/* Phones: horizontal-scroll carousel */}
-        <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
-          <DragScroll className="no-scrollbar flex snap-x snap-mandatory items-stretch gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-            {properties.map((p, i) => (
-              <div key={p.href ?? i} className="flex snap-start shrink-0 w-[78%]">
-                <PropertyCard {...p} variant={dark ? "compact" : "wide"} dense addressFirst={false} />
-              </div>
-            ))}
-          </DragScroll>
-        </div>
+        {/* Phone: one full-width card at a time under the round arrows, the
+            address leading as in the mobile comp. */}
+        <MobileCarousel
+          ariaLabel={heading}
+          className="mt-[20px] sm:hidden"
+          tone={phoneDark ? "dark" : "light"}
+          items={properties.map((p, i) => (
+            <PropertyCard
+              key={p.href ?? i}
+              {...p}
+              variant={phoneDark ? "compact" : "tall"}
+              addressFirst
+              aspect="aspect-[3/2]"
+              sizes="100vw"
+            />
+          ))}
+        />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">

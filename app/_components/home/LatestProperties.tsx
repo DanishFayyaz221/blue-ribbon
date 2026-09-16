@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import { DragScroll } from "../ui/DragScroll";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
+import { MobileCarousel } from "../ui/MobileCarousel";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -22,36 +22,45 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
   return (
     <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
       <div className="container-page">
-        <div className="flex flex-col gap-[10px] sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
+          {/* Phone: the heading breaks after "More", as in the mobile comp. */}
           <LineReveal
             as="h2"
-            className="font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+            className="sm:hidden font-display font-bold text-brand-bunker text-[26px] leading-[1.1]"
+          >
+            {"More\nProperties"}
+          </LineReveal>
+          <LineReveal
+            as="h2"
+            className="hidden sm:block font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
           >
             More Properties
           </LineReveal>
           <Link
             href="/buy"
-            className="group inline-flex items-center gap-[6px] self-end sm:self-auto font-display text-[13px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker/70 sm:text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
+            className="group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
           >
-            <span className="sm:hidden">See all</span>
+            <span className="sm:hidden">Explore more</span>
             <span className="hidden sm:inline">Explore more Properties</span>
             <ArrowInline />
           </Link>
         </div>
 
-        {/* Mobile: horizontal-scroll carousel */}
-        <div className="sm:hidden -mx-[var(--page-px)] mt-[24px]">
-          <DragScroll className="no-scrollbar flex snap-x snap-mandatory items-stretch gap-[16px] overflow-x-auto px-[var(--page-px)] pb-[8px]">
-            {properties.map((p) => (
-              <div
-                key={p.id}
-                className="flex snap-start shrink-0 w-[78%]"
-              >
-                <PropertyCard {...p} variant="wide" dense addressFirst />
-              </div>
-            ))}
-          </DragScroll>
-        </div>
+        {/* Phone: one full-width card at a time under the round arrows. */}
+        <MobileCarousel
+          ariaLabel="More properties"
+          className="mt-[20px] sm:hidden"
+          items={properties.map((p) => (
+            <PropertyCard
+              key={p.id}
+              {...p}
+              variant="tall"
+              addressFirst
+              aspect="aspect-[3/2]"
+              sizes="100vw"
+            />
+          ))}
+        />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { HoverAction } from "../ui/HoverAction";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -112,14 +113,18 @@ function Collage({
           aria-label="Open photo gallery"
           className="relative block aspect-[16/7] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)]"
         >
-          <Image
-            src={images[0].src}
-            alt={images[0].alt}
-            fill
-            priority
-            sizes="(max-width: 639px) 1px, 100vw"
-            className="object-cover"
-          />
+          <HoverAction className="h-full w-full">
+            <div className="relative h-full w-full">
+              <Image
+                src={images[0].src}
+                alt={images[0].alt}
+                fill
+                priority
+                sizes="(max-width: 639px) 1px, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </HoverAction>
         </button>
         {total > 1 && <ShowAllButton total={total} onClick={() => onOpen(0)} />}
       </div>
@@ -168,16 +173,20 @@ function Tile({
       type="button"
       onClick={onClick}
       aria-label={`Open photo gallery — ${image.alt}`}
-      className={`group relative overflow-hidden ${className}`}
+      className={`relative overflow-hidden ${className}`}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className="object-cover transition duration-300 group-hover:brightness-90"
-      />
+      <HoverAction className="h-full w-full">
+        <div className="relative h-full w-full">
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            priority={priority}
+            sizes={sizes}
+            className="object-cover"
+          />
+        </div>
+      </HoverAction>
     </button>
   );
 }

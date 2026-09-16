@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { LineReveal } from "../ui/LineReveal";
+import { MobileCarousel } from "../ui/MobileCarousel";
 
 const tabs = ["Buying", "Selling", "Renting"] as const;
 type Tab = (typeof tabs)[number];
@@ -29,7 +30,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/agents",
       src: "/images/the-mcgrath-difference.png",
     },
   ],
@@ -43,7 +44,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/agents",
       src: "/images/the-mcgrath-difference.png",
     },
   ],
@@ -57,7 +58,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/agents",
       src: "/images/the-mcgrath-difference.png",
     },
   ],
@@ -70,14 +71,15 @@ export function BridgeToHome() {
   return (
     <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
-        <div className="flex flex-col gap-[20px] sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col items-center gap-[20px] sm:flex-row sm:items-end sm:justify-between">
           <LineReveal
             as="h2"
-            className="font-display font-bold capitalize text-brand-mineshaft text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
+            className="text-center font-display font-bold capitalize text-brand-mineshaft text-[26px] sm:text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1] sm:text-left"
           >
             Our Services
           </LineReveal>
-          <div className="hidden sm:flex h-[44px] sm:h-[48px] items-center gap-0 self-start sm:self-end">
+          {/* Phone: the three tabs share the width, per the mobile comp. */}
+          <div className="flex h-[40px] w-full items-center gap-0 self-stretch sm:h-[48px] sm:w-auto sm:self-end">
             {tabs.map((tab) => {
               const isActive = active === tab;
               return (
@@ -85,17 +87,17 @@ export function BridgeToHome() {
                   key={tab}
                   type="button"
                   onClick={() => setActive(tab)}
-                  className="group relative flex h-full min-w-[110px] sm:min-w-[180px] cursor-pointer items-center justify-center px-[8px]"
+                  className="group relative flex h-full min-w-0 flex-1 cursor-pointer items-center justify-center px-[8px] sm:min-w-[180px] sm:flex-none"
                 >
                   <span
-                    className={`relative z-10 font-display text-[15px] sm:text-[18px] lg:text-[20px] font-medium tracking-[0.02em] transition-transform duration-300 ease-out group-hover:-translate-y-[2px] group-active:translate-y-0 ${
-                      isActive ? "text-brand-bunker" : "text-black/70 group-hover:text-brand-bunker"
+                    className={`relative z-10 font-display text-[15px] sm:text-[18px] lg:text-[20px] tracking-[0.02em] transition-transform duration-300 ease-out group-hover:-translate-y-[2px] group-active:translate-y-0 ${
+                      isActive ? "font-semibold text-brand-bunker sm:font-medium" : "font-medium text-black/70 group-hover:text-brand-bunker"
                     }`}
                   >
                     {tab}
                   </span>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-brand-bunker" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-bunker sm:h-[3px]" />
                   )}
                 </button>
               );
@@ -103,7 +105,30 @@ export function BridgeToHome() {
           </div>
         </div>
 
-        <div className="mt-[clamp(20px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
+        {/* Phone: one tile at a time, stepped by the round arrows or a swipe. */}
+        <MobileCarousel
+          ariaLabel="Our services"
+          className="mt-[24px] sm:hidden"
+          items={tiles.map((tile, i) => (
+            // Index, deliberately — see tilesByTab.
+            <Link key={i} href={tile.href} className="group block">
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[16px]">
+                <Image
+                  src={tile.src}
+                  alt={tile.label}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </div>
+              <p className="mt-[16px] font-display text-[16px] font-medium tracking-[0.02em] text-brand-mineshaft">
+                {tile.label}
+              </p>
+            </Link>
+          ))}
+        />
+
+        <div className="mt-[clamp(20px,2.7vw,52px)] hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
           {tiles.map((tile, i) => (
             <Link
               // Index, deliberately — see tilesByTab.

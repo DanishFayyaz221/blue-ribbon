@@ -197,12 +197,14 @@ export function ScrollGrowVideo({
       // arithmetic as layout(): the box is 9/16 of the caller's
       // clamp(200px, 24vw, 360px), i.e. clamp(112.5px, 13.5vw, 202.5px) tall,
       // the growth is 100vh, and the overhang is half the difference between
-      // the capped full-width height (min(56.25vw, 86vh)) and the box.
-      className={`min-h-[calc(100vh+56vw)] sm:min-h-[calc(100vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
+      // the capped full-width height (min(56.25vw, 86vh)) and the box. On the
+      // phone the box is 42% of the content width (about 23vw tall), so the
+      // pin is 50vh minus half that and the overhang about 16vw.
+      className={`min-h-[calc(100vh+40vw)] sm:min-h-[calc(100vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
     >
       <div
         ref={cellRef}
-        className="sticky top-[calc(50vh-28vw)] z-20 w-full sm:top-[calc(50vh-clamp(56.25px,6.75vw,101.25px))]"
+        className="sticky top-[calc(50vh-12vw)] z-20 w-full sm:top-[calc(50vh-clamp(56.25px,6.75vw,101.25px))]"
       >
         <div
           ref={boxRef}

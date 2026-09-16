@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
@@ -16,101 +15,19 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        {/* Mobile layout */}
-        <div className="sm:hidden">
-          <section className="relative w-full overflow-hidden">
-            <div className="relative aspect-[4/3] w-full">
-              <Image
-                src="/images/handshake-house.png"
-                alt=""
-                fill
-                priority
-                sizes="(max-width: 639px) 100vw, 1px"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-brand-navy/80" />
-              <div className="absolute inset-0 flex flex-col justify-center px-[22px]">
-                <LineReveal
-                  as="h1"
-                  trigger={false}
-                  className="font-display font-bold text-white text-[25px] leading-[1.15]"
-                >
-                  {"Want to get in\ntouch with us?"}
-                </LineReveal>
-                <LineReveal
-                  as="p"
-                  trigger={false}
-                  className="mt-[12px] font-display text-white/85 text-[12.5px] leading-[1.55] max-w-[320px]"
-                >
-                  We’re all about offering unparalleled service, expert advice, every step of the way.
-                </LineReveal>
-              </div>
-            </div>
-          </section>
-
-          <section className="container-page py-[22px]">
-            <ContactForm variant="pill" />
-          </section>
-
-          <div className="h-[72px] bg-[#EDEFF2]" />
-
-          <section className="container-page py-[24px]">
-            <LineReveal as="h2" className="font-display font-bold text-brand-bunker text-[20px]">
-              Our Office
-            </LineReveal>
-            <div className="mt-[12px] flex flex-col gap-[5px] font-display text-[12.5px] text-brand-bunker/85">
-              <a
-                href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                11/76-80 Station Street, Wentworthville, NSW 2145
-              </a>
-              <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
-                sales@blueribbonre.com.au
-              </a>
-              <a href="tel:1300579093" className="hover:underline">
-                1300 579 093
-              </a>
-            </div>
-            <div className="mt-[16px] flex flex-col items-center gap-[3px] text-center">
-              <p className="font-display text-[16px] font-bold text-brand-navy leading-[1.2]">
-                Blue Ribbon Real Estate
-              </p>
-              <a
-                href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-display text-[11px] font-semibold text-blue-600 hover:underline"
-              >
-                Get directions ↗
-              </a>
-            </div>
-            <div className="relative mt-[10px] overflow-hidden rounded-[12px] bg-brand-soft-2" style={{aspectRatio:"4/3"}}>
-              <iframe
-                src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=16&output=embed"
-                title="Blue Ribbon Real Estate office location"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 h-full w-full border-0"
-              />
-            </div>
-          </section>
-        </div>
-
-        {/* Desktop layout (unchanged) */}
-        <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
+        {/* One flow for every size: the mobile comp is this same sequence
+            stacked — hero and quote, map, Visit Our Office, the form. */}
+        <div className="container-page pt-[16px] pb-[16px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} />
         </div>
 
         {/* Office-tower hero with the marquee, then the hospitality quote. */}
-        <div className="hidden sm:block">
-          <ContactIntro />
-        </div>
+        <ContactIntro />
 
-        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,64px)]">
-          <div className="mb-[16px] flex flex-col items-center gap-[4px] text-center">
+        <section className="container-page mt-[clamp(38px,3.15vw,64px)]">
+          {/* Phone: the map alone, edge to edge; the name and directions
+              above it are the desktop comp's. */}
+          <div className="mb-[16px] hidden flex-col items-center gap-[4px] text-center sm:flex">
             <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold text-brand-navy leading-[1.2]">
               Blue Ribbon Real Estate
             </p>
@@ -126,7 +43,7 @@ export default function ContactPage() {
               Get directions ↗
             </a>
           </div>
-          <div className="relative aspect-video w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] bg-brand-soft-2">
+          <div className="relative -mx-[var(--page-px)] aspect-[5/6] overflow-hidden bg-brand-soft-2 sm:mx-0 sm:aspect-video sm:w-full sm:rounded-[clamp(8px,1vw,16px)]">
             <iframe
               src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=17&output=embed&iwloc=near"
               title="Blue Ribbon Real Estate office location"
@@ -139,14 +56,12 @@ export default function ContactPage() {
         </section>
 
         {/* "Visit Our Office", directly above the enquiry form, per the comp. */}
-        <div className="hidden sm:block">
-          <VisitOurOffice />
-        </div>
+        <VisitOurOffice />
 
-        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,76px)] mb-[clamp(44px,4vw,76px)]">
+        <section className="container-page mt-[clamp(38px,3.15vw,76px)] mb-[clamp(44px,4vw,76px)]">
           <LineReveal
             as="h2"
-            className="text-center font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]"
+            className="text-center font-display font-bold text-brand-bunker text-[24px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]"
           >
             Get in Touch
           </LineReveal>

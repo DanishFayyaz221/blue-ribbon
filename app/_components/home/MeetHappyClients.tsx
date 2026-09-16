@@ -110,11 +110,14 @@ export function MeetHappyClients() {
         </LineReveal>
       </div>
 
+      {/* The same tilted row on the phone as on desktop, per the mobile
+          comp: the current card just over half the width, so its neighbours
+          show either side along the lean. */}
       <TiltSlider
         ariaLabel="Client testimonials"
         slideWidth="clamp(300px, 28vw, 440px)"
-        slideWidthMobile="78vw"
-        gap="clamp(18px, 2.6vw, 50px)"
+        slideWidthMobile="56vw"
+        gap="clamp(12px, 2.6vw, 50px)"
         className="mt-[clamp(20px,2vw,36px)] pt-[clamp(24px,7vw,150px)] pb-[clamp(72px,8vw,160px)]"
         items={testimonials.map((t) => (
           <TestimonialCard key={t.id} testimonial={t} />

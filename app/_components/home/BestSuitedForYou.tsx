@@ -1,6 +1,9 @@
 import { connection } from "next/server";
 import { PropertyCard } from "../property/PropertyCard";
+import Link from "next/link";
+import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
+import { MobileCarousel } from "../ui/MobileCarousel";
 import { getListings } from "@/lib/db/queries";
 
 export async function BestSuitedForYou() {
@@ -18,17 +21,50 @@ export async function BestSuitedForYou() {
   return (
     <section className="w-full bg-white sm:bg-brand-soft py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
+        {/* Phone: the heading breaks after "Explore" with the link beside it,
+            as in the mobile comp. */}
+        <div className="flex items-end justify-between gap-[16px] sm:hidden">
+          <LineReveal
+            as="h2"
+            className="font-display font-bold text-brand-navy text-[26px] leading-[1.1]"
+          >
+            {"Explore\nProperties"}
+          </LineReveal>
+          <Link
+            href="/buy"
+            className="group mb-[4px] inline-flex shrink-0 items-center gap-[6px] font-display text-[12px] font-medium tracking-[0.02em] text-brand-bunker"
+          >
+            Explore more
+            <ArrowInline />
+          </Link>
+        </div>
         <LineReveal
           as="h2"
-          className="font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
+          className="hidden sm:block font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
         >
           Explore Properties
         </LineReveal>
 
+        {/* Phone: one full-width card at a time under the round arrows. */}
+        <MobileCarousel
+          ariaLabel="Explore properties"
+          className="mt-[20px] sm:hidden"
+          items={items.map((p) => (
+            <PropertyCard
+              key={p.id}
+              {...p}
+              variant="tall"
+              addressFirst
+              aspect="aspect-[3/2]"
+              sizes="100vw"
+            />
+          ))}
+        />
+
         {/* Three up only from lg. At md a third column would leave each card
             around 234px wide, and the 15/8 crop would collapse to a 125px
             strip. */}
-        <div className="focus-peers mt-[clamp(28px,2.7vw,52px)] grid grid-cols-2 lg:grid-cols-3 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(16px,1.8vw,32px)]">
+        <div className="focus-peers mt-[clamp(28px,2.7vw,52px)] hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-x-[clamp(10px,0.8vw,16px)] gap-y-[clamp(16px,1.8vw,32px)]">
           {items.map((p, i) => (
             <div
               key={p.id}

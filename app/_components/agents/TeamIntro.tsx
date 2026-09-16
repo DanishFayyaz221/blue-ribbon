@@ -14,7 +14,7 @@ export function TeamIntro() {
         </span>
         <LineReveal
           as="h1"
-          className="mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
+          className="mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[30px] sm:text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
         >
           The Blue Ribbon Difference
         </LineReveal>

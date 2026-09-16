@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PhotoGallery, type GalleryImage } from "./PhotoGallery";
+import { HoverAction } from "../ui/HoverAction";
 
 type Floorplan = { src: string; alt: string };
 
@@ -177,19 +178,24 @@ function FloorplanPanel({ floorplans }: { floorplans: Floorplan[] }) {
           href={fp.src}
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative block w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] border border-brand-silver/60 bg-white"
+          // The same frame as the photo mosaic and the video (2:1, capped at
+          // 560px), with the plan fitted inside it — a portrait plan at its
+          // natural size ran taller than the screen.
+          className="relative block aspect-[2/1] max-h-[560px] w-full overflow-hidden rounded-[clamp(8px,1vw,16px)] border border-brand-silver/60"
         >
-          <Image
-            src={fp.src}
-            alt={fp.alt}
-            width={1600}
-            height={1000}
-            sizes="(max-width: 1024px) 100vw, 1200px"
-            className="h-auto w-full object-contain"
-          />
-          <span className="absolute bottom-[12px] right-[12px] rounded-[6px] bg-black/60 px-[10px] py-[6px] font-display text-[12px] text-white opacity-0 transition group-hover:opacity-100">
-            View full size
-          </span>
+          {/* The same hover as the photo tiles: the plan shrinks into the
+              dark frame and the pill follows the pointer. */}
+          <HoverAction label="View full size" className="h-full w-full">
+            <div className="relative h-full w-full bg-white">
+              <Image
+                src={fp.src}
+                alt={fp.alt}
+                fill
+                sizes="(max-width: 1024px) 100vw, 1200px"
+                className="object-contain"
+              />
+            </div>
+          </HoverAction>
         </a>
       ))}
     </div>

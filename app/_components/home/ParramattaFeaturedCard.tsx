@@ -1,7 +1,9 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { MobileCarousel } from "../ui/MobileCarousel";
 import { CardGallery } from "../property/CardGallery";
 import type { ListingCard } from "@/lib/db/queries";
 
@@ -215,7 +217,69 @@ export function ParramattaFeaturedCard({ featured }: Props) {
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
+  const photos = featured.gallery.length > 0 ? featured.gallery : [featured.image];
+
   return (
+    <>
+      {/* Phone: the photos edge to edge with the round arrows beneath, and
+          the address and stats in a band under the photo rather than as
+          plaques over it — the mobile comp's layout, which also spares the
+          phone the full-height card and the cursor effects. */}
+      <div className="pb-[36px] sm:hidden">
+        <MobileCarousel
+          ariaLabel={`Photos of ${featured.address}`}
+          gap="0px"
+          items={photos.map((src, i) => (
+            <Link
+              key={src}
+              href={featured.href}
+              aria-label={`View property: ${featured.address}`}
+              className="relative block aspect-[5/4] w-full"
+            >
+              <Image
+                src={src}
+                alt={i === 0 ? featured.address : ""}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover"
+              />
+            </Link>
+          ))}
+          between={
+            <div className="container-page mt-[18px] flex items-start justify-between gap-[16px]">
+              <Link
+                href={featured.href}
+                className="whitespace-pre-line font-display text-[15px] leading-[1.3] text-brand-navy"
+              >
+                {addressLines.join("\n")}
+              </Link>
+              {stats.length > 0 && (
+                <div className="flex shrink-0 divide-x divide-brand-bunker/20">
+                  {stats.map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="flex flex-col items-center px-[10px] first:pl-0 last:pr-0"
+                    >
+                      <span
+                        className={`font-display font-bold leading-none text-brand-navy ${
+                          stat.lead ? "text-[30px]" : "text-[22px]"
+                        }`}
+                      >
+                        {stat.value}
+                      </span>
+                      <span className="mt-[4px] font-display text-[9px] text-brand-bunker/70">
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          }
+        />
+      </div>
+
     <div
       ref={cardRef}
       onPointerEnter={(e) => {
@@ -243,7 +307,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       // and its gap. `svh` rather than `vh`: on mobile browsers `vh` measures
       // the viewport with the toolbars hidden, so the card would overflow by
       // the height of the address bar.
-      className="parramatta-featured group relative h-[calc(100svh-152px)] w-full overflow-hidden rounded-[clamp(14px,1.4vw,22px)] sm:h-[calc(100svh-160px)] lg:h-[calc(100svh-165px)]"
+      className="parramatta-featured group relative hidden h-[calc(100svh-152px)] w-full overflow-hidden rounded-[clamp(14px,1.4vw,22px)] sm:block sm:h-[calc(100svh-160px)] lg:h-[calc(100svh-165px)]"
       style={{ aspectRatio: ratio ?? 3 / 2 }}
     >
       <CardGallery
@@ -371,5 +435,6 @@ export function ParramattaFeaturedCard({ featured }: Props) {
         className="absolute inset-0 z-10 cursor-pointer"
       />
     </div>
+    </>
   );
 }

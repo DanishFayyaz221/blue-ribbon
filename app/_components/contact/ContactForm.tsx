@@ -250,7 +250,7 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
         className={
           pill
             ? "mt-[4px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
-            : "mt-[8px] flex h-[60px] w-full max-w-[180px] items-center justify-center rounded-[14px] bg-brand-navy font-display text-[15px] font-medium text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
+            : "mt-[8px] flex h-[46px] w-full items-center justify-center rounded-[23px] bg-brand-navy font-display text-[15px] font-medium text-white transition hover:bg-brand-navy-deep disabled:opacity-50 sm:h-[60px] sm:max-w-[180px] sm:rounded-[14px]"
         }
       >
         {status === "sending" ? "Sending..." : "Send Message"}

@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
 import { Breadcrumb } from "../_components/ui/Breadcrumb";
 import { MobileFilters } from "../_components/property/MobileFilters";
+import { MobileResults } from "../_components/property/MobileResults";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
@@ -114,32 +114,23 @@ export default async function BuyPage({
           </div>
 
           {hasResults ? (
-            <div className="mt-[18px] grid grid-cols-2 items-stretch gap-x-[12px] gap-y-[20px]">
-              {items.map((p) => (
-                <Link
-                  key={p.id}
-                  href={p.href}
-                  className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-brand-silver/60 bg-white"
-                >
-                  <div className="relative aspect-[3/2] w-full overflow-hidden">
-                    <Image
-                      src={p.image}
-                      alt={p.address}
-                      fill
-                      sizes="(max-width: 639px) 50vw, 1px"
-                      className="object-cover transition duration-500 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-[12px]">
-                    <p className="line-clamp-3 font-display text-[13px] font-semibold leading-[1.3] text-brand-bunker">
-                      {p.address}
-                    </p>
-                    <p className="mt-auto pt-[10px] font-display text-[12px] text-brand-bunker/60">
-                      {p.guide}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+            <div className="mt-[18px]">
+              <MobileResults
+                basePath="/buy"
+                sort={form.sort}
+                params={{ q: form.q, min: form.min, max: form.max, beds: form.beds, features: amenities }}
+                nextHref={query.page < totalPages ? nextPageHref("/buy", form, query.page + 1) : undefined}
+                cards={items.map((p) => (
+                  <PropertyCard
+                    key={p.id}
+                    {...p}
+                    variant="tall"
+                    addressFirst
+                    aspect="aspect-[3/2]"
+                    sizes="(max-width: 639px) 100vw, 1px"
+                  />
+                ))}
+              />
             </div>
           ) : (
             <div className="mt-[18px]">
@@ -204,12 +195,30 @@ export default async function BuyPage({
         <div className="mt-[clamp(28px,3vw,56px)]">
           <ParramattaCTA />
         </div>
-        {hasResults && latest.length > 0 && <YouMayAlsoLike properties={latest} />}
+        {hasResults && latest.length > 0 && (
+          <YouMayAlsoLike properties={latest} exploreHref="/buy" phoneTone="dark" />
+        )}
         <TeamCTA />
       </main>
       <Footer />
     </div>
   );
+}
+
+/** The results URL for page `page` with the current filters kept. */
+function nextPageHref(
+  basePath: string,
+  form: { q: string; min: string; max: string; beds?: string; sort: string },
+  page: number,
+): string {
+  const sp = new URLSearchParams();
+  if (form.q) sp.set("q", form.q);
+  if (form.min) sp.set("min", form.min);
+  if (form.max) sp.set("max", form.max);
+  if (form.beds) sp.set("beds", form.beds);
+  if (form.sort !== "recent") sp.set("sort", form.sort);
+  sp.set("page", String(page));
+  return `${basePath}?${sp.toString()}`;
 }
 
 function NoSalesStock({

@@ -2,6 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FooterDealButtons } from "./FooterDealButtons";
 
+/** Buy / Rent / Sell in the comp's order for the phone footer. */
+const mobileDealLinks = [
+  { label: "Buy", href: "/buy" },
+  { label: "Rent", href: "/rent" },
+  { label: "Sell", href: "/property-report-digital-appraisal" },
+];
+
 const mobileAboutLinks = [
   { label: "Our Story", href: "/about" },
   { label: "Leadership", href: "/agents" },
@@ -67,33 +74,94 @@ function MobileFooter() {
   return (
     <footer className="relative lg:hidden w-full overflow-hidden bg-brand-navy-deep text-white">
       <FooterBackdrop />
-      <div className="relative z-10 container-page pt-[28px] pb-[24px]">
-        <Image
-          src="/logo/mobile%20footer.png"
-          alt="Blue Ribbon Real Estate"
-          width={1122}
-          height={193}
-          quality={100}
-          priority
-          sizes="200px"
-          className="h-[32px] w-auto"
-        />
+      <div className="relative z-10 container-page pt-[36px] pb-[20px]">
+        {/* Buy / Rent / Sell: three equal outlined pills across the width. */}
+        <div className="flex items-center gap-[12px]">
+          {mobileDealLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="flex h-[40px] flex-1 items-center justify-center rounded-[10px] border border-white font-display text-[12px] font-medium text-white transition hover:bg-white hover:text-brand-navy"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
 
-        <div className="mt-[28px] grid grid-cols-2 gap-x-[16px] gap-y-[28px]">
+        <div className="mt-[36px] grid grid-cols-[auto_1fr] gap-x-[36px] gap-y-[28px]">
           <MobileLinkColumn title="About Us" links={mobileAboutLinks} />
           <MobileLinkColumn title="Insights" links={mobileInsightsLinks} />
         </div>
 
-        <Link
-          href="#refer"
-          className="mt-[28px] inline-flex h-[42px] items-center justify-center rounded-[20px] bg-white px-[22px] font-display text-[13px] font-medium text-brand-navy transition hover:bg-brand-soft"
-        >
-          Refer a Friend
-        </Link>
+        <div className="mt-[36px] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
+          <a
+            href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            <p>11/76-80 Station Street,</p>
+            <p>Wentworthville, NSW 2145</p>
+          </a>
+          <p className="mt-[14px]">
+            <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
+              sales@blueribbonre.com.au
+            </a>
+          </p>
+          <p>
+            <a href="tel:1300579093" className="hover:underline">
+              1300 579 093
+            </a>
+          </p>
+        </div>
 
-        <p className="mt-[24px] font-display text-[11.5px] text-white/60">
-          © 2026 Blue Ribbon Real Estate. All Rights Reserved.
+        <div className="mt-[32px] flex items-center justify-between gap-[16px]">
+          <div className="flex items-center gap-[10px]">
+            <SocialLink label="Facebook" href="#">
+              <FacebookIcon />
+            </SocialLink>
+            <SocialLink label="YouTube" href="https://youtube.com/@blueribbonrealestate">
+              <YouTubeIcon />
+            </SocialLink>
+            <SocialLink label="TikTok" href="https://www.tiktok.com/@blueribbonrealestate">
+              <TikTokIcon />
+            </SocialLink>
+            <SocialLink
+              label="Instagram"
+              href="https://www.instagram.com/blueribbonrealestateagents"
+            >
+              <InstagramIcon />
+            </SocialLink>
+          </div>
+          <Link
+            href="/agents"
+            aria-label="Meet our team"
+            className="block shrink-0 transition hover:opacity-80"
+          >
+            <Image
+              src="/images/rate-my-agent-dark.png"
+              alt="Rate My Agent"
+              width={1076}
+              height={324}
+              quality={100}
+              sizes="140px"
+              className="h-auto w-[140px]"
+            />
+          </Link>
+        </div>
+
+        <p className="mt-[32px] text-center font-display text-[11.5px] text-white/85">
+          ©2026 Blue Ribbon Real Estate. All Rights Reserved.
         </p>
+        <div className="mt-[8px] flex items-center justify-center gap-[8px] font-display text-[10.5px] text-white/70">
+          <Link href="/terms" className="hover:underline">
+            Terms &amp; Conditions
+          </Link>
+          <span aria-hidden>•</span>
+          <Link href="/privacy" className="hover:underline">
+            Privacy Policy
+          </Link>
+        </div>
       </div>
     </footer>
   );
@@ -114,7 +182,7 @@ function MobileLinkColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="font-display text-[14px] font-medium text-white/70 hover:text-white"
+              className="font-display text-[13px] text-white/90 hover:text-white hover:underline"
             >
               {link.label}
             </Link>

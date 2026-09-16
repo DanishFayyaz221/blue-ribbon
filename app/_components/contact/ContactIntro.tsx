@@ -21,7 +21,7 @@ export function ContactIntro() {
       {/* The hero keeps the photo's own 923x615 proportions and no height cap,
           so the whole frame is always visible — a wider box would have to crop
           the towers top and bottom to fill itself. */}
-      <section className="relative mt-[clamp(8px,1vw,16px)] aspect-[923/615] w-full overflow-hidden bg-brand-navy-deep">
+      <section className="relative mt-[clamp(8px,1vw,16px)] aspect-[3/4] w-full overflow-hidden bg-brand-navy-deep sm:aspect-[923/615]">
         <Image
           src="/contact/contact-1.png"
           alt="The office towers around Blue Ribbon Real Estate"
@@ -43,7 +43,7 @@ export function ContactIntro() {
           <figure className="mx-auto w-full sm:w-[74%]">
             <LineReveal
               as="blockquote"
-              className="text-justify font-[Helvetica_Neue,Helvetica,Arial,sans-serif] text-[clamp(20px,2.45vw,36px)] leading-[1.28] text-brand-bunker sm:indent-[2.7em]"
+              className="text-justify indent-[2.7em] font-[Helvetica_Neue,Helvetica,Arial,sans-serif] text-[16px] leading-[1.35] text-brand-bunker sm:text-[clamp(20px,2.45vw,36px)] sm:leading-[1.28]"
             >
               {QUOTE}
             </LineReveal>
@@ -59,7 +59,7 @@ export function ContactIntro() {
                   full viewport width, then releases — see ScrollGrowVideo. */}
               <ScrollGrowVideo
                 src="/hero-video/hero.mp4"
-                className="w-full sm:w-[clamp(200px,24vw,360px)] sm:shrink-0"
+                className="w-[42%] self-end sm:w-[clamp(200px,24vw,360px)] sm:shrink-0 sm:self-auto"
               />
             </div>
           </figure>

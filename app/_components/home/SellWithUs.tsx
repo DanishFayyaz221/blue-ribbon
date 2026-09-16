@@ -76,7 +76,7 @@ export function SellWithUs() {
         src="/images/parramatta.png"
         alt="Blue Ribbon property brochures on a table beside a sofa"
         sizes="100vw"
-        className="reveal-scale -mt-[clamp(52px,4.5vw,72px)] w-full aspect-[4/3] sm:aspect-[1920/903]"
+        className="reveal-scale -mt-[clamp(52px,4.5vw,72px)] w-full aspect-[402/245] sm:aspect-[1920/903]"
       />
     </section>
   );
