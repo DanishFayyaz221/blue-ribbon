@@ -276,7 +276,13 @@ html.reveal-armed .reveal {
   will-change: opacity, transform;
 }
 
-.reveal.reveal-in {
+/* `html` in the selector, deliberately. The armed gate above is
+   `html.reveal-armed .reveal` — specificity (0,2,1) — so a plain
+   `.reveal.reveal-in` at (0,2,0) loses to it, and adding `reveal-in` moved
+   nothing: blocks kept opacity 0 while still taking up layout, so a click on
+   the apparently empty area still followed the link underneath. Matching the
+   gate's `html` puts this at (0,3,1) and lets the entrance actually run. */
+html .reveal.reveal-in {
   opacity: 1;
   transform: translate3d(0, 0, 0) skewY(0deg);
 }
@@ -295,7 +301,9 @@ html.reveal-armed .reveal-scale {
               transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal-scale.reveal-in {
+/* Same specificity fix as `.reveal.reveal-in` above — it must outrank
+   `html.reveal-armed .reveal-scale`. */
+html .reveal-scale.reveal-in {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
 }
@@ -413,7 +421,9 @@ html.reveal-armed .reveal-scale {
 }
 @media (min-width: 640px) {
   .plaque {
-    --plaque-scoop: clamp(32px, 3.4vw, 54px);
+    /* Tracks the plaque's own padding/type scale — the scoop has to grow with
+       the plaque or it reads as a flat corner on a larger card. */
+    --plaque-scoop: clamp(40px, 4.2vw, 66px);
   }
 }
 /* Staggers the address behind the stats when both land in view at once. */
@@ -494,19 +504,58 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
 /* Page-open entrance (<PageTransition>): the whole page fades in and settles
    up as it opens. Short and gentle, on the site's settle curve, so it reads
    as the page arriving rather than as a slide. The transform ends at none. */
+/* Opacity only — deliberately no transform. This wrapper holds the whole
+   page, and a transformed element becomes the containing block for every
+   descendant, which broke two things at once:
+
+   - `position: fixed` children were laid out and clipped inside the page box
+     instead of the viewport, so the nav drawer came up empty.
+   - The scroll-reveal observer sets up two frames after mount and measured
+     every block against an ancestor still sliding through this animation.
+     Nothing intersected, `reveal-in` was never added, and whole grids sat at
+     opacity 0 while staying clickable.
+
+   With no transform to hold, `both` is safe again: the start state applies
+   before the animation runs and the end state persists after it, so a
+   re-trigger can never leave the page invisible. */
 @keyframes br-page-enter {
-  from { opacity: 0; transform: translate3d(0, 28px, 0); }
-  to   { opacity: 1; transform: none; }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-/* `backwards`, not `both`: with `both` the wrapper keeps the final keyframe
-   applied for good, and a held `transform` — even `none` — makes the element
-   the containing block for every `position: fixed` descendant. The nav
-   drawer, opened after a scroll, was then laid out and clipped inside the
-   page box instead of the viewport, which is why it came up empty. Keeping
-   only the backwards fill leaves the start state applied before the
-   animation runs and drops the transform once it ends. */
 .page-enter {
-  animation: br-page-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation: br-page-enter 0.5s ease-out both;
+}
+
+/* Tab-panel swap (Our Services). The cards are keyed by index so switching
+   tabs replaces each card's contents in place rather than remounting the row
+   — which keeps the scroll-reveal state, but made the change invisible: the
+   images simply blinked to new ones. This replays a short staggered lift on
+   every switch so the eye registers that the set changed.
+
+   Scoped to the INNER media box, not the card itself. The card carries
+   `.reveal`, whose entrance animates opacity and transform via a transition;
+   a CSS animation on the same element would outrank that declared style for
+   as long as it applied — and with `both` it applies forever — so the
+   scroll reveal would never run. The inner box owns neither, so the two
+   effects stay independent.
+
+   The item is keyed by tab in React, so a switch remounts it and the
+   animation replays from the start — toggling a class or attribute on a
+   surviving element would not restart it. `--i`, inherited from the card,
+   carries each one's position for the stagger. */
+@keyframes br-tab-swap {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.tab-swap .tab-swap-item {
+  animation: br-tab-swap 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
 }
 
 .animate-marquee {
@@ -517,6 +566,25 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
 .hover-lift {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+/* Cards are often both: `.reveal .hover-lift` on one element. Both rules are
+   a single class and `.hover-lift` is declared later, so its transition
+   replaced the reveal's outright — the card kept the hidden start state
+   (opacity 0, translated, skewed) with nothing to animate it back, and the
+   whole row stayed invisible. Restating the reveal's timings here, for the
+   pair only, lets the two coexist: the entrance runs on its own curve, the
+   hover lift keeps its shorter one. */
+.reveal.hover-lift,
+.reveal-scale.hover-lift {
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+/* No `.reveal-in` variant that shortens this back: `reveal-in` is added at
+   the moment the entrance begins, so a 0.35s transition there would cut the
+   1s reveal off a third of the way in. A card's hover lift simply runs on
+   the reveal's curve, which is slower but only perceptibly so on a pointer
+   that lands and leaves within a second. */
 .hover-lift:hover {
   transform: translateY(-4px);
 }
@@ -762,6 +830,13 @@ html.reveal-armed .lr:not(.lr-ready) {
   html {
     scroll-behavior: auto;
   }
+  /* `html.reveal-armed` prefixes on the first two: the armed gate that hides
+     these is itself `html.reveal-armed .reveal`, and a bare `.reveal` here
+     does not outrank it even with `!important` on both sides — equal
+     importance falls back to specificity. Without this, reduced-motion
+     visitors got the blank-but-clickable blocks. */
+  html.reveal-armed .reveal,
+  html.reveal-armed .reveal-scale,
   .reveal,
   .reveal.reveal-in,
   .reveal-scale,
@@ -772,6 +847,7 @@ html.reveal-armed .lr:not(.lr-ready) {
   .animate-menu-in,
   .animate-marquee,
   .page-enter,
+  .tab-swap .tab-swap-item,
   .hover-lift,
   .parallax-media,
   .scroll-scale-in,

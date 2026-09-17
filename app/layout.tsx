@@ -45,6 +45,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${playfair.variable} ${poppins.variable} antialiased`}
     >
       <head>
+        {/* With scripting off, nothing ever adds `reveal-in`, so every
+            revealed block would keep its hidden start state and the page
+            would read as half empty. The armed class is what hides them, so
+            neutralising it here restores the content. */}
+        <noscript>
+          <style>{`html.reveal-armed .reveal,html.reveal-armed .reveal-scale{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         {/* Arm the reveal animations on fresh loads, and disarm on back/forward
             navigation so restored pages don't paint blank when the observer
             isn't re-run. Inline so it executes before first paint. */}

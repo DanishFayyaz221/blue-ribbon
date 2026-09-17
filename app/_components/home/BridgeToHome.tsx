@@ -87,6 +87,7 @@ export function BridgeToHome() {
                   key={tab}
                   type="button"
                   onClick={() => setActive(tab)}
+                  aria-pressed={isActive}
                   className="group relative flex h-full min-w-0 flex-1 cursor-pointer items-center justify-center px-[8px] sm:min-w-[180px] sm:flex-none"
                 >
                   <span
@@ -111,48 +112,66 @@ export function BridgeToHome() {
           className="mt-[24px] sm:hidden"
           items={tiles.map((tile, i) => (
             // Index, deliberately — see tilesByTab.
-            <Link key={i} href={tile.href} className="group block">
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[16px]">
-                <Image
-                  src={tile.src}
-                  alt={tile.label}
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                />
+            <Link key={i} href={tile.href} className="group block tab-swap">
+              {/* Keyed by tab to replay the animation, as on desktop. No
+                  stagger — the carousel shows one tile at a time, so every
+                  tile is position 0 as far as the viewer is concerned. */}
+              <div key={active} className="tab-swap-item">
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[16px]">
+                  <Image
+                    src={tile.src}
+                    alt={tile.label}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <p className="mt-[16px] font-display text-[16px] font-medium tracking-[0.02em] text-brand-mineshaft">
+                  {tile.label}
+                </p>
               </div>
-              <p className="mt-[16px] font-display text-[16px] font-medium tracking-[0.02em] text-brand-mineshaft">
-                {tile.label}
-              </p>
             </Link>
           ))}
         />
 
-        <div className="mt-[clamp(20px,2.7vw,52px)] hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
+        <div className="tab-swap mt-[clamp(20px,2.7vw,52px)] hidden sm:grid grid-cols-2 lg:grid-cols-4 gap-[clamp(10px,1.3vw,24px)]">
           {tiles.map((tile, i) => (
             <Link
               // Index, deliberately — see tilesByTab.
               key={i}
               href={tile.href}
               suppressHydrationWarning
+              style={{ ["--i" as string]: i }}
               className={`group block reveal reveal-delay-${(i % 4) + 1} hover-lift`}
             >
-              <div className="scroll-scale-in relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
-                <Image
-                  src={tile.src}
-                  alt={tile.label}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                />
-                <div className="absolute inset-0 sm:hidden bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                <p className="absolute bottom-[10px] left-[12px] right-[12px] sm:hidden font-display text-[11px] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+              {/* Its own element, between the card and the media box: the
+                  card owns `.reveal` (a transition on opacity/transform) and
+                  the box owns `.scroll-scale-in` (a scroll-driven transform).
+                  An animation on either would fight for the same property, so
+                  the swap gets a layer of its own.
+
+                  Keyed by tab — and only safe to key here. Remounting is what
+                  actually replays the animation (a changed attribute alone
+                  does not restart one), and this wrapper carries no reveal
+                  state to lose, unlike the `.reveal` card above it. */}
+              <div key={active} className="tab-swap-item">
+                <div className="scroll-scale-in relative aspect-[16/10] sm:aspect-[3/4] w-full overflow-hidden rounded-[clamp(12px,1.7vw,32px)]">
+                  <Image
+                    src={tile.src}
+                    alt={tile.label}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-0 sm:hidden bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                  <p className="absolute bottom-[10px] left-[12px] right-[12px] sm:hidden font-display text-[11px] font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+                    {tile.label}
+                  </p>
+                </div>
+                <p className="hidden sm:block whitespace-nowrap mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(13px,0.9vw,16px)] font-medium tracking-[0.02em] text-brand-mineshaft">
                   {tile.label}
                 </p>
               </div>
-              <p className="hidden sm:block whitespace-nowrap mt-[clamp(12px,1.1vw,22px)] font-display text-[clamp(13px,0.9vw,16px)] font-medium tracking-[0.02em] text-brand-mineshaft">
-                {tile.label}
-              </p>
             </Link>
           ))}
         </div>

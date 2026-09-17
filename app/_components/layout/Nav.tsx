@@ -55,6 +55,14 @@ export function Nav() {
       before the drawer has slid out and the transition reads as a hard cut. */
   const closeAndNavigate = (href: string) => {
     if (closing) return;
+    // Already here: `router.push` to the current route is a no-op, and since
+    // `open`/`closing` are keyed to the pathname, nothing would ever clear
+    // them — the sheet would finish its exit animation and hang there. Just
+    // close it instead.
+    if (href === pathname) {
+      closeSmoothly();
+      return;
+    }
     setClosing(true);
     window.setTimeout(() => {
       router.push(href);
@@ -217,32 +225,25 @@ export function Nav() {
                 { label: "Property Estimate", href: "/property-report-digital-appraisal" },
               ].map((link, i) => {
                 const active = isActive(pathname, link.href);
+                // Full contrast on the current page too, matching the desktop
+                // pills — a faded entry read as disabled rather than as a
+                // "you are here" marker. `aria-current` still carries the
+                // state, and closeAndNavigate short-circuits to a plain close
+                // when the href is the route already showing.
                 return (
                   <li
                     key={link.label}
                     className="drawer-item"
                     style={{ ["--i" as string]: i }}
                   >
-                    {active ? (
-                      // Rendered as a plain span, not a Link — a route change
-                      // to the current page reloads it, which reads as a
-                      // broken click. Dimmed and marked as the current page
-                      // so the visitor can see where they are.
-                      <span
-                        aria-current="page"
-                        className="font-display text-[18px] font-bold text-brand-bunker/40 cursor-default"
-                      >
-                        {link.label}
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => closeAndNavigate(link.href)}
-                        className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy text-left"
-                      >
-                        {link.label}
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => closeAndNavigate(link.href)}
+                      className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy text-left"
+                    >
+                      {link.label}
+                    </button>
                   </li>
                 );
               })}
@@ -302,23 +303,18 @@ export function Nav() {
               <div className="flex flex-col gap-[14px] lg:col-span-2">
                 {buyLinks.map((link) => {
                   const active = isActive(pathname, link.href);
-                  if (active) {
-                    // Dimmed, non-clickable copy of the pill so the visitor
-                    // can see they are already here.
-                    return (
-                      <span
-                        key={link.label}
-                        aria-current="page"
-                        className="relative isolate flex h-[52px] w-full max-w-[200px] items-center justify-center overflow-hidden rounded-[16px] border border-brand-navy/40 bg-white font-display text-[15px] font-medium text-brand-navy/40 cursor-default"
-                      >
-                        <span className="relative z-10">{link.label}</span>
-                      </span>
-                    );
-                  }
+                  // No dimmed variant for the current page. These three pills
+                  // are the sheet's primary calls to action, and fading the
+                  // one you are standing on read as a disabled control rather
+                  // than a "you are here" marker. It keeps full contrast and
+                  // stays clickable; `aria-current` still carries the state
+                  // for assistive tech, and closeAndNavigate on the current
+                  // route simply shuts the sheet.
                   return (
                     <button
                       key={link.label}
                       type="button"
+                      aria-current={active ? "page" : undefined}
                       onClick={() => closeAndNavigate(link.href)}
                       className="group relative isolate flex h-[52px] w-full max-w-[200px] cursor-pointer items-center justify-center overflow-hidden rounded-[16px] border border-brand-navy bg-white font-display text-[15px] font-medium text-brand-navy transition-colors duration-300 hover:text-white before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0"
                     >

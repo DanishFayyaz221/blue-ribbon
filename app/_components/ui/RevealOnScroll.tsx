@@ -23,6 +23,8 @@ export function RevealOnScroll() {
     let observer: IntersectionObserver | null = null;
     let mo: MutationObserver | null = null;
     let scanFrame = 0;
+    /** Set once the deferred setup has registered the scroll rescan. */
+    let onScroll: (() => void) | null = null;
 
     // On any back/forward or bfcache restore, reveal EVERYTHING immediately.
     // Losing the scroll-in animation on a back navigation is fine; leaving the
@@ -73,7 +75,10 @@ export function RevealOnScroll() {
             }
           }
         },
-        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
+        // threshold 0, not 0.12: a block taller than the viewport never has
+        // 12% of itself visible at once, so it would stay hidden for good.
+        // Any part of it crossing the line is the honest trigger.
+        { threshold: 0, rootMargin: "0px 0px -60px 0px" },
       );
 
       const scan = () => {
@@ -113,6 +118,17 @@ export function RevealOnScroll() {
 
       mo = new MutationObserver(queueScan);
       mo.observe(document.body, { childList: true, subtree: true });
+
+      // A scroll-driven rescan, as well as the observer. The observer alone
+      // is one missed callback away from leaving a block invisible for the
+      // life of the page — content that arrives while its ancestor is
+      // display:none (a tab panel) is measured at zero and never intersects
+      // again. Failing this way costs an animation; failing the other way
+      // costs the content, so the scan runs on every scroll (once a frame)
+      // and reveals whatever is on screen.
+      window.addEventListener("scroll", queueScan, { passive: true });
+      window.addEventListener("resize", queueScan);
+      onScroll = queueScan;
     }));
 
     return () => {
@@ -120,8 +136,14 @@ export function RevealOnScroll() {
       cancelAnimationFrame(scanFrame);
       observer?.disconnect();
       mo?.disconnect();
-      window.removeEventListener("pageshow", onNavRestore);
+      // onPageShow, not onNavRestore: that is what was registered, and
+      // removing a different function leaves the listener attached.
+      window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("popstate", onNavRestore);
+      if (onScroll) {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      }
     };
   }, []);
 

@@ -314,32 +314,32 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       {stats.length > 0 && (
         <div
           ref={statsRef}
-          className={`plaque plaque-tr origin-top-right pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[12px] py-[9px] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(18px,2vw,36px)] sm:py-[clamp(14px,1.4vw,24px)]${plaqueState("stats")}`}
+          className={`plaque plaque-tr origin-top-right pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[12px] py-[9px] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(24px,2.5vw,44px)] sm:py-[clamp(18px,1.75vw,30px)]${plaqueState("stats")}`}
           style={{ borderBottomLeftRadius: "var(--plaque-scoop)" }}
         >
           {stats.map((stat, i) => (
             <Fragment key={stat.label}>
               {i > 0 && (
                 <div
-                  className="plaque-rule h-[20px] w-px bg-brand-bunker/15 sm:h-[clamp(30px,3vw,48px)]"
+                  className="plaque-rule h-[20px] w-px bg-brand-bunker/15 sm:h-[clamp(38px,3.7vw,60px)]"
                   style={detailDelay(0.2 + (i - 0.5) * 0.09)}
                 />
               )}
               <div className="plaque-mask">
                 <div
-                  className="plaque-line flex flex-col items-center px-[7px] sm:px-[clamp(10px,1.2vw,20px)]"
+                  className="plaque-line flex flex-col items-center px-[7px] sm:px-[clamp(13px,1.5vw,25px)]"
                   style={detailDelay(0.2 + i * 0.09)}
                 >
                   <span
                     className={
                       stat.lead
-                        ? "font-display text-[19px] sm:text-[clamp(30px,2.8vw,44px)] font-bold text-brand-bunker leading-none"
-                        : "font-display text-[14px] sm:text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none"
+                        ? "font-display text-[19px] sm:text-[clamp(38px,3.5vw,55px)] font-bold text-brand-bunker leading-none"
+                        : "font-display text-[14px] sm:text-[clamp(25px,2.1vw,35px)] font-medium text-brand-bunker leading-none"
                     }
                   >
                     {stat.value}
                   </span>
-                  <span className="mt-[4px] font-display text-[8px] sm:mt-[8px] sm:text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
+                  <span className="mt-[4px] font-display text-[8px] sm:mt-[10px] sm:text-[clamp(14px,1.05vw,18px)] text-brand-bunker/70">
                     {stat.label}
                   </span>
                 </div>
@@ -352,10 +352,10 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       {/* Address plaque — mirror of the stats card in the opposite corner. */}
       <div
         ref={addressRef}
-        className={`plaque plaque-bl origin-bottom-left pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[13px] py-[10px] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(20px,2.4vw,44px)] sm:py-[clamp(16px,1.6vw,26px)]${plaqueState("address")}`}
+        className={`plaque plaque-bl origin-bottom-left pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[13px] py-[10px] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(26px,3vw,54px)] sm:py-[clamp(20px,2vw,33px)]${plaqueState("address")}`}
         style={{ borderTopRightRadius: "var(--plaque-scoop)" }}
       >
-        <p className="font-display text-[12px] sm:text-[clamp(18px,1.6vw,26px)] font-bold leading-[1.25] text-brand-navy">
+        <p className="font-display text-[12px] sm:text-[clamp(23px,2vw,33px)] font-bold leading-[1.25] text-brand-navy">
           {addressLines.map((line, i) => (
             <span key={i} className="plaque-mask">
               <span className="plaque-line block" style={detailDelay(0.2 + i * 0.1)}>
