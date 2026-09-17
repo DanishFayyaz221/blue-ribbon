@@ -1,9 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { MobileCarousel } from "../ui/MobileCarousel";
 import { CardGallery } from "../property/CardGallery";
 import type { ListingCard } from "@/lib/db/queries";
 
@@ -162,25 +160,27 @@ export function ParramattaFeaturedCard({ featured }: Props) {
     // already painted by the page-level gate, so nothing is lost, and it
     // keeps this effect from re-rendering the card inside its own commit.
     const arm = requestAnimationFrame(() => setArmed(true));
-    const targets: [HTMLElement | null, "stats" | "address"][] = [
-      [statsRef.current, "stats"],
-      [addressRef.current, "address"],
-    ];
+    // Both plaques are triggered off the CARD, not off themselves. A plaque
+    // is a small box in a corner, and on a phone the whole card is only a
+    // few hundred pixels tall, so watching the plaques meant both crossed
+    // their threshold within a few pixels of each other — the reveal fired
+    // as the card appeared and read as no animation at all. Watching the
+    // card gives one honest moment for both: the card is a third on screen,
+    // the stats unfold, and the address follows on its own CSS delay.
+    const card = cardRef.current;
+    if (!card) {
+      cancelAnimationFrame(arm);
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const key = targets.find(([el]) => el === entry.target)?.[1];
-          if (key) setPlaquesIn((cur) => (cur[key] ? cur : { ...cur, [key]: true }));
-          io.unobserve(entry.target);
-        }
+        if (!entries.some((e) => e.isIntersecting)) return;
+        setPlaquesIn({ stats: true, address: true });
+        io.disconnect();
       },
-      // Fires once half the plaque is above the bottom tenth of the screen,
-      // so it is properly on screen before it moves rather than animating
-      // while still clipped by the viewport edge.
-      { threshold: 0.5, rootMargin: "0px 0px -10% 0px" },
+      { threshold: 0.35 },
     );
-    for (const [el] of targets) if (el) io.observe(el);
+    io.observe(card);
     return () => {
       cancelAnimationFrame(arm);
       io.disconnect();
@@ -251,69 +251,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-  const photos = featured.gallery.length > 0 ? featured.gallery : [featured.image];
-
   return (
-    <>
-      {/* Phone: the photos edge to edge with the round arrows beneath, and
-          the address and stats in a band under the photo rather than as
-          plaques over it — the mobile comp's layout, which also spares the
-          phone the full-height card and the cursor effects. */}
-      <div className="pb-[36px] sm:hidden">
-        <MobileCarousel
-          ariaLabel={`Photos of ${featured.address}`}
-          gap="0px"
-          items={photos.map((src, i) => (
-            <Link
-              key={src}
-              href={featured.href}
-              aria-label={`View property: ${featured.address}`}
-              className="relative block aspect-[5/4] w-full"
-            >
-              <Image
-                src={src}
-                alt={i === 0 ? featured.address : ""}
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                className="object-cover"
-              />
-            </Link>
-          ))}
-          between={
-            <div className="container-page mt-[18px] flex items-start justify-between gap-[16px]">
-              <Link
-                href={featured.href}
-                className="whitespace-pre-line font-display text-[15px] leading-[1.3] text-brand-navy"
-              >
-                {addressLines.join("\n")}
-              </Link>
-              {stats.length > 0 && (
-                <div className="flex shrink-0 divide-x divide-brand-bunker/20">
-                  {stats.map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="flex flex-col items-center px-[10px] first:pl-0 last:pr-0"
-                    >
-                      <span
-                        className={`font-display font-bold leading-none text-brand-navy ${
-                          stat.lead ? "text-[30px]" : "text-[22px]"
-                        }`}
-                      >
-                        {stat.value}
-                      </span>
-                      <span className="mt-[4px] font-display text-[9px] text-brand-bunker/70">
-                        {stat.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          }
-        />
-      </div>
-
     <div
       ref={cardRef}
       onPointerEnter={(e) => {
@@ -341,7 +279,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       // and its gap. `svh` rather than `vh`: on mobile browsers `vh` measures
       // the viewport with the toolbars hidden, so the card would overflow by
       // the height of the address bar.
-      className="parramatta-featured group relative hidden h-[calc(100svh-152px)] w-full overflow-hidden rounded-[clamp(14px,1.4vw,22px)] sm:block sm:h-[calc(100svh-160px)] lg:h-[calc(100svh-165px)]"
+      className="parramatta-featured group relative block h-auto w-full overflow-hidden rounded-[clamp(14px,1.4vw,22px)] sm:h-[calc(100svh-160px)] lg:h-[calc(100svh-165px)]"
       style={{ aspectRatio: ratio ?? 3 / 2 }}
     >
       <CardGallery
@@ -366,8 +304,8 @@ export function ParramattaFeaturedCard({ featured }: Props) {
 
           `z-[15]` keeps them under the plaques at z-30, so those stay crisp
           rather than being tinted. */}
-      <div className="featured-haze-top pointer-events-none absolute inset-x-0 top-0 z-[15] h-[clamp(130px,16vw,260px)]" />
-      <div className="featured-haze-bottom pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[clamp(130px,16vw,260px)]" />
+      <div className="featured-haze-top pointer-events-none absolute inset-x-0 top-0 z-[15] h-[26%] sm:h-[clamp(130px,16vw,260px)]" />
+      <div className="featured-haze-bottom pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[26%] sm:h-[clamp(130px,16vw,260px)]" />
 
       {/* Beds / Baths / Cars stats — corner-anchored plaque with a scooped
           bottom-left, casting a soft shadow onto the photo. Scales from its
@@ -376,32 +314,32 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       {stats.length > 0 && (
         <div
           ref={statsRef}
-          className={`plaque plaque-tr origin-top-right pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[clamp(18px,2vw,36px)] py-[clamp(14px,1.4vw,24px)] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)]${plaqueState("stats")}`}
-          style={{ borderBottomLeftRadius: "clamp(32px, 3.4vw, 54px)" }}
+          className={`plaque plaque-tr origin-top-right pointer-events-none absolute right-0 top-0 z-30 flex items-center bg-white/70 px-[12px] py-[9px] shadow-[-14px_18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(18px,2vw,36px)] sm:py-[clamp(14px,1.4vw,24px)]${plaqueState("stats")}`}
+          style={{ borderBottomLeftRadius: "var(--plaque-scoop)" }}
         >
           {stats.map((stat, i) => (
             <Fragment key={stat.label}>
               {i > 0 && (
                 <div
-                  className="plaque-rule h-[clamp(30px,3vw,48px)] w-px bg-brand-bunker/15"
+                  className="plaque-rule h-[20px] w-px bg-brand-bunker/15 sm:h-[clamp(30px,3vw,48px)]"
                   style={detailDelay(0.2 + (i - 0.5) * 0.09)}
                 />
               )}
               <div className="plaque-mask">
                 <div
-                  className="plaque-line flex flex-col items-center px-[clamp(10px,1.2vw,20px)]"
+                  className="plaque-line flex flex-col items-center px-[7px] sm:px-[clamp(10px,1.2vw,20px)]"
                   style={detailDelay(0.2 + i * 0.09)}
                 >
                   <span
                     className={
                       stat.lead
-                        ? "font-display text-[clamp(30px,2.8vw,44px)] font-bold text-brand-bunker leading-none"
-                        : "font-display text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none"
+                        ? "font-display text-[19px] sm:text-[clamp(30px,2.8vw,44px)] font-bold text-brand-bunker leading-none"
+                        : "font-display text-[14px] sm:text-[clamp(20px,1.7vw,28px)] font-medium text-brand-bunker leading-none"
                     }
                   >
                     {stat.value}
                   </span>
-                  <span className="mt-[8px] font-display text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
+                  <span className="mt-[4px] font-display text-[8px] sm:mt-[8px] sm:text-[clamp(11px,0.85vw,14px)] text-brand-bunker/70">
                     {stat.label}
                   </span>
                 </div>
@@ -414,10 +352,10 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       {/* Address plaque — mirror of the stats card in the opposite corner. */}
       <div
         ref={addressRef}
-        className={`plaque plaque-bl origin-bottom-left pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[clamp(20px,2.4vw,44px)] py-[clamp(16px,1.6vw,26px)] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)]${plaqueState("address")}`}
-        style={{ borderTopRightRadius: "clamp(32px, 3.4vw, 54px)" }}
+        className={`plaque plaque-bl origin-bottom-left pointer-events-none absolute left-0 bottom-0 z-30 bg-white/70 px-[13px] py-[10px] shadow-[14px_-18px_36px_-8px_rgba(0,0,0,0.35)] sm:px-[clamp(20px,2.4vw,44px)] sm:py-[clamp(16px,1.6vw,26px)]${plaqueState("address")}`}
+        style={{ borderTopRightRadius: "var(--plaque-scoop)" }}
       >
-        <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold leading-[1.25] text-brand-navy">
+        <p className="font-display text-[12px] sm:text-[clamp(18px,1.6vw,26px)] font-bold leading-[1.25] text-brand-navy">
           {addressLines.map((line, i) => (
             <span key={i} className="plaque-mask">
               <span className="plaque-line block" style={detailDelay(0.2 + i * 0.1)}>
@@ -444,9 +382,9 @@ export function ParramattaFeaturedCard({ featured }: Props) {
           willChange: "transform, opacity",
         }}
       >
-        <span className="inline-flex h-[clamp(56px,4.8vw,68px)] items-center justify-center gap-[10px] rounded-full bg-white px-[clamp(40px,3.8vw,52px)] font-display text-[clamp(17px,1.4vw,22px)] font-medium text-brand-bunker shadow-[0_14px_36px_rgba(0,0,0,0.28)]">
+        <span className="inline-flex h-[38px] items-center justify-center gap-[7px] rounded-full bg-white px-[20px] font-display text-[13px] font-medium text-brand-bunker shadow-[0_14px_36px_rgba(0,0,0,0.28)] sm:h-[clamp(56px,4.8vw,68px)] sm:gap-[10px] sm:px-[clamp(40px,3.8vw,52px)] sm:text-[clamp(17px,1.4vw,22px)]">
           View Property
-          <span aria-hidden className="inline-flex h-[18px] w-[18px] shrink-0">
+          <span aria-hidden className="inline-flex h-[13px] w-[13px] shrink-0 sm:h-[18px] sm:w-[18px]">
             <svg
               viewBox="0 0 24 24"
               className="h-full w-full"
@@ -469,6 +407,5 @@ export function ParramattaFeaturedCard({ featured }: Props) {
         className="absolute inset-0 z-10 cursor-pointer"
       />
     </div>
-    </>
   );
 }

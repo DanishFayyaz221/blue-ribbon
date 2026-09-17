@@ -166,13 +166,13 @@ function RoundArrow({
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous" : "Next"}
-      className={`flex h-[72px] w-[72px] cursor-pointer items-center justify-center rounded-full border transition active:scale-95 ${
+      className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full border transition active:scale-95 ${
         tone === "dark" ? "border-white/80 text-white" : "border-brand-bunker/80 text-brand-bunker"
       }`}
     >
       <svg
         viewBox="0 0 24 24"
-        className={`h-[24px] w-[24px] ${direction === "next" ? "-scale-x-100" : ""}`}
+        className={`h-[20px] w-[20px] ${direction === "next" ? "-scale-x-100" : ""}`}
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"

@@ -69,7 +69,7 @@ export function BridgeToHome() {
   const tiles = tilesByTab[active];
 
   return (
-    <section className="w-full bg-white py-[clamp(36px,3.2vw,60px)]">
+    <section className="w-full bg-white pt-[clamp(36px,3.2vw,60px)] pb-[18px] sm:pb-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
         <div className="flex flex-col items-center gap-[20px] sm:flex-row sm:items-end sm:justify-between">
           <LineReveal
