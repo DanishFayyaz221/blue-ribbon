@@ -56,7 +56,11 @@ export default async function AgentsPage() {
               <MobileCarousel
                 ariaLabel="Our team"
                 className="sm:hidden"
-                arrowsClassName="-mt-[92px] justify-end"
+                // Pulled up beside the name and details. The negative margin
+                // also shortens the carousel by that much, so it is sized to
+                // the 48px arrows rather than the 60px ones it was written
+                // for — overshooting ate the gap below the card.
+                arrowsClassName="-mt-[80px] justify-end"
                 items={team.map((a) => (
                   <AgentCard
                     key={a.key}
@@ -108,7 +112,7 @@ export default async function AgentsPage() {
             </section>
           )}
 
-          <section className="container-page mt-[44px] sm:mt-[clamp(60px,8vw,120px)] mb-[clamp(44px,4vw,76px)]">
+          <section className="container-page mt-[72px] sm:mt-[clamp(60px,8vw,120px)] mb-[clamp(44px,4vw,76px)]">
             <LineReveal
               as="h2"
               className="text-center font-display font-bold text-brand-navy text-[24px] sm:text-[clamp(1.5rem,2.6vw,2.4rem)] leading-[1.15]"
