@@ -64,7 +64,12 @@ export function AgentCard({
         {(phone || email || listingCount) && (
           <div className="mt-[8px] space-y-[2px] text-[clamp(11px,0.78vw,13px)] text-brand-bunker/70">
             {phone && <p>{phone}</p>}
-            {email && <p className="truncate">{email}</p>}
+            {/* Wraps rather than truncating. `truncate` cut long addresses
+                mid-domain on a narrow phone ("…@blueribbonre.co…"), which is
+                worse than useless — a partial address reads as a real one.
+                `break-all` because an email has no spaces to break at, so
+                without it the whole string is one unbreakable word. */}
+            {email && <p className="break-all">{email}</p>}
             {listingCount ? (
               <p className="text-brand-navy">
                 {listingCount} current {listingCount === 1 ? "listing" : "listings"}

@@ -34,11 +34,14 @@ export function FounderQuote() {
             >
               {QUOTE}
             </LineReveal>
-            {/* The mobile comp runs the quote straight into the banner, with
-                no attribution. */}
+            {/* Shown at every width. The mobile comp ran the quote straight
+                into the banner with no attribution, but an unattributed quote
+                reads as copy rather than as something the founder said —
+                the line that gives it its weight. Phones get a slightly
+                smaller size and a tighter gap above. */}
             <figcaption
               suppressHydrationWarning
-              className="reveal hidden sm:block mt-[clamp(24px,3.7vw,54px)] font-display text-[clamp(12px,1vw,15px)] font-semibold leading-[1.4] text-brand-silver"
+              className="reveal block mt-[24px] font-display text-[14px] font-semibold leading-[1.4] text-brand-silver sm:mt-[clamp(24px,3.7vw,54px)] sm:text-[clamp(12px,1vw,15px)]"
             >
               Ven Kan
               <br />

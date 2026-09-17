@@ -68,7 +68,12 @@ export default async function AgentsPage() {
                     listingCount={a.listingCount}
                     href={a.href}
                     aspect="aspect-[4/5]"
-                    detailsClassName="pr-[176px]"
+                    // Room for the two arrows overlaid on this block: 48px
+                    // each plus the 8px gap is 104px, and the rest is breathing
+                    // space. It was 176px, sized for the old 60px arrows and
+                    // generous even then — on a narrow phone that reserved
+                    // enough width to truncate the email mid-domain.
+                    detailsClassName="pr-[116px]"
                   />
                 ))}
               />

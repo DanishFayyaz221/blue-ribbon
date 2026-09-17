@@ -207,28 +207,6 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
         )}
       </div>
 
-      {!pill && (
-        <div className="flex w-[304px] items-center justify-between rounded-[6px] border border-[#d3d3d3] bg-[#f9f9f9] px-[14px] py-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
-          <label className="flex cursor-pointer items-center gap-[12px]">
-            <input
-              type="checkbox"
-              className="h-[26px] w-[26px] cursor-pointer appearance-none rounded-[2px] border-2 border-[#c1c1c1] bg-white checked:border-brand-navy checked:bg-brand-navy"
-            />
-            <span className="font-display text-[14px] text-[#000000]">I&rsquo;m not a robot</span>
-          </label>
-          <div className="flex flex-col items-center gap-[3px] pl-[10px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://www.gstatic.com/recaptcha/api2/logo_48.png"
-              alt="reCAPTCHA"
-              width={32}
-              height={32}
-            />
-            <span className="font-display text-[10px] leading-none text-[#555555]">reCAPTCHA</span>
-          </div>
-        </div>
-      )}
-
       {status === "error" && (
         <p className="font-display text-[12px] leading-[1.5] text-red-600">
           Sorry, your message could not be sent. Please try again

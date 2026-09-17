@@ -30,13 +30,13 @@ export function OurValues() {
       <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
 
       <div className="container-page relative z-10 flex flex-col items-center text-center">
-        <span className="hidden sm:inline-flex rounded-[6px] bg-white px-[16px] py-[7px] font-display text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-bunker">
+        {/* One pill for both breakpoints. It used to be two — the phone comp
+            labelled this band "Testimonials" on a translucent navy pill —
+            but the section is the same "Get in touch" band at every width,
+            and two labels for one band read as two different sections. Phones
+            get the same white pill a step smaller. */}
+        <span className="inline-flex rounded-[5px] bg-white px-[11px] py-[5px] font-display text-[8.5px] font-semibold uppercase tracking-[0.18em] text-brand-bunker sm:rounded-[6px] sm:px-[16px] sm:py-[7px] sm:text-[11px] sm:tracking-[0.22em]">
           Get in touch
-        </span>
-        {/* The mobile comp labels this band "Testimonials", on a translucent
-            navy pill rather than the desktop's white one. */}
-        <span className="sm:hidden rounded-[6px] border border-white/30 bg-white/10 px-[16px] py-[7px] font-display text-[10px] font-semibold uppercase tracking-[0.22em] text-white">
-          Testimonials
         </span>
 
         <LineReveal
