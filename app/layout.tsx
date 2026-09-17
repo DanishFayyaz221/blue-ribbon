@@ -50,7 +50,13 @@ export default function RootLayout({
             isn't re-run. Inline so it executes before first paint. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.add('reveal-armed');addEventListener('pageshow',function(){document.documentElement.classList.remove('reveal-armed')});`,
+            // `e.persisted` only: pageshow fires on every load, not just a
+            // bfcache restore, so disarming unconditionally stripped the
+            // hidden start state milliseconds after first paint — every
+            // `.reveal` block then sat at its resting position and the
+            // scroll animations never played. The guard keeps the safety
+            // net (a restored page can't stay blank) without that.
+            __html: `document.documentElement.classList.add('reveal-armed');addEventListener('pageshow',function(e){if(e.persisted)document.documentElement.classList.remove('reveal-armed')});`,
           }}
         />
       </head>

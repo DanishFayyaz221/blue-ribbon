@@ -133,7 +133,10 @@ export function MeetHappyClients() {
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const initial = testimonial.name.trim().charAt(0).toUpperCase();
   return (
-    <article className="flex w-full max-w-[440px] flex-col overflow-hidden rounded-[18px] bg-brand-navy shadow-[0px_4px_4px_0px_#00000040] transition-transform duration-300 hover:-translate-y-1">
+    // No max-width: the slider sizes every slide to --slide-w, and a cap
+    // below that width left the shorter cards narrower than their
+    // neighbours. h-full so each card fills the stretched slide.
+    <article className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-brand-navy shadow-[0px_4px_4px_0px_#00000040] transition-transform duration-300 hover:-translate-y-1">
       {/* No scroll-scale-in here. That class keeps a GPU layer promoted and
           rewrites its transform on every scroll, and this wrapper sits inside
           an <article> that is itself rounded, overflow-hidden and running its
@@ -141,7 +144,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           that combination — the card's text appeared twice on the live build
           while the DOM held exactly one copy of it. The effect was barely
           visible on a photo this size anyway. */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden">
         <Image
           src={testimonial.image}
           alt={testimonial.name}
@@ -158,7 +161,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           aria-hidden
         />
       </div>
-      <div className="relative flex flex-col items-center px-[16px] pt-[32px] pb-[12px] text-center sm:px-[22px] sm:pt-[40px] sm:pb-[14px]">
+      {/* flex-1: the slider stretches every card to the tallest in the row
+          (see .tilt-slider__track), and this block takes up the slack, so a
+          shorter quote leaves space below rather than shrinking the card. */}
+      <div className="relative flex flex-1 flex-col items-center px-[16px] pt-[32px] pb-[12px] text-center sm:px-[22px] sm:pt-[40px] sm:pb-[14px]">
         <div
           className="absolute -top-[28px] left-1/2 flex h-[56px] w-[56px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-[3px] border-white font-display text-[22px] font-semibold text-white sm:-top-[36px] sm:h-[72px] sm:w-[72px] sm:border-[4px] sm:text-[30px]"
           style={{ backgroundColor: testimonial.avatarBg }}
@@ -200,7 +206,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             );
           })}
         </div>
-        <p className="mt-[6px] font-display text-[11px] leading-[1.45] text-white/85 sm:text-[12.5px] sm:leading-[1.5]">
+        {/* Clamped to five lines: the reviews run from two lines to seven,
+            and without a cap the longest one sets the height of every card
+            in the stretched row, leaving the short ones mostly empty. */}
+        <p className="mt-[6px] line-clamp-5 font-display text-[11px] leading-[1.45] text-white/85 sm:text-[12.5px] sm:leading-[1.5]">
           {testimonial.quote}
         </p>
       </div>

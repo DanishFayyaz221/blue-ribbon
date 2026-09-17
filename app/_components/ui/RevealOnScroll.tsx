@@ -39,7 +39,13 @@ export function RevealOnScroll() {
       setTimeout(revealAll, 100);
       setTimeout(revealAll, 400);
     };
-    window.addEventListener("pageshow", onNavRestore);
+    // Restores only. pageshow also fires on an ordinary load, where revealing
+    // everything up front would cancel the scroll animations this component
+    // exists to run — the same trap the inline reveal-armed script fell into.
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) onNavRestore();
+    };
+    window.addEventListener("pageshow", onPageShow);
     window.addEventListener("popstate", onNavRestore);
 
     // Strip any reveal-in classes injected before hydration (bfcache, HMR,

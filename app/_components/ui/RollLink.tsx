@@ -11,6 +11,13 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
    * lines, like the footer's two-line address.
    */
   lines?: boolean;
+  /**
+   * Play the roll once as the link scrolls into view, on devices with no
+   * hover to trigger it — the phone footer, where the roll is the only
+   * motion those lines have. Hover devices ignore this and keep the
+   * pointer-driven roll.
+   */
+  autoplayOnScroll?: boolean;
 };
 
 /**
@@ -38,14 +45,23 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
  * GSAP loads on demand, and not at all for visitors who prefer reduced motion
  * or whose device has no hover to speak of.
  */
-export function RollLink({ children, className = "", lines = false, ...rest }: Props) {
+export function RollLink({
+  children,
+  className = "",
+  lines = false,
+  autoplayOnScroll = false,
+  ...rest
+}: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(hover: hover)").matches) return;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    // Without hover there is nothing to drive the roll, so the link is left
+    // alone unless the caller asked for the scroll-triggered play.
+    if (!canHover && !autoplayOnScroll) return;
 
     let cleanup: (() => void) | undefined;
     let cancelled = false;
@@ -68,6 +84,28 @@ export function RollLink({ children, className = "", lines = false, ...rest }: P
       tl.to(top, { yPercent: -100, duration: 0.4, ease: "power1.inOut", stagger: 0.02 }, 0);
       tl.to(bottom, { yPercent: 0, duration: 0.4, ease: "power1.inOut", stagger: 0.02 }, 0);
 
+      if (!canHover) {
+        // Touch: play the roll once, when the link reaches the viewport.
+        // It ends on the duplicate copy, which reads identically — the roll
+        // is the motion, not a change of label.
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              tl.play();
+              io.disconnect();
+            }
+          },
+          { rootMargin: "0px 0px -15% 0px", threshold: 0 },
+        );
+        io.observe(el);
+        cleanup = () => {
+          io.disconnect();
+          tl.kill();
+          gsap.set([...top, ...bottom], { clearProps: "transform" });
+        };
+        return;
+      }
+
       const onEnter = () => tl.play();
       const onLeave = () => tl.reverse();
       el.addEventListener("pointerenter", onEnter);
@@ -85,7 +123,7 @@ export function RollLink({ children, className = "", lines = false, ...rest }: P
       cancelled = true;
       cleanup?.();
     };
-  }, []);
+  }, [autoplayOnScroll]);
 
   const segments = children.split("\n");
   const chars = (text: string) =>

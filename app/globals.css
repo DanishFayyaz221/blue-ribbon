@@ -489,8 +489,15 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
   from { opacity: 0; transform: translate3d(0, 28px, 0); }
   to   { opacity: 1; transform: none; }
 }
+/* `backwards`, not `both`: with `both` the wrapper keeps the final keyframe
+   applied for good, and a held `transform` — even `none` — makes the element
+   the containing block for every `position: fixed` descendant. The nav
+   drawer, opened after a scroll, was then laid out and clipped inside the
+   page box instead of the viewport, which is why it came up empty. Keeping
+   only the backwards fill leaves the start state applied before the
+   animation runs and drops the transform once it ends. */
 .page-enter {
-  animation: br-page-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: br-page-enter 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .animate-marquee {
@@ -518,7 +525,11 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
 }
 @media (max-width: 639px) {
   .tilt-slider {
-    --tilt: 4deg;
+    /* The phone's lean was halved to 4°, which on a narrow track barely
+       separated one card from the next — the row read as a flat strip. The
+       desktop angle reads as the staircase the comp draws; the slider's own
+       vertical padding already leaves room for the rise and fall. */
+    --tilt: 8deg;
     --slide-w: var(--slide-w-mobile, 78vw);
   }
 }
@@ -534,9 +545,14 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
   cursor: grabbing;
   touch-action: none;
 }
+/* `stretch` gives every slide the height of the tallest, so no card stands
+   taller than its neighbours (the card inside fills it — see
+   .tilt-slider__item > *). The lean then comes from the rotation alone:
+   equal cards, each turned about its own centre along the track's opposite
+   tilt, which is what steps one card above the next. */
 .tilt-slider__track {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: var(--slide-gap, 24px);
   will-change: transform;
   rotate: calc(var(--tilt) * -1);
@@ -546,6 +562,10 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
   width: var(--slide-w);
   min-width: var(--slide-w);
   rotate: var(--tilt);
+  display: flex;
+}
+.tilt-slider__item > * {
+  width: 100%;
 }
 .tilt-slider__item img {
   pointer-events: none;

@@ -94,26 +94,31 @@ function MobileFooter() {
           <MobileLinkColumn title="Insights" links={mobileInsightsLinks} />
         </div>
 
-        <div className="mt-[36px] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
-          <a
+        {/* The same character roll as the desktop footer and the Contact
+            page's "Visit Our Office" links. A phone has no hover to drive
+            it, so `autoplayOnScroll` plays it once as each link reaches the
+            viewport. */}
+        <div className="mt-[36px] flex flex-col items-start gap-[4px] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
+          <RollLink
             href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:underline"
+            lines
+            autoplayOnScroll
+            className="roll-link-white"
           >
-            <p>11/76-80 Station Street,</p>
-            <p>Wentworthville, NSW 2145</p>
-          </a>
-          <p className="mt-[14px]">
-            <a href="mailto:sales@blueribbonre.com.au" className="hover:underline">
-              sales@blueribbonre.com.au
-            </a>
-          </p>
-          <p>
-            <a href="tel:1300579093" className="hover:underline">
-              1300 579 093
-            </a>
-          </p>
+            {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
+          </RollLink>
+          <RollLink
+            href="mailto:sales@blueribbonre.com.au"
+            autoplayOnScroll
+            className="roll-link-white mt-[14px]"
+          >
+            sales@blueribbonre.com.au
+          </RollLink>
+          <RollLink href="tel:1300579093" autoplayOnScroll className="roll-link-white">
+            1300 579 093
+          </RollLink>
         </div>
 
         <div className="mt-[32px] flex items-center justify-between gap-[16px]">
