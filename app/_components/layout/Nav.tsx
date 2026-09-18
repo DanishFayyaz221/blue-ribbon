@@ -13,6 +13,12 @@ import { ArrowInline } from "../ui/ArrowInline";
  * swaps the page in under a half-closed menu.
  */
 const DRAWER_CLOSE_MS = 480;
+/** The phone's side drawer slides out in 400ms (`animate-drawer-out`), not
+ *  the 480ms the desktop sheet's wipe takes — the sheet's animation is inside
+ *  a `min-width: 768px` block and never runs on a phone. Waiting the desktop
+ *  figure there held the navigation back for 80ms after the drawer had
+ *  already gone. */
+const PHONE_DRAWER_CLOSE_MS = 400;
 
 const buyLinks = [
   { label: "Buy", href: "/buy" },
@@ -31,6 +37,11 @@ const aboutLinks = [
   { label: "Leadership", href: "/agents" },
   { label: "Contact", href: "/contact" },
 ];
+
+/** Every route the drawer can reach, deduped — warmed when it opens. */
+const MENU_ROUTES = Array.from(
+  new Set([...buyLinks, ...ownLinks, ...aboutLinks].map((l) => l.href)),
+);
 
 export function Nav() {
   const pathname = usePathname();
@@ -64,10 +75,34 @@ export function Nav() {
       return;
     }
     setClosing(true);
+    // Warm the route while the exit animation plays, instead of leaving the
+    // network idle for its whole length and only then asking for the page.
+    // Most of these routes are server-rendered, so that was dead time bolted
+    // onto a fetch that had not started. `push` still waits for the exit, so
+    // the drawer is not cut off mid-wipe — but by then the payload is usually
+    // already in Next's cache and the page lands immediately.
+    router.prefetch(href);
     window.setTimeout(() => {
       router.push(href);
-    }, DRAWER_CLOSE_MS);
+    }, exitMs());
   };
+
+  /** How long this viewport's drawer actually takes to leave. Read per call,
+   *  not at mount, so rotating or resizing cannot leave it on the wrong one. */
+  const exitMs = () =>
+    window.matchMedia("(min-width: 768px)").matches
+      ? DRAWER_CLOSE_MS
+      : PHONE_DRAWER_CLOSE_MS;
+
+  // Warm every route in the drawer as soon as it opens. The visitor spends a
+  // second or two reading the menu before choosing, and on a phone that is
+  // otherwise idle network time; by the time they tap, the payload is usually
+  // already cached and the exit animation is all that is left to wait for.
+  // Six routes, fetched once per opening — App Router dedupes repeats.
+  useEffect(() => {
+    if (!open) return;
+    for (const href of MENU_ROUTES) router.prefetch(href);
+  }, [open, router]);
 
   /** Play the exit animation, then unmount — for the close button, the
       backdrop, Escape and the logo when already on home. Unmounting straight
@@ -75,7 +110,7 @@ export function Nav() {
   const closeSmoothly = () => {
     if (!open || closing) return;
     setClosing(true);
-    window.setTimeout(() => setOpen(false), DRAWER_CLOSE_MS);
+    window.setTimeout(() => setOpen(false), exitMs());
   };
   // Escape's listener is registered once; the ref hands it the current
   // closure without re-registering on every render. Updated in an effect,

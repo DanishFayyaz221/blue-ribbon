@@ -63,8 +63,10 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
         </div>
 
         <article className="container-page">
-          {/* Wide banner at the proportions of the comp. */}
-          <div className="relative -mx-[var(--page-px)] aspect-square w-auto overflow-hidden sm:mx-0 sm:aspect-[755/320] sm:w-full sm:rounded-[clamp(10px,1vw,16px)]">
+          {/* Wide banner at the proportions of the comp, a little taller than
+              the original 755/320 — that strip cropped hard into photos which
+              are nearer square than wide. */}
+          <div className="relative -mx-[var(--page-px)] aspect-square w-auto overflow-hidden sm:mx-0 sm:aspect-[755/365] sm:w-full sm:rounded-[clamp(10px,1vw,16px)]">
             <Image
               src={article.heroImage}
               alt=""

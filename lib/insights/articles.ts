@@ -49,7 +49,7 @@ const drafts: Draft[] = [
     title: "Wentworthville Property Market Spring 2026 Update",
     shortTitle: "Spring 2026 Update",
     image: "/images/blog3.png",
-    heroImage: "/images/home.png",
+    heroImage: "/images/11.png",
     sideImage: "/images/blog2.png",
     subtitle:
       "Forget the median for a moment. What matters to anyone buying or selling in Wentworthville this spring is what a buyer will actually pay on Saturday.",
