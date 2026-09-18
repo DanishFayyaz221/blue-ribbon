@@ -34,7 +34,7 @@ export function GetInTouchCTA({
         src="/images/bg.png"
         alt=""
         fill
-        quality={90}
+        quality={60}
         sizes="(max-width: 639px) 1px, (min-width: 1280px) 1280px, 100vw"
         className="object-cover object-center"
       />

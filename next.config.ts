@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   images: {
-    qualities: [75, 90, 100],
+    // 60 is for the navy fabric backdrop (bg.png): a soft, near-flat texture
+    // where the extra bytes of 90 buy nothing visible, but the source file is
+    // 4.8MB and it appears on most pages.
+    qualities: [60, 75, 90, 100],
     remotePatterns: [
       {
         protocol: "https",

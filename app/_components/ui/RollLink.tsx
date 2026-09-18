@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, type AnchorHTMLAttributes } from "react";
+import { Fragment, useEffect, useRef, useState, type AnchorHTMLAttributes } from "react";
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
   /** Plain text. A "\n" starts a new mask that can wrap onto its own line. */
@@ -12,10 +12,10 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
    */
   lines?: boolean;
   /**
-   * Play the roll once as the link scrolls into view, on devices with no
-   * hover to trigger it — the phone footer, where the roll is the only
-   * motion those lines have. Hover devices ignore this and keep the
-   * pointer-driven roll.
+   * Play the roll once as the link scrolls into view, wherever there is no
+   * hover to trigger it — a touch device, or the phone layout at any width,
+   * which is what a desktop browser's device emulator shows. On a wide
+   * hover-capable screen this is ignored and the pointer-driven roll stands.
    */
   autoplayOnScroll?: boolean;
 };
@@ -54,6 +54,19 @@ export function RollLink({
 }: Props) {
   const ref = useRef<HTMLAnchorElement>(null);
 
+  // Re-runs the setup below when the layout crosses the phone breakpoint, so
+  // toggling a browser's device emulator (or resizing a window) switches
+  // between the hover roll and the scroll roll instead of keeping whichever
+  // was wired at mount.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -84,10 +97,18 @@ export function RollLink({
       tl.to(top, { yPercent: -100, duration: 0.4, ease: "power1.inOut", stagger: 0.02 }, 0);
       tl.to(bottom, { yPercent: 0, duration: 0.4, ease: "power1.inOut", stagger: 0.02 }, 0);
 
-      if (!canHover) {
-        // Touch: play the roll once, when the link reaches the viewport.
-        // It ends on the duplicate copy, which reads identically — the roll
-        // is the motion, not a change of label.
+      // Whether the scroll-triggered play runs is a question about the
+      // VIEWPORT, not about the input device. It used to be gated on
+      // `!canHover`, which is false in a desktop browser's phone emulator —
+      // the mouse is still there — so the roll never played while testing a
+      // phone layout, and never on a laptop's narrow window either. Width is
+      // what the caller actually means by "on the phone layout".
+      const scrollPlay = autoplayOnScroll && (!canHover || narrow);
+
+      if (scrollPlay) {
+        // Play the roll once, when the link reaches the viewport. It ends on
+        // the duplicate copy, which reads identically — the roll is the
+        // motion, not a change of label.
         const io = new IntersectionObserver(
           (entries) => {
             if (entries.some((e) => e.isIntersecting)) {
@@ -106,6 +127,10 @@ export function RollLink({
         return;
       }
 
+      // No hover and no scroll play: nothing can drive the roll, so leave the
+      // link alone rather than wiring pointer events that will never fire.
+      if (!canHover) return;
+
       const onEnter = () => tl.play();
       const onLeave = () => tl.reverse();
       el.addEventListener("pointerenter", onEnter);
@@ -123,7 +148,7 @@ export function RollLink({
       cancelled = true;
       cleanup?.();
     };
-  }, [autoplayOnScroll]);
+  }, [autoplayOnScroll, narrow]);
 
   const segments = children.split("\n");
   const chars = (text: string) =>

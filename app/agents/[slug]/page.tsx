@@ -7,7 +7,7 @@ import { Button } from "../../_components/ui/Button";
 import { LineReveal } from "../../_components/ui/LineReveal";
 import { AgentAvatar } from "../../_components/agents/AgentAvatar";
 import { PropertyCard } from "../../_components/property/PropertyCard";
-import { GetInTouchCTA } from "../../_components/sections/GetInTouchCTA";
+import { TeamCTA } from "../../_components/sections/TeamCTA";
 import { getAgents, getListingsByAgent, type FeedAgent } from "@/lib/db/queries";
 import { profileFor } from "@/lib/agents/profiles";
 
@@ -142,9 +142,11 @@ export default async function AgentDetailPage({ params }: PageProps) {
           )}
         </section>
 
-        <div className="mt-[clamp(44px,4vw,76px)]">
-          <GetInTouchCTA />
-        </div>
+        {/* TeamCTA, not GetInTouchCTA: the latter shows this same block on
+            phones but swaps in the older navy "Want to get in touch with us?"
+            panel from sm up, so the page closed on two different sections
+            depending on the width. This is the one the other pages end on. */}
+        <TeamCTA />
       </main>
       <Footer />
     </div>

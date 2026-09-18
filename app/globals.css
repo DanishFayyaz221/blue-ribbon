@@ -525,6 +525,14 @@ html.reveal-armed .plaque:not(.plaque-in) .plaque-rule,
 .page-enter {
   animation: br-page-enter 0.5s ease-out both;
 }
+/* Phones open faster. The fade is there to take the edge off the swap, not
+   to be watched, and on a phone — where the page is often still settling —
+   half a second of it reads as the page being slow rather than as motion. */
+@media (max-width: 639px) {
+  .page-enter {
+    animation-duration: 0.28s;
+  }
+}
 
 /* Tab-panel swap (Our Services). The cards are keyed by index so switching
    tabs replaces each card's contents in place rather than remounting the row

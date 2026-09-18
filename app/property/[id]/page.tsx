@@ -281,7 +281,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
                 src="/images/bg.png"
                 alt=""
                 fill
-                quality={90}
+                quality={60}
                 sizes="100vw"
                 className="object-cover object-center"
               />

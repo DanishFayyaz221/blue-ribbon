@@ -44,16 +44,22 @@ export function VisitOurOffice() {
         </LineReveal>
         <address className="mt-[clamp(24px,3.6vw,52px)] flex flex-col items-center gap-[8px] font-display text-[clamp(13px,1.05vw,16px)] font-bold not-italic leading-[1.4] text-brand-bunker">
           {/* The address is two masks so it can wrap after the street on a
-              phone; on wider screens they sit on one line. */}
+              phone; on wider screens they sit on one line.
+
+              `autoplayOnScroll`, as in the footer: a phone has no hover to
+              drive the roll, so without it these lines are the only contact
+              details on the page with no motion at all. Hover devices ignore
+              the flag and keep the pointer-driven roll. */}
           <RollLink
             href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
             target="_blank"
             rel="noopener noreferrer"
+            autoplayOnScroll
           >
             {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
           </RollLink>
-          <RollLink href="mailto:sales@blueribbonre.com.au">sales@blueribbonre.com.au</RollLink>
-          <RollLink href="tel:1300579093">1300 579 093</RollLink>
+          <RollLink href="mailto:sales@blueribbonre.com.au" autoplayOnScroll>{"sales@blueribbonre.com.au"}</RollLink>
+          <RollLink href="tel:1300579093" autoplayOnScroll>{"1300 579 093"}</RollLink>
         </address>
       </div>
     </section>

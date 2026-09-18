@@ -330,12 +330,17 @@ export function ParramattaFeaturedCard({ featured }: Props) {
                   className="plaque-line flex flex-col items-center px-[7px] sm:px-[clamp(13px,1.5vw,25px)]"
                   style={detailDelay(0.2 + i * 0.09)}
                 >
+                  {/* The figures are set at two sizes, so their boxes differ
+                      in height and the labels beneath them landed at three
+                      different heights. Giving every figure the tallest
+                      one's line box, with the glyph centred in it, puts all
+                      three labels on one line without changing a type size. */}
                   <span
-                    className={
+                    className={`flex h-[19px] items-center sm:h-[clamp(38px,3.5vw,55px)] ${
                       stat.lead
                         ? "font-display text-[19px] sm:text-[clamp(38px,3.5vw,55px)] font-bold text-brand-bunker leading-none"
                         : "font-display text-[14px] sm:text-[clamp(25px,2.1vw,35px)] font-medium text-brand-bunker leading-none"
-                    }
+                    }`}
                   >
                     {stat.value}
                   </span>
