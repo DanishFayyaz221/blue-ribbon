@@ -3,7 +3,7 @@ import { PropertyCard } from "../property/PropertyCard";
 import Link from "next/link";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
-import { MobileCarousel } from "../ui/MobileCarousel";
+import { AutoplayCardCarousel } from "../property/AutoplayCardCarousel";
 import { getListings } from "@/lib/db/queries";
 
 export async function BestSuitedForYou() {
@@ -45,21 +45,10 @@ export async function BestSuitedForYou() {
           Explore Properties
         </LineReveal>
 
-        {/* Phone: one full-width card at a time under the round arrows. */}
-        <MobileCarousel
-          ariaLabel="Explore properties"
-          className="mt-[20px] sm:hidden"
-          items={items.map((p) => (
-            <PropertyCard
-              key={p.id}
-              {...p}
-              variant="tall"
-              addressFirst
-              aspect="aspect-[3/2]"
-              sizes="100vw"
-            />
-          ))}
-        />
+        {/* Phone: one full-width card at a time, playing itself — each card
+            cycles its first three photos, then the row steps to the next
+            listing. The round arrows and a swipe still work throughout. */}
+        <AutoplayCardCarousel properties={items} ariaLabel="Explore properties" />
 
         {/* Three up only from lg. At md a third column would leave each card
             around 234px wide, and the 15/8 crop would collapse to a 125px

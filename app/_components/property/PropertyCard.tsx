@@ -48,6 +48,15 @@ type PropertyCardProps = PropertyCardData & {
    * ScrollTriggers for motion nobody is scrolling slowly enough to read.
    */
   parallax?: boolean;
+  /**
+   * Cycle the card's own photos on a timer and call `onAutoplayEnd` when the
+   * last of them has had its turn — see CardGallery. Used by the phone
+   * "Explore Properties" row, where the carousel steps on from there.
+   */
+  autoplayFrames?: number;
+  autoplayMs?: number;
+  onAutoplayEnd?: () => void;
+  autoplayActive?: boolean;
 };
 
 export function PropertyCard({
@@ -66,6 +75,10 @@ export function PropertyCard({
   dense = false,
   addressFirst = true,
   parallax = false,
+  autoplayFrames = 0,
+  autoplayMs,
+  onAutoplayEnd,
+  autoplayActive,
 }: PropertyCardProps) {
   const frames = gallery && gallery.length > 0 ? gallery : [image];
   const metaStats: { key: string; label: string; value: number; icon: React.ReactNode }[] = [];
@@ -138,6 +151,10 @@ export function PropertyCard({
           alt={address}
           sizes={sizes ?? defaultSizes}
           imageClassName={imageClassName}
+          autoplayFrames={autoplayFrames}
+          autoplayMs={autoplayMs}
+          onAutoplayEnd={onAutoplayEnd}
+          autoplayActive={autoplayActive}
         />
       )}
       {/* Mouse-only twin of the text link below. Hidden from assistive tech

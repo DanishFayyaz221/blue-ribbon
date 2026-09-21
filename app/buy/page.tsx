@@ -140,6 +140,11 @@ export default async function BuyPage({
                     addressFirst
                     aspect="aspect-[3/2]"
                     sizes="(max-width: 639px) 100vw, 1px"
+                    // No `autoplayActive`: this is a list, not a carousel, so
+                    // each card watches for itself and cycles only while it
+                    // is the one on screen.
+                    autoplayFrames={3}
+                    autoplayMs={2600}
                   />
                 ))}
               />

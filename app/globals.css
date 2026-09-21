@@ -96,9 +96,12 @@ body {
   }
 }
 
+/* The phone drawer comes in from the RIGHT, where the hamburger that opens
+   it sits — the panel travels back towards the control the thumb just used,
+   rather than across the screen from the opposite corner. */
 @keyframes br-drawer-in {
   from {
-    transform: translate3d(-100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
   to {
     transform: translate3d(0, 0, 0);
@@ -110,7 +113,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(-100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
 }
 
@@ -124,10 +127,12 @@ body {
   to   { opacity: 0; }
 }
 
+/* Items drift in from the same side the panel arrives from, so the stagger
+   reads as the drawer's own content settling rather than moving against it. */
 @keyframes br-drawer-item {
   from {
     opacity: 0;
-    transform: translate3d(-14px, 0, 0);
+    transform: translate3d(14px, 0, 0);
   }
   to {
     opacity: 1;
@@ -137,12 +142,12 @@ body {
 
 .animate-drawer-in {
   animation: br-drawer-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  box-shadow: 24px 0 60px -12px rgba(0, 31, 77, 0.28);
+  box-shadow: -24px 0 60px -12px rgba(0, 31, 77, 0.28);
 }
 
 .animate-drawer-out {
   animation: br-drawer-out 0.4s cubic-bezier(0.4, 0, 1, 1) both;
-  box-shadow: 24px 0 60px -12px rgba(0, 31, 77, 0.28);
+  box-shadow: -24px 0 60px -12px rgba(0, 31, 77, 0.28);
 }
 
 .animate-drawer-overlay {

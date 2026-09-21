@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
-import { MobileCarousel } from "../ui/MobileCarousel";
+import { AutoplayCardCarousel } from "./AutoplayCardCarousel";
 import { PropertyCard, type PropertyCardData } from "./PropertyCard";
 
 /**
@@ -46,22 +46,9 @@ export function MoreProperties({ properties }: { properties: PropertyCardData[] 
           </Link>
         </div>
 
-        {/* Phone: one full-width card at a time under the round arrows — the
-            same carousel as the home page's LatestProperties. */}
-        <MobileCarousel
-          ariaLabel="More properties"
-          className="mt-[20px] sm:hidden"
-          items={properties.map((p, i) => (
-            <PropertyCard
-              key={p.href ?? i}
-              {...p}
-              variant="tall"
-              addressFirst
-              aspect="aspect-[3/2]"
-              sizes="100vw"
-            />
-          ))}
-        />
+        {/* Phone: one full-width card at a time, playing itself — the same
+            carousel as the home page's LatestProperties. */}
+        <AutoplayCardCarousel properties={properties} ariaLabel="More properties" />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">

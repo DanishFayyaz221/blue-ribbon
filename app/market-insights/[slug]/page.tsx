@@ -200,7 +200,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
                       anchor="top"
                       className="absolute inset-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]"
                     >
-                      <Image src={a.image} alt="" fill sizes="100vw" className="object-cover" />
+                      <Image src={a.image} alt="" fill sizes="(max-width: 639px) 100vw, 1px" className="object-cover" />
                     </ParallaxFigure>
                   </div>
                   <p className="mt-[16px] font-display text-[16px] leading-[1.35] text-brand-navy">

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
-import { MobileCarousel } from "../ui/MobileCarousel";
+import { AutoplayCardCarousel } from "../property/AutoplayCardCarousel";
 import { PropertyCard } from "../property/PropertyCard";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -46,21 +46,10 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
           </Link>
         </div>
 
-        {/* Phone: one full-width card at a time under the round arrows. */}
-        <MobileCarousel
-          ariaLabel="More properties"
-          className="mt-[20px] sm:hidden"
-          items={properties.map((p) => (
-            <PropertyCard
-              key={p.id}
-              {...p}
-              variant="tall"
-              addressFirst
-              aspect="aspect-[3/2]"
-              sizes="100vw"
-            />
-          ))}
-        />
+        {/* Phone: one full-width card at a time, playing itself — each card
+            cycles its first few photos, then the row steps to the next
+            listing. The round arrows and a swipe still work throughout. */}
+        <AutoplayCardCarousel properties={properties} ariaLabel="More properties" />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">

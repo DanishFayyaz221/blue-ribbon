@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowInline } from "../ui/ArrowInline";
 import { LineReveal } from "../ui/LineReveal";
-import { MobileCarousel } from "../ui/MobileCarousel";
+import { AutoplayCardCarousel } from "./AutoplayCardCarousel";
 import { PropertyCard, type PropertyCardData } from "./PropertyCard";
 
 /**
@@ -103,22 +103,14 @@ export function YouMayAlsoLike({
           </Link>
         </div>
 
-        {/* Phone: one full-width card at a time under the round arrows, the
-            address leading as in the mobile comp. */}
-        <MobileCarousel
+        {/* Phone: one full-width card at a time, playing itself — each card
+            cycles its first few photos, then the row steps to the next
+            listing. The address leads, as in the mobile comp. */}
+        <AutoplayCardCarousel
+          properties={properties}
           ariaLabel={heading}
-          className="mt-[20px] sm:hidden"
           tone={phoneDark ? "dark" : "light"}
-          items={properties.map((p, i) => (
-            <PropertyCard
-              key={p.href ?? i}
-              {...p}
-              variant={phoneDark ? "compact" : "tall"}
-              addressFirst
-              aspect="aspect-[3/2]"
-              sizes="100vw"
-            />
-          ))}
+          variant={phoneDark ? "compact" : "tall"}
         />
 
         {/* Tablet / desktop: grid */}

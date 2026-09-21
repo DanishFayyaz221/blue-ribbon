@@ -32,6 +32,8 @@ export function ParramattaFeaturedCard({ featured }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  /** Pointer is over a gallery arrow: the pill fades out of its way. */
+  const [overArrow, setOverArrow] = useState(false);
 
   // The photo layer inside CardGallery. Written to directly from a frame loop
   // rather than through state: a re-render per pointer move would rebuild
@@ -235,6 +237,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       'button[aria-label="Previous photo"], button[aria-label="Next photo"]',
     );
     const pad = 8;
+    let overArrow = false;
     for (const arrow of arrows) {
       const r = arrow.getBoundingClientRect();
       if (
@@ -243,10 +246,16 @@ export function ParramattaFeaturedCard({ featured }: Props) {
         e.clientY >= r.top - pad &&
         e.clientY <= r.bottom + pad
       ) {
-        setPos(null);
-        return;
+        overArrow = true;
+        break;
       }
     }
+    // Flagged rather than clearing `pos`. Dropping the position parks the
+    // pill off-canvas, and since its transform is eased it would visibly fly
+    // out across the card and back for every pass over an arrow. Keeping the
+    // coordinates and only fading it out leaves it exactly where the cursor
+    // is when it returns.
+    setOverArrow(overArrow);
     const rect = card.getBoundingClientRect();
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
@@ -261,6 +270,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       onPointerLeave={() => {
         setHover(false);
         setPos(null);
+        setOverArrow(false);
         // Ease the photo back to flat.
         setTiltTarget(0, 0, 1);
       }}
@@ -288,6 +298,11 @@ export function ParramattaFeaturedCard({ featured }: Props) {
         sizes="100vw"
         priority
         mediaRef={mediaRef}
+        // Arrows on phones too. This is the one card big enough to carry
+        // them, and the cursor-tracking pill that leads into the gallery on
+        // desktop has no equivalent on touch — without these a phone cannot
+        // reach the photos at all.
+        arrowsOnPhone
       />
 
       {/* Top and bottom soft-white glow strips — matches the reference image
@@ -373,7 +388,8 @@ export function ParramattaFeaturedCard({ featured }: Props) {
 
       {/* Cursor-tracking "View Property" pill. Positioned absolutely at the
           pointer's coordinates (relative to the card), transformed to centre
-          on the cursor. On touch, or before the first move event, it hides. */}
+          on the cursor. On touch, or before the first move event, it hides.
+          It also steps aside over the gallery arrows — see `onMove`. */}
       <span
         aria-hidden
         className="pointer-events-none absolute top-0 left-0 z-30 transition-opacity duration-300 ease-out"
@@ -381,7 +397,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
           transform: pos
             ? `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) scale(${hover ? 1 : 0.85})`
             : "translate3d(-9999px, -9999px, 0)",
-          opacity: hover && pos ? 1 : 0,
+          opacity: hover && pos && !overArrow ? 1 : 0,
           transition:
             "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out",
           willChange: "transform, opacity",

@@ -30,6 +30,9 @@ const ownLinks = [
   { label: "Get your property estimate within 9 seconds", href: "/property-report-digital-appraisal" },
   { label: "Contact Your Agent", href: "/agents" },
   { label: "Visit Us", href: "/contact" },
+  // Grouped here rather than under About Us, matching the footer, where
+  // Market Insights sits alongside the property estimate under "Insights".
+  { label: "Market Insights", href: "/market-insights" },
 ];
 
 const aboutLinks = [
@@ -38,9 +41,21 @@ const aboutLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
+/** The phone drawer's single flat list, in the order it is shown. */
+const phoneLinks = [
+  { label: "Buy", href: "/buy" },
+  { label: "Sell", href: "/property-report-digital-appraisal" },
+  { label: "Rent", href: "/rent" },
+  { label: "Our Team", href: "/agents" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Market Insights", href: "/market-insights" },
+  { label: "Property Estimate", href: "/property-report-digital-appraisal" },
+];
+
 /** Every route the drawer can reach, deduped — warmed when it opens. */
 const MENU_ROUTES = Array.from(
-  new Set([...buyLinks, ...ownLinks, ...aboutLinks].map((l) => l.href)),
+  new Set([...buyLinks, ...ownLinks, ...aboutLinks, ...phoneLinks].map((l) => l.href)),
 );
 
 export function Nav() {
@@ -203,7 +218,11 @@ export function Nav() {
             if (e.target === e.currentTarget) closeSmoothly();
           }}
         >
-          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:h-auto md:max-w-none md:w-full md:overflow-visible md:shadow-none`}>
+          {/* `ml-auto`: the panel is the only child of a flex row, so pushing
+              its left margin out parks it against the right edge — the side
+              the hamburger is on, and the side it now slides in from. Reset
+              at md, where this same element becomes the full-width sheet. */}
+          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative ml-auto flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:ml-0 md:h-auto md:max-w-none md:w-full md:overflow-visible md:shadow-none`}>
           <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
             <button
               type="button"
@@ -250,15 +269,7 @@ export function Nav() {
           {/* Mobile drawer */}
           <div className="md:hidden container-page pt-[24px] pb-[36px] flex flex-1 flex-col">
             <ul className="flex flex-col gap-[20px]">
-              {[
-                { label: "Buy", href: "/buy" },
-                { label: "Sell", href: "/property-report-digital-appraisal" },
-                { label: "Rent", href: "/rent" },
-                { label: "Our Team", href: "/agents" },
-                { label: "About Us", href: "/about" },
-                { label: "Contact", href: "/contact" },
-                { label: "Property Estimate", href: "/property-report-digital-appraisal" },
-              ].map((link, i) => {
+              {phoneLinks.map((link, i) => {
                 const active = isActive(pathname, link.href);
                 // Full contrast on the current page too, matching the desktop
                 // pills — a faded entry read as disabled rather than as a

@@ -106,23 +106,36 @@ export function BridgeToHome() {
           </div>
         </div>
 
-        {/* Phone: one tile at a time, stepped by the round arrows or a swipe. */}
+        {/* Phone: one tile at a time, swiped, with dots for position. Dots
+            rather than the round arrows here — the tab row above already
+            gives this section a set of controls, and a second pair right
+            under the tile competed with it. */}
         <MobileCarousel
+          // Keyed by tab so each one opens on its first tile. Without it the
+          // carousel survives the switch and keeps its scroll position, so
+          // moving to Selling from the third Buying tile landed on Selling's
+          // third — a different service than the one the tab promises.
+          key={active}
           ariaLabel="Our services"
+          dots
           className="mt-[24px] sm:hidden"
           items={tiles.map((tile, i) => (
             // Index, deliberately — see tilesByTab.
             <Link key={i} href={tile.href} className="group block tab-swap">
-              {/* Keyed by tab to replay the animation, as on desktop. No
-                  stagger — the carousel shows one tile at a time, so every
-                  tile is position 0 as far as the viewer is concerned. */}
-              <div key={active} className="tab-swap-item">
+              {/* The carousel above is keyed by tab, so this mounts fresh on
+                  every switch and the animation replays with it. No stagger —
+                  the carousel shows one tile at a time, so every tile is
+                  position 0 as far as the viewer is concerned. */}
+              <div className="tab-swap-item">
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[16px]">
                   <Image
                     src={tile.src}
                     alt={tile.label}
                     fill
-                    sizes="100vw"
+                    // `1px` from sm up: this carousel is `sm:hidden`, so a
+                    // desktop visitor would otherwise fetch full-width copies
+                    // of tiles the grid below already renders at its own size.
+                    sizes="(max-width: 639px) 100vw, 1px"
                     className="object-cover"
                   />
                 </div>
