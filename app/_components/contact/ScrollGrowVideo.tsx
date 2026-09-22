@@ -9,6 +9,9 @@ type Props = {
   className?: string;
   /** Viewport heights of scrolling over which the video grows to full width. */
   grow?: number;
+  /** `grow` on phones, where a full viewport-height of scrolling for one
+   *  effect is a long way to drag a thumb. Falls back to `grow`. */
+  growPhone?: number;
   /** Seconds the growth takes to catch up with the scroll position.
    *  Tracking the wheel rigidly lands every notch as a visible step; a short
    *  lag runs the steps together into one continuous motion. The growth is
@@ -44,6 +47,7 @@ export function ScrollGrowVideo({
   src,
   className = "",
   grow = 1,
+  growPhone = 0.55,
   hold = 0,
   lag = 0.18,
   radius = 10,
@@ -98,13 +102,18 @@ export function ScrollGrowVideo({
       const vh = window.innerHeight;
       const w = box.offsetWidth;
       const h = box.offsetHeight;
+      // Phones get a shorter run. A full viewport-height of scrolling is a
+      // couple of thumb swipes for one effect, and the complaint was that the
+      // section took too much scrolling to get through. Read per layout, so
+      // rotating the phone picks up the right one.
+      const g = vw < 640 ? growPhone : grow;
       pinTop = Math.max(0, Math.round((vh - h) / 2));
       cell.style.top = `${pinTop}px`;
-      growPx = Math.max(1, vh * grow);
+      growPx = Math.max(1, vh * g);
       const overhang = Math.max(0, Math.round((fullVisibleH(vw, vh, w, h) - h) / 2));
       track.style.paddingBottom = `${overhang}px`;
       // border-box sizing: min-height includes that padding.
-      track.style.minHeight = `${Math.round(vh * (grow + hold) + h + overhang)}px`;
+      track.style.minHeight = `${Math.round(vh * (g + hold) + h + overhang)}px`;
     };
 
     const ease = (t: number) =>
@@ -186,7 +195,7 @@ export function ScrollGrowVideo({
       window.removeEventListener("resize", layout);
       video.pause();
     };
-  }, [grow, hold, lag, radius, maxHeight]);
+  }, [grow, growPhone, hold, lag, radius, maxHeight]);
 
   return (
     <div
@@ -199,8 +208,9 @@ export function ScrollGrowVideo({
       // the growth is 100vh, and the overhang is half the difference between
       // the capped full-width height (min(56.25vw, 86vh)) and the box. On the
       // phone the box is 42% of the content width (about 23vw tall), so the
-      // pin is 50vh minus half that and the overhang about 16vw.
-      className={`min-h-[calc(100vh+40vw)] sm:min-h-[calc(100vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
+      // pin is 50vh minus half that and the overhang about 16vw — and the
+      // growth there is 55vh, matching `growPhone`.
+      className={`min-h-[calc(55vh+40vw)] sm:min-h-[calc(100vh+clamp(56.25px,6.75vw,101.25px)+min(28.125vw,43vh))] ${className}`.trim()}
     >
       <div
         ref={cellRef}
@@ -209,7 +219,17 @@ export function ScrollGrowVideo({
         <div
           ref={boxRef}
           className="relative aspect-video w-full overflow-hidden rounded-[10px] bg-brand-navy-deep"
-          style={{ willChange: "transform", transformOrigin: "50% 50%" }}
+          style={{
+            // `clip-path` in will-change as well as transform: Safari repaints
+            // a clip change on the CPU, and that repaint tore against the
+            // playing video underneath — the flicker seen while scrolling
+            // this on an iPhone. Declaring both keeps the box on its own
+            // layer, so the repaint stays inside it. (The transform itself is
+            // written by the frame loop, so it cannot be seeded here.)
+            willChange: "transform, clip-path",
+            transformOrigin: "50% 50%",
+            backfaceVisibility: "hidden",
+          }}
         >
           {/* Still until full width — no autoplay attribute; the frame loop
               calls play()/pause(). preload="auto" so the browser decodes and
@@ -223,6 +243,12 @@ export function ScrollGrowVideo({
             playsInline
             preload="auto"
             aria-hidden
+            // Its own compositor layer. iOS composites video separately from
+            // the page, and a clipped, scaled ancestor changing every frame
+            // left the two out of step — the video showed through a frame
+            // behind its own box while scrolling. Pinning it to a layer that
+            // moves with the box keeps them together.
+            style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
           />
         </div>
       </div>
