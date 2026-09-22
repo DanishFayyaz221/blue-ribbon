@@ -23,6 +23,14 @@ export type AgentProfile = {
    */
   image?: string;
   bio?: string;
+  /**
+   * Position in the team listing, lowest first. Without it the team is
+   * ordered by how many listings each person is on, which moves with the
+   * feed — so whoever happened to be busiest that week led the page, and the
+   * Managing Director could sit third. Anyone with no rank follows those who
+   * have one, still ordered by listing count among themselves.
+   */
+  order?: number;
 };
 
 export const FALLBACK_PROFILE: AgentProfile = {
@@ -33,14 +41,17 @@ export const AGENT_PROFILES: Record<string, AgentProfile> = {
   "sales@blueribbonre.com.au": {
     role: "Managing Director",
     image: "/our-team/5.png",
+    order: 1,
   },
   "ritu@blueribbonre.com.au": {
     role: "Property Manager",
     image: "/our-team/8.png",
+    order: 2,
   },
   "neil@blueribbonre.com.au": {
     role: "Sales Executive / L.R.E.A.",
     image: "/our-team/7.png",
+    order: 3,
   },
 };
 

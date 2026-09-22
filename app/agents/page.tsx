@@ -29,11 +29,18 @@ export default async function AgentsPage() {
   // The card links to the agent's own page, not `mailto:`. The card shows a
   // listing count, and a visitor clicking that expects the listings — opening
   // a mail client instead was the one thing it could not have meant.
-  const team = feedAgents.map((agent) => ({
-    ...agent,
-    ...profileFor(agent.email),
-    href: `/agents/${agent.slug}`,
-  }));
+  const team = feedAgents
+    .map((agent) => ({
+      ...agent,
+      ...profileFor(agent.email),
+      href: `/agents/${agent.slug}`,
+    }))
+    // Seniority first, listing count second. The feed hands these back sorted
+    // by how many listings each person is on, which moves week to week — so a
+    // busy week could put the Managing Director third on the page that
+    // introduces the team. Anyone without a rank keeps the feed's order,
+    // after those who have one.
+    .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
 
   return (
     <div className="min-h-screen bg-white">

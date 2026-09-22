@@ -340,8 +340,14 @@ function RoundArrow({
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous" : "Next"}
+      // Opaque, not just an outlined ring. Where the row is pulled up over
+      // the slides (the team page overlays it on the card) a see-through
+      // button let the photo slide past inside it, which read as the control
+      // breaking up rather than as one moving behind the other.
       className={`flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full border transition active:scale-95 ${
-        tone === "dark" ? "border-white/80 text-white" : "border-brand-bunker/80 text-brand-bunker"
+        tone === "dark"
+          ? "border-white/80 bg-brand-navy text-white"
+          : "border-brand-bunker/80 bg-white text-brand-bunker"
       }`}
     >
       <svg
