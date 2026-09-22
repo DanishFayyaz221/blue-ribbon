@@ -18,10 +18,18 @@ const QUOTE =
 export function ContactIntro() {
   return (
     <>
-      {/* The hero keeps the photo's own 923x615 proportions and no height cap,
-          so the whole frame is always visible — a wider box would have to crop
-          the towers top and bottom to fill itself. */}
-      <section className="relative mt-[clamp(8px,1vw,16px)] aspect-[3/4] w-full overflow-hidden bg-brand-navy-deep sm:aspect-[923/615]">
+      {/* The hero keeps the photo's own 923x615 proportions, but capped: at
+          that ratio a wide monitor makes the box ~1280px tall, so the section
+          ran well past the fold and the marquee across its middle was off
+          screen entirely. `max-h` holds it to most of the viewport and
+          object-cover trims the towers top and bottom, which is the part of
+          the frame with least in it. Phones keep the uncapped 3:4 crop — the
+          ratio is already taller than it is wide there, so no cap applies.
+
+          Sits directly under the breadcrumb: the 16px it had on top, on top
+          of the breadcrumb's own bottom padding, read as a gap rather than as
+          the photo starting. */}
+      <section className="relative aspect-[3/4] w-full overflow-hidden bg-brand-navy-deep sm:aspect-[923/615] sm:max-h-[86svh]">
         <Image
           src="/contact/contact-1.png"
           alt="The office towers around Blue Ribbon Real Estate"

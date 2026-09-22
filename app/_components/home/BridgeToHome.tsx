@@ -12,54 +12,77 @@ type Tab = (typeof tabs)[number];
 type Tile = { label: string; href: string; src: string };
 
 /**
- * One set of tiles per tab. Slots are positional and mean the same thing
- * across tabs — 1 is the search entry point for that intent, 2 the people who
- * handle it, 3 the next step, 4 the brand story. Keeping them aligned is why
- * the grid below keys by index: switching tabs swaps each card's contents in
- * place rather than tearing down and rebuilding the row, so the scroll-reveal
- * state survives and the cards do not flash back to invisible.
+ * The four service artworks. Named here because the files themselves carry
+ * spaces (and one a typo) in their names — encoding those once, in one place,
+ * keeps the percent-escapes out of the tile table below and means a rename
+ * later is a single edit rather than three.
+ */
+const ADVANCED_SEARCH = "/images/advance.png";
+const MEET_OUR_AGENTS = "/images/meet%20our%20agent.png";
+const FIND_YOUR_DESIRE = "/images/find%20your%20desire.png";
+const BLUERIBBON_DIFFERENCE = "/images/the%20blueribbon%20differnec.png";
+
+/**
+ * One set of tiles per tab.
+ *
+ * The slots deliberately do NOT line up across tabs. They used to — search,
+ * then agents, then the next step, then the brand story, in that order every
+ * time — and switching tabs only changed the artwork under headings that
+ * stayed put, so the three tabs read as one set of cards with the pictures
+ * swapped. Each tab now leads with what matters most to that intent and
+ * carries the shared entries in a different position, so a switch visibly
+ * rearranges the row.
+ *
+ * Keying the grid by index is unrelated to that and still holds: switching
+ * tabs swaps each card's contents in place rather than tearing down and
+ * rebuilding the row, so the scroll-reveal state survives and the cards do
+ * not flash back to invisible.
  */
 const tilesByTab: Record<Tab, readonly Tile[]> = {
   Buying: [
-    { label: "Advanced Search", href: "/buy", src: "/images/latest-properties.png" },
-    { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
+    { label: "Advanced Search", href: "/buy", src: ADVANCED_SEARCH },
+    { label: "Meet Our Agents", href: "/agents", src: MEET_OUR_AGENTS },
     {
       label: "Find Your Desire",
       href: "/property-report-digital-appraisal",
-      src: "/images/find-an-office.png",
+      src: FIND_YOUR_DESIRE,
     },
     {
       label: "The BlueRibbon Difference",
       href: "/agents",
-      src: "/images/the-mcgrath-difference.png",
+      src: BLUERIBBON_DIFFERENCE,
     },
   ],
+  // Appraisal leads, the brand story sits second (a seller is deciding who to
+  // trust before who to meet), and the agents move to the end.
   Selling: [
     {
       label: "Free Property Appraisal",
       href: "/property-report-digital-appraisal",
       src: "/images/home.png",
     },
-    { label: "Meet Our Agents", href: "/agents", src: "/images/find-an-agent.png" },
-    { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
     {
       label: "The BlueRibbon Difference",
       href: "/agents",
-      src: "/images/the-mcgrath-difference.png",
+      src: BLUERIBBON_DIFFERENCE,
     },
+    { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
+    { label: "Meet Our Agents", href: "/agents", src: MEET_OUR_AGENTS },
   ],
+  // The property manager leads here — that is the relationship a renter or
+  // landlord is really after — with the search second and the appraisal last.
   Renting: [
+    { label: "Find a Property Manager", href: "/agents", src: MEET_OUR_AGENTS },
     { label: "Search Rentals", href: "/rent", src: "/images/latest-properties.png" },
-    { label: "Find a Property Manager", href: "/agents", src: "/images/find-an-agent.png" },
+    {
+      label: "The BlueRibbon Difference",
+      href: "/agents",
+      src: BLUERIBBON_DIFFERENCE,
+    },
     {
       label: "Rental Appraisal",
       href: "/rental-report-digital-appraisal",
       src: "/images/home.png",
-    },
-    {
-      label: "The BlueRibbon Difference",
-      href: "/agents",
-      src: "/images/the-mcgrath-difference.png",
     },
   ],
 };

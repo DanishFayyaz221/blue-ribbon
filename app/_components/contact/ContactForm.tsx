@@ -225,13 +225,20 @@ export function ContactForm({ variant = "card" }: { variant?: Variant }) {
       <button
         type="submit"
         disabled={status === "sending"}
+        // The same white wipe the Enquire and Share buttons use on a listing
+        // page: a `::before` panel rides up from the bottom while the label
+        // turns navy, rather than the old swap from navy to a slightly deeper
+        // navy, which was too small a change in lightness to read as a hover
+        // at all. The label needs `relative z-10` to stay above that panel.
         className={
           pill
-            ? "mt-[4px] h-[44px] w-full rounded-[22px] bg-brand-navy font-display text-[13px] font-semibold text-white transition hover:bg-brand-navy-deep disabled:opacity-50"
-            : "mt-[8px] flex h-[46px] w-full items-center justify-center rounded-[23px] bg-brand-navy font-display text-[15px] font-medium text-white transition hover:bg-brand-navy-deep disabled:opacity-50 sm:h-[60px] sm:max-w-[180px] sm:rounded-[14px]"
+            ? "group relative isolate mt-[4px] flex h-[44px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[22px] border border-brand-navy bg-brand-navy font-display text-[13px] font-semibold text-white transition-colors duration-300 hover:text-brand-navy before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-white before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 disabled:opacity-50"
+            : "group relative isolate mt-[8px] flex h-[46px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-[23px] border border-brand-navy bg-brand-navy font-display text-[15px] font-medium text-white transition-colors duration-300 hover:text-brand-navy before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-white before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:before:translate-y-0 disabled:opacity-50 sm:h-[60px] sm:max-w-[180px] sm:rounded-[14px]"
         }
       >
-        {status === "sending" ? "Sending..." : "Send Message"}
+        <span className="relative z-10">
+          {status === "sending" ? "Sending..." : "Send Message"}
+        </span>
       </button>
     </form>
   );

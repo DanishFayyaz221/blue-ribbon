@@ -17,7 +17,10 @@ export default function ContactPage() {
       <main>
         {/* One flow for every size: the mobile comp is this same sequence
             stacked — hero and quote, map, Visit Our Office, the form. */}
-        <div className="container-page pt-[16px] pb-[16px]">
+        {/* Tighter below than the other pages' breadcrumbs: the hero photo
+            follows immediately here, and a full 16px under the trail left it
+            floating clear of the page above it. */}
+        <div className="container-page pt-[16px] pb-[8px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} />
         </div>
 
