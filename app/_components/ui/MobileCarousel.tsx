@@ -340,8 +340,15 @@ function RoundArrow({
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous" : "Next"}
-      className={`flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full border transition active:scale-95 ${
-        tone === "dark" ? "border-white/80 text-white" : "border-brand-bunker/80 text-brand-bunker"
+      // Opaque, not an outlined ring. Where the row is pulled up over the
+      // slides — the team page overlays it on the card — a see-through button
+      // let the next card's photo and text track past inside it while the
+      // carousel moved, which read as the control breaking up.
+      // The ring keeps its tone; the fill is white either way, so the arrow
+      // stays dark-on-white and legible on both the light sections and the
+      // navy satin ones.
+      className={`flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full border bg-white text-brand-bunker transition active:scale-95 ${
+        tone === "dark" ? "border-white/80" : "border-brand-bunker/80"
       }`}
     >
       <svg
