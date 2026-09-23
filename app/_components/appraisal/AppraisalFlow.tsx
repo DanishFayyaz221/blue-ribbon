@@ -187,9 +187,9 @@ export function AppraisalFlow({
                 {/* The search group is pushed to the bottom by `mt-auto`
                     below, so this bottom padding is what holds it clear of
                     the banner's edge — raising it lifts the group. */}
-                <div className="absolute inset-0 flex flex-col pt-[clamp(76px,8.5vw,164px)] pb-[clamp(150px,16vw,260px)]">
+                <div className="absolute inset-0 flex flex-col pt-[clamp(76px,8.5vw,164px)] pb-[clamp(190px,20vw,330px)]">
                   <div className="container-page w-full">
-                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.4rem,2.5vw,2.95rem)] leading-[1.1] tracking-[-0.01em]">
+                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.4rem,2.9vw,3.45rem)] leading-[1.1] tracking-[-0.01em]">
                       Get Your Property Estimate in just{" "}
                       <span className="text-brand-sky">9 Seconds!</span>
                     </h1>
