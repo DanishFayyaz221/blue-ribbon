@@ -210,7 +210,16 @@ function DesktopFooter() {
             <FooterDealButtons links={buyLinks} />
           </div>
 
-          <LinkColumn title="About Us" links={aboutLinks} className="col-start-3" />
+          {/* The two link columns sit closer to each other than to anything
+              else in the row. `gap-x` is a property of the whole grid, so it
+              cannot be narrowed for one pair; pulling this column's right
+              edge in by the difference does it locally and leaves the gaps
+              either side of the pair alone. */}
+          <LinkColumn
+            title="About Us"
+            links={aboutLinks}
+            className="col-start-3 -mr-[clamp(6px,0.95vw,16px)]"
+          />
           <LinkColumn title="Insights" links={insightsLinks} className="col-start-4" />
 
           <div className="col-start-7 flex flex-col gap-[20px] justify-self-end">
@@ -256,13 +265,20 @@ function DesktopFooter() {
               />
             </Link>
           </div>
-        </div>
 
-        {/* Address row: aligned under About Us / Insights columns */}
-        <div className="mt-[clamp(44px,4.5vw,72px)] grid gap-x-[clamp(18px,2.15vw,36px)] grid-cols-[auto_1fr_auto_auto_auto_1fr_auto]">
+          {/* Address row. In the SAME grid as the columns above, not a second
+              one below it: two grids size their `auto` tracks from their own
+              content, so column 3 was as wide as "About Us" in one and as
+              wide as the street address in the other, and the two
+              `col-start-3` cells landed at different x. Sharing the grid is
+              what actually aligns them; `row-start-2` puts these cells on
+              their own line and the top margin restores the gap the separate
+              block used to provide. */}
           {/* The same roll-on-hover links as the contact page's Visit Our
               Office block, with the hairline in white for the navy ground. */}
-          <div className="col-start-3 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
+          {/* Same negative right margin as the About Us column above, so the
+              email/phone cell starts where Insights does. */}
+          <div className="col-start-3 row-start-2 -mr-[clamp(6px,0.95vw,16px)] mt-[clamp(44px,4.5vw,72px)] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <RollLink
               href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
               target="_blank"
@@ -273,7 +289,7 @@ function DesktopFooter() {
               {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
             </RollLink>
           </div>
-          <div className="col-start-4 col-span-2 font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
+          <div className="col-start-4 col-span-2 row-start-2 mt-[clamp(44px,4.5vw,72px)] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <p className="whitespace-nowrap">
               <RollLink href="mailto:sales@blueribbonre.com.au" className="roll-link-white">
                 sales@blueribbonre.com.au

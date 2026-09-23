@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { connection } from "next/server";
 import { ArrowInline } from "../ui/ArrowInline";
@@ -20,25 +21,38 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
   if (properties.length === 0) return null;
 
   return (
-    <section className="w-full bg-white py-[clamp(28px,3.2vw,60px)]">
-      <div className="container-page">
+    // Navy satin band, as on the listing pages' "Explore Properties" strip:
+    // the photo is full-bleed and only the content sits in the page
+    // container, over the same #001F4D wash the other satin sections use.
+    <section className="relative w-full overflow-hidden py-[clamp(40px,4vw,80px)]">
+      <Image
+        src="/images/bg.png"
+        alt=""
+        fill
+        quality={60}
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
+
+      <div className="container-page relative z-10">
         <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
           {/* Phone: the heading breaks after "More", as in the mobile comp. */}
           <LineReveal
             as="h2"
-            className="sm:hidden font-display font-bold text-brand-bunker text-[26px] leading-[1.1]"
+            className="sm:hidden font-display font-bold text-white text-[26px] leading-[1.1]"
           >
             {"More\nProperties"}
           </LineReveal>
           <LineReveal
             as="h2"
-            className="hidden sm:block font-display font-bold text-brand-bunker text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
+            className="hidden sm:block font-display font-bold text-white text-[clamp(1.05rem,1.8vw,2rem)] leading-[1.1]"
           >
             More Properties
           </LineReveal>
           <Link
             href="/buy"
-            className="group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-brand-bunker sm:underline sm:underline-offset-4 hover:text-brand-navy"
+            className="group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] text-white/85 sm:underline sm:underline-offset-4 hover:text-white"
           >
             <span className="sm:hidden">Explore more</span>
             <span className="hidden sm:inline">Explore more Properties</span>
@@ -49,7 +63,12 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
         {/* Phone: one full-width card at a time, playing itself — each card
             cycles its first few photos, then the row steps to the next
             listing. The round arrows and a swipe still work throughout. */}
-        <AutoplayCardCarousel properties={properties} ariaLabel="More properties" />
+        <AutoplayCardCarousel
+          properties={properties}
+          ariaLabel="More properties"
+          tone="dark"
+          variant="compact"
+        />
 
         {/* Tablet / desktop: grid */}
         <div className="focus-peers hidden sm:grid mt-[clamp(24px,2.7vw,52px)] grid-cols-2 md:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
@@ -64,7 +83,7 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
                   listing pages stay in step. */}
               <PropertyCard
                 {...p}
-                variant="tall"
+                variant="compact"
                 addressFirst
                 // Grid only, as in Explore Properties above: the same parallax
                 // layer, so the hover blur of both grids runs on the same

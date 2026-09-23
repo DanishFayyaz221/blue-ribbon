@@ -91,7 +91,13 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[clamp(20px,2.5vw,48px)] hidden sm:flex justify-center">
+        {/* Pinned just under the search bar, not at the foot of the photo.
+            The bar's own bottom edge sits at `max(25%, 132px)`; this tracks
+            it from below, so the pair stays together at every height instead
+            of drifting apart as the banner grows. It used to sit at the
+            photo's lower edge, which on a tall hero left most of a screen
+            between the two and made them read as unrelated. */}
+        <div className="container-page absolute inset-x-0 bottom-[64px] sm:bottom-[calc(max(25%,132px)-112px)] hidden sm:flex justify-center">
           <Link
             href="/property-report-digital-appraisal"
             className="animate-fade-up [animation-delay:340ms] flex h-[44px] sm:h-[52px] w-full max-w-[480px] items-center justify-center rounded-[16px] sm:rounded-[20px] bg-white/30 px-4 text-center font-display text-[12px] sm:text-[14px] lg:text-[16px] font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/40 hover:scale-[1.02]"
