@@ -94,9 +94,17 @@ export function MeetHappyClients() {
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
           Testimonials
         </span>
+        {/* One line from sm up: the 720px cap broke it after "our", and the
+            two-line version left the second line half empty. The cap is
+            lifted and the type shrunk a step so the whole sentence fits
+            across the measure at every desktop width. `whitespace-nowrap`
+            holds it there rather than leaving it to chance.
+
+            Phones keep the wrap — the sentence is far too long for a phone
+            on one line — so the cap and the larger size stay below sm. */}
         <LineReveal
           as="h2"
-          className="mt-[clamp(18px,1.8vw,32px)] max-w-[720px] font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.4vw,2.5rem)] leading-[1.15]"
+          className="mt-[clamp(18px,1.8vw,32px)] max-w-[720px] font-display font-bold text-brand-bunker text-[clamp(1.4rem,2.4vw,2.5rem)] leading-[1.15] sm:max-w-none sm:whitespace-nowrap sm:text-[clamp(1.25rem,2.05vw,2.2rem)]"
         >
           Don’t take Our word, Ask our respectful Clients.
         </LineReveal>

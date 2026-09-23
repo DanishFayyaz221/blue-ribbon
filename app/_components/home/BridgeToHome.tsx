@@ -19,7 +19,9 @@ type Tile = { label: string; href: string; src: string };
  */
 const ADVANCED_SEARCH = "/images/advance.png";
 const MEET_OUR_AGENTS = "/images/meet%20our%20agent.png";
-const FIND_YOUR_DESIRE = "/images/find%20your%20desire.png";
+// Still the "find your desire" file — the tile it belongs to was renamed to
+// Our Latest Insights, the artwork was not.
+const LATEST_INSIGHTS = "/images/find%20your%20desire.png";
 const BLUERIBBON_DIFFERENCE = "/images/the%20blueribbon%20differnec.png";
 
 /**
@@ -43,13 +45,13 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     { label: "Advanced Search", href: "/buy", src: ADVANCED_SEARCH },
     { label: "Meet Our Agents", href: "/agents", src: MEET_OUR_AGENTS },
     {
-      label: "Find Your Desire",
-      href: "/property-report-digital-appraisal",
-      src: FIND_YOUR_DESIRE,
+      label: "Our Latest Insights",
+      href: "/market-insights",
+      src: LATEST_INSIGHTS,
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/agents",
+      href: "/about",
       src: BLUERIBBON_DIFFERENCE,
     },
   ],
@@ -63,7 +65,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/agents",
+      href: "/about",
       src: BLUERIBBON_DIFFERENCE,
     },
     { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
@@ -76,7 +78,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     { label: "Search Rentals", href: "/rent", src: "/images/latest-properties.png" },
     {
       label: "The BlueRibbon Difference",
-      href: "/agents",
+      href: "/about",
       src: BLUERIBBON_DIFFERENCE,
     },
     {

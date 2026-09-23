@@ -101,10 +101,18 @@ export function AppraisalFlow({
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/45" />
-                  <div className="relative flex min-h-[150vw] flex-col px-[24px] pt-[22vw] pb-[36px]">
-                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[27px] leading-[1.15] tracking-[-0.01em]">
-                      Get Your Property Estimate in just{" "}
-                      <span className="text-brand-sky">9 Seconds!</span>
+                  {/* The search card is pushed down by `mt-auto` below, so
+                      this bottom padding is what sets how far up it sits. */}
+                  <div className="relative flex min-h-[150vw] flex-col px-[24px] pt-[22vw] pb-[76px]">
+                    {/* Two lines, broken deliberately after "Estimate". At
+                        27px the sentence wrapped to three, orphaning
+                        "Seconds!" on a line of its own; a step down in size
+                        plus an explicit break gives two balanced lines with
+                        the sky-blue phrase whole on the second. */}
+                    <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(19px,5.6vw,26px)] leading-[1.2] tracking-[-0.01em]">
+                      Get Your Property Estimate
+                      <br />
+                      in just <span className="text-brand-sky">9 Seconds!</span>
                     </h1>
                     <LineReveal
                       as="p"
@@ -176,7 +184,10 @@ export function AppraisalFlow({
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-black/35" />
-                <div className="absolute inset-0 flex flex-col pt-[clamp(32px,4vw,76px)] pb-[clamp(110px,12vw,190px)]">
+                {/* The search group is pushed to the bottom by `mt-auto`
+                    below, so this bottom padding is what holds it clear of
+                    the banner's edge — raising it lifts the group. */}
+                <div className="absolute inset-0 flex flex-col pt-[clamp(76px,8.5vw,164px)] pb-[clamp(150px,16vw,260px)]">
                   <div className="container-page w-full">
                     <h1 className="text-center font-display font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] text-[clamp(1.4rem,2.5vw,2.95rem)] leading-[1.1] tracking-[-0.01em]">
                       Get Your Property Estimate in just{" "}
@@ -184,7 +195,13 @@ export function AppraisalFlow({
                     </h1>
                     <LineReveal
                       as="p"
-                      className="mx-auto mt-[clamp(10px,0.9vw,16px)] max-w-[760px] text-center font-display text-white text-[clamp(12px,0.85vw,15px)] font-medium leading-[1.5] tracking-[0.01em]"
+                      // Wider measure than the old 760px: that cap broke the
+                      // sentence after "Report", leaving a long first line
+                      // and an almost equally long second. At ~940px it
+                      // breaks after "market value" instead, so the second
+                      // line is clearly the shorter of the two and the block
+                      // reads as centred rather than as two stacked rows.
+                      className="mx-auto mt-[clamp(10px,0.9vw,16px)] max-w-[clamp(760px,52vw,940px)] text-center font-display text-white text-[clamp(12px,0.85vw,15px)] font-medium leading-[1.5] tracking-[0.01em]"
                       trigger={false}
                     >
                       Looking to buy or sell a property? Search the address below for a
