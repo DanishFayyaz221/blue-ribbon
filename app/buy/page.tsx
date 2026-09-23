@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
@@ -214,7 +215,26 @@ export default async function BuyPage({
           <ParramattaCTA />
         </div>
         {hasResults && latest.length > 0 && (
-          <YouMayAlsoLike properties={latest} exploreHref="/buy" phoneTone="dark" />
+          // Full-bleed satin band, as on the listing pages: the photo spans
+          // the width and only the strip's own content sits in the page
+          // container. `tone="dark"` renders the strip bare — no background
+          // or padding of its own — for exactly this, a caller that supplies
+          // the panel; it used to be `phoneTone="dark"`, which painted the
+          // satin on phones only and left the desktop on white.
+          <section className="relative w-full overflow-hidden py-[clamp(28px,3.2vw,60px)] sm:py-[clamp(40px,4vw,80px)]">
+            <Image
+              src="/images/bg.png"
+              alt=""
+              fill
+              quality={60}
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
+            <div className="container-page relative z-10">
+              <YouMayAlsoLike properties={latest} exploreHref="/buy" tone="dark" />
+            </div>
+          </section>
         )}
         <TeamCTA />
         </SearchTransitionProvider>

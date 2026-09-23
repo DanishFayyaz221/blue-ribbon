@@ -20,11 +20,11 @@ const SECTIONS: LegalSection[] = [
       "You may use the website for your own personal, non-commercial purposes, such as browsing properties, requesting an appraisal or getting in touch with our team. When using the website you agree that you will not:",
     ],
     bullets: [
-      "use it for any purpose that is unlawful or that breaches these terms;",
-      "copy, scrape, harvest or extract listings or other content using automated tools, or republish our content elsewhere without our written consent;",
-      "interfere with the security or operation of the website, or attempt to gain access to areas of it that are not intended for public use;",
-      "submit information that is false, misleading or that you are not entitled to share; or",
-      "use the website to send unsolicited communications to our staff, clients or other users.",
+      "Use it for any purpose that is unlawful or that breaches these terms;",
+      "Copy, scrape, harvest or extract listings or other content using automated tools, or republish our content elsewhere without our written consent;",
+      "Interfere with the security or operation of the website, or attempt to gain access to areas of it that are not intended for public use;",
+      "Submit information that is false, misleading or that you are not entitled to share; or",
+      "Use the website to send unsolicited communications to our staff, clients or other users.",
     ],
     after: [
       "We may suspend or restrict access to the website, or to particular features of it, where we reasonably believe these terms have been breached.",

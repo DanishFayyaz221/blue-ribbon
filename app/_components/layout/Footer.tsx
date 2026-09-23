@@ -123,7 +123,7 @@ function MobileFooter() {
 
         <div className="mt-[32px] flex items-center justify-between gap-[16px]">
           <div className="flex items-center gap-[10px]">
-            <SocialLink label="Facebook" href="#">
+            <SocialLink label="Facebook" href="https://www.facebook.com/blueribbonrealestateagents/">
               <FacebookIcon />
             </SocialLink>
             <SocialLink label="YouTube" href="https://youtube.com/@blueribbonrealestate">
@@ -224,7 +224,7 @@ function DesktopFooter() {
 
           <div className="col-start-7 flex flex-col gap-[20px] justify-self-end">
             <div className="flex items-center gap-[14px]">
-              <SocialLink label="Facebook" href="#">
+              <SocialLink label="Facebook" href="https://www.facebook.com/blueribbonrealestateagents/">
                 <FacebookIcon />
               </SocialLink>
               <SocialLink

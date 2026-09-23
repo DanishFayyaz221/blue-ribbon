@@ -3,7 +3,7 @@ import { RollLink } from "../ui/RollLink";
 
 /**
  * "Visit Our Office" band on the Contact page, directly above the enquiry
- * form: a centred Testimonials pill, heading, two paragraphs, then the
+ * form: a centred "Our Office" pill, heading, two paragraphs, then the
  * office's address, email and phone as bold text-roll links: on hover the
  * characters roll up and a hairline draws in beneath, after the reference
  * site's footer contact links (see RollLink). Same pill, heading and
@@ -14,8 +14,12 @@ export function VisitOurOffice() {
   return (
     <section className="w-full bg-white pt-[clamp(44px,6vw,90px)]">
       <div className="container-page flex flex-col items-center text-center">
+        {/* Names this band, not another one. The comp had "Testimonials"
+            here, but there are no testimonials in this section — it is the
+            office address, email and phone — so the pill read as a label
+            left over from somewhere else. */}
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-          Testimonials
+          Our Office
         </span>
         <LineReveal
           as="h2"

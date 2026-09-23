@@ -73,13 +73,20 @@ export function YouMayAlsoLike({
             : "w-full bg-white py-[clamp(28px,3.2vw,60px)]"
       }
     >
+      {/* `pointer-events-none`: this backdrop covers the whole band, so
+          without it it swallowed the taps meant for the "Explore more" link
+          and the cards underneath — the link looked focused but never
+          navigated. It is decorative, so it should never take a pointer. */}
       {phoneSatin && (
-        <div className="absolute inset-0 sm:hidden" aria-hidden>
+        <div className="pointer-events-none absolute inset-0 sm:hidden" aria-hidden>
           <Image src="/images/bg.png" alt="" fill sizes="100vw" className="object-cover object-center" />
           <div className="absolute inset-0 bg-[#001F4D1F]" />
         </div>
       )}
-      <div className={dark ? undefined : "container-page relative z-10"}>
+      {/* `relative z-10` in the dark case too. It used to be dropped there,
+          which left the content with no stacking context of its own and the
+          backdrop above free to paint over it. */}
+      <div className={dark ? "relative z-10" : "container-page relative z-10"}>
         <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
           <LineReveal
             as="h2"

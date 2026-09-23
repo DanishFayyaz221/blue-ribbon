@@ -205,12 +205,14 @@ export function FindPropertySheet({ onClose, initialWantTo = "Buy" }: Props) {
       {/* Same header as the nav drawer, so the sheet reads as part of the site chrome. */}
       <div className="container-page flex h-[56px] shrink-0 items-center justify-between">
         <Link href="/" className="block shrink-0" onClick={onClose}>
+          {/* Width-sized, as in the nav: the artwork is a wide strip, so a
+              fixed height would lay it out wider than a phone. */}
           <Image
-            src="/logo/LOGO.png"
+            src="/logo/update-final.png"
             alt="Blue Ribbon Real Estate"
-            width={1232}
-            height={821}
-            className="h-[104px] w-auto"
+            width={1199}
+            height={208}
+            className="h-auto w-[150px]"
           />
         </Link>
         <button

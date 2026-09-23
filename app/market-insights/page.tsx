@@ -35,23 +35,22 @@ export default async function MarketInsightsPage() {
     <div className="min-h-screen bg-white">
       <Nav />
       <main>
-        {/* The mobile comp names the page by its heading in the trail. */}
+        {/* "Market Insights" at every width — the route's own name, and what
+            the nav and footer call it. The mobile comp named the page by its
+            heading instead, so the phone trail read "Our Latest Insights" for
+            a page every other link calls something else. */}
         <div className="container-page pt-[16px] pb-[16px]">
-          <div className="sm:hidden">
-            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Our Latest Insights" }]} />
-          </div>
-          <div className="hidden sm:block">
-            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market Insights" }]} />
-          </div>
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market Insights" }]} />
         </div>
 
         <section className="w-full bg-white pt-[clamp(28px,3.5vw,60px)]">
           <div className="container-page flex flex-col items-center text-center">
-            {/* The mobile comp labels the pill "Our Team"; the desktop comp,
-                "Market Insights". */}
+            {/* "Market Insights" at every width. The mobile comp labelled
+                this pill "Our Team", which the phone layout followed — but
+                this is the insights page, and a pill naming a different
+                section reads as a mistake rather than as a label. */}
             <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-              <span className="sm:hidden">Our Team</span>
-              <span className="hidden sm:inline">Market Insights</span>
+              Market Insights
             </span>
             <LineReveal
               as="h1"

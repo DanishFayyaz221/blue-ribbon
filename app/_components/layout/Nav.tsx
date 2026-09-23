@@ -173,14 +173,19 @@ export function Nav() {
                 space from before the image decodes: with the old 260x64 it
                 assumed a 4.06 aspect and, against a fixed height and w-auto,
                 laid the logo out 423px wide — wider than a phone, so the page
-                could be scrolled sideways until the image landed. */}
+                could be scrolled sideways until the image landed.
+
+                Sized by WIDTH, not height. This artwork is 1199x208 — a wide
+                strip, where the previous file was nearly square — so a fixed
+                height would lay it out around 600px across and reintroduce
+                exactly the sideways scroll described above. */}
             <Image
-              src="/logo/LOGO.png"
+              src="/logo/update-final.png"
               alt="Blue Ribbon Real Estate"
-              width={1232}
-              height={821}
+              width={1199}
+              height={208}
               priority
-              className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
+              className="h-auto w-[150px] sm:w-[170px] lg:w-[200px]"
             />
           </Link>
           <button
@@ -237,12 +242,13 @@ export function Nav() {
               aria-label="Go to home"
               className="block shrink-0 cursor-pointer"
             >
+              {/* Width-sized, as in the bar above — see the note there. */}
               <Image
-                src="/logo/LOGO.png"
+                src="/logo/update-final.png"
                 alt="Blue Ribbon Real Estate"
-                width={1232}
-                height={821}
-                className="h-[104px] sm:h-[110px] lg:h-[132px] w-auto"
+                width={1199}
+                height={208}
+                className="h-auto w-[150px] sm:w-[170px] lg:w-[200px]"
               />
             </button>
             <button
@@ -300,7 +306,7 @@ export function Nav() {
               style={{ ["--i" as string]: 8 }}
             >
               <div className="flex items-center gap-[12px]">
-                <SocialLink label="Facebook" href="#">
+                <SocialLink label="Facebook" href="https://www.facebook.com/blueribbonrealestateagents/">
                   <FacebookIcon />
                 </SocialLink>
                 <SocialLink
@@ -370,7 +376,7 @@ export function Nav() {
                 })}
 
                 <div className="mt-[64px] flex items-center gap-[12px]">
-                  <SocialLink label="Facebook" href="#">
+                  <SocialLink label="Facebook" href="https://www.facebook.com/blueribbonrealestateagents/">
                     <FacebookIcon />
                   </SocialLink>
                   <SocialLink

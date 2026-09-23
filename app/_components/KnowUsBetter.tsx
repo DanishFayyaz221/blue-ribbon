@@ -13,11 +13,11 @@ export function KnowUsBetter() {
   return (
     <section className="w-full bg-white pt-[32px] sm:pt-[clamp(44px,6vw,90px)]">
       <div className="container-page flex flex-col items-center text-center">
-        {/* The mobile comp labels this band "Our Team"; on desktop it is
-            "Our Story", the page this is. Same pill either way. */}
+        {/* "Our Story" at every width — the page this band is on. The mobile
+            comp labelled it "Our Team", which the phone layout followed, but
+            a pill naming a different section reads as a mistake. */}
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-          <span className="sm:hidden">Our Team</span>
-          <span className="hidden sm:inline">Our Story</span>
+          Our Story
         </span>
         <LineReveal
           as="h2"
