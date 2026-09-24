@@ -12,6 +12,7 @@ const STATIC_ROUTES = [
   { path: "/", priority: 1 },
   { path: "/buy", priority: 0.9 },
   { path: "/rent", priority: 0.9 },
+  { path: "/sold", priority: 0.7 },
   { path: "/agents", priority: 0.6 },
   { path: "/about", priority: 0.5 },
   { path: "/contact", priority: 0.5 },
@@ -30,8 +31,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.priority,
   }));
 
-  // Only listings the site actually publishes. A sold or hidden listing 404s,
-  // so including it would feed Google known-bad URLs.
+  // Only listings the site actually publishes — sold ones included, since they
+  // keep their page. A hidden or withdrawn listing 404s, so including it would
+  // feed Google known-bad URLs.
   let dynamicEntries: MetadataRoute.Sitemap = [];
   try {
     const [slugs, rentSuburbs, buySuburbs] = await Promise.all([

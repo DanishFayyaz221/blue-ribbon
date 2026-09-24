@@ -97,6 +97,8 @@ export type ListingCard = {
   baths?: number;
   cars?: number;
   type?: string;
+  /** Draws the "SOLD" ribbon on the card photo. */
+  sold?: boolean;
 };
 
 export type ListingDetail = ListingCard & {
@@ -195,6 +197,7 @@ function toCard(doc: ListingDoc): ListingCard {
     baths: doc.features.bathrooms,
     cars: doc.features.totalParking || undefined,
     type: doc.propertyType,
+    sold: doc.status === "sold",
   };
 }
 
@@ -202,6 +205,16 @@ function toCard(doc: ListingDoc): ListingCard {
  *  Agentbox has not flagged as hidden or off-market. */
 function publicFilter(extra: Filter<ListingDoc> = {}): Filter<ListingDoc> {
   return { agentID: AGENT_ID, isPublic: true, ...extra };
+}
+
+/**
+ * Public stock still on the market. Sold listings stay public — the "Recently
+ * Sold" strip, the featured card and their own pages still show them, with the
+ * ribbon — but they must not surface in search results or the browsing
+ * sections, where an untagged sold home reads as available.
+ */
+function onMarketFilter(extra: Filter<ListingDoc> = {}): Filter<ListingDoc> {
+  return publicFilter({ status: { $ne: "sold" }, ...extra });
 }
 
 export const SORT_OPTIONS = {
@@ -229,6 +242,12 @@ export type ListingQuery = {
   sort?: SortKey;
   page?: number;
   perPage?: number;
+  /**
+   * Search sold stock instead of stock on the market — the /sold page. Price
+   * filters and sorts then run on the sale price, and "recent" means most
+   * recently sold.
+   */
+  sold?: boolean;
 };
 
 /** Raw query string values as Next hands them over. */
@@ -327,7 +346,7 @@ export function suburbSlug(name: string): string {
 export const getSuburbsWithCounts = cache(
   async (categories?: ListingCategory[]): Promise<{ name: string; slug: string; count: number }[]> => {
     const col = await listings();
-    const match = publicFilter();
+    const match = onMarketFilter();
     if (categories?.length) match.category = { $in: categories };
 
     const rows = await col
@@ -364,9 +383,14 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
     sort = "recent",
     page = 1,
     perPage = 12,
+    sold = false,
   } = query;
 
-  const filter = publicFilter();
+  const filter = sold ? publicFilter({ status: "sold" }) : onMarketFilter();
+  // A sold home's asking price is history; what it went for is the figure
+  // that means something, and it carries its own display flag.
+  const priceField = sold ? "soldDetails.price" : "price.value";
+  const priceDisplayField = sold ? "soldDetails.display" : "price.display";
 
   // Conditions that each need their own `$or`. A document can only carry one
   // `$or` key, and both the text search and the pet-friendly lookup want one,
@@ -412,13 +436,14 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
   }
 
   if (minPrice !== undefined || maxPrice !== undefined) {
-    filter["price.value"] = {
+    const fields = filter as Record<string, unknown>;
+    fields[priceField] = {
       ...(minPrice !== undefined ? { $gte: minPrice } : {}),
       ...(maxPrice !== undefined ? { $lte: maxPrice } : {}),
     };
     // A listing with a hidden price has no comparable number, so it cannot
     // honestly satisfy a price range.
-    filter["price.display"] = true;
+    fields[priceDisplayField] = true;
   }
 
   if (and.length) filter.$and = and;
@@ -430,10 +455,12 @@ export const getListings = cache(async (query: ListingQuery = {}): Promise<Listi
   // masquerading as the cheapest.
   const order: Record<string, 1 | -1> =
     sort === "price-asc"
-      ? { "price.value": 1, modTime: -1 }
+      ? { [priceField]: 1, modTime: -1 }
       : sort === "price-desc"
-        ? { "price.value": -1, modTime: -1 }
-        : { modTime: -1 };
+        ? { [priceField]: -1, modTime: -1 }
+        : sold
+          ? { "soldDetails.date": -1, modTime: -1 }
+          : { modTime: -1 };
 
   const [docs, total] = await Promise.all([
     col
@@ -563,7 +590,7 @@ export const getListingsWithFallback = cache(
 export const getLatestListings = cache(
   async (categories?: ListingCategory[], limit = 4, excludeIds: string[] = []): Promise<ListingCard[]> => {
     const col = await listings();
-    const filter = publicFilter();
+    const filter = onMarketFilter();
     if (categories?.length) filter.category = { $in: categories };
     if (excludeIds.length) (filter as Record<string, unknown>)["_id"] = { $nin: excludeIds };
 
@@ -571,6 +598,25 @@ export const getLatestListings = cache(
     return docs.map(toCard);
   },
 );
+
+/**
+ * Sold stock, most recent sale first — the home page's "Recently Sold" strip,
+ * and "More Sold Out Properties" under a sold listing, which passes its own id
+ * to leave itself out.
+ *
+ * Ordered on the sale date rather than modTime: Agentbox touches a listing for
+ * reasons unrelated to the sale, and a months-old sale should not jump the
+ * queue because someone re-uploaded a photo.
+ */
+export const getSoldListings = cache(async (limit = 6, excludeId?: string): Promise<ListingCard[]> => {
+  const col = await listings();
+  const docs = await col
+    .find(publicFilter({ status: "sold", ...(excludeId ? { _id: { $ne: excludeId } } : {}) }))
+    .sort({ "soldDetails.date": -1, modTime: -1 })
+    .limit(limit)
+    .toArray();
+  return docs.map(toCard);
+});
 
 /**
  * Fetch a single listing card by (partial) address match — case-insensitive.
@@ -646,7 +692,7 @@ export const getSimilarListings = cache(
   async (slug: string, suburb: string | undefined, category: ListingCategory, limit = 3) => {
     const col = await listings();
     const docs = await col
-      .find(publicFilter({ category, slug: { $ne: slug } }))
+      .find(onMarketFilter({ category, slug: { $ne: slug } }))
       .sort({ modTime: -1 })
       .limit(limit * 3)
       .toArray();
@@ -664,7 +710,7 @@ export const getSimilarListings = cache(
 /** Distinct suburbs with live stock, for filter dropdowns. */
 export const getSuburbs = cache(async (categories?: ListingCategory[]): Promise<string[]> => {
   const col = await listings();
-  const filter = publicFilter();
+  const filter = onMarketFilter();
   if (categories?.length) filter.category = { $in: categories };
 
   const values = await col.distinct("address.suburb", filter);

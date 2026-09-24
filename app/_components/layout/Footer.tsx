@@ -4,11 +4,12 @@ import { FooterDealButtons } from "./FooterDealButtons";
 import { RollLink } from "../ui/RollLink";
 import { RATE_MY_AGENT_URL } from "./links";
 
-/** Buy / Rent / Sell in the comp's order for the phone footer. */
+/** Buy / Rent / Sell in the comp's order for the phone footer, then Sold. */
 const mobileDealLinks = [
   { label: "Buy", href: "/buy" },
   { label: "Rent", href: "/rent" },
   { label: "Sell", href: "/property-report-digital-appraisal" },
+  { label: "Sold", href: "/sold" },
 ];
 
 const mobileAboutLinks = [
@@ -31,6 +32,7 @@ const buyLinks = [
   // and that query never filtered anything — the button simply landed on the
   // sales listings.
   { label: "Rent", href: "/rent" },
+  { label: "Sold", href: "/sold" },
 ];
 
 const aboutLinks = [
@@ -85,7 +87,7 @@ function MobileFooter() {
     <footer className="relative lg:hidden w-full overflow-hidden bg-brand-navy-deep text-white">
       <FooterBackdrop />
       <div className="relative z-10 container-page pt-[36px] pb-[20px]">
-        {/* Buy / Rent / Sell: three equal outlined pills across the width. */}
+        {/* Buy / Rent / Sell / Sold: equal outlined pills across the width. */}
         <div className="flex items-center gap-[12px]">
           {mobileDealLinks.map((link) => (
             <Link

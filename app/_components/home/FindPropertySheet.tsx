@@ -24,7 +24,7 @@ const AMENITY_CHIPS = [
   { key: "secureParking", label: "Secure parking" },
 ] as const;
 
-const WANT_TO = ["Buy", "Rent", "PG"] as const;
+const WANT_TO = ["Buy", "Rent", "PG", "Sold"] as const;
 export type WantTo = (typeof WANT_TO)[number];
 
 /** `beds` is a minimum on the listing pages, so "More" reads as four and up. */
@@ -105,7 +105,7 @@ export function FindPropertySheet({ onClose, initialWantTo = "Buy" }: Props) {
     };
   }, [onClose]);
 
-  const rent = wantTo !== "Buy";
+  const rent = wantTo === "Rent" || wantTo === "PG";
   const budget = rent ? RENT_BUDGET : SALE_BUDGET;
 
   // Address suggestions: suburbs matching what has been typed, the ones
@@ -156,7 +156,8 @@ export function FindPropertySheet({ onClose, initialWantTo = "Buy" }: Props) {
     if (beds) sp.set("beds", beds);
     for (const a of amenities) sp.append("feature", a);
     const qs = sp.toString();
-    router.push(`${rent ? "/rent" : "/buy"}${qs ? `?${qs}` : ""}`);
+    const path = wantTo === "Sold" ? "/sold" : rent ? "/rent" : "/buy";
+    router.push(`${path}${qs ? `?${qs}` : ""}`);
   };
 
   const heading = "font-display text-[14px] font-semibold text-brand-bunker";

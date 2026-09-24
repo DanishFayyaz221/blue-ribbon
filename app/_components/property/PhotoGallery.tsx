@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { HoverAction } from "../ui/HoverAction";
+import { SoldRibbon } from "./SoldRibbon";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -27,6 +28,8 @@ type Props = {
    */
   videoUrl?: string;
   floorplans?: GalleryFloorplan[];
+  /** Draws the "SOLD" ribbon on the lead photo. Not carried into the viewer. */
+  sold?: boolean;
 };
 
 /** One slide in the lightbox — a photo, a video, or a floor plan. */
@@ -42,6 +45,7 @@ export function PhotoGallery({
   fallback,
   videoUrl,
   floorplans = [],
+  sold = false,
 }: Props) {
   // Which slide the viewer is showing, or null when closed. Holding the index
   // rather than a boolean lets a click open the viewer on the photo clicked.
@@ -76,9 +80,9 @@ export function PhotoGallery({
   return (
     <>
       {variant === "hero" ? (
-        <HeroImage images={shown} onOpen={setOpenAt} />
+        <HeroImage images={shown} onOpen={setOpenAt} sold={sold} />
       ) : (
-        <Collage images={shown} total={images.length} onOpen={setOpenAt} />
+        <Collage images={shown} total={images.length} onOpen={setOpenAt} sold={sold} />
       )}
       {openAt !== null && (
         <Lightbox slides={slides} startAt={openAt} address={address} onClose={close} />
@@ -97,10 +101,12 @@ function Collage({
   images,
   total,
   onOpen,
+  sold,
 }: {
   images: GalleryImage[];
   total: number;
   onOpen: (index: number) => void;
+  sold: boolean;
 }) {
   // With one photo there is nothing to arrange, so it fills the frame alone.
   // From two up the mosaic adapts: the lead photo always takes the left
@@ -127,6 +133,7 @@ function Collage({
               />
             </div>
           </HoverAction>
+          {sold && <SoldRibbon corner="left" size="hero" />}
         </button>
         {total > 1 && <ShowAllButton total={total} onClick={() => onOpen(0)} />}
       </div>
@@ -135,7 +142,7 @@ function Collage({
 
   return (
     <div className="relative">
-      <div className="grid aspect-[2/1] max-h-[560px] w-full grid-cols-4 grid-rows-2 gap-[8px] overflow-hidden rounded-[clamp(8px,1vw,16px)]">
+      <div className="relative grid aspect-[2/1] max-h-[560px] w-full grid-cols-4 grid-rows-2 gap-[8px] overflow-hidden rounded-[clamp(8px,1vw,16px)]">
         <Tile
           image={images[0]}
           onClick={() => onOpen(0)}
@@ -152,6 +159,8 @@ function Collage({
             className={sideSpan(i, side.length)}
           />
         ))}
+        {/* Top-left of the frame is the lead photo's corner. */}
+        {sold && <SoldRibbon corner="left" size="hero" />}
       </div>
       <ShowAllButton total={total} onClick={() => onOpen(0)} />
     </div>
@@ -205,9 +214,11 @@ function Tile({
 function HeroImage({
   images,
   onOpen,
+  sold,
 }: {
   images: GalleryImage[];
   onOpen: (index: number) => void;
+  sold: boolean;
 }) {
   const [index, setIndex] = useState(0);
   const count = images.length;
@@ -233,6 +244,8 @@ function HeroImage({
           className="object-cover"
         />
       </button>
+      {/* Stays up as the photos page: it describes the listing, not a frame. */}
+      {sold && <SoldRibbon corner="left" />}
 
       {count > 1 && (
         <>

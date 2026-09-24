@@ -8,6 +8,7 @@ import { BestSuitedForYou } from "./_components/home/BestSuitedForYou";
 import { ParramattaCTA } from "./_components/home/ParramattaCTA";
 import { LatestProperties } from "./_components/home/LatestProperties";
 import { MeetHappyClients } from "./_components/home/MeetHappyClients";
+import { RecentlySold } from "./_components/home/RecentlySold";
 import { SellWithUs } from "./_components/home/SellWithUs";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
 import { SectionBoundary } from "./_components/SectionBoundary";
@@ -54,6 +55,11 @@ export default async function Home() {
         <SectionBoundary>
           <Suspense fallback={null}>
             <LatestProperties excludeIds={exploreIds} />
+          </Suspense>
+        </SectionBoundary>
+        <SectionBoundary>
+          <Suspense fallback={null}>
+            <RecentlySold />
           </Suspense>
         </SectionBoundary>
         <MeetHappyClients />

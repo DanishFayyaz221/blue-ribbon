@@ -25,6 +25,7 @@ const buyLinks = [
   { label: "Buy", href: "/buy" },
   { label: "Sell", href: "/property-report-digital-appraisal" },
   { label: "Rent", href: "/rent" },
+  { label: "Sold", href: "/sold" },
 ];
 
 const ownLinks = [
@@ -51,6 +52,7 @@ const phoneDealLinks = [
   { label: "Buy", href: "/buy" },
   { label: "Rent", href: "/rent" },
   { label: "Sell", href: "/property-report-digital-appraisal" },
+  { label: "Sold", href: "/sold" },
 ];
 
 /** Every route the drawer can reach, deduped — warmed when it opens. */

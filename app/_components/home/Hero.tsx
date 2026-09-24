@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FindPropertySheet } from "./FindPropertySheet";
 
-const dealTypes = ["Buy", "Sell", "Rent"] as const;
+const dealTypes = ["Buy", "Sell", "Rent", "Sold"] as const;
 type DealType = (typeof dealTypes)[number];
 
 /** Suggestions are streamed in separately; see SuburbOptions. */
@@ -13,11 +13,12 @@ const SUBURB_LIST_ID = "hero-suburbs";
 /**
  * Where each deal type sends the visitor. Buy and Rent hand off to the results
  * pages, which already own the filtering, so the hero never needs its own query
- * layer. Sell is not a listings search at all — it belongs to the appraisal
- * flow.
+ * layer. Sold searches past sales on /sold, which takes the same parameters.
+ * Sell is not a listings search at all — it belongs to the appraisal flow.
  */
 function actionFor(deal: DealType): string {
   if (deal === "Rent") return "/rent";
+  if (deal === "Sold") return "/sold";
   if (deal === "Sell") return "/property-report-digital-appraisal";
   return "/buy";
 }
@@ -537,11 +538,11 @@ function MobileSearch() {
     </form>
 
     {/* Mounted only while open, so it starts fresh each time; it follows the
-        pill's Buy/Rent choice (Sell is the appraisal flow, not a search). */}
+        pill's Buy/Rent/Sold choice (Sell is the appraisal flow, not a search). */}
     {sheetOpen && (
       <FindPropertySheet
         onClose={() => setSheetOpen(false)}
-        initialWantTo={deal === "Rent" ? "Rent" : "Buy"}
+        initialWantTo={deal === "Rent" ? "Rent" : deal === "Sold" ? "Sold" : "Buy"}
       />
     )}
     </>

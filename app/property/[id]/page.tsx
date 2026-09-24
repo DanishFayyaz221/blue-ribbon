@@ -18,6 +18,7 @@ import { ContactForm } from "../../_components/contact/ContactForm";
 import {
   getListingBySlug,
   getSimilarListings,
+  getSoldListings,
   RENTAL_CATEGORIES,
   type ListingDetail,
 } from "@/lib/db/queries";
@@ -47,16 +48,17 @@ export default async function PropertyViewPage({ params }: PageProps) {
   const { id } = await params;
   const listing = await getListingBySlug(id);
 
-  // A listing pulled from the site — sold, leased or hidden by the agency —
-  // must 404 rather than render, so it cannot be shared or indexed.
+  // A listing pulled from the site — withdrawn, deleted or hidden by the
+  // agency — must 404 rather than render, so it cannot be shared or indexed.
+  // Sold listings stay up, marked as sold out.
   if (!listing) notFound();
 
-  const similar = await getSimilarListings(
-    listing.slug,
-    listing.suburb,
-    listing.category,
-    6,
-  );
+  // Under a sold home the strip is other sold homes, never stock for sale:
+  // a visitor looking at a past sale is browsing the agency's track record.
+  const similar = listing.sold
+    ? await getSoldListings(6, listing.id)
+    : await getSimilarListings(listing.slug, listing.suburb, listing.category, 6);
+  const similarHeading = listing.sold ? "More Sold Out Properties" : undefined;
 
   const backHref = listing.isRental ? "/rent" : "/buy";
 
@@ -80,7 +82,11 @@ export default async function PropertyViewPage({ params }: PageProps) {
     cars: listing.cars,
     image: listing.image,
   };
-  const backLabel = listing.isRental ? "Rent" : "Buy";
+  // Sold homes belong to /sold rather than the Buy page, so the breadcrumb
+  // leads back there.
+  const crumb = listing.sold
+    ? { label: "Sold Out", href: "/sold" }
+    : { label: listing.isRental ? "Rent" : "Buy", href: backHref };
 
   const info: { label: string; value: string }[] = [];
   if (listing.landArea) info.push({ label: "Land size approx. (sqm)", value: String(listing.landArea) });
@@ -107,6 +113,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
           info={info}
           agents={enquiryAgents}
           similar={similar}
+          similarHeading={similarHeading}
           backHref={backHref}
         />
 
@@ -114,7 +121,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: backLabel, href: backHref },
+              crumb,
               { label: listing.address },
             ]}
           />
@@ -127,6 +134,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
             videoUrl={listing.videoUrl}
             address={listing.address}
             fallback={HERO_FALLBACK}
+            sold={listing.sold}
           />
         </div>
 
@@ -201,11 +209,14 @@ export default async function PropertyViewPage({ params }: PageProps) {
             </div>
 
             <div className="flex gap-[clamp(14px,1.3vw,20px)] mt-[clamp(48px,4.5vw,72px)]">
-              <EnquireTrigger
-                agents={enquiryAgents}
-                listing={enquiryListing}
-                className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
-              />
+              {/* Nothing left to enquire about on a sold home: Share alone. */}
+              {!listing.sold && (
+                <EnquireTrigger
+                  agents={enquiryAgents}
+                  listing={enquiryListing}
+                  className="flex-1 !h-[52px] !rounded-[16px] !text-[15px]"
+                />
+              )}
               <ShareTrigger
                 path={`/property/${listing.slug}`}
                 address={listing.address}
@@ -219,7 +230,9 @@ export default async function PropertyViewPage({ params }: PageProps) {
             <DetailRow
               label={listing.isRental ? "Rent" : "Price"}
               value={
-                hasPublishedPrice(listing.guide) ? (
+                listing.sold ? (
+                  <SoldOut />
+                ) : hasPublishedPrice(listing.guide) ? (
                   listing.guide
                 ) : (
                   <EnquireTrigger
@@ -294,7 +307,14 @@ export default async function PropertyViewPage({ params }: PageProps) {
                 <YouMayAlsoLike
                   properties={similar}
                   tone="dark"
-                  exploreHref={RENTAL_CATEGORIES.includes(listing.category) ? "/rent" : "/buy"}
+                  exploreHref={
+                    listing.sold
+                      ? "/sold"
+                      : RENTAL_CATEGORIES.includes(listing.category)
+                        ? "/rent"
+                        : "/buy"
+                  }
+                  heading={similarHeading}
                 />
               </div>
             </section>
@@ -304,6 +324,11 @@ export default async function PropertyViewPage({ params }: PageProps) {
       <Footer />
     </div>
   );
+}
+
+/** The price row's value on a sold listing, in place of any figure. */
+function SoldOut() {
+  return <span className="text-[#E5252A]">Sold out</span>;
 }
 
 function Divider() {
@@ -419,12 +444,15 @@ function MobilePropertyView({
   info,
   agents,
   similar,
+  similarHeading,
   backHref,
 }: {
   listing: ListingDetail;
   info: { label: string; value: string }[];
   agents: ModalAgent[];
   similar: Awaited<ReturnType<typeof getSimilarListings>>;
+  /** Replaces "You May Also Like" — set under a sold listing. */
+  similarHeading?: string;
   /** The listings page for this listing's side of the market. */
   backHref: string;
 }) {
@@ -446,7 +474,9 @@ function MobilePropertyView({
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
-            { label: "Property", href: backHref },
+            listing.sold
+              ? { label: "Sold Out", href: "/sold" }
+              : { label: "Property", href: backHref },
             { label: listing.address },
           ]}
         />
@@ -459,6 +489,7 @@ function MobilePropertyView({
           address={listing.address}
           fallback={HERO_FALLBACK}
           variant="hero"
+          sold={listing.sold}
         />
       </section>
 
@@ -507,7 +538,9 @@ function MobilePropertyView({
           <MobileRow
             label={listing.isRental ? "Rent" : "Price"}
             value={
-              hasPublishedPrice(listing.guide) ? (
+              listing.sold ? (
+                <SoldOut />
+              ) : hasPublishedPrice(listing.guide) ? (
                 listing.guide
               ) : (
                 <EnquireTrigger
@@ -541,12 +574,14 @@ function MobilePropertyView({
         </div>
 
         <div className="mt-[20px] flex gap-[12px]">
-          <EnquireTrigger
-            variant="navy-pill"
-            agents={agents}
-            listing={enquiryListing}
-            className="flex-1 !h-[44px]"
-          />
+          {!listing.sold && (
+            <EnquireTrigger
+              variant="navy-pill"
+              agents={agents}
+              listing={enquiryListing}
+              className="flex-1 !h-[44px]"
+            />
+          )}
           <ShareTrigger
             path={`/property/${listing.slug}`}
             address={listing.address}
@@ -575,7 +610,11 @@ function MobilePropertyView({
       )}
 
       {similar.length > 0 && (
-        <YouMayAlsoLike properties={similar} heading="You May Also Like" exploreHref={backHref} />
+        <YouMayAlsoLike
+          properties={similar}
+          heading={similarHeading ?? "You May Also Like"}
+          exploreHref={listing.sold ? "/sold" : backHref}
+        />
       )}
 
       <section className="container-page pt-[8px] pb-[40px]">
