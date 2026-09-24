@@ -31,13 +31,16 @@ export function ContactIntro() {
             was. `object-cover` crops rather than letterboxes, as the photo
             did. Muted and inline so mobile browsers allow autoplay — an
             unmuted video would simply never start — and `playsInline` stops
-            iOS taking it fullscreen. The poster paints the first frame while
-            the file loads, so the band is never a bare navy rectangle.
-            `aria-hidden`: it is decoration, and the heading below carries the
-            meaning for assistive tech. */}
+            iOS taking it fullscreen.
+
+            No `poster`. It held the old tower photo, so opening the page
+            showed that picture for a beat and then cut to the film — a
+            visible swap where there should be none. Without one the browser
+            paints the video's own first frame, and the navy behind covers the
+            moment before that. `aria-hidden`: it is decoration, and the
+            heading below carries the meaning for assistive tech. */}
         <video
           src="/hero-video/contactus.mp4"
-          poster="/contact/contact-1.png"
           autoPlay
           muted
           loop
