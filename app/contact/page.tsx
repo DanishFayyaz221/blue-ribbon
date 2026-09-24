@@ -64,7 +64,7 @@ export default function ContactPage() {
         <section className="container-page mt-[clamp(38px,3.15vw,76px)] mb-[clamp(44px,4vw,76px)]">
           <LineReveal
             as="h2"
-            className="text-center font-display font-bold text-brand-bunker text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
+            className="text-center font-display font-bold text-brand-navy text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
           >
             Get in Touch
           </LineReveal>

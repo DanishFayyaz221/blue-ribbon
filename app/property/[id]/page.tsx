@@ -320,6 +320,24 @@ export default async function PropertyViewPage({ params }: PageProps) {
             </section>
           </div>
         )}
+
+        {/* The enquiry form that closes the mobile view, on desktop too: the
+            page ran from "More Properties" straight into the footer, so a
+            visitor who had scrolled the whole listing had no way to write in
+            without going back up to Enquire. Same `team` variant — it asks for
+            a property address, which is exactly right here — and the navy
+            heading the contact page uses. */}
+        <section className="hidden sm:block container-page mt-[clamp(38px,3.15vw,76px)] mb-[clamp(44px,4vw,76px)]">
+          <LineReveal
+            as="h2"
+            className="text-center font-display font-bold text-brand-navy text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
+          >
+            Get in Touch
+          </LineReveal>
+          <div className="mt-[clamp(24px,2.25vw,42px)] mx-auto w-full max-w-[680px]">
+            <ContactForm variant="team" />
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
@@ -610,8 +628,11 @@ function MobilePropertyView({
       )}
 
       {similar.length > 0 && (
+        /* `phoneTone="dark"`: the strip sits on the navy satin here as it
+           does on desktop, with white copy and the dark-background card. */
         <YouMayAlsoLike
           properties={similar}
+          phoneTone="dark"
           heading={similarHeading ?? "You May Also Like"}
           exploreHref={listing.sold ? "/sold" : backHref}
         />

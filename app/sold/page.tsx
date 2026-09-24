@@ -58,7 +58,11 @@ export default async function SoldPage({
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Recently Sold" }]} />
         </div>
 
-        <section className="container-page pt-[clamp(16px,2vw,36px)] text-center">
+        {/* Desktop only. On a phone the badge, heading and blurb filled most
+            of a screen before the first sold listing appeared, pushing the
+            results the page exists to show below the fold; the breadcrumb and
+            the "Recently Sold" heading below already say what this page is. */}
+        <section className="hidden sm:block container-page pt-[clamp(16px,2vw,36px)] text-center">
           <span className="inline-flex rounded-[8px] bg-brand-navy px-[18px] py-[8px] font-display text-[11px] sm:text-[13px] font-semibold uppercase tracking-[0.3em] text-white">
             Sold
           </span>
@@ -80,9 +84,16 @@ export default async function SoldPage({
           </p>
         </section>
 
+        {/* The page's h1 on phones, where the hero above that carried it is
+            hidden — without this the document would start at h2 and a screen
+            reader would announce no page title at all. */}
+        <h1 className="sr-only sm:hidden">Just Sold Out!</h1>
+
+        {/* No top margin on phones: it was spacing this off the hero above,
+            which is not rendered there, leaving a gap under the breadcrumb. */}
         <section
           id="results"
-          className="container-page mt-[clamp(36px,3.6vw,64px)] pb-[clamp(40px,4vw,72px)] scroll-mt-[80px]"
+          className="container-page sm:mt-[clamp(36px,3.6vw,64px)] pb-[clamp(40px,4vw,72px)] scroll-mt-[80px]"
         >
           <div className="flex items-end justify-between gap-[16px]">
             <LineReveal
