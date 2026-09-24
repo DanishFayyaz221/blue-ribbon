@@ -220,7 +220,7 @@ export function Nav() {
           // this same element into the white sheet that wipes down/up — see
           // globals.css, which also overrides the animate-* classes there.
           data-lenis-prevent
-          className={`menu-sheet ${closing ? "is-closing animate-drawer-overlay-out" : "is-opening animate-drawer-overlay"} md:animate-none no-scrollbar fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-0 md:overflow-y-auto`}
+          className={`menu-sheet ${closing ? "is-closing animate-drawer-overlay-out" : "is-opening animate-drawer-overlay"} md:animate-none no-scrollbar fixed inset-0 z-50 flex md:block bg-black/50 backdrop-blur-[2px] md:bg-white md:backdrop-blur-none md:overflow-y-auto`}
           onClick={(e) => {
             if (e.target === e.currentTarget) closeSmoothly();
           }}
@@ -229,7 +229,33 @@ export function Nav() {
               its left margin out parks it against the right edge — the side
               the hamburger is on, and the side it now slides in from. Reset
               at md, where this same element becomes the full-width sheet. */}
-          <div className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative ml-auto flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:ml-0 md:h-auto md:max-w-none md:w-full md:overflow-visible md:shadow-none`}>
+          {/* `md:min-h-full`: at md the panel was `md:h-auto`, i.e. exactly as
+              tall as its content, sitting inside a sheet that is `fixed
+              inset-0` and therefore always viewport-tall. Whenever the content
+              came up short — which is what trimming the paddings above did —
+              the difference showed as a band of the sheet's own bare
+              `md:bg-white` below the panel, with the ribbon stranded in it.
+              The floor closes that band; `md:h-auto` stays so the panel can
+              still grow past the viewport rather than clipping its content,
+              and the sheet's `md:overflow-y-auto` handles that case as before.
+
+              `full`, not `svh`: the parent is `fixed inset-0`, so 100% IS the
+              viewport here and the two units cannot disagree — `svh` can
+              resolve to a different number than the parent's own height on
+              mobile browsers, which would reintroduce a seam.
+
+              The click handler is duplicated here because the sheet's own
+              `e.target === e.currentTarget` test was the click-to-close
+              surface at md: with the panel now covering the sheet, a click on
+              blank space lands on the panel and would otherwise never reach
+              it. Same guard, so clicks on links and buttons still pass
+              through untouched. */}
+          <div
+            onClick={(e) => {
+              if (e.target === e.currentTarget) closeSmoothly();
+            }}
+            className={`${closing ? "animate-drawer-out" : "animate-drawer-in"} md:animate-none relative ml-auto flex h-full w-[86%] max-w-[360px] flex-col overflow-y-auto bg-white md:ml-0 md:h-auto md:min-h-full md:max-w-none md:w-full md:overflow-visible md:shadow-none`}
+          >
           <div className="container-page flex h-[56px] sm:h-[64px] lg:h-[72px] items-center justify-between">
             <button
               type="button"
@@ -368,8 +394,17 @@ export function Nav() {
             </div>
           </div>
 
-          {/* Tablet / desktop drawer */}
-          <div className="hidden md:block container-page pb-[304px] pt-[6vw] lg:pt-[10vw]">
+          {/* Tablet / desktop drawer.
+
+              The paddings are capped against the viewport's HEIGHT as well as
+              its width. Tied to `vw` alone — `10vw` on top, a flat 304px below
+              — they fitted while the pill column was Buy / Sell / Rent; adding
+              Sold made that column 66px taller (a 52px pill plus its 14px gap)
+              and tipped the content past a laptop viewport, so the sheet
+              scrolled. A wide screen is not a tall one, and only height
+              decides whether this fits; the `vw`/px term stays as the cap so a
+              large monitor keeps its open spacing. */}
+          <div className="hidden md:block container-page pb-[min(304px,24svh)] pt-[min(6vw,8svh)] lg:pt-[min(10vw,8svh)]">
             {/* `menu-grid`: each direct child is one column of the sheet's
                 staggered entrance, in DOM order. */}
             <div className="menu-grid grid grid-cols-1 gap-x-[56px] gap-y-[36px] lg:grid-cols-12 lg:items-start">
