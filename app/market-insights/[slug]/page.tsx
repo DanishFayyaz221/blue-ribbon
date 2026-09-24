@@ -189,9 +189,10 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
             </div>
 
             {/* Phone: one article at a time, a wide photo and the title, under
-                the round arrows, as the mobile comp draws it. */}
+                dots for position, as on the other strips. */}
             <MobileCarousel
               ariaLabel="More articles"
+              dots
               className="mt-[20px] sm:hidden"
               items={others.map((a) => (
                 <Link key={a.slug} href={articleHref(a.slug)} className="group block">

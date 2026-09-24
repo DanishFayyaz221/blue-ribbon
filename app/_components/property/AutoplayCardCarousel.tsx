@@ -54,6 +54,11 @@ export function AutoplayCardCarousel({
       ariaLabel={ariaLabel}
       className={className}
       tone={tone}
+      // Dots rather than the round arrows. These rows play themselves and
+      // swipe, so the arrows were a control nobody needed to touch, sitting
+      // in a block of their own under every strip; dots say where you are in
+      // the same space and still step when tapped.
+      dots
       onIndexChange={onIndexChange}
       controlsRef={onControls}
       items={properties.map((p, i) => (

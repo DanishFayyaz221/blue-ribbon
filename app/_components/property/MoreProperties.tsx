@@ -11,7 +11,7 @@ import { PropertyCard, type PropertyCardData } from "./PropertyCard";
  * component and cannot fetch them itself (see getAppraisalListings).
  *
  * Same responsive shape as the home page's LatestProperties: one card at a
- * time under round arrows on phones, a three-up grid from sm. Kept separate
+ * time with dots on phones, a three-up grid from sm. Kept separate
  * rather than reusing that component because the grid here leads with the
  * price, as the appraisal comp does, where the home page leads with the
  * address. (The phone card is address-first on both: that is how the mobile

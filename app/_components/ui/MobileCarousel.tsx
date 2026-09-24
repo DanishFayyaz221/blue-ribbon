@@ -2,6 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
+/**
+ * Most dots the row ever draws. A listing strip can hold a dozen slides, and
+ * a dot each made the row wider than the card above it and every target too
+ * small to aim at; four is enough to say "there is more here" and to show
+ * movement as you go.
+ */
+const DOT_WINDOW = 4;
+
 type Props = {
   /** One node per slide. */
   items: ReactNode[];
@@ -75,6 +83,18 @@ export function MobileCarousel({
   const [index, setIndex] = useState(0);
   const count = items.length;
   const peek = slideWidth !== "100%";
+
+  // Slide indices the dot row shows: at most DOT_WINDOW of them, sliding to
+  // keep the current slide inside. Clamped at both ends so the row stays a
+  // constant width rather than shrinking on the first and last slides.
+  const dotWindow = (() => {
+    if (count <= DOT_WINDOW) return Array.from({ length: count }, (_, i) => i);
+    const start = Math.min(
+      Math.max(0, index - Math.floor((DOT_WINDOW - 1) / 2)),
+      count - DOT_WINDOW,
+    );
+    return Array.from({ length: DOT_WINDOW }, (_, i) => start + i);
+  })();
 
   const slides = useCallback(
     () => Array.from(viewportRef.current?.querySelectorAll<HTMLElement>("[data-slide]") ?? []),
@@ -289,10 +309,15 @@ export function MobileCarousel({
         // Dots take the arrows' place: still tappable, but they read as
         // "where you are" first and as a control second. The hit area is
         // padded out to a comfortable size while the dot itself stays small.
+        //
+        // At most DOT_WINDOW of them, whatever the slide count: a strip of a
+        // dozen reads as a progress bar nobody can aim at, and the row grows
+        // wider than the card it belongs to. The window slides with the
+        // current slide, so the active dot is always in it.
         <div
           className={`relative z-10 flex items-center justify-center gap-[2px] ${arrowsClassName}`}
         >
-          {items.map((_, i) => (
+          {dotWindow.map((i) => (
             <button
               key={i}
               type="button"

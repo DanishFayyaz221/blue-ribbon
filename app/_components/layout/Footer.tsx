@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FooterDealButtons } from "./FooterDealButtons";
 import { RollLink } from "../ui/RollLink";
+import { RATE_MY_AGENT_URL } from "./links";
 
 /** Buy / Rent / Sell in the comp's order for the phone footer. */
 const mobileDealLinks = [
@@ -139,9 +140,14 @@ function MobileFooter() {
               <InstagramIcon />
             </SocialLink>
           </div>
-          <Link
-            href="/agents"
-            aria-label="Meet our team"
+          {/* The badge is Rate My Agent's, so it goes to our profile there,
+              not to our own team page. A plain <a>, not next/link: the target
+              is off-site, and it opens in a new tab like the social links. */}
+          <a
+            href={RATE_MY_AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Blue Ribbon Real Estate on Rate My Agent"
             className="block shrink-0 transition hover:opacity-80"
           >
             <Image
@@ -153,7 +159,7 @@ function MobileFooter() {
               sizes="140px"
               className="h-auto w-[140px]"
             />
-          </Link>
+          </a>
         </div>
 
         <p className="mt-[32px] text-center font-display text-[11.5px] text-white/85">
@@ -246,9 +252,11 @@ function DesktopFooter() {
                 <InstagramIcon />
               </SocialLink>
             </div>
-            <Link
-              href="/agents"
-              aria-label="Meet our team"
+            <a
+              href={RATE_MY_AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Blue Ribbon Real Estate on Rate My Agent"
               className="block transition hover:opacity-80"
             >
               {/* Transparent cut of the Rate My Agent badge: the original
@@ -263,7 +271,7 @@ function DesktopFooter() {
                 sizes="180px"
                 className="h-auto w-[180px]"
               />
-            </Link>
+            </a>
           </div>
 
           {/* Address row. In the SAME grid as the columns above, not a second

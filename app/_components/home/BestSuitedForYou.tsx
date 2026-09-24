@@ -47,7 +47,7 @@ export async function BestSuitedForYou() {
 
         {/* Phone: one full-width card at a time, playing itself — each card
             cycles its first three photos, then the row steps to the next
-            listing. The round arrows and a swipe still work throughout. */}
+            listing. The dots and a swipe both still step through it. */}
         <AutoplayCardCarousel properties={items} ariaLabel="Explore properties" />
 
         {/* Three up only from lg. At md a third column would leave each card

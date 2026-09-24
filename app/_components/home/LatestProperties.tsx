@@ -62,7 +62,7 @@ export async function LatestProperties({ excludeIds = [] }: { excludeIds?: strin
 
         {/* Phone: one full-width card at a time, playing itself — each card
             cycles its first few photos, then the row steps to the next
-            listing. The round arrows and a swipe still work throughout. */}
+            listing. The dots and a swipe both still step through it. */}
         <AutoplayCardCarousel
           properties={properties}
           ariaLabel="More properties"

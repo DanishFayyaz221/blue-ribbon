@@ -73,10 +73,11 @@ export default async function MarketInsightsPage() {
           </div>
 
           <div className="container-page mt-[clamp(32px,3.5vw,60px)] pb-[clamp(44px,5vw,90px)]">
-            {/* Phone: one article at a time under the round arrows, as the
-                mobile comp draws it — the same carousel as the card strips. */}
+            {/* Phone: one article at a time, swiped, with dots for position —
+                the same carousel as the card strips. */}
             <MobileCarousel
               ariaLabel="Latest insights"
+              dots
               className="sm:hidden"
               items={INSIGHT_ARTICLES.map((article) => (
                 <InsightCard key={article.slug} article={article} feature />

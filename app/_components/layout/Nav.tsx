@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowInline } from "../ui/ArrowInline";
+import { RATE_MY_AGENT_URL } from "./links";
 
 /**
  * How long the close animation runs before the drawer unmounts or the route
@@ -41,21 +42,20 @@ const aboutLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-/** The phone drawer's single flat list, in the order it is shown. */
-const phoneLinks = [
+/**
+ * The three deal buttons at the foot of the phone drawer. Buy / Rent / Sell,
+ * which is the comp's order there — the desktop sheet lists them Buy / Sell /
+ * Rent, so this is not `buyLinks`.
+ */
+const phoneDealLinks = [
   { label: "Buy", href: "/buy" },
-  { label: "Sell", href: "/property-report-digital-appraisal" },
   { label: "Rent", href: "/rent" },
-  { label: "Our Team", href: "/agents" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/contact" },
-  { label: "Market Insights", href: "/market-insights" },
-  { label: "Property Estimate", href: "/property-report-digital-appraisal" },
+  { label: "Sell", href: "/property-report-digital-appraisal" },
 ];
 
 /** Every route the drawer can reach, deduped — warmed when it opens. */
 const MENU_ROUTES = Array.from(
-  new Set([...buyLinks, ...ownLinks, ...aboutLinks, ...phoneLinks].map((l) => l.href)),
+  new Set([...buyLinks, ...ownLinks, ...aboutLinks, ...phoneDealLinks].map((l) => l.href)),
 );
 
 export function Nav() {
@@ -272,53 +272,69 @@ export function Nav() {
             </button>
           </div>
 
-          {/* Mobile drawer */}
-          <div className="md:hidden container-page pt-[24px] pb-[36px] flex flex-1 flex-col">
-            <ul className="flex flex-col gap-[20px]">
-              {phoneLinks.map((link, i) => {
-                const active = isActive(pathname, link.href);
-                // Full contrast on the current page too, matching the desktop
-                // pills — a faded entry read as disabled rather than as a
-                // "you are here" marker. `aria-current` still carries the
-                // state, and closeAndNavigate short-circuits to a plain close
-                // when the href is the route already showing.
-                return (
-                  <li
-                    key={link.label}
-                    className="drawer-item"
-                    style={{ ["--i" as string]: i }}
-                  >
-                    <button
-                      type="button"
-                      aria-current={active ? "page" : undefined}
-                      onClick={() => closeAndNavigate(link.href)}
-                      className="font-display text-[18px] font-bold text-brand-bunker transition-colors hover:text-brand-navy text-left"
-                    >
-                      {link.label}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+          {/* Mobile drawer. The same two grouped columns the desktop sheet
+              shows, rather than the flat list this used to be: the headings
+              tell you what each group is for, and the deal buttons sit at the
+              foot as the primary actions instead of being three more lines
+              among eight. */}
+          <div className="md:hidden container-page relative z-10 pt-[20px] pb-[40px] flex flex-1 flex-col">
+            <div className="drawer-item" style={{ ["--i" as string]: 0 }}>
+              <DrawerColumn
+                title="About Us"
+                links={aboutLinks}
+                pathname={pathname}
+                onNavigate={closeAndNavigate}
+              />
+            </div>
 
+            <div className="drawer-item mt-[28px]" style={{ ["--i" as string]: 1 }}>
+              <DrawerColumn
+                title="Own your Australian Dream"
+                links={ownLinks}
+                pathname={pathname}
+                onNavigate={closeAndNavigate}
+              />
+            </div>
+
+            {/* Badge and socials on ONE row, as in the comp. No `flex-wrap`:
+                the badge plus four 36px icons is wider than the drawer at the
+                sizes the desktop uses, so wrapping dropped the icons onto a
+                line of their own. Both are shrunk instead — the badge to
+                120px, the icons to 30px — which fits the pair across an
+                86%-wide panel on the narrowest phone. */}
             <div
-              className="drawer-item mt-auto pt-[32px]"
-              style={{ ["--i" as string]: 8 }}
+              className="drawer-item mt-[26px] flex items-center gap-[10px]"
+              style={{ ["--i" as string]: 2 }}
             >
-              <div className="flex items-center gap-[12px]">
+              {/* An <a> to Rate My Agent, not a button into /agents: the
+                  badge is theirs and belongs to our profile there. Off-site,
+                  so it opens in a new tab and the drawer is left as it is —
+                  `closeAndNavigate` is for routes within the site. */}
+              <a
+                href={RATE_MY_AGENT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Blue Ribbon Real Estate on Rate My Agent"
+                className="block shrink-0 transition hover:opacity-80"
+              >
+                <Image
+                  src="/images/footer%20image.png"
+                  alt="Rate My Agent"
+                  width={1076}
+                  height={324}
+                  quality={100}
+                  sizes="108px"
+                  className="h-auto w-[96px] min-[360px]:w-[108px]"
+                />
+              </a>
+              <div className="flex shrink-0 items-center gap-[5px] [&_a]:h-[28px] [&_a]:w-[28px]">
                 <SocialLink label="Facebook" href="https://www.facebook.com/blueribbonrealestateagents/">
                   <FacebookIcon />
                 </SocialLink>
-                <SocialLink
-                  label="YouTube"
-                  href="https://youtube.com/@blueribbonrealestate"
-                >
+                <SocialLink label="YouTube" href="https://youtube.com/@blueribbonrealestate">
                   <YouTubeIcon />
                 </SocialLink>
-                <SocialLink
-                  label="TikTok"
-                  href="https://www.tiktok.com/@blueribbonrealestate"
-                >
+                <SocialLink label="TikTok" href="https://www.tiktok.com/@blueribbonrealestate">
                   <TikTokIcon />
                 </SocialLink>
                 <SocialLink
@@ -328,22 +344,25 @@ export function Nav() {
                   <InstagramIcon />
                 </SocialLink>
               </div>
-              <button
-                type="button"
-                onClick={() => closeAndNavigate("/agents")}
-                aria-label="Meet our team"
-                className="mt-[16px] block cursor-pointer transition hover:opacity-80"
-              >
-                <Image
-                  src="/images/footer%20image.png"
-                  alt="Rate My Agent"
-                  width={1076}
-                  height={324}
-                  quality={100}
-                  sizes="180px"
-                  className="h-auto w-[180px]"
-                />
-              </button>
+            </div>
+
+            {/* Buy / Rent / Sell as solid navy buttons at the foot — the
+                comp's order, which is not the desktop sheet's. */}
+            <div
+              className="drawer-item mt-[28px] flex flex-col gap-[12px]"
+              style={{ ["--i" as string]: 3 }}
+            >
+              {phoneDealLinks.map((link) => (
+                <button
+                  key={link.label}
+                  type="button"
+                  aria-current={isActive(pathname, link.href) ? "page" : undefined}
+                  onClick={() => closeAndNavigate(link.href)}
+                  className="flex h-[44px] w-[150px] cursor-pointer items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
+                >
+                  {link.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -398,11 +417,13 @@ export function Nav() {
                     <InstagramIcon />
                   </SocialLink>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => closeAndNavigate("/agents")}
-                  aria-label="Meet our team"
-                  className="mt-[16px] block cursor-pointer transition hover:opacity-80"
+                {/* Off-site, as in the phone drawer above — see the note there. */}
+                <a
+                  href={RATE_MY_AGENT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Blue Ribbon Real Estate on Rate My Agent"
+                  className="mt-[16px] block transition hover:opacity-80"
                 >
                   <Image
                     src="/images/footer%20image.png"
@@ -413,7 +434,7 @@ export function Nav() {
                     sizes="180px"
                     className="h-auto w-[180px]"
                   />
-                </button>
+                </a>
               </div>
 
               <DrawerColumn
@@ -434,13 +455,23 @@ export function Nav() {
             </div>
           </div>
 
+          {/* Phones place it `absolute` inside the panel, not `fixed`: the
+              drawer is an 86%-wide sheet against the right edge, so a viewport
+              -fixed ribbon would hang off it and over the page behind. From md
+              the sheet is the full width and `fixed` is right again. */}
           <Image
             aria-hidden
-            src="/logo/241.png"
+            src="/logo/hamburger-ribbon.png"
             alt=""
-            width={979}
-            height={744}
-            className="menu-ribbon pointer-events-none fixed bottom-0 right-0 hidden h-auto w-[clamp(340px,42vw,720px)] md:block"
+            width={931}
+            height={694}
+            // Behind the drawer's own content, which carries `relative z-10`.
+            // The corner flourish is meant to fill the bottom-right — it is
+            // large, and it used to sit ON TOP of the Buy / Rent / Sell
+            // buttons when the list reached down into it. The z-index, not a
+            // smaller size, is what fixes that: the ribbon keeps its scale
+            // and the buttons simply paint over it.
+            className="menu-ribbon pointer-events-none absolute bottom-0 right-0 z-0 h-auto w-[92%] md:fixed md:w-[clamp(340px,42vw,720px)]"
           />
           </div>
         </div>
@@ -466,17 +497,29 @@ function DrawerColumn({
 }) {
   return (
     <div className={className}>
-      <h3 className="font-display text-[20px] sm:text-[24px] lg:text-[26px] font-semibold leading-tight text-brand-bunker">
+      {/* Brand navy, not the body ink: these are the sheet's two group
+          titles, and the colour is what separates them from the links under
+          them at a glance. Both drawers render this component, so the phone
+          and the desktop sheet stay in step. */}
+      <h3 className="font-display text-[20px] sm:text-[24px] lg:text-[26px] font-bold leading-tight text-brand-navy">
         {title}
       </h3>
-      <ul className="mt-[24px] flex flex-col gap-[14px]">
+      {/* Tighter on a phone: the desktop sheet has a screen of room and can
+          afford the air, but in the drawer the same 24/14 left the two groups
+          looking further apart than the comp draws them. */}
+      <ul className="mt-[12px] flex flex-col gap-[6px] sm:mt-[24px] sm:gap-[14px]">
         {links.map((link) => (
           <li key={link.label}>
             <button
               type="button"
               onClick={() => onNavigate(link.href)}
               aria-current={isActive(pathname, link.href) ? "page" : undefined}
-              className="group inline-flex items-center font-display text-[15px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy text-left"
+              // `whitespace-nowrap` with a phone size small enough to hold
+              // the longest label — "Get your property estimate within 9
+              // seconds" — on one line. At 15px it wrapped to two, which put
+              // the arrow on a line of its own and broke the rhythm of the
+              // list. From sm the sheet is wide and the size goes back up.
+              className="group inline-flex items-center whitespace-nowrap font-display text-[11px] min-[360px]:text-[12.5px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy text-left"
             >
               {link.label}
               <ArrowInline />
