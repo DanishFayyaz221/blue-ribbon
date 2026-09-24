@@ -9,7 +9,7 @@ import { PropertySearchBar } from "./PropertySearchBar";
 import { EmptyListings } from "./EmptyListings";
 import { FallbackListings } from "./FallbackListings";
 import { PagerLinks } from "../sections/PagerLinks";
-import { GetInTouchCTA } from "../sections/GetInTouchCTA";
+import { TeamCTA } from "../sections/TeamCTA";
 import {
   getListings,
   getListingsWithFallback,
@@ -165,9 +165,11 @@ export async function SuburbListings({
           )}
         </div>
 
-        <div className="mt-[clamp(44px,4vw,76px)]">
-          <GetInTouchCTA />
-        </div>
+        {/* TeamCTA, not GetInTouchCTA: the latter shows this same block on
+            phones but swaps in the older navy "Want to get in touch with us?"
+            panel from sm up, so the page closed on two different sections
+            depending on the width. This is the one the other pages end on. */}
+        <TeamCTA />
       </main>
       <Footer />
     </div>

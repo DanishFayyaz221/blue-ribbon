@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
 import { RevealOnScroll } from "./_components/ui/RevealOnScroll";
@@ -54,18 +55,24 @@ export default function RootLayout({
         </noscript>
         {/* Arm the reveal animations on fresh loads, and disarm on back/forward
             navigation so restored pages don't paint blank when the observer
-            isn't re-run. Inline so it executes before first paint. */}
-        <script
-          dangerouslySetInnerHTML={{
-            // `e.persisted` only: pageshow fires on every load, not just a
-            // bfcache restore, so disarming unconditionally stripped the
-            // hidden start state milliseconds after first paint — every
-            // `.reveal` block then sat at its resting position and the
-            // scroll animations never played. The guard keeps the safety
-            // net (a restored page can't stay blank) without that.
-            __html: `document.documentElement.classList.add('reveal-armed');addEventListener('pageshow',function(e){if(e.persisted)document.documentElement.classList.remove('reveal-armed')});`,
-          }}
-        />
+            isn't re-run.
+
+            `next/script` with `beforeInteractive`, not a bare <script>: React
+            never executes a script tag it renders on the client, and warns
+            about it in development. This strategy emits the same inline code
+            into the document head, where it still runs before first paint —
+            which is what the armed class needs, or the page flashes its
+            resting state before the gate lands. */}
+        <Script id="reveal-arm" strategy="beforeInteractive">
+          {/* `e.persisted` only: pageshow fires on every load, not just a
+              bfcache restore, so disarming unconditionally stripped the
+              hidden start state milliseconds after first paint — every
+              `.reveal` block then sat at its resting position and the
+              scroll animations never played. The guard keeps the safety net
+              (a restored page can't stay blank) without that. Kept on one
+              line: whatever is between these braces IS the script body. */}
+          {`document.documentElement.classList.add('reveal-armed');addEventListener('pageshow',function(e){if(e.persisted)document.documentElement.classList.remove('reveal-armed')});`}
+        </Script>
       </head>
       <body
         suppressHydrationWarning

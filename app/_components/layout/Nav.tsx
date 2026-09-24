@@ -38,7 +38,7 @@ const ownLinks = [
 
 const aboutLinks = [
   { label: "Our Story", href: "/about" },
-  { label: "Leadership", href: "/agents" },
+  { label: "Our Team", href: "/agents" },
   { label: "Contact", href: "/contact" },
 ];
 

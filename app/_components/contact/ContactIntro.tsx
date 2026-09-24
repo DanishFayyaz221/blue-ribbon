@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { TextMarquee } from "../ui/TextMarquee";
 import { LineReveal } from "../ui/LineReveal";
 import { ScrollGrowVideo } from "./ScrollGrowVideo";
 
@@ -7,8 +5,7 @@ const QUOTE =
   "“Step through our doors and you’ll feel the difference straight away. A warm welcome, a genuine conversation, and the kind of care that turns strangers into neighbours. At Blue Ribbon, hospitality isn’t a gesture, it’s who we are. Come sit with us, share your story, and let us make you feel right at home.”";
 
 /**
- * Top of the Contact page from sm up: the office-tower photo full-bleed with
- * the "Our Values" marquee running across its middle, then a justified
+ * Top of the Contact page from sm up: a full-bleed film, then a justified
  * hospitality quote set in the same grotesque as the About page's founder
  * quote, its first line indented so the opening mark hangs inside the measure,
  * with the team attribution and the Our Story film beneath it.
@@ -18,29 +15,41 @@ const QUOTE =
 export function ContactIntro() {
   return (
     <>
-      {/* The hero keeps the photo's own 923x615 proportions, but capped: at
-          that ratio a wide monitor makes the box ~1280px tall, so the section
-          ran well past the fold and the marquee across its middle was off
-          screen entirely. `max-h` holds it to most of the viewport and
-          object-cover trims the towers top and bottom, which is the part of
+      {/* The hero box keeps the 923x615 proportions the tower photo set, but
+          capped: at that ratio a wide monitor makes the box ~1280px tall, so
+          the section ran well past the fold. `max-h` holds it to most of the
+          viewport and object-cover trims top and bottom, which is the part of
           the frame with least in it. Phones keep the uncapped 3:4 crop — the
           ratio is already taller than it is wide there, so no cap applies.
 
           Sits directly under the breadcrumb: the 16px it had on top, on top
           of the breadcrumb's own bottom padding, read as a gap rather than as
-          the photo starting. */}
+          the band starting. */}
       <section className="relative aspect-[3/4] w-full overflow-hidden bg-brand-navy-deep sm:aspect-[923/615] sm:max-h-[86svh]">
-        <Image
-          src="/contact/contact-1.png"
-          alt="The office towers around Blue Ribbon Real Estate"
-          fill
-          priority
-          quality={100}
-          sizes="100vw"
-          className="object-cover"
+        {/* Film in place of the tower photo, filling the same box: the
+            section keeps its shape and everything below it stays where it
+            was. `object-cover` crops rather than letterboxes, as the photo
+            did. Muted and inline so mobile browsers allow autoplay — an
+            unmuted video would simply never start — and `playsInline` stops
+            iOS taking it fullscreen. The poster paints the first frame while
+            the file loads, so the band is never a bare navy rectangle.
+            `aria-hidden`: it is decoration, and the heading below carries the
+            meaning for assistive tech. */}
+        <video
+          src="/hero-video/contactus.mp4"
+          poster="/contact/contact-1.png"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
         />
+        {/* The heading stays for assistive tech and search; only the running
+            marquee that carried it visually is gone — the film says enough on
+            its own, and the two competed. */}
         <h2 className="sr-only">Our Values</h2>
-        <TextMarquee label="Our Values" className="absolute inset-x-0 top-1/2 -translate-y-1/2" />
       </section>
 
       {/* overflow-x: clip (not hidden — hidden would make this the sticky

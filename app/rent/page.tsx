@@ -6,7 +6,7 @@ import { PropertyCard } from "../_components/property/PropertyCard";
 import { EmptyListings } from "../_components/property/EmptyListings";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
-import { GetInTouchCTA } from "../_components/sections/GetInTouchCTA";
+import { TeamCTA } from "../_components/sections/TeamCTA";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import {
   ResultsRegion,
@@ -152,9 +152,11 @@ export default async function RentPage({
           </ResultsRegion>
         </div>
 
-        <div className="mt-[clamp(44px,4vw,76px)]">
-          <GetInTouchCTA />
-        </div>
+        {/* TeamCTA, not GetInTouchCTA: the latter shows this same block on
+            phones but swaps in the older navy "Want to get in touch with us?"
+            panel from sm up, so the page closed on two different sections
+            depending on the width. This is the one the other pages end on. */}
+        <TeamCTA />
         </SearchTransitionProvider>
       </main>
       <Footer />

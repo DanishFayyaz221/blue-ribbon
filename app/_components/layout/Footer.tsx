@@ -13,7 +13,7 @@ const mobileDealLinks = [
 
 const mobileAboutLinks = [
   { label: "Our Story", href: "/about" },
-  { label: "Leadership", href: "/agents" },
+  { label: "Our Team", href: "/agents" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -27,12 +27,15 @@ const mobileInsightsLinks = [
 const buyLinks = [
   { label: "Buy", href: "/buy" },
   { label: "Sell", href: "/property-report-digital-appraisal" },
-  { label: "Rent", href: "/buy?type=rent" },
+  // `/rent`, not `/buy?type=rent`: the rentals page is a route of its own,
+  // and that query never filtered anything — the button simply landed on the
+  // sales listings.
+  { label: "Rent", href: "/rent" },
 ];
 
 const aboutLinks = [
   { label: "Our Story", href: "/about" },
-  { label: "Leadership", href: "/agents" },
+  { label: "Our Team", href: "/agents" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -65,7 +68,12 @@ function FooterBackdrop() {
       src="/images/footer.png"
       alt=""
       fill
-      quality={90}
+      // 60, as on the other satin backdrops. This is a soft fabric texture
+      // under white copy, where the bytes 90 costs buy nothing visible — and
+      // it is a 1MB source on every page. Next flagged it as the LCP element
+      // on a page whose body failed to load; it is below the fold in the
+      // normal case, so `priority` would be the wrong fix.
+      quality={60}
       sizes="100vw"
       className="pointer-events-none object-cover object-center"
     />

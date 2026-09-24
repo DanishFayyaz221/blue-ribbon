@@ -27,13 +27,32 @@ function connect(): Promise<MongoClient> {
   }).connect();
 }
 
+/**
+ * Cache the connection, but never cache a FAILED one.
+ *
+ * A rejected promise left in the cache is permanent: every later request
+ * awaits the same rejection, so one timeout — a laptop asleep, a dropped
+ * wifi, Atlas briefly unreachable — took the database out for the rest of
+ * the process, and the site kept serving its "no listings" fallbacks long
+ * after the network was fine again. Dropping the slot on rejection means the
+ * next request simply dials again.
+ */
+function cache(p: Promise<MongoClient>, clear: () => void): Promise<MongoClient> {
+  p.catch(clear);
+  return p;
+}
+
 export function getClient(): Promise<MongoClient> {
   if (process.env.NODE_ENV !== "production") {
-    global.__brMongoClient ??= connect();
+    global.__brMongoClient ??= cache(connect(), () => {
+      global.__brMongoClient = undefined;
+    });
     return global.__brMongoClient;
   }
 
-  clientPromise ??= connect();
+  clientPromise ??= cache(connect(), () => {
+    clientPromise = undefined;
+  });
   return clientPromise;
 }
 
