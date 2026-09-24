@@ -22,10 +22,17 @@ export function YouMayAlsoLike({
   tone = "light",
   phoneTone,
   heading = "You may also like",
+  showExplore = true,
 }: {
   properties: PropertyCardData[];
   exploreHref?: string;
   tone?: "light" | "dark";
+  /**
+   * Show the "Keep Exploring" link beside the heading. Off on the Buy page,
+   * where the strip already sits on the listings index — a link back to the
+   * page you are reading is not an invitation anywhere.
+   */
+  showExplore?: boolean;
   /**
    * Tone on phones, when it differs from `tone`. The mobile comp puts the
    * listing pages' strip on the navy satin while their desktop keeps it on
@@ -100,14 +107,16 @@ export function YouMayAlsoLike({
           >
             {heading}
           </LineReveal>
-          <Link
-            href={exploreHref}
-            className={`group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] ${linkTone}`}
-          >
-            <span className="sm:hidden">Explore more</span>
-            <span className="hidden sm:inline">Keep Exploring</span>
-            <ArrowInline />
-          </Link>
+          {showExplore && (
+            <Link
+              href={exploreHref}
+              className={`group mb-[4px] inline-flex shrink-0 items-center gap-[6px] self-end sm:mb-0 sm:self-auto font-display text-[12px] sm:text-[15px] lg:text-[18px] font-medium tracking-[0.02em] ${linkTone}`}
+            >
+              <span className="sm:hidden">Explore more</span>
+              <span className="hidden sm:inline">Keep Exploring</span>
+              <ArrowInline />
+            </Link>
+          )}
         </div>
 
         {/* Phone: one full-width card at a time, playing itself — each card

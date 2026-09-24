@@ -232,7 +232,9 @@ export default async function BuyPage({
             />
             <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
             <div className="container-page relative z-10">
-              <YouMayAlsoLike properties={latest} exploreHref="/buy" tone="dark" />
+              {/* No "Keep Exploring": it pointed at /buy, the page this
+                  strip is already on. */}
+              <YouMayAlsoLike properties={latest} tone="dark" showExplore={false} />
             </div>
           </section>
         )}
