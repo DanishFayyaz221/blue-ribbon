@@ -308,11 +308,12 @@ export function parseFeed(xml: string, sourceFile: string, agentID: string): Par
         region: extras.regionName,
 
         price: parsePrice(node),
+        // Agentbox names the children soldPrice/soldDate, not price/date.
         soldDetails: node.soldDetails
           ? {
-              display: truthy(attr((node.soldDetails as XmlNode).price, "display")),
-              price: num(text((node.soldDetails as XmlNode).price)),
-              date: parseReaxmlDate(text((node.soldDetails as XmlNode).date)),
+              display: truthy(attr((node.soldDetails as XmlNode).soldPrice, "display")),
+              price: num(text((node.soldDetails as XmlNode).soldPrice)),
+              date: parseReaxmlDate(text((node.soldDetails as XmlNode).soldDate)),
             }
           : null,
         bond: num(text(node.bond)),
