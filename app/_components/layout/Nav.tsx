@@ -375,10 +375,13 @@ export function Nav() {
               </div>
             </div>
 
-            {/* Buy / Rent / Sell as solid navy buttons at the foot — the
-                comp's order, which is not the desktop sheet's. */}
+            {/* Buy / Rent / Sell / Sold as solid navy buttons at the foot —
+                the comp's order, which is not the desktop sheet's. Two by two
+                across the full width rather than one 150px column: stacked
+                four deep they ran down into the corner ribbon and pushed the
+                drawer's own header off the top of shorter phones. */}
             <div
-              className="drawer-item mt-[28px] flex flex-col gap-[12px]"
+              className="drawer-item mt-[28px] grid grid-cols-2 gap-[10px]"
               style={{ ["--i" as string]: 3 }}
             >
               {phoneDealLinks.map((link) => (
@@ -387,7 +390,7 @@ export function Nav() {
                   type="button"
                   aria-current={isActive(pathname, link.href) ? "page" : undefined}
                   onClick={() => closeAndNavigate(link.href)}
-                  className="flex h-[44px] w-[150px] cursor-pointer items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
+                  className="flex h-[44px] w-full cursor-pointer items-center justify-center rounded-[8px] bg-brand-navy font-display text-[14px] font-semibold text-white transition hover:bg-brand-navy-deep"
                 >
                   {link.label}
                 </button>
@@ -545,25 +548,32 @@ function DrawerColumn({
       {/* Tighter on a phone: the desktop sheet has a screen of room and can
           afford the air, but in the drawer the same 24/14 left the two groups
           looking further apart than the comp draws them. */}
-      <ul className="mt-[12px] flex flex-col gap-[6px] sm:mt-[24px] sm:gap-[14px]">
-        {links.map((link) => (
-          <li key={link.label}>
-            <button
-              type="button"
-              onClick={() => onNavigate(link.href)}
-              aria-current={isActive(pathname, link.href) ? "page" : undefined}
-              // `whitespace-nowrap` with a phone size small enough to hold
-              // the longest label — "Get your property estimate within 9
-              // seconds" — on one line. At 15px it wrapped to two, which put
-              // the arrow on a line of its own and broke the rhythm of the
-              // list. From sm the sheet is wide and the size goes back up.
-              className="group inline-flex items-center whitespace-nowrap font-display text-[11px] min-[360px]:text-[12.5px] sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy text-left"
-            >
-              {link.label}
-              <ArrowInline />
-            </button>
-          </li>
-        ))}
+      <ul className="mt-[12px] flex flex-col gap-[8px] sm:mt-[24px] sm:gap-[14px]">
+        {links.map((link) => {
+          // The arrow rides with the last word. On a phone the longest label
+          // — "Get your property estimate within 9 seconds" — cannot fit one
+          // line at a readable size: forced onto one it ran past the drawer's
+          // edge, and left free to wrap it dropped the arrow onto a line of
+          // its own. Binding the two lets the label wrap cleanly instead.
+          const words = link.label.split(" ");
+          const last = words.pop();
+          return (
+            <li key={link.label}>
+              <button
+                type="button"
+                onClick={() => onNavigate(link.href)}
+                aria-current={isActive(pathname, link.href) ? "page" : undefined}
+                className="group inline-block text-left font-display text-[14px] leading-[1.35] sm:whitespace-nowrap sm:text-[16px] font-medium text-brand-bunker transition hover:text-brand-navy"
+              >
+                {words.length > 0 && `${words.join(" ")} `}
+                <span className="whitespace-nowrap">
+                  {last}
+                  <ArrowInline />
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
