@@ -14,7 +14,8 @@ type Props = {
   address: string;
   fallback?: string;
   variant?: "collage" | "hero";
-  sold?: boolean;
+  /** Ribbon on the lead photo — "Sold", "For Lease" — if any. */
+  ribbon?: string;
 };
 
 type Tab = "photos" | "video" | "floorplan";
@@ -31,7 +32,7 @@ export function PropertyMedia({
   address,
   fallback,
   variant = "collage",
-  sold = false,
+  ribbon,
 }: Props) {
   const hasVideo = Boolean(videoUrl && /^https?:\/\//i.test(videoUrl.trim()));
   const hasFloorplan = floorplans.length > 0;
@@ -56,7 +57,7 @@ export function PropertyMedia({
           fallback={fallback}
           videoUrl={videoUrl}
           floorplans={floorplans}
-          sold={sold}
+          ribbon={ribbon}
         />
       )}
 

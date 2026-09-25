@@ -8,7 +8,7 @@ import { YouMayAlsoLike } from "@/app/_components/property/YouMayAlsoLike";
 import { PropertyMedia } from "../../_components/property/PropertyMedia";
 import { ShareTrigger } from "../../_components/property/ShareTrigger";
 import { EnquireTrigger } from "../../_components/property/EnquireTrigger";
-import type { ModalAgent } from "../../_components/property/EnquiryModal";
+import type { EnquiryListing, ModalAgent } from "../../_components/property/EnquiryModal";
 import { AgentAvatar } from "../../_components/agents/AgentAvatar";
 import { ParallaxFigure } from "../../_components/ui/ParallaxFigure";
 import { profileFor } from "@/lib/agents/profiles";
@@ -134,7 +134,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
             videoUrl={listing.videoUrl}
             address={listing.address}
             fallback={HERO_FALLBACK}
-            sold={listing.sold}
+            ribbon={ribbonFor(listing)}
           />
         </div>
 
@@ -232,6 +232,13 @@ export default async function PropertyViewPage({ params }: PageProps) {
               value={
                 listing.sold ? (
                   <SoldOut />
+                ) : listing.forLease ? (
+                  <ForLease
+                    guide={listing.guide}
+                    agents={enquiryAgents}
+                    listing={enquiryListing}
+                    className="text-[15px] font-semibold text-brand-navy"
+                  />
                 ) : hasPublishedPrice(listing.guide) ? (
                   listing.guide
                 ) : (
@@ -341,6 +348,41 @@ export default async function PropertyViewPage({ params }: PageProps) {
       </main>
       <Footer />
     </div>
+  );
+}
+
+/** The lead photo's ribbon, as on the listing's card. */
+function ribbonFor(listing: ListingDetail): string | undefined {
+  return listing.sold ? "Sold" : listing.forLease ? "For Lease" : undefined;
+}
+
+/**
+ * The rent row's value on a rental still on offer: the rent where one is
+ * published, and under it a standing "For Lease · Contact Agent" link into the
+ * enquiry form — the next step for anyone who wants the place.
+ */
+function ForLease({
+  guide,
+  agents,
+  listing,
+  className,
+}: {
+  guide: string;
+  agents: ModalAgent[];
+  listing: EnquiryListing;
+  className: string;
+}) {
+  return (
+    <span className="flex flex-col items-end gap-[4px] text-right">
+      {hasPublishedPrice(guide) && <span>{guide}</span>}
+      <EnquireTrigger
+        variant="link"
+        label="For Lease · Contact Agent"
+        agents={agents}
+        listing={listing}
+        className={className}
+      />
+    </span>
   );
 }
 
@@ -507,7 +549,7 @@ function MobilePropertyView({
           address={listing.address}
           fallback={HERO_FALLBACK}
           variant="hero"
-          sold={listing.sold}
+          ribbon={ribbonFor(listing)}
         />
       </section>
 
@@ -558,6 +600,13 @@ function MobilePropertyView({
             value={
               listing.sold ? (
                 <SoldOut />
+              ) : listing.forLease ? (
+                <ForLease
+                  guide={listing.guide}
+                  agents={agents}
+                  listing={enquiryListing}
+                  className="text-[13px] font-semibold text-brand-navy"
+                />
               ) : hasPublishedPrice(listing.guide) ? (
                 listing.guide
               ) : (

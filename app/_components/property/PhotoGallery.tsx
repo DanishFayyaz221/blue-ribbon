@@ -28,8 +28,8 @@ type Props = {
    */
   videoUrl?: string;
   floorplans?: GalleryFloorplan[];
-  /** Draws the "SOLD" ribbon on the lead photo. Not carried into the viewer. */
-  sold?: boolean;
+  /** Ribbon on the lead photo — "Sold", "For Lease". Not carried into the viewer. */
+  ribbon?: string;
 };
 
 /** One slide in the lightbox — a photo, a video, or a floor plan. */
@@ -45,7 +45,7 @@ export function PhotoGallery({
   fallback,
   videoUrl,
   floorplans = [],
-  sold = false,
+  ribbon,
 }: Props) {
   // Which slide the viewer is showing, or null when closed. Holding the index
   // rather than a boolean lets a click open the viewer on the photo clicked.
@@ -80,9 +80,9 @@ export function PhotoGallery({
   return (
     <>
       {variant === "hero" ? (
-        <HeroImage images={shown} onOpen={setOpenAt} sold={sold} />
+        <HeroImage images={shown} onOpen={setOpenAt} ribbon={ribbon} />
       ) : (
-        <Collage images={shown} total={images.length} onOpen={setOpenAt} sold={sold} />
+        <Collage images={shown} total={images.length} onOpen={setOpenAt} ribbon={ribbon} />
       )}
       {openAt !== null && (
         <Lightbox slides={slides} startAt={openAt} address={address} onClose={close} />
@@ -101,12 +101,12 @@ function Collage({
   images,
   total,
   onOpen,
-  sold,
+  ribbon,
 }: {
   images: GalleryImage[];
   total: number;
   onOpen: (index: number) => void;
-  sold: boolean;
+  ribbon?: string;
 }) {
   // With one photo there is nothing to arrange, so it fills the frame alone.
   // From two up the mosaic adapts: the lead photo always takes the left
@@ -133,7 +133,7 @@ function Collage({
               />
             </div>
           </HoverAction>
-          {sold && <ListingRibbon corner="left" size="hero" />}
+          {ribbon && <ListingRibbon label={ribbon} corner="left" size="hero" />}
         </button>
         {total > 1 && <ShowAllButton total={total} onClick={() => onOpen(0)} />}
       </div>
@@ -160,7 +160,7 @@ function Collage({
           />
         ))}
         {/* Top-left of the frame is the lead photo's corner. */}
-        {sold && <ListingRibbon corner="left" size="hero" />}
+        {ribbon && <ListingRibbon label={ribbon} corner="left" size="hero" />}
       </div>
       <ShowAllButton total={total} onClick={() => onOpen(0)} />
     </div>
@@ -214,11 +214,11 @@ function Tile({
 function HeroImage({
   images,
   onOpen,
-  sold,
+  ribbon,
 }: {
   images: GalleryImage[];
   onOpen: (index: number) => void;
-  sold: boolean;
+  ribbon?: string;
 }) {
   const [index, setIndex] = useState(0);
   const count = images.length;
@@ -245,7 +245,7 @@ function HeroImage({
         />
       </button>
       {/* Stays up as the photos page: it describes the listing, not a frame. */}
-      {sold && <ListingRibbon corner="left" />}
+      {ribbon && <ListingRibbon label={ribbon} corner="left" />}
 
       {count > 1 && (
         <>
