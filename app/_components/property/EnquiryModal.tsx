@@ -244,8 +244,13 @@ export function EnquiryModal({
           </button>
         </div>
 
+        {/* data-lenis-prevent: the site's smooth scroller takes every wheel
+            event and drives the page with it — which is locked behind the
+            modal, so the wheel moved nothing. The attribute leaves this box's
+            own scrolling to the browser, as in FindPropertySheet. */}
         <div
-          className={`grid grid-cols-1 gap-[clamp(16px,2vw,28px)] overflow-y-auto p-[clamp(20px,2.4vw,32px)] ${
+          data-lenis-prevent
+          className={`grid grid-cols-1 gap-[clamp(16px,2vw,28px)] overflow-y-auto overscroll-contain p-[clamp(20px,2.4vw,32px)] ${
             agents.length > 0 ? "md:grid-cols-[180px_1fr]" : ""
           }`}
         >
@@ -288,7 +293,8 @@ export function EnquiryModal({
               </p>
               <p className="mt-[10px] font-display text-[13px] leading-[1.6] text-brand-bunker/80">
                 Thanks{firstName ? `, ${firstName}` : ""} — your enquiry
-                {listing ? ` about ${listing.address}` : ""} is on its way. We&rsquo;ll
+                {listing ? ` about ${listing.address}` : ""}{" "}
+                is on its way. We&rsquo;ll
                 be in touch soon.
               </p>
               <button
