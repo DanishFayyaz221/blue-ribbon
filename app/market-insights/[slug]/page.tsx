@@ -18,6 +18,9 @@ import { ParallaxFigure } from "../../_components/ui/ParallaxFigure";
 import { INSIGHT_ARTICLES, articleHref, getArticle } from "@/lib/insights/articles";
 import { getLatestListings } from "@/lib/db/queries";
 
+/** Cards in "More Articles": one row of the desktop grid. */
+const MORE_ARTICLES = 4;
+
 type Params = { slug: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
@@ -46,7 +49,11 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
     latest = await getLatestListings(undefined, 6);
   } catch {}
 
+  // Always a full row of four. With only four articles written, the other
+  // three leave the last slot empty, so the one being read fills it; past
+  // that, the others repeat rather than leave a gap.
   const others = INSIGHT_ARTICLES.filter((a) => a.slug !== article.slug);
+  const more = others.length > 0 ? [...others, article, ...others].slice(0, MORE_ARTICLES) : [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -162,7 +169,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
           </div>
         </article>
 
-        {others.length > 0 && (
+        {more.length > 0 && (
           <section className="container-page mt-[clamp(48px,5vw,90px)]">
             <div className="flex items-end justify-between gap-[16px] sm:flex-row sm:items-end sm:justify-between">
               {/* Phone: the heading breaks after "More", per the mobile comp. */}
@@ -194,8 +201,8 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
               ariaLabel="More articles"
               dots
               className="mt-[20px] sm:hidden"
-              items={others.map((a) => (
-                <Link key={a.slug} href={articleHref(a.slug)} className="group block">
+              items={more.map((a, i) => (
+                <Link key={`${a.slug}-${i}`} href={articleHref(a.slug)} className="group block">
                   <div className="relative aspect-[3/2] w-full overflow-hidden rounded-[14px]">
                     <ParallaxFigure
                       anchor="top"
@@ -212,8 +219,8 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
             />
 
             <div className="mt-[clamp(24px,2.7vw,44px)] hidden grid-cols-2 gap-[clamp(12px,1.2vw,18px)] sm:grid md:grid-cols-4">
-              {others.map((a) => (
-                <InsightCard key={a.slug} article={a} />
+              {more.map((a, i) => (
+                <InsightCard key={`${a.slug}-${i}`} article={a} />
               ))}
             </div>
           </section>
