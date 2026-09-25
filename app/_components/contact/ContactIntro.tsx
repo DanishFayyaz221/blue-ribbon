@@ -1,5 +1,6 @@
 import { LineReveal } from "../ui/LineReveal";
 import { ScrollGrowVideo } from "./ScrollGrowVideo";
+import { PlayOnceVideo } from "./PlayOnceVideo";
 
 const QUOTE =
   "“Step through our doors and you’ll feel the difference straight away. A warm welcome, a genuine conversation, and the kind of care that turns strangers into neighbours. At Blue Ribbon, hospitality isn’t a gesture, it’s who we are. Come sit with us, share your story, and let us make you feel right at home.”";
@@ -38,15 +39,12 @@ export function ContactIntro() {
             visible swap where there should be none. Without one the browser
             paints the video's own first frame, and the navy behind covers the
             moment before that. `aria-hidden`: it is decoration, and the
-            heading below carries the meaning for assistive tech. */}
-        <video
+            heading below carries the meaning for assistive tech.
+
+            Plays once and rests on its last frame rather than looping — see
+            PlayOnceVideo. */}
+        <PlayOnceVideo
           src="/hero-video/contactus.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden
           className="absolute inset-0 h-full w-full object-cover"
         />
         {/* The heading stays for assistive tech and search; only the running
