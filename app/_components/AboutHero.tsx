@@ -12,7 +12,7 @@ export function AboutHero() {
             again on any stall. The navy container shows through instead. */}
         <video
           className="h-full w-full object-cover"
-          src="/hero-video/hero.mp4"
+          src="/hero-video/home.mp4"
           autoPlay
           loop
           muted

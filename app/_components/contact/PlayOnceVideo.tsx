@@ -3,21 +3,20 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Films that have already played in this page load. Module state, so it
- * survives client-side navigation (leaving the page and coming back) but not
- * a reload — a reload is a fresh visit and plays the film again.
- */
-const played = new Set<string>();
-
-/**
  * A muted background film that plays through once and then rests on its last
- * frame. Coming back to the page without reloading shows that last frame
- * instead of replaying it.
+ * frame, rather than looping.
  *
- * No `autoPlay` attribute: the server cannot know whether this visit has seen
- * the film, and an autoplaying element would start running before the effect
- * could stop it. The effect starts it instead — muted, so browsers allow
- * play() without a gesture.
+ * "Once" means once per opening of the page, not once per session: the film
+ * used to be remembered in module state, so returning to the page by
+ * client-side navigation showed a frozen last frame instead of playing — the
+ * page read as broken, since nothing announces that the still is the end of a
+ * film you saw a few clicks ago. Every arrival now plays it; only looping is
+ * suppressed.
+ *
+ * No `autoPlay` attribute: the effect starts it instead, and rewinds first so
+ * an element restored with a used currentTime (a bfcache restore, or React
+ * reusing the node) starts from the top rather than sitting at the end.
+ * Muted, so browsers allow play() without a gesture.
  */
 export function PlayOnceVideo({ src, className }: { src: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -26,20 +25,20 @@ export function PlayOnceVideo({ src, className }: { src: string; className?: str
     const video = ref.current;
     if (!video) return;
 
-    if (!played.has(src)) {
-      played.add(src);
+    const start = () => {
+      video.currentTime = 0;
       video.play().catch(() => {});
-      return;
-    }
-
-    // Already seen: park on the closing frame. Seeking to `duration` itself
-    // paints black in some browsers, so stop a hair short of it.
-    const toEnd = () => {
-      if (Number.isFinite(video.duration)) video.currentTime = Math.max(0, video.duration - 0.05);
     };
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) toEnd();
-    else video.addEventListener("loadedmetadata", toEnd, { once: true });
-    return () => video.removeEventListener("loadedmetadata", toEnd);
+
+    // A video restored from the bfcache keeps its paused, played-out state,
+    // and no effect re-runs on that restore — so ask for it again there too.
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) start();
+    };
+    window.addEventListener("pageshow", onPageShow);
+
+    start();
+    return () => window.removeEventListener("pageshow", onPageShow);
   }, [src]);
 
   return (

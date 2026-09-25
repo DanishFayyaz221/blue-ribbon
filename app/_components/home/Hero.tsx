@@ -41,7 +41,7 @@ export function Hero() {
         <div className="parallax-media absolute inset-0">
           <video
             className="h-full w-full object-cover object-top"
-            src="/hero-video/brweb.mp4"
+            src="/hero-video/home.mp4"
             autoPlay
             loop
             muted
