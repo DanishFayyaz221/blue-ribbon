@@ -43,7 +43,7 @@ const BLUERIBBON_DIFFERENCE = "/images/the%20blueribbon%20differnec.png";
 const tilesByTab: Record<Tab, readonly Tile[]> = {
   Buying: [
     { label: "Advanced Search", href: "/buy", src: ADVANCED_SEARCH },
-    { label: "Meet Our Agents", href: "/agents", src: MEET_OUR_AGENTS },
+    { label: "Meet Our Agents", href: "/our-team", src: MEET_OUR_AGENTS },
     {
       label: "Our Latest Insights",
       href: "/market-insights",
@@ -51,7 +51,7 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/our-story",
       src: BLUERIBBON_DIFFERENCE,
     },
   ],
@@ -65,20 +65,20 @@ const tilesByTab: Record<Tab, readonly Tile[]> = {
     },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/our-story",
       src: BLUERIBBON_DIFFERENCE,
     },
     { label: "Visit Our Office", href: "/contact", src: "/images/find-an-office.png" },
-    { label: "Meet Our Agents", href: "/agents", src: MEET_OUR_AGENTS },
+    { label: "Meet Our Agents", href: "/our-team", src: MEET_OUR_AGENTS },
   ],
   // The property manager leads here — that is the relationship a renter or
   // landlord is really after — with the search second and the appraisal last.
   Renting: [
-    { label: "Find a Property Manager", href: "/agents", src: MEET_OUR_AGENTS },
+    { label: "Find a Property Manager", href: "/our-team", src: MEET_OUR_AGENTS },
     { label: "Search Rentals", href: "/rent", src: "/images/latest-properties.png" },
     {
       label: "The BlueRibbon Difference",
-      href: "/about",
+      href: "/our-story",
       src: BLUERIBBON_DIFFERENCE,
     },
     {

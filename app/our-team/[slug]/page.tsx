@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: `${agent.name} — ${role} | Blue Ribbon Real Estate`,
     description: `Contact ${agent.name}, ${role} at Blue Ribbon Real Estate, and browse their current listings across Western Sydney.`,
-    alternates: { canonical: `/agents/${agent.slug}` },
+    alternates: { canonical: `/our-team/${agent.slug}` },
   };
 }
 
@@ -59,7 +59,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
-              { label: "Our Team", href: "/agents" },
+              { label: "Our Team", href: "/our-team" },
               { label: agent.name },
             ]}
           />

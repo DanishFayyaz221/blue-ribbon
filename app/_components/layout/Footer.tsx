@@ -13,8 +13,8 @@ const mobileDealLinks = [
 ];
 
 const mobileAboutLinks = [
-  { label: "Our Story", href: "/about" },
-  { label: "Our Team", href: "/agents" },
+  { label: "Our Story", href: "/our-story" },
+  { label: "Our Team", href: "/our-team" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -36,8 +36,8 @@ const buyLinks = [
 ];
 
 const aboutLinks = [
-  { label: "Our Story", href: "/about" },
-  { label: "Our Team", href: "/agents" },
+  { label: "Our Story", href: "/our-story" },
+  { label: "Our Team", href: "/our-team" },
   { label: "Contact Us", href: "/contact" },
 ];
 

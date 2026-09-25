@@ -7,7 +7,7 @@ import { KnowUsBetter } from "../_components/KnowUsBetter";
 import { FounderQuote } from "../_components/FounderQuote";
 
 export const metadata = {
-  title: "About Us | Blue Ribbon Real Estate",
+  title: "Our Story | Blue Ribbon Real Estate",
   description: "Your Home, Our Priority. Meet the Blue Ribbon Realtors team.",
 };
 
@@ -24,7 +24,7 @@ export default function AboutPage() {
       <Nav />
       <main>
         <div className="hidden sm:block container-page pt-[16px] pb-[16px]">
-          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Our Story" }]} />
         </div>
         <AboutHero />
         <KnowUsBetter />

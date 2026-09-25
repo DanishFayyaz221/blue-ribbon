@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  // Pages renamed to match their menu labels. Permanent, so search engines
+  // move their index across and old links and bookmarks still land.
+  async redirects() {
+    return [
+      { source: "/about", destination: "/our-story", permanent: true },
+      { source: "/agents", destination: "/our-team", permanent: true },
+      { source: "/agents/:slug", destination: "/our-team/:slug", permanent: true },
+    ];
+  },
   images: {
     // 60 is for the navy fabric backdrop (bg.png): a soft, near-flat texture
     // where the extra bytes of 90 buy nothing visible, but the source file is

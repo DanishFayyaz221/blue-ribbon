@@ -33,7 +33,7 @@ export default async function AgentsPage() {
     .map((agent) => ({
       ...agent,
       ...profileFor(agent.email),
-      href: `/agents/${agent.slug}`,
+      href: `/our-team/${agent.slug}`,
     }))
     // Seniority first, listing count second. The feed hands these back sorted
     // by how many listings each person is on, which moves week to week — so a

@@ -30,16 +30,17 @@ const buyLinks = [
 
 const ownLinks = [
   { label: "Get your property estimate within 9 seconds", href: "/property-report-digital-appraisal" },
-  { label: "Contact Your Agent", href: "/agents" },
-  { label: "Visit Us", href: "/contact" },
+  { label: "Contact Your Agent", href: "/our-team" },
+  // No "Visit Us" here: it opened the same page as About Us > Contact, so the
+  // menu offered one destination under two names.
   // Grouped here rather than under About Us, matching the footer, where
   // Market Insights sits alongside the property estimate under "Insights".
   { label: "Market Insights", href: "/market-insights" },
 ];
 
 const aboutLinks = [
-  { label: "Our Story", href: "/about" },
-  { label: "Our Team", href: "/agents" },
+  { label: "Our Story", href: "/our-story" },
+  { label: "Our Team", href: "/our-team" },
   { label: "Contact", href: "/contact" },
 ];
 
