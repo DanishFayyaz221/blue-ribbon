@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CardGallery } from "./CardGallery";
 import { ParallaxMedia } from "./ParallaxMedia";
 import { MaskReveal } from "../ui/MaskReveal";
-import { SoldRibbon } from "./SoldRibbon";
+import { ListingRibbon } from "./ListingRibbon";
 
 export type PropertyCardData = {
   href?: string;
@@ -17,6 +17,8 @@ export type PropertyCardData = {
   type?: string;
   /** Draws the "SOLD" ribbon across the photo's top-right corner. */
   sold?: boolean;
+  /** Draws a "FOR LEASE" ribbon in the same place — a rental still on offer. */
+  forLease?: boolean;
 };
 
 type PropertyCardProps = PropertyCardData & {
@@ -73,6 +75,7 @@ export function PropertyCard({
   cars,
   type,
   sold = false,
+  forLease = false,
   variant = "tall",
   sizes,
   aspect,
@@ -175,7 +178,7 @@ export function PropertyCard({
         className="focus-veil absolute inset-0 z-10"
         style={{ touchAction: "pan-x pan-y" }}
       />
-      {sold && <SoldRibbon />}
+      {sold ? <ListingRibbon /> : forLease ? <ListingRibbon label="For Lease" /> : null}
     </>
   );
 

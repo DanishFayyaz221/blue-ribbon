@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CardGallery } from "../property/CardGallery";
-import { SoldRibbon } from "../property/SoldRibbon";
+import { ListingRibbon } from "../property/ListingRibbon";
 import type { ListingCard } from "@/lib/db/queries";
 
 type Props = {
@@ -322,7 +322,11 @@ export function ParramattaFeaturedCard({ featured }: Props) {
           rather than being tinted. */}
       {/* Top-left: the stats plaque holds the top-right. Above the haze so the
           band stays solid navy. */}
-      {featured.sold && <SoldRibbon corner="left" size="hero" />}
+      {featured.sold ? (
+        <ListingRibbon corner="left" size="hero" />
+      ) : featured.forLease ? (
+        <ListingRibbon label="For Lease" corner="left" size="hero" />
+      ) : null}
 
       <div className="featured-haze-top pointer-events-none absolute inset-x-0 top-0 z-[15] h-[26%] sm:h-[clamp(130px,16vw,260px)]" />
       <div className="featured-haze-bottom pointer-events-none absolute inset-x-0 bottom-0 z-[15] h-[26%] sm:h-[clamp(130px,16vw,260px)]" />

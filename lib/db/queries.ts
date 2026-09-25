@@ -99,6 +99,8 @@ export type ListingCard = {
   type?: string;
   /** Draws the "SOLD" ribbon on the card photo. */
   sold?: boolean;
+  /** Draws the "FOR LEASE" ribbon: a rental that is still available. */
+  forLease?: boolean;
 };
 
 export type ListingDetail = ListingCard & {
@@ -198,6 +200,7 @@ function toCard(doc: ListingDoc): ListingCard {
     cars: doc.features.totalParking || undefined,
     type: doc.propertyType,
     sold: doc.status === "sold",
+    forLease: RENTAL_CATEGORIES.includes(doc.category) && doc.status === "current",
   };
 }
 

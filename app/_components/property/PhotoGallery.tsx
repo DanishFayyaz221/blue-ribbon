@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { HoverAction } from "../ui/HoverAction";
-import { SoldRibbon } from "./SoldRibbon";
+import { ListingRibbon } from "./ListingRibbon";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -133,7 +133,7 @@ function Collage({
               />
             </div>
           </HoverAction>
-          {sold && <SoldRibbon corner="left" size="hero" />}
+          {sold && <ListingRibbon corner="left" size="hero" />}
         </button>
         {total > 1 && <ShowAllButton total={total} onClick={() => onOpen(0)} />}
       </div>
@@ -160,7 +160,7 @@ function Collage({
           />
         ))}
         {/* Top-left of the frame is the lead photo's corner. */}
-        {sold && <SoldRibbon corner="left" size="hero" />}
+        {sold && <ListingRibbon corner="left" size="hero" />}
       </div>
       <ShowAllButton total={total} onClick={() => onOpen(0)} />
     </div>
@@ -245,7 +245,7 @@ function HeroImage({
         />
       </button>
       {/* Stays up as the photos page: it describes the listing, not a frame. */}
-      {sold && <SoldRibbon corner="left" />}
+      {sold && <ListingRibbon corner="left" />}
 
       {count > 1 && (
         <>
