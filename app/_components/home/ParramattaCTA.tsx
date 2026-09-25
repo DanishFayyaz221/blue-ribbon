@@ -5,7 +5,8 @@ import { getLatestListings, getListingByAddress } from "@/lib/db/queries";
 export async function ParramattaCTA() {
   // Featured property shown as the section's hero card. Pinned to a specific
   // address so the section stays consistent; if that listing ever disappears
-  // from the feed we fall back to the most recent listing instead of dropping
+  // from the feed or sells, we fall back to the most recent listing still on
+  // the market (both queries leave sold stock out) instead of dropping
   // the section entirely, and if the whole query fails the stock photo below
   // still renders.
   let featured = null;

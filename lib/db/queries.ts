@@ -622,12 +622,15 @@ export const getSoldListings = cache(async (limit = 6, excludeId?: string): Prom
  * Fetch a single listing card by (partial) address match — case-insensitive.
  * Used by the home page's Parramatta feature to pin a specific listing rather
  * than showing whatever happens to be the most recent one.
+ *
+ * On-market only: a featured home that has sold is no longer an offer, so the
+ * pin lapses and the caller falls back to something that is.
  */
 export const getListingByAddress = cache(
   async (addressFragment: string): Promise<ListingCard | null> => {
     const col = await listings();
     const doc = await col.findOne(
-      publicFilter({
+      onMarketFilter({
         "address.full": { $regex: addressFragment, $options: "i" },
       }),
     );
