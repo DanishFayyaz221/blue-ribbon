@@ -9,6 +9,7 @@ import { ContactForm } from "../_components/contact/ContactForm";
 import { MobileCarousel } from "../_components/ui/MobileCarousel";
 import { getAgents } from "@/lib/db/queries";
 import { profileFor } from "@/lib/agents/profiles";
+import { withLocalRoster } from "@/lib/agents/roster";
 
 export const metadata = {
   title: "Our Team | Blue Ribbon Real Estate",
@@ -21,11 +22,17 @@ export default async function AgentsPage() {
   // not be frozen into the build output.
   await connection();
 
-  const feedAgents = await getAgents();
+  // The feed, plus colleagues it has not started returning yet — it builds
+  // the team out of published listings, so a new starter is invisible until
+  // their first one goes live. A roster entry drops out the moment the same
+  // email arrives from Agentbox, so the live record always wins and no one
+  // is listed twice. See lib/agents/roster.ts.
+  const feedAgents = withLocalRoster(await getAgents());
 
   // Names on this page are statements about who works at the agency, so the
-  // list is built strictly from agents the feed actually returns. Photos and
-  // roles come from the local profile map; contact details come from Agentbox.
+  // list is built from agents the feed returns plus the hand-kept roster.
+  // Photos and roles come from the local profile map; contact details come
+  // from Agentbox for anyone the feed knows.
   // The card links to the agent's own page, not `mailto:`. The card shows a
   // listing count, and a visitor clicking that expects the listings — opening
   // a mail client instead was the one thing it could not have meant.

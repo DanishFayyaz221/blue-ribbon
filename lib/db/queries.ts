@@ -804,7 +804,7 @@ export const getAgents = cache(async (): Promise<FeedAgent[]> => {
 
 /** Lowercase, hyphenated, ASCII-only. Falls back to "agent" for a name that
  *  reduces to nothing (e.g. one written entirely in a non-Latin script). */
-function agentSlug(value: string): string {
+export function agentSlug(value: string): string {
   return (
     value
       .normalize("NFKD")

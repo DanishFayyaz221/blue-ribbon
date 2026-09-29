@@ -10,6 +10,7 @@ import { PropertyCard } from "../../_components/property/PropertyCard";
 import { TeamCTA } from "../../_components/sections/TeamCTA";
 import { getAgents, getListingsByAgent, type FeedAgent } from "@/lib/db/queries";
 import { profileFor } from "@/lib/agents/profiles";
+import { withLocalRoster } from "@/lib/agents/roster";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -21,7 +22,9 @@ type PageProps = { params: Promise<{ slug: string }> };
  * five people and already cached per request.
  */
 async function findAgent(slug: string): Promise<FeedAgent | undefined> {
-  return (await getAgents()).find((a) => a.slug === slug);
+  // Same list the team page renders, roster included — otherwise the cards it
+  // shows for colleagues the feed has not caught up with would all 404.
+  return withLocalRoster(await getAgents()).find((a) => a.slug === slug);
 }
 
 export async function generateMetadata({ params }: PageProps) {

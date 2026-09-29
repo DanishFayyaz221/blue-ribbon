@@ -53,6 +53,40 @@ export const AGENT_PROFILES: Record<string, AgentProfile> = {
     image: "/our-team/7.png",
     order: 3,
   },
+  "sri@blueribbonre.com.au": {
+    role: "Sales Associate",
+    image: "/our-team/sri-website-photot.png",
+    order: 4,
+  },
+  // Bal, Udaya and Manish are not in the Agentbox feed yet; they reach the
+  // team page through lib/agents/roster.ts, and this supplies the half of
+  // their card the feed never carries.
+  //
+  // Bal has no `image`: no headshot was supplied, so the card falls back to
+  // his initials. Do not point it at a colleague's photo to fill the gap —
+  // see the note on `image` above.
+  "bal@blueribbonre.com.au": {
+    role: "Sales Associate",
+    order: 5,
+  },
+  "udaya@blueribbonre.com.au": {
+    role: "Sales Executive",
+    image: "/our-team/udaya-website-photot.png",
+    order: 6,
+  },
+  "manish@blueribbonre.com.au": {
+    role: "Business Development Manager",
+    image: "/our-team/manish-website-photot.png",
+    order: 7,
+  },
+  // In the feed already, so only the photo and role were missing. `%20` for
+  // the space in the filename: an unescaped space in a URL is not a valid
+  // path and next/image rejects it.
+  "emily@blueribbonre.com.au": {
+    role: "Sales & Leasing",
+    image: "/our-team/emily%20kan-website-photot.png",
+    order: 8,
+  },
 };
 
 export function profileFor(email: string | undefined): AgentProfile {
