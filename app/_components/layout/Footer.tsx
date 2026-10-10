@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FooterDealButtons } from "./FooterDealButtons";
 import { RollLink } from "../ui/RollLink";
-import { RATE_MY_AGENT_URL } from "./links";
+import { OFFICE_ADDRESS, OFFICE_MAP_URL, RATE_MY_AGENT_URL } from "./links";
 
 /** Buy / Rent / Sell in the comp's order for the phone footer, then Sold. */
 const mobileDealLinks = [
@@ -111,14 +111,14 @@ function MobileFooter() {
             viewport. */}
         <div className="mt-[36px] flex flex-col items-start gap-[4px] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
           <RollLink
-            href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+            href={OFFICE_MAP_URL}
             target="_blank"
             rel="noopener noreferrer"
             lines
             autoplayOnScroll
             className="roll-link-white"
           >
-            {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
+            {OFFICE_ADDRESS}
           </RollLink>
           <RollLink
             href="mailto:sales@blueribbonre.com.au"
@@ -298,13 +298,13 @@ function DesktopFooter() {
               email/phone cell starts where Insights does. */}
           <div className="col-start-3 row-start-2 -mr-[clamp(6px,0.95vw,16px)] mt-[clamp(44px,4.5vw,72px)] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">
             <RollLink
-              href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+              href={OFFICE_MAP_URL}
               target="_blank"
               rel="noopener noreferrer"
               lines
               className="roll-link-white"
             >
-              {"11/76-80 Station Street,\nWentworthville, NSW 2145"}
+              {OFFICE_ADDRESS}
             </RollLink>
           </div>
           <div className="col-start-4 col-span-2 row-start-2 mt-[clamp(44px,4.5vw,72px)] font-display text-[14px] italic font-medium leading-[22px] tracking-[0.04em] text-white/85">

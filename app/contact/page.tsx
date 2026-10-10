@@ -5,6 +5,7 @@ import { ContactForm } from "../_components/contact/ContactForm";
 import { ContactIntro } from "../_components/contact/ContactIntro";
 import { VisitOurOffice } from "../_components/contact/VisitOurOffice";
 import { LineReveal } from "../_components/ui/LineReveal";
+import { OFFICE_ADDRESS_INLINE, OFFICE_MAP_URL } from "../_components/layout/links";
 
 export const metadata = {
   title: "Contact Us | Blue Ribbon Real Estate",
@@ -35,10 +36,10 @@ export default function ContactPage() {
               Blue Ribbon Real Estate
             </p>
             <p className="font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker/70">
-              11/76-80 Station Street, Wentworthville NSW 2145
+              {OFFICE_ADDRESS_INLINE}
             </p>
             <a
-              href="https://maps.google.com/?q=Blue+Ribbon+Real+Estate,+11/76-80+Station+St,+Wentworthville+NSW+2145"
+              href={OFFICE_MAP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="font-display text-[clamp(11px,0.8vw,13px)] font-semibold text-blue-600 hover:underline"

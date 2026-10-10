@@ -10,7 +10,7 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "About these terms",
     paragraphs: [
-      "This website is operated by Blue Ribbon Real Estate of Suite 11/76-80 Station Street, Wentworthville NSW 2145 (“Blue Ribbon”, “we”, “us” or “our”). These terms apply to your use of the website and to the listings, reports, forms and other services made available through it.",
+      "This website is operated by Blue Ribbon Real Estate of Suite 11/76-80 Station St, Wentworthville NSW 2145 (“Blue Ribbon”, “we”, “us” or “our”). These terms apply to your use of the website and to the listings, reports, forms and other services made available through it.",
       "By using the website you agree to these terms and to our Privacy Policy. If you do not agree, please do not use the website. Where you engage us to sell, lease or manage a property, a separate agency agreement or management agreement applies to that engagement and prevails over these terms to the extent of any inconsistency.",
     ],
   },
@@ -97,7 +97,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Contact us",
     paragraphs: [
       "If you have any questions about these terms, please contact us.",
-      "Blue Ribbon Real Estate\nSuite 11/76-80 Station Street, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
+      "Blue Ribbon Real Estate\nSuite 11/76-80 Station St, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
     ],
   },
 ];
