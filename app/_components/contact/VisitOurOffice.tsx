@@ -32,7 +32,7 @@ export function VisitOurOffice() {
           as="p"
           className="mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          At Blue Ribbon, Our doors are open to a community of vibrant, dedicated
+          At BlueRibbon, Our doors are open to a community of vibrant, dedicated
           experts who are focused on delivering premium outcomes and tailored
           property advice for every visitor. Combining a welcoming atmosphere with
           professional standards, our office serves as a hub where local market

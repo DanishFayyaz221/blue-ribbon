@@ -283,7 +283,7 @@ export function AppraisalFlow({
             >
               <Image
                 src="/images/frame3.png"
-                alt="A Blue Ribbon agent going through property listings with a family"
+                alt="A BlueRibbon agent going through property listings with a family"
                 fill
                 sizes="100vw"
                 className="object-cover object-center"
@@ -365,7 +365,7 @@ export function AppraisalFlow({
                     />
                     <span className="font-display text-[11px] leading-[1.5] text-brand-bunker/70">
                       I agree that the information provided on this Website can be used by
-                      Blue Ribbon Real Estate to contact me.
+                      BlueRibbon Real Estate® to contact me.
                     </span>
                   </label>
                   <label className="mt-[8px] flex items-start gap-[10px]">
@@ -530,7 +530,7 @@ export function AppraisalFlow({
                         className="mt-[3px] h-[14px] w-[14px] accent-[#000000]"
                       />
                       <span className="font-display text-[clamp(9.5px,0.72vw,11px)] leading-[1.5] text-brand-bunker/75">
-                        I agree that the information I&rsquo;ve provided on this Website can be used by Blue Ribbon Real Estate{" "}
+                        I agree that the information I&rsquo;ve provided on this Website can be used by BlueRibbon Real Estate®{" "}
                         <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-navy">
                           Privacy Policy
                         </Link>{" "}

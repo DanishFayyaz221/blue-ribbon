@@ -76,7 +76,7 @@ export function TeamCTA() {
         >
           <Image
             src="/images/real.png"
-            alt="A Blue Ribbon agent presenting a property brochure to a client"
+            alt="A BlueRibbon agent presenting a property brochure to a client"
             fill
             sizes="(max-width: 640px) 100vw, 48vw"
             className="object-cover"

@@ -184,7 +184,7 @@ export function Nav() {
                 exactly the sideways scroll described above. */}
             <Image
               src="/logo/update-final.png"
-              alt="Blue Ribbon Real Estate"
+              alt="BlueRibbon Real Estate"
               width={1199}
               height={208}
               priority
@@ -274,7 +274,7 @@ export function Nav() {
               {/* Width-sized, as in the bar above — see the note there. */}
               <Image
                 src="/logo/update-final.png"
-                alt="Blue Ribbon Real Estate"
+                alt="BlueRibbon Real Estate"
                 width={1199}
                 height={208}
                 className="h-auto w-[150px] sm:w-[170px] lg:w-[200px]"
@@ -343,7 +343,7 @@ export function Nav() {
                 href={RATE_MY_AGENT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Blue Ribbon Real Estate on Rate My Agent"
+                aria-label="BlueRibbon Real Estate on Rate My Agent"
                 className="block shrink-0 transition hover:opacity-80"
               >
                 <Image
@@ -463,7 +463,7 @@ export function Nav() {
                   href={RATE_MY_AGENT_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Blue Ribbon Real Estate on Rate My Agent"
+                  aria-label="BlueRibbon Real Estate on Rate My Agent"
                   className="mt-[16px] block transition hover:opacity-80"
                 >
                   <Image

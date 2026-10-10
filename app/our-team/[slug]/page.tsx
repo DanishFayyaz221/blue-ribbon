@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const agent = await findAgent(slug);
 
-  if (!agent) return { title: "Agent not found | Blue Ribbon Real Estate" };
+  if (!agent) return { title: "Agent not found | BlueRibbon Real Estate" };
 
   const { role } = profileFor(agent.email);
   return {
-    title: `${agent.name} — ${role} | Blue Ribbon Real Estate`,
-    description: `Contact ${agent.name}, ${role} at Blue Ribbon Real Estate, and browse their current listings across Western Sydney.`,
+    title: `${agent.name} — ${role} | BlueRibbon Real Estate`,
+    description: `Contact ${agent.name}, ${role} at BlueRibbon Real Estate, and browse their current listings across Western Sydney.`,
     alternates: { canonical: `/our-team/${agent.slug}` },
   };
 }

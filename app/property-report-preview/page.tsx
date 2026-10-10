@@ -3,7 +3,7 @@ import { getAppraisalListings } from "../_components/appraisal/listings";
 import { DprReport } from "../_components/reports/DprReport";
 
 export const metadata = {
-  title: "Property Report Preview | Blue Ribbon Real Estate",
+  title: "Property Report Preview | BlueRibbon Real Estate",
 };
 
 // Reached from /property-report after submitting the "Hey there!" form (NEXT).

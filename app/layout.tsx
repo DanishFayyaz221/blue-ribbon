@@ -28,7 +28,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Blue Ribbon Real Estate",
+  title: "BlueRibbon Real Estate",
   description:
     "Your bridge to home. Premier property representation across Western Sydney.",
 };

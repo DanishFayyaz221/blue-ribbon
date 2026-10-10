@@ -15,9 +15,9 @@ import {
 } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Recently Sold Properties | Blue Ribbon Real Estate",
+  title: "Recently Sold Properties | BlueRibbon Real Estate",
   description:
-    "Homes Blue Ribbon Real Estate has recently sold across Western Sydney.",
+    "Homes BlueRibbon Real Estate has recently sold across Western Sydney.",
 };
 
 /** Cards per "View more" step: three rows of three. */
@@ -79,7 +79,7 @@ export default async function SoldPage({
             negotiating the best possible outcome for our sellers. Each sale is another bridge to
             home built for the families we work with, and proof that the right local agent makes
             all the difference. Browse our recent results below, and if you&apos;re thinking about
-            selling, talk to the Blue Ribbon team about what your property could achieve in
+            selling, talk to the BlueRibbon team about what your property could achieve in
             today&apos;s market.
           </p>
         </section>

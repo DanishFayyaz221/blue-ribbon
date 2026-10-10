@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
   const listing = await getListingBySlug(id);
 
-  if (!listing) return { title: "Property not found | Blue Ribbon Real Estate" };
+  if (!listing) return { title: "Property not found | BlueRibbon Real Estate" };
 
   return {
-    title: `${listing.address} | Blue Ribbon Real Estate`,
+    title: `${listing.address} | BlueRibbon Real Estate`,
     description: listing.headline,
     openGraph: {
       title: listing.headline,

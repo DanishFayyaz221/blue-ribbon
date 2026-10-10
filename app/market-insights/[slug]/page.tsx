@@ -25,9 +25,9 @@ type Params = { slug: string };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
   const article = getArticle((await params).slug);
-  if (!article) return { title: "Market Insights | Blue Ribbon Real Estate" };
+  if (!article) return { title: "Market Insights | BlueRibbon Real Estate" };
   return {
-    title: `${article.title} | Blue Ribbon Real Estate`,
+    title: `${article.title} | BlueRibbon Real Estate`,
     description: article.subtitle,
   };
 }

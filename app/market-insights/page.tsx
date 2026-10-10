@@ -12,7 +12,7 @@ import { INSIGHT_ARTICLES } from "@/lib/insights/articles";
 import { getLatestListings } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Market Insights | Blue Ribbon Real Estate",
+  title: "Market Insights | BlueRibbon Real Estate",
   description:
     "Honest takes on the Western Sydney property market, practical tips for buyers and sellers, and the trends shaping local property.",
 };
@@ -62,7 +62,7 @@ export default async function MarketInsightsPage() {
               as="p"
               className="mt-[16px] sm:mt-[clamp(18px,2vw,34px)] max-w-[1040px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
             >
-              Stay in the know with the latest from Blue Ribbon. Our insights bring you
+              Stay in the know with the latest from BlueRibbon. Our insights bring you
               honest takes on the local market, practical tips for buyers and sellers,
               and a closer look at the trends shaping property across Western Sydney.
               Whether you&rsquo;re preparing to sell, hunting for your first home, or

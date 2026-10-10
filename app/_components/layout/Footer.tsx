@@ -157,7 +157,7 @@ function MobileFooter() {
             href={RATE_MY_AGENT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Blue Ribbon Real Estate on Rate My Agent"
+            aria-label="BlueRibbon Real Estate on Rate My Agent"
             className="block shrink-0 transition hover:opacity-80"
           >
             <Image
@@ -173,7 +173,7 @@ function MobileFooter() {
         </div>
 
         <p className="mt-[32px] text-center font-display text-[11.5px] text-white/85">
-          ©2026 Blue Ribbon Real Estate. All Rights Reserved.
+          ©2026 BlueRibbon Real Estate®. All Rights Reserved.
         </p>
         <div className="mt-[8px] flex items-center justify-center gap-[8px] font-display text-[10.5px] text-white/70">
           <Link href="/terms" className="hover:underline">
@@ -266,7 +266,7 @@ function DesktopFooter() {
               href={RATE_MY_AGENT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Blue Ribbon Real Estate on Rate My Agent"
+              aria-label="BlueRibbon Real Estate on Rate My Agent"
               className="block transition hover:opacity-80"
             >
               {/* Transparent cut of the Rate My Agent badge: the original
@@ -325,7 +325,7 @@ function DesktopFooter() {
       <div className="relative z-10 bg-black text-white">
         <div className="mx-auto w-full max-w-[1280px] px-[var(--page-px)] flex flex-col gap-[6px] py-[14px] text-center sm:flex-row sm:items-center sm:justify-between sm:text-left xl:max-w-none">
           <p className="font-display text-[13px] sm:text-[15px] font-medium leading-[1.4]">
-            ©2026 Blue Ribbon Real Estate. All Rights Reserved.
+            ©2026 BlueRibbon Real Estate®. All Rights Reserved.
           </p>
           <div className="flex items-center justify-center gap-[20px]">
             <Link href="/terms" className="font-display text-[13px] sm:text-[14px] font-medium hover:underline">

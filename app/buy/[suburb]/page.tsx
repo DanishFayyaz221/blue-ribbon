@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: PageProps) {
   const { suburb } = await params;
   const match = (await getSuburbsWithCounts(SALE_CATEGORIES)).find((s) => s.slug === suburb);
 
-  if (!match) return { title: "Not found | Blue Ribbon Real Estate" };
+  if (!match) return { title: "Not found | BlueRibbon Real Estate" };
 
   return {
-    title: `Properties for Sale in ${match.name} | Blue Ribbon Real Estate`,
-    description: `${match.count} ${match.count === 1 ? "property" : "properties"} for sale in ${match.name}, NSW. Browse listings with Blue Ribbon Real Estate.`,
+    title: `Properties for Sale in ${match.name} | BlueRibbon Real Estate`,
+    description: `${match.count} ${match.count === 1 ? "property" : "properties"} for sale in ${match.name}, NSW. Browse listings with BlueRibbon Real Estate.`,
     alternates: { canonical: `/buy/${match.slug}` },
   };
 }

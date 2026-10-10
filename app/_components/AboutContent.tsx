@@ -6,17 +6,17 @@ const rows = [
   {
     title: "Your Australian\nProperty Partners",
     image: "/images/australian.png",
-    body: "Established to redefine excellence, Blue Ribbon Real Estate has rapidly emerged as a premier agency and a respected industry leader across the Australian market. Committed to raising the bar, Blue Ribbon was founded to transform the real estate experience through a dedication to integrity and local expertise. Our service focuses on more than just transactions; it is about supporting our clients\u2019 lifestyles, financial growth, and long-term security.",
+    body: "Established to redefine excellence, BlueRibbon Real Estate® has rapidly emerged as a premier agency and a respected industry leader across the Australian market. Committed to raising the bar, BlueRibbon was founded to transform the real estate experience through a dedication to integrity and local expertise. Our service focuses on more than just transactions; it is about supporting our clients\u2019 lifestyles, financial growth, and long-term security.",
   },
   {
     title: "Building Excellence\nIn Property",
     image: "/images/building.png",
-    body: "Blue Ribbon is driven by a team of dynamic professionals united by a singular passion to secure the absolute best results for every Australian homeowner. Blending modern innovation with traditional integrity, our steadfast commitment to these core principles distinguishes us within the competitive retail market. By constantly evolving and refining our expertise, we provide an elevated standard of service designed to exceed your property goals.",
+    body: "BlueRibbon is driven by a team of dynamic professionals united by a singular passion to secure the absolute best results for every Australian homeowner. Blending modern innovation with traditional integrity, our steadfast commitment to these core principles distinguishes us within the competitive retail market. By constantly evolving and refining our expertise, we provide an elevated standard of service designed to exceed your property goals.",
   },
   {
     title: "A Standard\nBeyond Expectations",
     image: "/images/beyond.png",
-    body: "At Blue Ribbon, excellence is never left to chance. Every appraisal, every campaign, and every negotiation is guided by a simple belief that our clients deserve more than the ordinary. Our team blends sharp market insight with a genuine commitment to doing right by the people we serve. We take the time to understand what matters most to you, then build a strategy designed to protect it and grow it. From the first conversation to the moment the deal is done, we hold ourselves to a higher mark, because your trust is something we intend to earn every single day.",
+    body: "At BlueRibbon, excellence is never left to chance. Every appraisal, every campaign, and every negotiation is guided by a simple belief that our clients deserve more than the ordinary. Our team blends sharp market insight with a genuine commitment to doing right by the people we serve. We take the time to understand what matters most to you, then build a strategy designed to protect it and grow it. From the first conversation to the moment the deal is done, we hold ourselves to a higher mark, because your trust is something we intend to earn every single day.",
   },
 ];
 

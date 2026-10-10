@@ -29,7 +29,7 @@ export function KnowUsBetter() {
           as="p"
           className="mt-[16px] sm:mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          At Blue Ribbon, most of our clients have only sold a home once or twice
+          At BlueRibbon, most of our clients have only sold a home once or twice
           in their lives. Every time, it&rsquo;s the biggest cheque they&rsquo;ll
           ever sign. That&rsquo;s why we do this differently. We&rsquo;re a Pendle
           Hill agency, and we&rsquo;ve stayed local on purpose. Wentworthville,
@@ -54,7 +54,7 @@ export function KnowUsBetter() {
           towards the cursor, like the Parramatta featured card. */}
       <TiltImage
         src="/images/parramatta.png"
-        alt="Blue Ribbon property brochures on a table beside a sofa"
+        alt="BlueRibbon property brochures on a table beside a sofa"
         sizes="100vw"
         className="reveal-scale mt-[clamp(32px,4.5vw,72px)] w-full aspect-[4/3] sm:aspect-[1920/903]"
       />

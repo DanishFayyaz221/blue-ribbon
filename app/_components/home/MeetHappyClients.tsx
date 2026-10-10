@@ -31,7 +31,7 @@ const testimonials: Testimonial[] = [
     id: 6,
     image: "/reviews/6.png",
     quote:
-      "Outstanding experience with Blue Ribbon. Can’t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
+      "Outstanding experience with BlueRibbon. Can’t thank Ven and Ritu enough for their genuine care and professionalism throughout the process. Would highly recommend.",
     name: "Timothy Lambert",
     title: "Local Guide",
     rating: 5,
@@ -41,7 +41,7 @@ const testimonials: Testimonial[] = [
     id: 1,
     image: "/reviews/1.png",
     quote:
-      "Highly recommend Blue Ribbon Real Estate. They were great in helping me purchase my property. Excellent communication, quick reply and efficient.",
+      "Highly recommend BlueRibbon Real Estate. They were great in helping me purchase my property. Excellent communication, quick reply and efficient.",
     name: "Ashutosh Jagota",
     title: "Satisfied Client",
     rating: 5,
@@ -51,7 +51,7 @@ const testimonials: Testimonial[] = [
     id: 2,
     image: "/reviews/2.png",
     quote:
-      "Ritu and Sri were extremely professional, great in communication and genuinely caring. I would highly recommend Blue Ribbon Realtors to anyone who is looking out for a property.",
+      "Ritu and Sri were extremely professional, great in communication and genuinely caring. I would highly recommend BlueRibbon Realtors to anyone who is looking out for a property.",
     name: "Karan Tuteja",
     title: "Local Guide",
     rating: 4.5,
@@ -61,7 +61,7 @@ const testimonials: Testimonial[] = [
     id: 3,
     image: "/reviews/3.png",
     quote:
-      "Blue ribbon is best real estate in the area. Team is very helpful. Pricing is genuine. We can trust them. Thanks to Ven, the best agent in the area. Wish you all the best.",
+      "BlueRibbon is best real estate in the area. Team is very helpful. Pricing is genuine. We can trust them. Thanks to Ven, the best agent in the area. Wish you all the best.",
     name: "Mamun Khan",
     title: "Local Guide",
     rating: 5,
@@ -71,7 +71,7 @@ const testimonials: Testimonial[] = [
     id: 5,
     image: "/reviews/5.png",
     quote:
-      "Such a friendly real estate. I like them a lot. I was in search for a house since 1 month before I came to Blue Ribbon Realtors, but they gave me a house in just 3 days — the process was very fast. Happy client.",
+      "Such a friendly real estate. I like them a lot. I was in search for a house since 1 month before I came to BlueRibbon Realtors, but they gave me a house in just 3 days — the process was very fast. Happy client.",
     name: "Sama Jaswanth",
     title: "Local Guide",
     rating: 5,

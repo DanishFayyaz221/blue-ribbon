@@ -8,7 +8,7 @@ import { LineReveal } from "../_components/ui/LineReveal";
 import { OFFICE_ADDRESS_INLINE, OFFICE_MAP_URL } from "../_components/layout/links";
 
 export const metadata = {
-  title: "Contact Us | Blue Ribbon Real Estate",
+  title: "Contact Us | BlueRibbon Real Estate",
 };
 
 export default function ContactPage() {
@@ -33,7 +33,7 @@ export default function ContactPage() {
               above it are the desktop comp's. */}
           <div className="mb-[16px] hidden flex-col items-center gap-[4px] text-center sm:flex">
             <p className="font-display text-[clamp(18px,1.6vw,26px)] font-bold text-brand-navy leading-[1.2]">
-              Blue Ribbon Real Estate
+              BlueRibbon Real Estate®
             </p>
             <p className="font-display text-[clamp(12px,0.9vw,15px)] font-medium text-brand-bunker/70">
               {OFFICE_ADDRESS_INLINE}
@@ -50,7 +50,7 @@ export default function ContactPage() {
           <div className="relative -mx-[var(--page-px)] aspect-[5/6] overflow-hidden bg-brand-soft-2 sm:mx-0 sm:aspect-video sm:w-full sm:rounded-[clamp(8px,1vw,16px)]">
             <iframe
               src="https://maps.google.com/maps?q=Blue+Ribbon+Real+Estate,+11%2F76-80+Station+St,+Wentworthville+NSW+2145&z=17&output=embed&iwloc=near"
-              title="Blue Ribbon Real Estate office location"
+              title="BlueRibbon Real Estate office location"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen

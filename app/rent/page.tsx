@@ -23,9 +23,9 @@ import {
 } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Properties for Rent | Blue Ribbon Real Estate",
+  title: "Properties for Rent | BlueRibbon Real Estate",
   description:
-    "Browse rental properties across Western Sydney with Blue Ribbon Real Estate.",
+    "Browse rental properties across Western Sydney with BlueRibbon Real Estate.",
 };
 
 export default async function RentPage({

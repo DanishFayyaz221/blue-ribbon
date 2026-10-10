@@ -60,7 +60,7 @@ export function ValuesShowcase() {
             >
               <Image
                 src={v.image}
-                alt={`${v.title} at Blue Ribbon Real Estate`}
+                alt={`${v.title} at BlueRibbon Real Estate`}
                 fill
                 sizes="(max-width: 640px) 100vw, 22vw"
                 className="object-cover"

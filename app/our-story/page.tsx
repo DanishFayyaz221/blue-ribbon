@@ -7,8 +7,8 @@ import { KnowUsBetter } from "../_components/KnowUsBetter";
 import { FounderQuote } from "../_components/FounderQuote";
 
 export const metadata = {
-  title: "Our Story | Blue Ribbon Real Estate",
-  description: "Your Home, Our Priority. Meet the Blue Ribbon Realtors team.",
+  title: "Our Story | BlueRibbon Real Estate",
+  description: "Your Home, Our Priority. Meet the BlueRibbon Realtors team.",
 };
 
 /**

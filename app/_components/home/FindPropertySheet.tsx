@@ -210,7 +210,7 @@ export function FindPropertySheet({ onClose, initialWantTo = "Buy" }: Props) {
               fixed height would lay it out wider than a phone. */}
           <Image
             src="/logo/update-final.png"
-            alt="Blue Ribbon Real Estate"
+            alt="BlueRibbon Real Estate"
             width={1199}
             height={208}
             className="h-auto w-[150px]"

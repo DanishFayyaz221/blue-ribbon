@@ -16,13 +16,13 @@ export function TeamIntro() {
           as="h1"
           className="mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[30px] sm:text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
         >
-          The Blue Ribbon Difference
+          The BlueRibbon Difference
         </LineReveal>
         <LineReveal
           as="p"
           className="mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          Behind every successful sale at Blue Ribbon is a team that genuinely cares
+          Behind every successful sale at BlueRibbon is a team that genuinely cares
           about the people they serve. We are a group of local specialists who know
           this corner of Australia intimately, and we bring that knowledge to every
           conversation, every appraisal, and every negotiation. What unites us is a
@@ -33,7 +33,7 @@ export function TeamIntro() {
           as="p"
           className="mt-[clamp(16px,1.6vw,26px)] max-w-[960px] font-display text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          At Blue Ribbon, we listen first, give you honest advice and stay with you
+          At BlueRibbon, we listen first, give you honest advice and stay with you
           from the first chat to the final signature. Meet the local team that makes
           the difference.
         </LineReveal>

@@ -3,7 +3,7 @@ import { ScrollGrowVideo } from "./ScrollGrowVideo";
 import { PlayOnceVideo } from "./PlayOnceVideo";
 
 const QUOTE =
-  "“Step through our doors and you’ll feel the difference straight away. A warm welcome, a genuine conversation, and the kind of care that turns strangers into neighbours. At Blue Ribbon, hospitality isn’t a gesture, it’s who we are. Come sit with us, share your story, and let us make you feel right at home.”";
+  "“Step through our doors and you’ll feel the difference straight away. A warm welcome, a genuine conversation, and the kind of care that turns strangers into neighbours. At BlueRibbon, hospitality isn’t a gesture, it’s who we are. Come sit with us, share your story, and let us make you feel right at home.”";
 
 /**
  * Top of the Contact page from sm up: a full-bleed film, then a justified

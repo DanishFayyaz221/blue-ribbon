@@ -33,9 +33,9 @@ import {
 } from "@/lib/db/queries";
 
 export const metadata = {
-  title: "Properties for Sale | Blue Ribbon Real Estate",
+  title: "Properties for Sale | BlueRibbon Real Estate",
   description:
-    "Browse homes for sale across Western Sydney with Blue Ribbon Real Estate.",
+    "Browse homes for sale across Western Sydney with BlueRibbon Real Estate.",
 };
 
 export default async function BuyPage({

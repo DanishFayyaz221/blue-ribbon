@@ -3,7 +3,7 @@ import { getAppraisalListings } from "../_components/appraisal/listings";
 import { DprReport } from "../_components/reports/DprReport";
 
 export const metadata = {
-  title: "Digital Property Appraisal | Blue Ribbon Real Estate",
+  title: "Digital Property Appraisal | BlueRibbon Real Estate",
 };
 
 // The complete property-estimate page. Selecting "Rental" + Search navigates

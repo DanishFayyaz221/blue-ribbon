@@ -12,9 +12,9 @@ import { profileFor } from "@/lib/agents/profiles";
 import { withLocalRoster } from "@/lib/agents/roster";
 
 export const metadata = {
-  title: "Our Team | Blue Ribbon Real Estate",
+  title: "Our Team | BlueRibbon Real Estate",
   description:
-    "Meet the team behind Blue Ribbon Real Estate, servicing Parramatta and Western Sydney.",
+    "Meet the team behind BlueRibbon Real Estate, servicing Parramatta and Western Sydney.",
 };
 
 export default async function AgentsPage() {

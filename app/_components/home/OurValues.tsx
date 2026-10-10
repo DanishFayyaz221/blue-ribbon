@@ -112,7 +112,7 @@ export function OurValues() {
       >
         <Image
           src="/images/frame1.png"
-          alt="A Blue Ribbon agent in conversation with a client"
+          alt="A BlueRibbon agent in conversation with a client"
           fill
           sizes="100vw"
           className="object-cover object-center"
