@@ -23,7 +23,7 @@ export const RATE_MY_AGENT_URL =
  * design asks for rather than a `<br>` in every caller.
  */
 export const OFFICE_ADDRESS =
-  "Suite 11/76-80 Station St,\nWentworthville NSW 2145";
+  "Suite 11, 76-80 Station St,\nWentworthville NSW 2145";
 
 /** The same address on one line, for prose and link titles. */
 export const OFFICE_ADDRESS_INLINE = OFFICE_ADDRESS.replace("\n", " ");

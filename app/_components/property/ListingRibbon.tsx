@@ -1,6 +1,6 @@
 /**
  * Diagonal navy band across a photo's corner carrying the listing's state —
- * "Sold" on sold stock, "For Lease" on rentals still on the market.
+ * "Sold" on sold stock, "Leased" on rentals still on the market.
  *
  * The parent must be `relative overflow-hidden`: the band is deliberately
  * longer than the corner and relies on the clip to trim both ends. It sits
@@ -32,7 +32,7 @@ const SIZE = {
 /**
  * A label longer than "Sold" does not fit the stretch of band left showing
  * across the corner. The band runs further from the corner, where that
- * stretch is longer, and the type steps down, so "For Lease" clears both
+ * stretch is longer, and the type steps down, so a longer label clears both
  * clipped ends.
  */
 const LONG_CORNER = {

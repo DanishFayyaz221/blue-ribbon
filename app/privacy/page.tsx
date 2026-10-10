@@ -1,16 +1,16 @@
 import { LegalDocument, type LegalSection } from "../_components/legal/LegalDocument";
 
 export const metadata = {
-  title: "Privacy Policy | Blue Ribbon Real Estate",
+  title: "Privacy Policy | BlueRibbon Real Estate",
   description:
-    "How Blue Ribbon Real Estate collects, uses, shares and protects your personal information, and how to access or correct it.",
+    "How BlueRibbon Real Estate collects, uses, shares and protects your personal information, and how to access or correct it.",
 };
 
 const SECTIONS: LegalSection[] = [
   {
     heading: "Our commitment to your privacy",
     paragraphs: [
-      "Blue Ribbon Real Estate of Suite 11/76-80 Station St, Wentworthville NSW 2145 (“Blue Ribbon”, “we”, “us” or “our”) is committed to protecting your personal information. We handle it in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles, and with the laws that apply to real estate agents in New South Wales.",
+      "BlueRibbon Real Estate® of Suite 11, 76-80 Station St, Wentworthville NSW 2145 (“BlueRibbon”, “we”, “us” or “our”) is committed to protecting your personal information. We handle it in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles, and with the laws that apply to real estate agents in New South Wales.",
       "This policy explains what personal information we collect, how we collect and use it, who we share it with, how we keep it secure, and how you can access or correct it or raise a concern. It applies to our website, to our sales, leasing and property management services, and to the appraisals and reports we provide.",
     ],
   },
@@ -117,7 +117,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Contact us",
     paragraphs: [
       "For any question about this policy or your personal information, please contact us.",
-      "Blue Ribbon Real Estate\nSuite 11/76-80 Station St, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
+      "BlueRibbon Real Estate®\nSuite 11, 76-80 Station St, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
     ],
   },
 ];

@@ -14,7 +14,7 @@ type Props = {
   address: string;
   fallback?: string;
   variant?: "collage" | "hero";
-  /** Ribbon on the lead photo — "Sold", "For Lease" — if any. */
+  /** Ribbon on the lead photo — "Sold", "Leased" — if any. */
   ribbon?: string;
 };
 

@@ -353,7 +353,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
 /** The lead photo's ribbon, as on the listing's card. */
 function ribbonFor(listing: ListingDetail): string | undefined {
-  return listing.sold ? "Sold" : listing.forLease ? "For Lease" : undefined;
+  return listing.sold ? "Sold" : listing.forLease ? "Leased" : undefined;
 }
 
 /**

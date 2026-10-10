@@ -28,7 +28,7 @@ type Props = {
    */
   videoUrl?: string;
   floorplans?: GalleryFloorplan[];
-  /** Ribbon on the lead photo — "Sold", "For Lease". Not carried into the viewer. */
+  /** Ribbon on the lead photo — "Sold", "Leased". Not carried into the viewer. */
   ribbon?: string;
 };
 

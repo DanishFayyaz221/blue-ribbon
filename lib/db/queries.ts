@@ -99,7 +99,7 @@ export type ListingCard = {
   type?: string;
   /** Draws the "SOLD" ribbon on the card photo. */
   sold?: boolean;
-  /** Draws the "FOR LEASE" ribbon: a rental that is still available. */
+  /** Draws the "LEASED" ribbon: a rental that is still available. */
   forLease?: boolean;
 };
 

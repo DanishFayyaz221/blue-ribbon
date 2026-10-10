@@ -325,7 +325,7 @@ export function ParramattaFeaturedCard({ featured }: Props) {
       {featured.sold ? (
         <ListingRibbon corner="left" size="hero" />
       ) : featured.forLease ? (
-        <ListingRibbon label="For Lease" corner="left" size="hero" />
+        <ListingRibbon label="Leased" corner="left" size="hero" />
       ) : null}
 
       <div className="featured-haze-top pointer-events-none absolute inset-x-0 top-0 z-[15] h-[26%] sm:h-[clamp(130px,16vw,260px)]" />

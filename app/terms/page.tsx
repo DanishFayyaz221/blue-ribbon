@@ -1,16 +1,16 @@
 import { LegalDocument, type LegalSection } from "../_components/legal/LegalDocument";
 
 export const metadata = {
-  title: "Terms & Conditions | Blue Ribbon Real Estate",
+  title: "Terms & Conditions | BlueRibbon Real Estate",
   description:
-    "The terms that apply when you use the Blue Ribbon Real Estate website, its property listings, appraisals and enquiry forms.",
+    "The terms that apply when you use the BlueRibbon Real Estate website, its property listings, appraisals and enquiry forms.",
 };
 
 const SECTIONS: LegalSection[] = [
   {
     heading: "About these terms",
     paragraphs: [
-      "This website is operated by Blue Ribbon Real Estate of Suite 11/76-80 Station St, Wentworthville NSW 2145 (“Blue Ribbon”, “we”, “us” or “our”). These terms apply to your use of the website and to the listings, reports, forms and other services made available through it.",
+      "This website is operated by BlueRibbon Real Estate® of Suite 11, 76-80 Station St, Wentworthville NSW 2145 (“BlueRibbon”, “we”, “us” or “our”). These terms apply to your use of the website and to the listings, reports, forms and other services made available through it.",
       "By using the website you agree to these terms and to our Privacy Policy. If you do not agree, please do not use the website. Where you engage us to sell, lease or manage a property, a separate agency agreement or management agreement applies to that engagement and prevails over these terms to the extent of any inconsistency.",
     ],
   },
@@ -52,8 +52,8 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "Intellectual property",
     paragraphs: [
-      "The website and its content, including text, photographs, video, floor plans, logos, graphics, page designs and software, are owned by or licensed to Blue Ribbon and are protected by copyright and other intellectual property laws. You may view, print or download content for your personal use only. Any other use, including reproducing, modifying, distributing or commercially exploiting our content, requires our prior written consent.",
-      "The Blue Ribbon name and logo are our trade marks and may not be used without our permission.",
+      "The website and its content, including text, photographs, video, floor plans, logos, graphics, page designs and software, are owned by or licensed to BlueRibbon and are protected by copyright and other intellectual property laws. You may view, print or download content for your personal use only. Any other use, including reproducing, modifying, distributing or commercially exploiting our content, requires our prior written consent.",
+      "The BlueRibbon name and logo are our trade marks and may not be used without our permission.",
     ],
   },
   {
@@ -72,7 +72,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Liability",
     paragraphs: [
       "Nothing in these terms excludes, restricts or modifies any consumer guarantee, right or remedy you have under the Australian Consumer Law or any other law that cannot be excluded.",
-      "Subject to that, and to the maximum extent permitted by law, Blue Ribbon and its directors, employees and agents are not liable for any loss, damage, cost or expense, including indirect or consequential loss, arising from your use of or inability to use the website, or from your reliance on any information on it. Where liability cannot be excluded, it is limited, at our option, to resupplying the relevant service or paying the cost of having it resupplied.",
+      "Subject to that, and to the maximum extent permitted by law, BlueRibbon and its directors, employees and agents are not liable for any loss, damage, cost or expense, including indirect or consequential loss, arising from your use of or inability to use the website, or from your reliance on any information on it. Where liability cannot be excluded, it is limited, at our option, to resupplying the relevant service or paying the cost of having it resupplied.",
     ],
   },
   {
@@ -97,7 +97,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Contact us",
     paragraphs: [
       "If you have any questions about these terms, please contact us.",
-      "Blue Ribbon Real Estate\nSuite 11/76-80 Station St, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
+      "BlueRibbon Real Estate®\nSuite 11, 76-80 Station St, Wentworthville NSW 2145\nsales@blueribbonre.com.au\n1300 579 093",
     ],
   },
 ];
@@ -107,7 +107,7 @@ export default function TermsPage() {
     <LegalDocument
       label="Legal"
       title="Terms & Conditions"
-      intro="These terms set out how you may use the Blue Ribbon Real Estate website and the listings, reports and forms on it. They are written in plain language so you know where you stand with us, and they sit alongside our Privacy Policy."
+      intro="These terms set out how you may use the BlueRibbon Real Estate website and the listings, reports and forms on it. They are written in plain language so you know where you stand with us, and they sit alongside our Privacy Policy."
       updated="15 September 2026"
       sections={SECTIONS}
     />

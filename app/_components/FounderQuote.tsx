@@ -45,7 +45,11 @@ export function FounderQuote() {
             >
               Ven Kan
               <br />
+              {/* "BlueRibbon" as one word, as the logo sets it, carrying the
+                  registered mark. The mark is a superscript so it reads as a
+                  mark rather than as part of the name. */}
               Managing Director, BlueRibbon Real Estate
+              <sup className="text-[0.6em] align-super">®</sup>
             </figcaption>
           </figure>
         </div>

@@ -71,7 +71,10 @@ export function ContactIntro() {
                 style choice: browsers refuse to autoplay video with sound. */}
             <div className="mt-[clamp(20px,2.5vw,36px)] flex flex-col gap-[20px] sm:flex-row sm:items-start sm:justify-between">
               <figcaption className="font-display text-[clamp(12px,1vw,15px)] font-semibold leading-[1.4] text-brand-silver">
+                {/* One word, with the registered mark, as on the founder
+                    quote and the logo. */}
                 Team, BlueRibbon Real Estate
+                <sup className="text-[0.6em] align-super">®</sup>
               </figcaption>
               {/* Pins at the viewport centre and grows with the scroll to the
                   full viewport width, then releases — see ScrollGrowVideo. */}
