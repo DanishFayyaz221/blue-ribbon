@@ -185,6 +185,41 @@ function galleryImages(doc: ListingDoc): string[] {
     .map((i) => mediaUrl(i.localPath as string));
 }
 
+/**
+ * The address as it is shown, without the trailing state and postcode.
+ *
+ * The feed builds `address.full` as "street, suburb, STATE, postcode", and
+ * every card repeated that tail — "…, Pendle Hill, NSW, 2145" — on a line
+ * already tight enough to wrap on a phone. The suburb is what a reader
+ * actually navigates by; the state never varies for this agency, and the
+ * postcode is noise next to the suburb that implies it.
+ *
+ * Trimmed on the way out, not in the stored document: `address.full` is what
+ * the search filters match on (see `searchFilter` and `getListingByAddress`),
+ * so a visitor typing a postcode must still find the listing. The detail page
+ * also still exposes `state` and `postcode` as their own fields.
+ *
+ * Driven by this listing's own values rather than a regex for a state name:
+ * "Wentworth" is a real suburb here, and a pattern loose enough to catch a
+ * stray tail would eventually eat part of a street or suburb. Each segment is
+ * removed only when it matches that document's `state`/`postcode` exactly,
+ * and only from the end, so an address that never carried them is untouched.
+ */
+function displayAddress(doc: ListingDoc): string {
+  const drop = new Set(
+    [doc.address.state, doc.address.postcode]
+      .filter((v): v is string => Boolean(v))
+      .map((v) => v.trim().toLowerCase()),
+  );
+  if (drop.size === 0) return doc.address.full;
+
+  const parts = doc.address.full.split(",").map((p) => p.trim());
+  while (parts.length > 1 && drop.has(parts[parts.length - 1].toLowerCase())) {
+    parts.pop();
+  }
+  return parts.join(", ");
+}
+
 function toCard(doc: ListingDoc): ListingCard {
   const gallery = galleryImages(doc);
   return {
@@ -193,7 +228,7 @@ function toCard(doc: ListingDoc): ListingCard {
     href: `/property/${doc.slug}`,
     image: gallery[0] ?? PLACEHOLDER_IMAGE,
     gallery,
-    address: doc.address.full,
+    address: displayAddress(doc),
     guide: formatGuide(doc),
     beds: doc.features.bedrooms,
     baths: doc.features.bathrooms,
@@ -653,7 +688,9 @@ export const getListingBySlug = cache(async (slug: string): Promise<ListingDetai
 
   return {
     ...toCard(doc),
-    headline: cleanText(doc.headline ?? doc.address.full),
+    // Falls back to the trimmed form too: a listing with no headline of its
+    // own showed the state and postcode twice, once here and again under it.
+    headline: cleanText(doc.headline ?? displayAddress(doc)),
     description: cleanText(doc.description ?? ""),
     suburb: doc.address.suburb,
     state: doc.address.state,
