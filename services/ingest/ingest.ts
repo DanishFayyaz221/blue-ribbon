@@ -24,7 +24,15 @@ const MEDIA_PREFIX = process.env.MEDIA_PUBLIC_PREFIX ?? "/media";
  * Without this the worker is an SSRF primitive running on the same box as the
  * database.
  */
-const ALLOWED_MEDIA_HOSTS = new Set(["agentboxcdn.com.au", "www.agentboxcdn.com.au"]);
+const ALLOWED_MEDIA_HOSTS = new Set([
+  "agentboxcdn.com.au",
+  "www.agentboxcdn.com.au",
+  // Reapit now serves listing photos from its own host rather than the
+  // Agentbox CDN. Everything it sent from here was refused as a blocked host,
+  // so those listings kept their feed-supplied photo list but never had a file
+  // on disk — and the site fell back to a stock photo of someone else's home.
+  "images.sales.reapit.com.au",
+]);
 
 const MAX_IMAGE_BYTES = 25 * 1024 * 1024;
 const MAX_DOWNLOAD_ATTEMPTS = 5;
