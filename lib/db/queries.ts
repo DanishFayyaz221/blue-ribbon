@@ -205,19 +205,43 @@ function galleryImages(doc: ListingDoc): string[] {
  * removed only when it matches that document's `state`/`postcode` exactly,
  * and only from the end, so an address that never carried them is untouched.
  */
+/**
+ * Settles a word the feed shouted — "PENDLE Way" — back to "Pendle Way".
+ *
+ * Agents type addresses into Agentbox by hand, and some of them capslock a
+ * street name. It reaches us verbatim, so the site repeated it on the card,
+ * the listing page and the browser tab.
+ *
+ * Only runs of letters are touched, and only when the whole run is already
+ * upper case: anything carrying a digit is left exactly as it is, because
+ * that is how unit and lot numbers are written — "2B", "53A", "G07" are
+ * correct and lowercasing them would be the same mistake in the other
+ * direction. A single letter is also left alone, so an initial survives.
+ */
+function settleCaps(value: string): string {
+  return value.replace(/[A-Za-z]{2,}/g, (word) =>
+    word === word.toUpperCase() && !/\d/.test(word)
+      ? word[0] + word.slice(1).toLowerCase()
+      : word,
+  );
+}
+
 function displayAddress(doc: ListingDoc): string {
   const drop = new Set(
     [doc.address.state, doc.address.postcode]
       .filter((v): v is string => Boolean(v))
       .map((v) => v.trim().toLowerCase()),
   );
-  if (drop.size === 0) return doc.address.full;
+  if (drop.size === 0) return settleCaps(doc.address.full);
 
   const parts = doc.address.full.split(",").map((p) => p.trim());
   while (parts.length > 1 && drop.has(parts[parts.length - 1].toLowerCase())) {
     parts.pop();
   }
-  return parts.join(", ");
+  // Settled after the tail is dropped, not before: the state is matched on
+  // the document's own "NSW", which this would otherwise have turned into
+  // "Nsw" and left in place.
+  return settleCaps(parts.join(", "));
 }
 
 function toCard(doc: ListingDoc): ListingCard {
