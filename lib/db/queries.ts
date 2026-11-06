@@ -99,8 +99,15 @@ export type ListingCard = {
   type?: string;
   /** Draws the "SOLD" ribbon on the card photo. */
   sold?: boolean;
-  /** Draws the "LEASED" ribbon: a rental that is still available. */
-  forLease?: boolean;
+  /**
+   * Draws the "LEASED" ribbon: a rental that has been taken.
+   *
+   * Not one still on offer. The flag used to mark available rentals, and the
+   * ribbon above it read "For Lease"; when the label was shortened to
+   * "LEASED" the flag was left pointing at `status === "current"`, so every
+   * rental a tenant could still apply for was stamped as gone.
+   */
+  leased?: boolean;
 };
 
 export type ListingDetail = ListingCard & {
@@ -186,26 +193,6 @@ function galleryImages(doc: ListingDoc): string[] {
 }
 
 /**
- * The address as it is shown, without the trailing state and postcode.
- *
- * The feed builds `address.full` as "street, suburb, STATE, postcode", and
- * every card repeated that tail — "…, Pendle Hill, NSW, 2145" — on a line
- * already tight enough to wrap on a phone. The suburb is what a reader
- * actually navigates by; the state never varies for this agency, and the
- * postcode is noise next to the suburb that implies it.
- *
- * Trimmed on the way out, not in the stored document: `address.full` is what
- * the search filters match on (see `searchFilter` and `getListingByAddress`),
- * so a visitor typing a postcode must still find the listing. The detail page
- * also still exposes `state` and `postcode` as their own fields.
- *
- * Driven by this listing's own values rather than a regex for a state name:
- * "Wentworth" is a real suburb here, and a pattern loose enough to catch a
- * stray tail would eventually eat part of a street or suburb. Each segment is
- * removed only when it matches that document's `state`/`postcode` exactly,
- * and only from the end, so an address that never carried them is untouched.
- */
-/**
  * Settles a word the feed shouted — "PENDLE Way" — back to "Pendle Way".
  *
  * Agents type addresses into Agentbox by hand, and some of them capslock a
@@ -226,22 +213,30 @@ function settleCaps(value: string): string {
   );
 }
 
+/**
+ * The address as it is shown: the feed's full form — street, suburb, state,
+ * postcode — with any shouted word settled.
+ *
+ * "NSW" survives `settleCaps` because it is matched as a whole upper-case
+ * run and would become "Nsw"; it is restored below rather than special-cased
+ * inside the helper, which has no business knowing about states.
+ */
 function displayAddress(doc: ListingDoc): string {
-  const drop = new Set(
-    [doc.address.state, doc.address.postcode]
-      .filter((v): v is string => Boolean(v))
-      .map((v) => v.trim().toLowerCase()),
-  );
-  if (drop.size === 0) return settleCaps(doc.address.full);
+  const settled = settleCaps(doc.address.full);
+  const state = doc.address.state?.trim();
+  if (!state || state !== state.toUpperCase()) return settled;
 
-  const parts = doc.address.full.split(",").map((p) => p.trim());
-  while (parts.length > 1 && drop.has(parts[parts.length - 1].toLowerCase())) {
-    parts.pop();
-  }
-  // Settled after the tail is dropped, not before: the state is matched on
-  // the document's own "NSW", which this would otherwise have turned into
-  // "Nsw" and left in place.
-  return settleCaps(parts.join(", "));
+  // Only as a whole comma-separated segment, so a suburb that happens to
+  // contain the letters is untouched. Each part keeps the spacing it came
+  // with — replacing the trimmed value would drop the space after the comma.
+  return settled
+    .split(",")
+    .map((part) =>
+      part.trim().toLowerCase() === state.toLowerCase()
+        ? part.replace(part.trim(), state)
+        : part,
+    )
+    .join(",");
 }
 
 function toCard(doc: ListingDoc): ListingCard {
@@ -259,7 +254,7 @@ function toCard(doc: ListingDoc): ListingCard {
     cars: doc.features.totalParking || undefined,
     type: doc.propertyType,
     sold: doc.status === "sold",
-    forLease: RENTAL_CATEGORIES.includes(doc.category) && doc.status === "current",
+    leased: doc.status === "leased",
   };
 }
 
