@@ -17,8 +17,8 @@ export type PropertyCardData = {
   type?: string;
   /** Draws the "SOLD" ribbon across the photo's top-right corner. */
   sold?: boolean;
-  /** Draws a "LEASED" ribbon in the same place — a rental still on offer. */
-  forLease?: boolean;
+  /** Draws a "LEASED" ribbon in the same place — a rental that has been taken. */
+  leased?: boolean;
 };
 
 type PropertyCardProps = PropertyCardData & {
@@ -75,7 +75,7 @@ export function PropertyCard({
   cars,
   type,
   sold = false,
-  forLease = false,
+  leased = false,
   variant = "tall",
   sizes,
   aspect,
@@ -178,7 +178,7 @@ export function PropertyCard({
         className="focus-veil absolute inset-0 z-10"
         style={{ touchAction: "pan-x pan-y" }}
       />
-      {sold ? <ListingRibbon /> : forLease ? <ListingRibbon label="Leased" /> : null}
+      {sold ? <ListingRibbon /> : leased ? <ListingRibbon label="For Leased" /> : null}
     </>
   );
 
@@ -211,7 +211,7 @@ export function PropertyCard({
                 <p
                   className={`font-bold leading-[1.25] text-brand-navy sm:line-clamp-none ${
                     dense
-                      ? "line-clamp-2 text-[15px] sm:text-[clamp(18px,1.35vw,24px)]"
+                      ? "line-clamp-3 text-[15px] sm:text-[clamp(18px,1.35vw,24px)]"
                       : "text-[clamp(18px,1.35vw,24px)]"
                   }`}
                 >
@@ -248,9 +248,10 @@ export function PropertyCard({
                 )}
                 <p
                   className={`${guide ? "mt-[4px]" : ""} font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none ${
-                    // Clamped rather than shrunk further: a card this narrow cannot
-                    // show a full NSW street address without either three lines of
-                    // 11px type or a truncation, and two readable lines beats both.
+                    // Still two here, unlike the address elsewhere on this card:
+                    // at 12px in a card this narrow a third line is cheaper to
+                    // lose than to read, and the suburb has already landed by
+                    // the end of line two.
                     dense
                       ? "line-clamp-2 text-[12px]"
                       : "text-[clamp(13px,0.95vw,16px)]"
@@ -330,7 +331,7 @@ export function PropertyCard({
         <MaskReveal>
           {addressFirst ? (
             <>
-              <p className="line-clamp-2 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
+              <p className="line-clamp-3 text-[16px] font-bold leading-[1.2] text-brand-navy sm:line-clamp-none sm:text-[clamp(18px,1.35vw,24px)]">
                 {address}
               </p>
               {type && (
@@ -347,7 +348,7 @@ export function PropertyCard({
                   {guide}
                 </p>
               )}
-              <p className={`${guide ? "mt-[6px]" : ""} line-clamp-2 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
+              <p className={`${guide ? "mt-[6px]" : ""} line-clamp-3 text-[13px] font-medium leading-[1.4] text-brand-bunker/85 sm:line-clamp-none sm:text-[clamp(13px,0.95vw,16px)] sm:leading-[1.5]`}>
                 {address}
               </p>
               {renderMeta("onLight")}

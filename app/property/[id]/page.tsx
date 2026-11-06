@@ -62,6 +62,11 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
   const backHref = listing.isRental ? "/rent" : "/buy";
 
+  // A rental a tenant can still apply for. Distinct from `listing.leased`,
+  // which marks one already taken — the price row offers "For Lease · Contact
+  // Agent" on the first and the rent alone on the second.
+  const availableToLease = listing.isRental && listing.status === "current";
+
   // The enquiry modal previously carried two hardcoded names that do not work
   // at this agency. Names shown next to an enquiry form are a claim about who
   // will answer it, so they come from the listing's own agents.
@@ -232,7 +237,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
               value={
                 listing.sold ? (
                   <SoldOut />
-                ) : listing.forLease ? (
+                ) : availableToLease ? (
                   <ForLease
                     guide={listing.guide}
                     agents={enquiryAgents}
@@ -353,7 +358,7 @@ export default async function PropertyViewPage({ params }: PageProps) {
 
 /** The lead photo's ribbon, as on the listing's card. */
 function ribbonFor(listing: ListingDetail): string | undefined {
-  return listing.sold ? "Sold" : listing.forLease ? "Leased" : undefined;
+  return listing.sold ? "Sold" : listing.leased ? "For Leased" : undefined;
 }
 
 /**
@@ -527,6 +532,8 @@ function MobilePropertyView({
     cars: listing.cars,
     image: listing.image,
   };
+  // As on desktop: still on offer, not already taken. See the note there.
+  const availableToLease = listing.isRental && listing.status === "current";
 
   return (
     <div className="sm:hidden">
@@ -600,7 +607,7 @@ function MobilePropertyView({
             value={
               listing.sold ? (
                 <SoldOut />
-              ) : listing.forLease ? (
+              ) : availableToLease ? (
                 <ForLease
                   guide={listing.guide}
                   agents={agents}
