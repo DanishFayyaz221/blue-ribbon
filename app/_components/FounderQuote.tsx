@@ -3,7 +3,7 @@ import { LineReveal } from "./ui/LineReveal";
 import { ScrollZoomFigure } from "./ui/ScrollZoomFigure";
 
 const QUOTE =
-  "“When I started BlueRibbon, I wanted to build the kind of agency I’d want my own family to walk into. Most people only sell a home once or twice in their lives, and every time it’s the biggest cheque they’ll ever sign. So we made a simple promise. We’ll tell you what your property is really worth, not what you want to hear. We’ll pick up the phone every time. Because to us, you were never just a listing. You’re a family trusting us with one of the biggest moments of your life.”";
+  "Good property service brings the right elements together: local knowledge, a clear strategy, considered marketing and people who follow through. At BlueRibbon, we give the presentation and the client experience the same care. From the first conversation to your next move, our focus is on helping you make informed decisions with confidence.";
 
 /**
  * Closing block of the About page: the founder's quote, then the full-bleed

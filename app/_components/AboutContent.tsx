@@ -4,19 +4,29 @@ import { ParallaxFigure } from "./ui/ParallaxFigure";
 
 const rows = [
   {
-    title: "Your Australian\nProperty Partners",
-    image: "/images/australian.png",
-    body: "Established to redefine excellence, BlueRibbon Real Estate® has rapidly emerged as a premier agency and a respected industry leader across the Australian market. Committed to raising the bar, BlueRibbon was founded to transform the real estate experience through a dedication to integrity and local expertise. Our service focuses on more than just transactions; it is about supporting our clients\u2019 lifestyles, financial growth, and long-term security.",
+    title: "Local Leadership.\nShared Commitment.",
+    // Ven Kan, the Managing Director — the same portrait the team page uses,
+    // in place of the stock photo that opened this page.
+    image: "/our-team/5.png",
+    // Named, unlike the stock photos below: this is a real person, so the
+    // alt text has to say who, not sit empty as decoration would.
+    alt: "Ven Kan, Managing Director of BlueRibbon Real Estate",
+    // A tall portrait in a square frame: centred, the cover crop took the top
+    // of his head off. Anchored to the top instead, as the team cards do —
+    // the headshots have only a few percent of room above the hair, and what
+    // is lost from the bottom is jacket.
+    position: "object-top",
+    body: "Managing Director Ven Kan leads a team committed to clear communication, strong property presentation and attentive client service. We work together across sales, rentals and property management, drawing on local knowledge to help you understand your options. To discuss your property plans, contact Ven on 04 04 09 04 04.",
   },
   {
-    title: "Building Excellence\nIn Property",
+    title: "Marketing That\nMakes an Impact.",
     image: "/images/building.png",
-    body: "BlueRibbon is driven by a team of dynamic professionals united by a singular passion to secure the absolute best results for every Australian homeowner. Blending modern innovation with traditional integrity, our steadfast commitment to these core principles distinguishes us within the competitive retail market. By constantly evolving and refining our expertise, we provide an elevated standard of service designed to exceed your property goals.",
+    body: "A strong campaign gives people a reason to take a closer look. We bring photography, video, brochures, signboards and digital content together in a consistent presentation. Each element should highlight the property’s strongest features, provide useful information and make the next step clear. The aim is considered, memorable marketing shaped around the property and its audience.",
   },
   {
-    title: "A Standard\nBeyond Expectations",
+    title: "A Clear Plan\nfor Your Property.",
     image: "/images/beyond.png",
-    body: "At BlueRibbon, excellence is never left to chance. Every appraisal, every campaign, and every negotiation is guided by a simple belief that our clients deserve more than the ordinary. Our team blends sharp market insight with a genuine commitment to doing right by the people we serve. We take the time to understand what matters most to you, then build a strategy designed to protect it and grow it. From the first conversation to the moment the deal is done, we hold ourselves to a higher mark, because your trust is something we intend to earn every single day.",
+    body: "Every property move starts with different priorities. We take the time to understand yours, explain the choices and discuss a plan that suits your circumstances. Whether you are buying, selling, leasing or managing an investment, our team keeps the conversation focused on your property, your timing and what comes next.",
   },
 ];
 
@@ -50,10 +60,10 @@ export function AboutContent() {
             >
               <Image
                 src={r.image}
-                alt=""
+                alt={r.alt ?? ""}
                 fill
                 sizes="(max-width: 640px) 100vw, 23vw"
-                className="object-cover"
+                className={`object-cover ${r.position ?? ""}`}
               />
             </ParallaxFigure>
             <div className="w-full sm:w-[clamp(280px,31vw,600px)] sm:pt-[clamp(0px,3vw,48px)]">
