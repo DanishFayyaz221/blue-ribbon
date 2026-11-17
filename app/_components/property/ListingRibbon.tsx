@@ -1,6 +1,7 @@
 /**
  * Diagonal navy band across a photo's corner carrying the listing's state —
- * "Sold" on sold stock, "Leased" on rentals still on the market.
+ * "Sold" on sold stock, "Leased" on taken rentals, "For Lease" on rentals
+ * still on the market.
  *
  * The parent must be `relative overflow-hidden`: the band is deliberately
  * longer than the corner and relies on the clip to trim both ends. It sits

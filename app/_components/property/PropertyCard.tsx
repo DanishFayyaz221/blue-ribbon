@@ -19,6 +19,8 @@ export type PropertyCardData = {
   sold?: boolean;
   /** Draws a "LEASED" ribbon in the same place — a rental that has been taken. */
   leased?: boolean;
+  /** Draws a "FOR LEASE" ribbon in the same place — a rental still on offer. */
+  forLease?: boolean;
 };
 
 type PropertyCardProps = PropertyCardData & {
@@ -76,6 +78,7 @@ export function PropertyCard({
   type,
   sold = false,
   leased = false,
+  forLease = false,
   variant = "tall",
   sizes,
   aspect,
@@ -178,7 +181,13 @@ export function PropertyCard({
         className="focus-veil absolute inset-0 z-10"
         style={{ touchAction: "pan-x pan-y" }}
       />
-      {sold ? <ListingRibbon /> : leased ? <ListingRibbon label="For Leased" /> : null}
+      {sold ? (
+        <ListingRibbon />
+      ) : leased ? (
+        <ListingRibbon label="Leased" />
+      ) : forLease ? (
+        <ListingRibbon label="For Lease" />
+      ) : null}
     </>
   );
 

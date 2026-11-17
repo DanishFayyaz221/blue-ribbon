@@ -99,15 +99,16 @@ export type ListingCard = {
   type?: string;
   /** Draws the "SOLD" ribbon on the card photo. */
   sold?: boolean;
-  /**
-   * Draws the "LEASED" ribbon: a rental that has been taken.
-   *
-   * Not one still on offer. The flag used to mark available rentals, and the
-   * ribbon above it read "For Lease"; when the label was shortened to
-   * "LEASED" the flag was left pointing at `status === "current"`, so every
-   * rental a tenant could still apply for was stamped as gone.
-   */
+  /** Draws the "LEASED" ribbon: a rental that has been taken. */
   leased?: boolean;
+  /**
+   * Draws the "FOR LEASE" ribbon: a rental a tenant can still apply for.
+   *
+   * The client wants both states marked, worded exactly so — "Leased" on a
+   * taken rental, "For Lease" on an available one. Neither label carries the
+   * other's flag: a "For Leased" hybrid once went live in their place.
+   */
+  forLease?: boolean;
 };
 
 export type ListingDetail = ListingCard & {
@@ -255,6 +256,7 @@ function toCard(doc: ListingDoc): ListingCard {
     type: doc.propertyType,
     sold: doc.status === "sold",
     leased: doc.status === "leased",
+    forLease: RENTAL_CATEGORIES.includes(doc.category) && doc.status === "current",
   };
 }
 
