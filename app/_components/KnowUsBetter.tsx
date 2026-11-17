@@ -49,14 +49,17 @@ export function KnowUsBetter() {
       </div>
 
       {/* Same photo, and the same rules, as the home page's closing section:
-          natural 1920x903 aspect with no height cap so nothing is cropped, a
-          squarer 4/3 crop on phones, and the site's scroll reveal. Turns in 3D
-          towards the cursor, like the Parramatta featured card. */}
+          a squarer 4/3 crop on phones, and the site's scroll reveal. Turns in
+          3D towards the cursor, like the Parramatta featured card.
+
+          Wider than the file's own 1920x903 so the band is shorter — at its
+          natural ratio it ran most of a screen on a wide monitor. The crop
+          comes off the top and bottom, which is sofa and table edge. */}
       <TiltImage
         src="/images/parramatta.png"
         alt="BlueRibbon property brochures on a table beside a sofa"
         sizes="100vw"
-        className="reveal-scale mt-[clamp(32px,4.5vw,72px)] w-full aspect-[4/3] sm:aspect-[1920/903]"
+        className="reveal-scale mt-[clamp(32px,4.5vw,72px)] w-full aspect-[4/3] sm:aspect-[1920/760]"
       />
     </section>
   );

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "../_components/layout/Nav";
 import { Footer } from "../_components/layout/Footer";
@@ -19,11 +18,9 @@ import { LineReveal } from "../_components/ui/LineReveal";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { TeamCTA } from "../_components/sections/TeamCTA";
-import { ParramattaCTA } from "../_components/home/ParramattaCTA";
-import { YouMayAlsoLike } from "../_components/property/YouMayAlsoLike";
+import { RecentlySold } from "../_components/home/RecentlySold";
 import {
   SALE_CATEGORIES,
-  getLatestListings,
   getListings,
   getListingsWithFallback,
   getSuburbsWithCounts,
@@ -45,11 +42,8 @@ export default async function BuyPage({
 }) {
   const { query, form, amenities, isFiltered } = parseListingSearchParams(await searchParams);
 
-  const [results, latest, suburbs] = await Promise.all([
+  const [results, suburbs] = await Promise.all([
     getListings({ ...query, categories: SALE_CATEGORIES, perPage: 12 }),
-    // Scoped to sales: this page is for buyers, so "You may also like" should
-    // not be quietly padded out with rentals. Six fills two rows of three.
-    getLatestListings(SALE_CATEGORIES, 6),
     getSuburbsWithCounts(SALE_CATEGORIES),
   ]);
 
@@ -207,37 +201,15 @@ export default async function BuyPage({
         </div>
         </ResultsRegion>
 
-        {/* Closing sequence, per the comp: the featured property card (the same
-            one the home page shows), then "You may also like", then the team
-            CTA. The card strip stays hidden while the fallback is showing —
-            both pull from the same small pool and would repeat the same cards. */}
+        {/* Closing sequence: recently sold homes, then the team CTA.
+            "Recently Sold" replaces the featured-property card and the "You
+            may also like" strip that sat here — both drew from the same for-
+            sale pool this page has just listed, so they repeated what the
+            visitor had already scrolled past. Sold stock is the one thing
+            this page does not already show. */}
         <div className="mt-[clamp(28px,3vw,56px)]">
-          <ParramattaCTA />
+          <RecentlySold />
         </div>
-        {hasResults && latest.length > 0 && (
-          // Full-bleed satin band, as on the listing pages: the photo spans
-          // the width and only the strip's own content sits in the page
-          // container. `tone="dark"` renders the strip bare — no background
-          // or padding of its own — for exactly this, a caller that supplies
-          // the panel; it used to be `phoneTone="dark"`, which painted the
-          // satin on phones only and left the desktop on white.
-          <section className="relative w-full overflow-hidden py-[clamp(28px,3.2vw,60px)] sm:py-[clamp(40px,4vw,80px)]">
-            <Image
-              src="/images/bg.png"
-              alt=""
-              fill
-              quality={60}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-[#001F4D1F]" />
-            <div className="container-page relative z-10">
-              {/* No "Keep Exploring": it pointed at /buy, the page this
-                  strip is already on. */}
-              <YouMayAlsoLike properties={latest} tone="dark" showExplore={false} />
-            </div>
-          </section>
-        )}
         <TeamCTA />
         </SearchTransitionProvider>
       </main>
