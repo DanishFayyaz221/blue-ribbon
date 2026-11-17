@@ -21,14 +21,14 @@ export async function BestSuitedForYou() {
   return (
     <section className="w-full bg-white sm:bg-brand-soft py-[clamp(36px,3.2vw,60px)]">
       <div className="container-page">
-        {/* Phone: the heading breaks after "Explore" with the link beside it,
+        {/* Phone: the heading breaks onto two lines with the link beside it,
             as in the mobile comp. */}
         <div className="flex items-end justify-between gap-[16px] sm:hidden">
           <LineReveal
             as="h2"
             className="font-display font-bold text-brand-navy text-[26px] leading-[1.1]"
           >
-            {"Explore\nProperties"}
+            {"Find Your\nHome"}
           </LineReveal>
           <Link
             href="/buy"
@@ -42,7 +42,7 @@ export async function BestSuitedForYou() {
           as="h2"
           className="hidden sm:block font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
         >
-          Explore Properties
+          Find Your Home
         </LineReveal>
 
         {/* Phone: one full-width card at a time, playing itself — each card

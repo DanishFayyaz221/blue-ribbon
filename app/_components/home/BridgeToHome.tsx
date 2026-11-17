@@ -101,7 +101,7 @@ export function BridgeToHome() {
             as="h2"
             className="text-center font-display font-bold capitalize text-brand-mineshaft text-[26px] sm:text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1] sm:text-left"
           >
-            Our Services
+            Find Your Home
           </LineReveal>
           {/* Phone: the three tabs share the width, per the mobile comp. */}
           <div className="flex h-[40px] w-full items-center gap-0 self-stretch sm:h-[48px] sm:w-auto sm:self-end">

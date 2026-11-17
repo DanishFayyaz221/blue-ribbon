@@ -63,7 +63,7 @@ export default async function RentPage({
           <div className="flex flex-col gap-[14px] sm:flex-row sm:items-end sm:justify-between">
             <div>
               <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-                Properties for Rent
+                Find Your Rental
               </LineReveal>
               {total > 0 && (
                 <p className="mt-[6px] font-display text-[13px] sm:text-[15px] text-brand-bunker/70">
