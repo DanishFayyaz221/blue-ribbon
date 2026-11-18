@@ -6,12 +6,11 @@ import { TiltImage } from "../ui/TiltImage";
  * Closing "Get in touch" section on the home page: a centred pill, heading,
  * paragraph and button on white, with the full-width Parramatta photo below.
  *
- * The photo (`parramatta.png`) ships with a white haze baked into its top
- * quarter, so the section paints no gradient of its own — the image is simply
- * pulled up under the button with a negative margin, and the button and the
- * tail of the paragraph sit over the part of the photo that is already white.
- * Keeping the fade in the asset (rather than a CSS gradient) is what lets the
- * haze track the photo's own tones instead of a flat white wash.
+ * The photo sits clear of the button. It used to be pulled up under it with a
+ * negative margin, relying on the white haze baked into the top of
+ * `parramatta.png` — but the wide sm+ crop trims that haze away, so the
+ * photo's hard top edge cut through the paragraph and the button read as
+ * sitting inside the image.
  */
 export function SellWithUs() {
   return (
@@ -71,8 +70,8 @@ export function SellWithUs() {
           a cap makes the box shorter than the image's own shape, and
           object-cover then crops the bottom off the frame. Phones keep a
           squarer 4/3 crop, where the full wide ratio would shrink to a thin
-          strip. The negative top margin tucks the white top of the photo
-          under the button.
+          strip. The top margin matches the same photo's on the Our Story
+          page.
 
           `reveal-scale` is the site-wide scroll reveal (see globals.css and
           RevealOnScroll): the block starts transparent, slightly lowered and
@@ -86,7 +85,7 @@ export function SellWithUs() {
         src="/images/parramatta.png"
         alt="BlueRibbon property brochures on a table beside a sofa"
         sizes="100vw"
-        className="reveal-scale -mt-[clamp(52px,4.5vw,72px)] w-full aspect-[402/245] sm:aspect-[1920/760]"
+        className="reveal-scale mt-[clamp(32px,4.5vw,72px)] w-full aspect-[402/245] sm:aspect-[1920/760]"
       />
     </section>
   );

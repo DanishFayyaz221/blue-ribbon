@@ -2,9 +2,9 @@ import { LineReveal } from "./ui/LineReveal";
 import { TiltImage } from "./ui/TiltImage";
 
 /**
- * "Know Us better!" band on the About page, directly under the video hero:
- * a centred Testimonials pill, heading and two paragraphs of plain-spoken
- * copy about the agency, then the full-bleed Parramatta photo. Same pill,
+ * "About BlueRibbon" band on the Our Story page, directly under the video
+ * hero: a centred pill, heading and two paragraphs about the agency, then the
+ * full-bleed Parramatta photo. Same pill,
  * heading and paragraph treatment as the home page's Testimonials header, and
  * the same photo treatment as the home page's closing section, so the two
  * pages read as one system.
@@ -13,38 +13,33 @@ export function KnowUsBetter() {
   return (
     <section className="w-full bg-white pt-[32px] sm:pt-[clamp(44px,6vw,90px)]">
       <div className="container-page flex flex-col items-center text-center">
-        {/* "Our Story" at every width — the page this band is on. The mobile
-            comp labelled it "Our Team", which the phone layout followed, but
-            a pill naming a different section reads as a mistake. */}
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
-          Our Story
+          About BlueRibbon
         </span>
         <LineReveal
           as="h2"
           className="mt-[16px] sm:mt-[clamp(18px,1.8vw,32px)] font-display font-bold text-brand-bunker text-[28px] sm:text-[clamp(1.5rem,3.1vw,2.9rem)] leading-[1.15]"
         >
-          Know Us better!
+          Confident Marketing. Personal Service.
         </LineReveal>
         <LineReveal
           as="p"
           className="mt-[16px] sm:mt-[clamp(18px,2vw,34px)] max-w-[960px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          At BlueRibbon, most of our clients have only sold a home once or twice
-          in their lives. Every time, it&rsquo;s the biggest cheque they&rsquo;ll
-          ever sign. That&rsquo;s why we do this differently. We&rsquo;re a Pendle
-          Hill agency, and we&rsquo;ve stayed local on purpose. Wentworthville,
-          Toongabbie, Girraween, Greystanes, Guildford, Parramatta. We know these
-          streets block by block. Which buildings hold their value, and which ones
-          photograph beautifully and then sit unsold for months.
+          BlueRibbon Real Estate brings local knowledge, thoughtful advice and
+          distinctive property marketing to buyers, sellers and landlords across
+          Western Sydney. Led by Managing Director Ven Kan, our team combines
+          sales and property management experience with a clear focus on your
+          goals.
         </LineReveal>
         <LineReveal
           as="p"
           className="mt-[14px] sm:mt-[clamp(16px,1.6vw,26px)] max-w-[960px] font-display text-[12.5px] sm:text-[clamp(13px,1.05vw,16px)] leading-[1.6] text-brand-bunker"
         >
-          We tell you what your property is worth, not what you want to hear. We
-          pick up the phone. And we turn the parts that usually stress people out
-          into something simple. That&rsquo;s the whole idea. Real people, real
-          advice, real results in your corner of Western Sydney.
+          BlueRibbon has achieved $50 million in property sales across the
+          agency. Our approach remains personal: understand your plans, recommend
+          a clear strategy and keep you informed from the first conversation
+          through to the next step.
         </LineReveal>
       </div>
 

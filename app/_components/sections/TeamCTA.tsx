@@ -31,11 +31,9 @@ export function TeamCTA() {
           as="p"
           className="mt-[24px] max-w-[620px] font-display text-[clamp(13px,1vw,15px)] leading-[1.6] text-brand-bunker sm:mt-[clamp(14px,1.4vw,24px)]"
         >
-          Ready to make your next move? Our specialised team is here to guide
-          you with honest advice and local expertise you can count on. Whether
-          you are buying, selling, or simply weighing up your options, we would
-          love to hear from you. Reach out today and let&rsquo;s start the
-          conversation.
+          Buying, selling or leasing in Western Sydney? Speak with our local
+          team about your goals. We&rsquo;ll help you understand your options
+          and plan your next step, with clear advice and personal service.
         </LineReveal>
 
         <div className="mt-[24px] sm:mt-[clamp(20px,2.2vw,40px)]">

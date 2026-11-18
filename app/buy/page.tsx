@@ -47,7 +47,7 @@ export default async function BuyPage({
     getSuburbsWithCounts(SALE_CATEGORIES),
   ]);
 
-  const { items, totalPages } = results;
+  const { items, total, totalPages } = results;
   const hasResults = items.length > 0;
 
   // Nothing matched, so find the nearest sale stock rather than ending on a
@@ -70,6 +70,20 @@ export default async function BuyPage({
         <SearchTransitionProvider>
         <div className="container-page pt-[16px] pb-[16px] sm:pb-[24px]">
           <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Buy" }]} />
+        </div>
+
+        {/* Page heading above the search, the same treatment as the Rent
+            page's "Find Your Next Rental". */}
+        <div className="container-page mb-[16px] sm:mb-[clamp(20px,2vw,32px)]">
+          <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] sm:text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
+            Find Your Next Home
+          </LineReveal>
+          {total > 0 && (
+            <p className="mt-[6px] font-display text-[13px] sm:text-[15px] text-brand-bunker/70">
+              {total} {total === 1 ? "property" : "properties"}
+              {isFiltered ? " matching your search" : " available"}
+            </p>
+          )}
         </div>
 
         {/* Mobile filter chips */}
@@ -106,12 +120,9 @@ export default async function BuyPage({
         </div>
 
         <ResultsRegion>
-        {/* Mobile: Buy Your Dream + cards */}
+        {/* Mobile: sell link + cards */}
         <div className="sm:hidden container-page mt-[18px]">
-          <div className="flex items-end justify-between">
-            <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[22px] leading-[1.15]">
-              Buy Your Dream
-            </LineReveal>
+          <div className="flex items-end justify-end">
             <Link
               href="/property-report-digital-appraisal"
               className="font-display text-[13px] font-medium text-brand-bunker hover:text-brand-navy"
@@ -151,12 +162,9 @@ export default async function BuyPage({
           )}
         </div>
 
-        {/* Desktop: heading + grid */}
-        <div id="results" className="hidden sm:block container-page mt-[clamp(32px,3.15vw,58px)] scroll-mt-[80px]">
-          <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-between">
-            <LineReveal as="h1" className="font-display font-bold text-brand-bunker text-[clamp(1.15rem,1.5vw,1.75rem)] leading-[1.15]">
-              Buy Your Dream
-            </LineReveal>
+        {/* Desktop: links + grid */}
+        <div id="results" className="hidden sm:block container-page mt-[clamp(10px,0.8vw,14px)] scroll-mt-[80px]">
+          <div className="flex flex-col gap-[14px] sm:flex-row sm:items-center sm:justify-end">
             <div className="flex items-center gap-[20px]">
               {isFiltered && (
                 <SearchLink
@@ -178,7 +186,7 @@ export default async function BuyPage({
 
           {hasResults ? (
             <>
-              <div className="focus-peers mt-[clamp(22px,2vw,36px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
+              <div className="focus-peers mt-[clamp(14px,1.2vw,20px)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[clamp(12px,1.3vw,24px)]">
                 {items.map((p) => (
                   <PropertyCard key={p.id} {...p} variant="tall" addressFirst />
                 ))}
@@ -194,7 +202,7 @@ export default async function BuyPage({
               </div>
             </>
           ) : (
-            <div className="mt-[clamp(22px,2vw,36px)]">
+            <div className="mt-[clamp(14px,1.2vw,20px)]">
               <NoSalesStock filtered={isFiltered} fallback={fallback} q={form.q} />
             </div>
           )}
