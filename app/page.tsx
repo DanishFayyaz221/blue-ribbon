@@ -6,22 +6,18 @@ import { Hero } from "./_components/home/Hero";
 import { BridgeToHome } from "./_components/home/BridgeToHome";
 import { BestSuitedForYou } from "./_components/home/BestSuitedForYou";
 import { ParramattaCTA } from "./_components/home/ParramattaCTA";
-import { LatestProperties } from "./_components/home/LatestProperties";
 import { MeetHappyClients } from "./_components/home/MeetHappyClients";
 import { RecentlySold } from "./_components/home/RecentlySold";
 import { SellWithUs } from "./_components/home/SellWithUs";
 import { VenBanner } from "./_components/sections/VenBanner";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
 import { SectionBoundary } from "./_components/SectionBoundary";
-import { getListings } from "@/lib/db/queries";
 
 export default async function Home() {
-  // Fetch explore-property IDs so LatestProperties can exclude them.
-  // getListings is cached — BestSuitedForYou calls it with the same args and
-  // hits the cache, so this costs no extra round-trip.
+  // Rendered per request, as before: the listing sections below read the feed.
+  // (The explore-IDs fetch that used to sit here only fed the "More
+  // Properties" strip, which Recently Sold has replaced.)
   await connection();
-  const { items: exploreItems } = await getListings({ sort: "price-asc", perPage: 6 }).catch(() => ({ items: [] }));
-  const exploreIds = exploreItems.map((p) => p.id);
 
   return (
     <div className="min-h-screen bg-white">
@@ -53,14 +49,10 @@ export default async function Home() {
             <ParramattaCTA />
           </Suspense>
         </SectionBoundary>
+        {/* Recently Sold sits where "More Properties" was, on its navy band. */}
         <SectionBoundary>
           <Suspense fallback={null}>
-            <LatestProperties excludeIds={exploreIds} />
-          </Suspense>
-        </SectionBoundary>
-        <SectionBoundary>
-          <Suspense fallback={null}>
-            <RecentlySold />
+            <RecentlySold tone="dark" />
           </Suspense>
         </SectionBoundary>
         <MeetHappyClients />

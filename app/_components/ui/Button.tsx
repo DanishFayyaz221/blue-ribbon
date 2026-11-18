@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-type Variant = "primary" | "outline" | "outline-dark" | "ghost" | "white";
+type Variant = "primary" | "outline" | "outline-dark" | "ghost" | "white" | "navy-to-white";
 type Size = "sm" | "md" | "lg" | "xl";
 
 const base =
@@ -17,6 +17,11 @@ const variants: Record<Variant, string> = {
   ghost: "text-brand-navy hover:opacity-70",
   white:
     "bg-white text-black before:absolute before:-inset-px before:z-0 before:translate-y-full before:bg-brand-navy before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:bg-brand-navy hover:text-white hover:before:translate-y-0",
+  // Navy at rest; on hover white slides up and the label turns navy. The
+  // white fill stops inside the navy border (`inset-0`, not `-inset-px`), so
+  // the button keeps its edge when it turns white on a white page.
+  "navy-to-white":
+    "border border-brand-navy bg-brand-navy text-white before:absolute before:inset-0 before:z-0 before:translate-y-full before:bg-white before:transition-transform before:duration-400 before:ease-[cubic-bezier(0.65,0,0.35,1)] hover:text-brand-navy hover:before:translate-y-0",
 };
 
 const sizes: Record<Size, string> = {

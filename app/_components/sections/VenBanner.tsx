@@ -49,7 +49,7 @@ export function VenBanner({ className = "" }: { className?: string }) {
           suppressHydrationWarning
           className="reveal reveal-delay-2 mt-[24px] sm:mt-[min(4.6vw,88px)]"
         >
-          <Button href="/our-team/ven-kan" variant="primary" size="xl">
+          <Button href="/our-team/ven-kan" variant="navy-to-white" size="xl">
             Talk to Ven
           </Button>
         </div>

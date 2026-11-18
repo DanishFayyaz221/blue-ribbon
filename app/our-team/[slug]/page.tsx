@@ -103,7 +103,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
 
               <div className="mt-[clamp(16px,1.4vw,26px)] flex flex-wrap items-center gap-[12px]">
                 {tel && (
-                  <Button href={`tel:${tel}`} variant="primary" size="md">
+                  <Button href={`tel:${tel}`} variant="navy-to-white" size="md">
                     {agent.mobile ?? agent.phone}
                   </Button>
                 )}
