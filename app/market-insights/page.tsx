@@ -8,6 +8,7 @@ import { InsightCard } from "../_components/insights/InsightCard";
 import { MobileCarousel } from "../_components/ui/MobileCarousel";
 import { YouMayAlsoLike } from "../_components/property/YouMayAlsoLike";
 import { TeamCTA } from "../_components/sections/TeamCTA";
+import { VenBanner } from "../_components/sections/VenBanner";
 import { INSIGHT_ARTICLES } from "@/lib/insights/articles";
 import { getLatestListings } from "@/lib/db/queries";
 
@@ -115,6 +116,7 @@ export default async function MarketInsightsPage() {
         )}
 
         <TeamCTA />
+        <VenBanner />
       </main>
       <Footer />
     </div>

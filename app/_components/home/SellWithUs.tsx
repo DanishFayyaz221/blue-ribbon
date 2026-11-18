@@ -1,22 +1,17 @@
 import { Button } from "../ui/Button";
 import { LineReveal } from "../ui/LineReveal";
-import { TiltImage } from "../ui/TiltImage";
 
 /**
  * Closing "Get in touch" section on the home page: a centred pill, heading,
- * paragraph and button on white, with the full-width Parramatta photo below.
- *
- * The photo sits clear of the button. It used to be pulled up under it with a
- * negative margin, relying on the white haze baked into the top of
- * `parramatta.png` — but the wide sm+ crop trims that haze away, so the
- * photo's hard top edge cut through the paragraph and the button read as
- * sitting inside the image.
+ * paragraph and button on white. The Ven banner follows it on the page (see
+ * VenBanner) — it replaced the full-width Parramatta photo that used to sit
+ * below the button here, per the Nov 2026 comp.
  */
 export function SellWithUs() {
   return (
     <section className="relative w-full overflow-hidden bg-white">
-      {/* Copy column. z-10 so it paints over the photo where the two overlap. */}
-      <div className="container-page relative z-10 flex flex-col items-center text-center pt-[clamp(16px,1.6vw,28px)]">
+      {/* Bottom padding is the comp's ~63px from the button to the banner. */}
+      <div className="container-page relative z-10 flex flex-col items-center text-center pt-[clamp(16px,1.6vw,28px)] pb-[clamp(40px,3.3vw,64px)]">
         <span className="rounded-[8px] bg-brand-navy px-[16px] py-[7px] font-display text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.16em] text-white">
           Get in touch
         </span>
@@ -65,28 +60,6 @@ export function SellWithUs() {
           </Button>
         </div>
       </div>
-
-      {/* Photo at its natural 1920x903 aspect from sm up, with NO height cap:
-          a cap makes the box shorter than the image's own shape, and
-          object-cover then crops the bottom off the frame. Phones keep a
-          squarer 4/3 crop, where the full wide ratio would shrink to a thin
-          strip. The top margin matches the same photo's on the Our Story
-          page.
-
-          `reveal-scale` is the site-wide scroll reveal (see globals.css and
-          RevealOnScroll): the block starts transparent, slightly lowered and
-          at 98.5% scale, and eases to rest over ~0.9s once it scrolls into
-          view — so the photo appears smoothly rather than sitting there fully
-          painted before the copy above it has finished revealing.
-
-          It also turns in 3D towards the cursor while hovered, matching the
-          same photo on the About page and the Parramatta featured card. */}
-      <TiltImage
-        src="/images/parramatta.png"
-        alt="BlueRibbon property brochures on a table beside a sofa"
-        sizes="100vw"
-        className="reveal-scale mt-[clamp(32px,4.5vw,72px)] w-full aspect-[402/245] sm:aspect-[1920/760]"
-      />
     </section>
   );
 }

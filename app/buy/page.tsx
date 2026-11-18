@@ -18,6 +18,7 @@ import { LineReveal } from "../_components/ui/LineReveal";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { TeamCTA } from "../_components/sections/TeamCTA";
+import { VenBanner } from "../_components/sections/VenBanner";
 import { RecentlySold } from "../_components/home/RecentlySold";
 import {
   SALE_CATEGORIES,
@@ -219,6 +220,7 @@ export default async function BuyPage({
           <RecentlySold />
         </div>
         <TeamCTA />
+        <VenBanner />
         </SearchTransitionProvider>
       </main>
       <Footer />

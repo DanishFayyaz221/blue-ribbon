@@ -17,12 +17,12 @@ type Tile = { label: string; href: string; src: string };
  * keeps the percent-escapes out of the tile table below and means a rename
  * later is a single edit rather than three.
  */
-const ADVANCED_SEARCH = "/images/advance.png";
+// The three `services-*` photos are the Figma artwork (Nov 2026), cropped to
+// exactly the area each card shows there.
+const ADVANCED_SEARCH = "/images/services-intelligent-search.jpg";
 const MEET_OUR_AGENTS = "/images/meet%20our%20agent.png";
-// Still the "find your desire" file — the tile it belongs to was renamed to
-// Our Latest Insights, the artwork was not.
-const LATEST_INSIGHTS = "/images/find%20your%20desire.png";
-const BLUERIBBON_DIFFERENCE = "/images/the%20blueribbon%20differnec.png";
+const LATEST_INSIGHTS = "/images/services-find-your-compatible.jpg";
+const BLUERIBBON_DIFFERENCE = "/images/services-blueribbon-difference.jpg";
 
 /**
  * One set of tiles per tab.
@@ -101,7 +101,7 @@ export function BridgeToHome() {
             as="h2"
             className="text-center font-display font-bold capitalize text-brand-mineshaft text-[26px] sm:text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1] sm:text-left"
           >
-            Find Your Home
+            Our Services
           </LineReveal>
           {/* Phone: the three tabs share the width, per the mobile comp. */}
           <div className="flex h-[40px] w-full items-center gap-0 self-stretch sm:h-[48px] sm:w-auto sm:self-end">

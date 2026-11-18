@@ -20,7 +20,10 @@ const rows = [
   },
   {
     title: "Marketing That\nMakes an Impact.",
-    image: "/images/building.png",
+    // The brochure-stand photo from the Nov 2026 comp. Cropped ~1.25x wider
+    // than the comp's square, because ParallaxFigure's overscan shows only the
+    // middle ~78% — so the card ends up framing what the comp frames.
+    image: "/images/our-story-marketing.jpg",
     body: "A strong campaign gives people a reason to take a closer look. We bring photography, video, brochures, signboards and digital content together in a consistent presentation. Each element should highlight the property’s strongest features, provide useful information and make the next step clear. The aim is considered, memorable marketing shaped around the property and its audience.",
   },
   {

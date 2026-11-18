@@ -1,22 +1,20 @@
-import Image from "next/image";
 import { LineReveal } from "./ui/LineReveal";
-import { ScrollZoomFigure } from "./ui/ScrollZoomFigure";
+import { VenBanner } from "./sections/VenBanner";
 
 const QUOTE =
   "Good property service brings the right elements together: local knowledge, a clear strategy, considered marketing and people who follow through. At BlueRibbon, we give the presentation and the client experience the same care. From the first conversation to your next move, our focus is on helping you make informed decisions with confidence.";
 
 /**
- * Closing block of the About page: the founder's quote, then the full-bleed
- * handshake banner that runs straight into the footer.
+ * Closing block of the About page: the founder's quote, then the Ven banner
+ * that runs straight into the footer. The banner replaced the full-bleed
+ * handshake photo (`banner2.png`) that used to close the page, per the
+ * Nov 2026 comp.
  *
  * The quote is set in a neutral grotesque rather than Poppins, as the comp is,
  * with the first line indented so the opening quotation mark hangs inside the
  * measure. It plays the site's line-mask reveal (LineReveal); the indent is
  * inherited by the line masks, so globals.css zeroes it on every mask after
- * the first. The caption keeps the plain fade-up. The banner asset carries its
- * own white haze across the top, so the quote's white ground dissolves into
- * the photo without a CSS gradient here. The banner grows into place as it
- * scrolls up, the same treatment as the appraisal page's banners.
+ * the first. The caption keeps the plain fade-up.
  */
 export function FounderQuote() {
   return (
@@ -55,25 +53,8 @@ export function FounderQuote() {
         </div>
       </section>
 
-      {/* Full-bleed banner at its natural 1920x984 aspect, capped only on very
-          wide screens. Its white top edge is part of the asset. Scales from
-          90% to full as it rises, settling as its top reaches the top of the
-          screen — see ScrollZoomFigure. */}
-      <ScrollZoomFigure
-        zoom={1}
-        from={0.9}
-        // Phone: a square crop, as the mobile comp draws it — object-cover
-        // trims the sides and keeps the asset's white top edge.
-        className="relative mt-[40px] aspect-square max-h-[984px] w-full origin-center overflow-hidden sm:mt-[clamp(12px,1.4vw,20px)] sm:aspect-[1920/984]"
-      >
-        <Image
-          src="/images/banner2.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
-      </ScrollZoomFigure>
+      {/* The comp leaves ~120px between the quote block and the banner. */}
+      <VenBanner className="mt-[48px] sm:mt-[clamp(48px,6.25vw,120px)]" />
     </>
   );
 }

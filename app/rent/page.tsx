@@ -7,6 +7,7 @@ import { EmptyListings } from "../_components/property/EmptyListings";
 import { FallbackListings } from "../_components/property/FallbackListings";
 import { PagerLinks } from "../_components/sections/PagerLinks";
 import { TeamCTA } from "../_components/sections/TeamCTA";
+import { VenBanner } from "../_components/sections/VenBanner";
 import { PropertySearchBar } from "../_components/property/PropertySearchBar";
 import {
   ResultsRegion,
@@ -157,6 +158,7 @@ export default async function RentPage({
             panel from sm up, so the page closed on two different sections
             depending on the width. This is the one the other pages end on. */}
         <TeamCTA />
+        <VenBanner />
         </SearchTransitionProvider>
       </main>
       <Footer />

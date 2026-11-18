@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 type Variant = "primary" | "outline" | "outline-dark" | "ghost" | "white";
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "xl";
 
 const base =
   "group relative isolate inline-flex items-center justify-center gap-[8px] overflow-hidden font-display font-medium outline-none transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sky/60";
@@ -23,6 +23,18 @@ const sizes: Record<Size, string> = {
   sm: "h-[44px] px-6 rounded-[18px] text-sm",
   md: "h-[56px] px-7 rounded-[20px] text-[15px]",
   lg: "h-[60px] sm:h-[68px] lg:h-[72px] px-7 rounded-[22px] lg:rounded-[24px] text-[15px] sm:text-[17px] lg:text-[19px]",
+  // Scales with the viewport up to the Ven banner's 1920 comp (83px tall,
+  // 22px label). Used where the button sits on a full-width photo banner.
+  xl: "h-[48px] px-[22px] rounded-[16px] text-[15px] sm:h-[clamp(44px,4.31vw,83px)] sm:px-[clamp(18px,2.13vw,41px)] sm:rounded-[clamp(14px,1.25vw,24px)] sm:text-[clamp(14px,1.16vw,22px)]",
+};
+
+// The arrow keeps its 14px at every size except xl, where it grows with the
+// label (21px at 1920, as in the comp).
+const arrowSizes: Record<Size, string> = {
+  sm: "h-[14px] w-[14px]",
+  md: "h-[14px] w-[14px]",
+  lg: "h-[14px] w-[14px]",
+  xl: "h-[14px] w-[14px] sm:h-[clamp(14px,1.08vw,21px)] sm:w-[clamp(14px,1.08vw,21px)]",
 };
 
 type CommonProps = {
@@ -52,7 +64,7 @@ export function Button(props: ButtonProps | AnchorProps) {
       <Link href={props.href} className={cls}>
         <span className="relative z-10 inline-flex items-center gap-[8px]">
           {children}
-          <ArrowIcon />
+          <ArrowIcon className={arrowSizes[size]} />
         </span>
       </Link>
     );
@@ -63,17 +75,17 @@ export function Button(props: ButtonProps | AnchorProps) {
     <button type="button" {...rest} className={cls}>
       <span className="relative z-10 inline-flex items-center gap-[8px]">
         {children}
-        <ArrowIcon />
+        <ArrowIcon className={arrowSizes[size]} />
       </span>
     </button>
   );
 }
 
-function ArrowIcon() {
+function ArrowIcon({ className }: { className: string }) {
   return (
     <span
       aria-hidden
-      className="relative inline-flex h-[14px] w-[14px] shrink-0 overflow-hidden"
+      className={`relative inline-flex shrink-0 overflow-hidden ${className}`}
     >
       <svg
         viewBox="0 0 24 24"

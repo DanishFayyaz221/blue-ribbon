@@ -7,6 +7,7 @@ import { EmptyListings } from "../_components/property/EmptyListings";
 import { ArrowInline } from "../_components/ui/ArrowInline";
 import { LineReveal } from "../_components/ui/LineReveal";
 import { TeamCTA } from "../_components/sections/TeamCTA";
+import { VenBanner } from "../_components/sections/VenBanner";
 import {
   getListings,
   parseListingSearchParams,
@@ -178,6 +179,7 @@ export default async function SoldPage({
         </section>
 
         <TeamCTA />
+        <VenBanner />
       </main>
       <Footer />
     </div>

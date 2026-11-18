@@ -28,7 +28,7 @@ export async function BestSuitedForYou() {
             as="h2"
             className="font-display font-bold text-brand-navy text-[26px] leading-[1.1]"
           >
-            {"Find Your\nHome"}
+            {"Properties\nfor Sale"}
           </LineReveal>
           <Link
             href="/buy"
@@ -42,7 +42,7 @@ export async function BestSuitedForYou() {
           as="h2"
           className="hidden sm:block font-display font-bold text-brand-navy text-[clamp(1.3rem,1.8vw,2rem)] leading-[1.1]"
         >
-          Find Your Home
+          Properties for Sale
         </LineReveal>
 
         {/* Phone: one full-width card at a time, playing itself — each card

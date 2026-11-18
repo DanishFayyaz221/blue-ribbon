@@ -10,6 +10,7 @@ import { LatestProperties } from "./_components/home/LatestProperties";
 import { MeetHappyClients } from "./_components/home/MeetHappyClients";
 import { RecentlySold } from "./_components/home/RecentlySold";
 import { SellWithUs } from "./_components/home/SellWithUs";
+import { VenBanner } from "./_components/sections/VenBanner";
 import { SuburbOptions } from "./_components/property/SuburbOptions";
 import { SectionBoundary } from "./_components/SectionBoundary";
 import { getListings } from "@/lib/db/queries";
@@ -64,6 +65,7 @@ export default async function Home() {
         </SectionBoundary>
         <MeetHappyClients />
         <SellWithUs />
+        <VenBanner />
       </main>
       <Footer />
     </div>

@@ -8,6 +8,7 @@ import { Nav } from "../layout/Nav";
 import { Footer } from "../layout/Footer";
 import { Breadcrumb } from "../ui/Breadcrumb";
 import { TeamCTA } from "../sections/TeamCTA";
+import { VenBanner } from "../sections/VenBanner";
 import { ScrollZoomFigure } from "../ui/ScrollZoomFigure";
 import { OurValues } from "../home/OurValues";
 import type { PropertyCardData } from "../property/PropertyCard";
@@ -294,6 +295,9 @@ export function AppraisalFlow({
                 does; the phone used to swap in a navy "get in touch" block
                 here instead. */}
             <TeamCTA />
+            {/* The Sell page (this address step) closes on the Ven banner,
+                as Buy, Rent and Sold do. */}
+            <VenBanner />
           </>
         )}
 
